@@ -524,6 +524,34 @@ class Generator:
         self.current_file = previous_file
         return op_name, "\n".join(lines), domain_file
 
+    def normalize_doc_create_result(
+        self, operations: list[tuple[str, str, str]]
+    ) -> list[tuple[str, str, str]]:
+        """Fold the create-doc response duplicate into the canonical Doc shape."""
+        doc = self.shapes.get("Doc")
+        doc2 = self.shapes.get("Doc2")
+        if not doc or not doc2 or "requestId: String" not in doc2:
+            return operations
+        if "requestId: String" not in doc:
+            before_close, close = doc.rstrip().rsplit("\n}", 1)
+            self.shapes["Doc"] = "\n".join(
+                [
+                    before_close,
+                    "",
+                    '    @documentation("An arbitrary unique identifier for this request, included on doc creation responses.")',
+                    "    requestId: String",
+                    "}",
+                ]
+            )
+        for duplicate in ("Doc2", "Doc2Type"):
+            self.shapes.pop(duplicate, None)
+            self.shape_kind.pop(duplicate, None)
+            self.shape_files.pop(duplicate, None)
+        return [
+            (name, text.replace("    output: Doc2", "    output: Doc"), domain_file)
+            for name, text, domain_file in operations
+        ]
+
     def generate(self, output_dir: Path) -> None:
         for component in self.spec.get("components", {}).get("schemas", {}):
             self.ensure_component(component)
@@ -547,6 +575,7 @@ class Generator:
             for method, op in path_item.items():
                 if method.lower() in HTTP_METHODS:
                     operations.append(self.build_operation(path, method, op, common_errors))
+        operations = self.normalize_doc_create_result(operations)
 
         model_dir = output_dir / "model"
         model_dir.mkdir(parents=True, exist_ok=True)

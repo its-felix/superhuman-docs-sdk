@@ -41,7 +41,7 @@ operation ListDocs {
 @http(method: "POST", uri: "/docs", code: 201)
 operation CreateDoc {
     input: CreateDocInput
-    output: Doc2
+    output: Doc
     errors: [
         BadRequestError
         UnauthorizedError

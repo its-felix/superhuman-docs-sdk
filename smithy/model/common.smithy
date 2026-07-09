@@ -1172,76 +1172,9 @@ structure Doc {
     @documentation("ID of the Coda folder containing this doc.")
     @required
     folderId: String
-}
 
-@documentation("The result of a doc creation.")
-structure Doc2 {
-    @documentation("ID of the Coda doc.")
-    @required
-    id: String
-
-    @documentation("The type of this resource.")
-    @required
-    type: Doc2Type
-
-    @documentation("API link to the Coda doc.")
-    @required
-    href: String
-
-    @documentation("Browser-friendly link to the Coda doc.")
-    @required
-    browserLink: String
-
-    icon: Icon
-
-    @documentation("Name of the doc.")
-    @required
-    name: String
-
-    @documentation("Email address of the doc owner.")
-    @required
-    owner: String
-
-    @documentation("Name of the doc owner.")
-    @required
-    ownerName: String
-
-    docSize: DocSize
-
-    sourceDoc: DocReference
-
-    @documentation("Timestamp for when the doc was created.")
-    @required
-    createdAt: String
-
-    @documentation("Timestamp for when the doc was last modified.")
-    @required
-    updatedAt: String
-
-    published: DocPublished
-
-    @required
-    folder: FolderReference
-
-    @required
-    workspace: WorkspaceReference
-
-    @documentation("ID of the Coda workspace containing this doc.")
-    @required
-    workspaceId: String
-
-    @documentation("ID of the Coda folder containing this doc.")
-    @required
-    folderId: String
-
-    @documentation("An arbitrary unique identifier for this request.")
+    @documentation("An arbitrary unique identifier for this request, included on doc creation responses.")
     requestId: String
-}
-
-@documentation("The type of this resource.")
-enum Doc2Type {
-    @enumValue("doc")
-    DOC
 }
 
 @documentation("List of analytics for Coda docs over a date range.")
