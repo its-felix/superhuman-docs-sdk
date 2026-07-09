@@ -13,7 +13,7 @@ Smithy namespace is `com.superhuman.docs.v1`.
 | Language | Package | Notes |
 | --- | --- | --- |
 | Go | `github.com/its-felix/superhuman-docs-sdk/go` | The Go module is rooted at this repository so normal `vX.Y.Z` tags work. |
-| Python | `superhuman-docs` | Published to PyPI by the release workflow. |
+| Python | `superhuman-docs` | Built by the release workflow. |
 | Zig | `superhuman-docs` module | Consumed through Zig's package manager from this git repository. |
 
 ## Install
@@ -85,11 +85,8 @@ Push a semver tag like `v1.2.3` to publish:
 - Go: the release workflow primes `proxy.golang.org` for
   `github.com/its-felix/superhuman-docs-sdk@v1.2.3`; users import the package at
   `github.com/its-felix/superhuman-docs-sdk/go`.
-- Python: the workflow builds the package and publishes to PyPI using trusted
-  publishing. The tag version must match `python/pyproject.toml`.
+- Python: the workflow builds the package artifact. The tag version must match
+  `python/pyproject.toml`.
 - Zig: there is no central Zig package registry to upload to. The workflow
   verifies the tag is buildable and fetchable as a Zig package from the git
   repository. The tag version must match `build.zig.zon`.
-
-Before publishing Python, configure a PyPI trusted publisher for the
-`superhuman-docs` project and the `Release SDKs` workflow's `pypi` environment.

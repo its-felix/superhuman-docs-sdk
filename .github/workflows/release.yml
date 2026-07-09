@@ -191,6 +191,7 @@ jobs:
           path: dist
 
       - name: Publish package to PyPI
+        if: false
         uses: pypa/gh-action-pypi-publish@release/v1
 
   publish-zig:
