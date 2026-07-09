@@ -4,12 +4,14 @@ This package is generated from the Smithy model in `../smithy/model`.
 
 ## Generate
 
+Run this from the repository root:
+
 ```sh
-python scripts/generate.py
+./build.sh
 ```
 
-The generator writes deterministic operation metadata and convenience methods to
-`src/superhuman_docs/_generated.py`.
+The Smithy generator writes deterministic operation metadata and convenience
+methods to `src/superhuman_docs/_generated.py`.
 
 ## Use
 

@@ -51,6 +51,7 @@ exe.root_module.addImport("superhuman-docs", docs_dep.module("superhuman-docs"))
 
 - `smithy/model`: shared Smithy model
 - `smithy/scripts/openapi_to_smithy.py`: OpenAPI-to-Smithy generator
+- `smithy/generator`: Maven-based Smithy-Build SDK generator plugins
 - `go`: generated Go package
 - `python`: generated Python package
 - `zig`: generated Zig source package
@@ -62,17 +63,22 @@ exe.root_module.addImport("superhuman-docs", docs_dep.module("superhuman-docs"))
 After changing `smithy/model`, regenerate the SDKs:
 
 ```sh
-python3 go/scripts/generate.py
-python3 python/scripts/generate.py
-python3 zig/tools/generate.py
+./build.sh
 ```
 
-Then verify:
+The script builds and installs the Smithy generator, runs `smithy build`, copies
+generated artifacts from `smithy/build/smithy/source/.../sdk` into the package
+directories, and runs the SDK tests for tools available on `PATH`.
+To generate only one target, pass `markdown`, `python`, `go`, or `zig`:
 
 ```sh
-go test ./...
-python3 -m unittest discover -s python/tests
-zig build test
+./build.sh python
+```
+
+CI uses Java 17, Maven, and the Smithy CLI for generation.
+
+```sh
+git diff --exit-code -- go python zig build.zig build.zig.zon
 ```
 
 The CI workflow runs the generators and fails if generated files differ from the

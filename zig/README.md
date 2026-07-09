@@ -69,6 +69,5 @@ const request = try docs.operations.buildCreateDoc(
 Run this from the repository root after changing `smithy/model`:
 
 ```sh
-python3 zig/tools/generate.py
-zig build -Doptimize=Debug test
+./build.sh
 ```

@@ -13,9 +13,8 @@ client := superhumandocs.NewClient("api-token")
 docs, err := client.ListDocs(ctx, &superhumandocs.ListDocsInput{Limit: superhumandocs.Int(10)})
 ```
 
-Regenerate after Smithy model changes:
+Run this from the repository root after Smithy model changes:
 
 ```sh
-python3 go/scripts/generate.py
-go test ./...
+./build.sh
 ```

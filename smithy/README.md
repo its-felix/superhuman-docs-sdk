@@ -21,6 +21,7 @@ The published OpenAPI document still identifies the API as `Coda API` version `1
 - `model/common.smithy` defines reusable data, union, enum, list, and map shapes shared by multiple domains.
 - `model/errors.smithy` defines modeled client error shapes.
 - `scripts/openapi_to_smithy.py` regenerates the Smithy model from the OpenAPI JSON source.
+- `generator` contains the Maven project for the Smithy-Build SDK generator plugins.
 
 ## Regeneration
 
@@ -31,9 +32,21 @@ python3 smithy/scripts/openapi_to_smithy.py /tmp/superhuman-openapi.json smithy
 
 ## Validation
 
-With the Smithy CLI installed:
+From the repository root:
 
 ```sh
-cd smithy
-smithy build
+./build.sh
+```
+
+The `smithy-build.json` file invokes local target plugins for Markdown, Python,
+Go, and Zig. The root build script installs the Maven generator, runs Smithy
+build, and copies generated SDK artifacts from Smithy's build output into the
+Go, Python, and Zig package directories. Pass a target name to run only one
+target plugin:
+
+```sh
+./build.sh markdown
+./build.sh python
+./build.sh go
+./build.sh zig
 ```

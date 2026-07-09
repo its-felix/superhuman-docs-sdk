@@ -1,4 +1,31 @@
 {
   "version": "1.0",
-  "sources": ["model"]
+  "sources": ["model"],
+  "maven": {
+    "dependencies": [
+      "com.github.its-felix.superhuman-docs-sdk:smithy-generator:0.1.0-SNAPSHOT"
+    ]
+  },
+  "projections": {
+    "source": {
+      "plugins": {
+        "superhuman-docs-markdown-codegen": {
+          "service": "com.superhuman.docs.v1#SuperhumanDocsApi",
+          "edition": "docs"
+        },
+        "superhuman-docs-python-codegen": {
+          "service": "com.superhuman.docs.v1#SuperhumanDocsApi",
+          "edition": "docs"
+        },
+        "superhuman-docs-go-codegen": {
+          "service": "com.superhuman.docs.v1#SuperhumanDocsApi",
+          "edition": "docs"
+        },
+        "superhuman-docs-zig-codegen": {
+          "service": "com.superhuman.docs.v1#SuperhumanDocsApi",
+          "edition": "docs"
+        }
+      }
+    }
+  }
 }
