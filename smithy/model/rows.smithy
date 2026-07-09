@@ -31,7 +31,7 @@ operation ListRows {
 @http(method: "POST", uri: "/docs/{docId}/tables/{tableIdOrName}/rows", code: 202)
 operation UpsertRows {
     input: UpsertRowsInput
-    output: RowsUpsertResult
+    output: RowsUpsertResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -47,7 +47,7 @@ operation UpsertRows {
 @http(method: "DELETE", uri: "/docs/{docId}/tables/{tableIdOrName}/rows", code: 202)
 operation DeleteRows {
     input: DeleteRowsInput
-    output: RowsDeleteResult
+    output: RowsDeleteResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -76,7 +76,7 @@ operation GetRow {
 @http(method: "PUT", uri: "/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}", code: 202)
 operation UpdateRow {
     input: UpdateRowInput
-    output: RowUpdateResult
+    output: RowUpdateResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -91,7 +91,7 @@ operation UpdateRow {
 @http(method: "DELETE", uri: "/docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}", code: 202)
 operation DeleteRow {
     input: DeleteRowInput
-    output: RowDeleteResult
+    output: RowDeleteResponse
     errors: [
         UnauthorizedError
         ForbiddenError
@@ -108,7 +108,7 @@ operation DeleteRow {
 )
 operation PushButton {
     input: PushButtonInput
-    output: PushButtonResult
+    output: PushButtonResponse
     errors: [
         BadRequestError
         UnauthorizedError

@@ -31,7 +31,7 @@ operation ListPages {
 @http(method: "POST", uri: "/docs/{docId}/pages", code: 202)
 operation CreatePage {
     input: CreatePageInput
-    output: PageCreateResult
+    output: PageCreateResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -61,7 +61,7 @@ operation GetPage {
 @http(method: "PUT", uri: "/docs/{docId}/pages/{pageIdOrName}", code: 202)
 operation UpdatePage {
     input: UpdatePageInput
-    output: PageUpdateResult
+    output: PageUpdateResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -76,7 +76,7 @@ operation UpdatePage {
 @http(method: "DELETE", uri: "/docs/{docId}/pages/{pageIdOrName}", code: 202)
 operation DeletePage {
     input: DeletePageInput
-    output: PageDeleteResult
+    output: PageDeleteResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -107,7 +107,7 @@ operation ListPageContent {
 @http(method: "DELETE", uri: "/docs/{docId}/pages/{pageIdOrName}/content", code: 202)
 operation DeletePageContent {
     input: DeletePageContentInput
-    output: PageContentDeleteResult
+    output: PageContentDeleteResponse
     errors: [
         BadRequestError
         UnauthorizedError

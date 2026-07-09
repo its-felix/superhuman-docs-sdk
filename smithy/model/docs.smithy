@@ -82,7 +82,7 @@ operation DeleteDoc {
 @http(method: "PATCH", uri: "/docs/{docId}", code: 200)
 operation UpdateDoc {
     input: UpdateDocInput
-    output: DocUpdate2
+    output: DocUpdateResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -97,7 +97,7 @@ operation UpdateDoc {
 @http(method: "GET", uri: "/docs/{docId}/acl/metadata", code: 200)
 operation GetSharingMetadata {
     input: GetSharingMetadataInput
-    output: Acl2
+    output: SharingMetadata
     errors: [
         UnauthorizedError
         ForbiddenError
@@ -124,7 +124,7 @@ operation GetPermissions {
 @http(method: "POST", uri: "/docs/{docId}/acl/permissions", code: 200)
 operation AddPermission {
     input: AddPermissionInput
-    output: AddPermissionResult
+    output: AddPermissionResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -139,7 +139,7 @@ operation AddPermission {
 @http(method: "DELETE", uri: "/docs/{docId}/acl/permissions/{permissionId}", code: 200)
 operation DeletePermission {
     input: DeletePermissionInput
-    output: DeletePermissionResult
+    output: DeletePermissionResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -196,7 +196,7 @@ operation UpdateAclSettings {
 @http(method: "PUT", uri: "/docs/{docId}/publish", code: 202)
 operation PublishDoc {
     input: PublishDocInput
-    output: PublishResult
+    output: PublishResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -211,7 +211,7 @@ operation PublishDoc {
 @http(method: "DELETE", uri: "/docs/{docId}/publish", code: 200)
 operation UnpublishDoc {
     input: UnpublishDocInput
-    output: UnpublishResult
+    output: UnpublishResponse
     errors: [
         UnauthorizedError
         ForbiddenError
@@ -349,7 +349,7 @@ operation UpdateFolder {
 @http(method: "DELETE", uri: "/folders/{folderId}", code: 200)
 operation DeleteFolder {
     input: DeleteFolderInput
-    output: DeleteFolderResult
+    output: DeleteFolderResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -402,7 +402,7 @@ operation GetMutationStatus {
 @http(method: "POST", uri: "/docs/{docId}/hooks/automation/{ruleId}", code: 202)
 operation TriggerWebhookAutomation {
     input: TriggerWebhookAutomationInput
-    output: WebhookTriggerResult
+    output: WebhookTriggerResponse
     errors: [
         BadRequestError
         UnauthorizedError
@@ -431,7 +431,7 @@ operation ListWorkspaceMembers {
 @http(method: "POST", uri: "/workspaces/{workspaceId}/users/role", code: 200)
 operation ChangeUserRole {
     input: ChangeUserRoleInput
-    output: ChangeRoleResult
+    output: ChangeRoleResponse
     errors: [
         UnauthorizedError
         ForbiddenError
@@ -458,7 +458,7 @@ operation ListWorkspaceRoleActivity {
 @http(method: "POST", uri: "/organizations/{organizationId}/goLinks", code: 200)
 operation AddGoLink {
     input: AddGoLinkInput
-    output: AddGoLinkResult
+    output: AddGoLinkResponse
     errors: [
         BadRequestError
         ForbiddenError

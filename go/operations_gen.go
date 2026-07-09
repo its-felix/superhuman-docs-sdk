@@ -19,13 +19,13 @@ func (c *Client) AddCustomDocDomain(ctx context.Context, input *AddCustomDocDoma
 	return &out, err
 }
 
-func (c *Client) AddGoLink(ctx context.Context, input *AddGoLinkInput) (*AddGoLinkResult, error) {
+func (c *Client) AddGoLink(ctx context.Context, input *AddGoLinkInput) (*AddGoLinkResponse, error) {
 	if input == nil {
 		input = &AddGoLinkInput{}
 	}
 	path := "/organizations/" + pathEscape(input.OrganizationId) + "/goLinks"
 	query := url.Values{}
-	var out AddGoLinkResult
+	var out AddGoLinkResponse
 	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
 	return &out, err
 }
@@ -63,13 +63,13 @@ func (c *Client) AddPackPermission(ctx context.Context, input *AddPackPermission
 	return &out, err
 }
 
-func (c *Client) AddPermission(ctx context.Context, input *AddPermissionInput) (*AddPermissionResult, error) {
+func (c *Client) AddPermission(ctx context.Context, input *AddPermissionInput) (*AddPermissionResponse, error) {
 	if input == nil {
 		input = &AddPermissionInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/acl/permissions"
 	query := url.Values{}
-	var out AddPermissionResult
+	var out AddPermissionResponse
 	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
 	return &out, err
 }
@@ -96,13 +96,13 @@ func (c *Client) CancelPackReview(ctx context.Context, input *CancelPackReviewIn
 	return &out, err
 }
 
-func (c *Client) ChangeUserRole(ctx context.Context, input *ChangeUserRoleInput) (*ChangeRoleResult, error) {
+func (c *Client) ChangeUserRole(ctx context.Context, input *ChangeUserRoleInput) (*ChangeRoleResponse, error) {
 	if input == nil {
 		input = &ChangeUserRoleInput{}
 	}
 	path := "/workspaces/" + pathEscape(input.WorkspaceId) + "/users/role"
 	query := url.Values{}
-	var out ChangeRoleResult
+	var out ChangeRoleResponse
 	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
 	return &out, err
 }
@@ -173,13 +173,13 @@ func (c *Client) CreatePackReview(ctx context.Context, input *CreatePackReviewIn
 	return &out, err
 }
 
-func (c *Client) CreatePage(ctx context.Context, input *CreatePageInput) (*PageCreateResult, error) {
+func (c *Client) CreatePage(ctx context.Context, input *CreatePageInput) (*PageCreateResponse, error) {
 	if input == nil {
 		input = &CreatePageInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/pages"
 	query := url.Values{}
-	var out PageCreateResult
+	var out PageCreateResponse
 	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
 	return &out, err
 }
@@ -206,13 +206,13 @@ func (c *Client) DeleteDoc(ctx context.Context, input *DeleteDocInput) (*DocDele
 	return &out, err
 }
 
-func (c *Client) DeleteFolder(ctx context.Context, input *DeleteFolderInput) (*DeleteFolderResult, error) {
+func (c *Client) DeleteFolder(ctx context.Context, input *DeleteFolderInput) (*DeleteFolderResponse, error) {
 	if input == nil {
 		input = &DeleteFolderInput{}
 	}
 	path := "/folders/" + pathEscape(input.FolderId)
 	query := url.Values{}
-	var out DeleteFolderResult
+	var out DeleteFolderResponse
 	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
 	return &out, err
 }
@@ -261,13 +261,13 @@ func (c *Client) DeletePackListingDraft(ctx context.Context, input *DeletePackLi
 	return &out, err
 }
 
-func (c *Client) DeletePackMaker(ctx context.Context, input *DeletePackMakerInput) (*AddPackMakerResponse2, error) {
+func (c *Client) DeletePackMaker(ctx context.Context, input *DeletePackMakerInput) (*DeletePackMakerResponse, error) {
 	if input == nil {
 		input = &DeletePackMakerInput{}
 	}
 	path := "/packs/" + pathEscape(input.PackId) + "/maker/" + pathEscape(input.LoginId)
 	query := url.Values{}
-	var out AddPackMakerResponse2
+	var out DeletePackMakerResponse
 	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
 	return &out, err
 }
@@ -283,57 +283,57 @@ func (c *Client) DeletePackPermission(ctx context.Context, input *DeletePackPerm
 	return &out, err
 }
 
-func (c *Client) DeletePage(ctx context.Context, input *DeletePageInput) (*PageDeleteResult, error) {
+func (c *Client) DeletePage(ctx context.Context, input *DeletePageInput) (*PageDeleteResponse, error) {
 	if input == nil {
 		input = &DeletePageInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName)
 	query := url.Values{}
-	var out PageDeleteResult
+	var out PageDeleteResponse
 	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) DeletePageContent(ctx context.Context, input *DeletePageContentInput) (*PageContentDeleteResult, error) {
+func (c *Client) DeletePageContent(ctx context.Context, input *DeletePageContentInput) (*PageContentDeleteResponse, error) {
 	if input == nil {
 		input = &DeletePageContentInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName) + "/content"
 	query := url.Values{}
-	var out PageContentDeleteResult
+	var out PageContentDeleteResponse
 	err := c.do(ctx, http.MethodDelete, path, query, input.Payload, &out)
 	return &out, err
 }
 
-func (c *Client) DeletePermission(ctx context.Context, input *DeletePermissionInput) (*DeletePermissionResult, error) {
+func (c *Client) DeletePermission(ctx context.Context, input *DeletePermissionInput) (*DeletePermissionResponse, error) {
 	if input == nil {
 		input = &DeletePermissionInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/acl/permissions/" + pathEscape(input.PermissionId)
 	query := url.Values{}
-	var out DeletePermissionResult
+	var out DeletePermissionResponse
 	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) DeleteRow(ctx context.Context, input *DeleteRowInput) (*RowDeleteResult, error) {
+func (c *Client) DeleteRow(ctx context.Context, input *DeleteRowInput) (*RowDeleteResponse, error) {
 	if input == nil {
 		input = &DeleteRowInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName)
 	query := url.Values{}
-	var out RowDeleteResult
+	var out RowDeleteResponse
 	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) DeleteRows(ctx context.Context, input *DeleteRowsInput) (*RowsDeleteResult, error) {
+func (c *Client) DeleteRows(ctx context.Context, input *DeleteRowsInput) (*RowsDeleteResponse, error) {
 	if input == nil {
 		input = &DeleteRowsInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows"
 	query := url.Values{}
-	var out RowsDeleteResult
+	var out RowsDeleteResponse
 	err := c.do(ctx, http.MethodDelete, path, query, input.Payload, &out)
 	return &out, err
 }
@@ -632,13 +632,13 @@ func (c *Client) GetRow(ctx context.Context, input *GetRowInput) (*RowDetail, er
 	return &out, err
 }
 
-func (c *Client) GetSharingMetadata(ctx context.Context, input *GetSharingMetadataInput) (*ACL2, error) {
+func (c *Client) GetSharingMetadata(ctx context.Context, input *GetSharingMetadataInput) (*SharingMetadata, error) {
 	if input == nil {
 		input = &GetSharingMetadataInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/acl/metadata"
 	query := url.Values{}
-	var out ACL2
+	var out SharingMetadata
 	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
@@ -1286,24 +1286,24 @@ func (c *Client) PatchPackSystemConnection(ctx context.Context, input *PatchPack
 	return &out, err
 }
 
-func (c *Client) PublishDoc(ctx context.Context, input *PublishDocInput) (*PublishResult, error) {
+func (c *Client) PublishDoc(ctx context.Context, input *PublishDocInput) (*PublishResponse, error) {
 	if input == nil {
 		input = &PublishDocInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/publish"
 	query := url.Values{}
-	var out PublishResult
+	var out PublishResponse
 	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
 	return &out, err
 }
 
-func (c *Client) PushButton(ctx context.Context, input *PushButtonInput) (*PushButtonResult, error) {
+func (c *Client) PushButton(ctx context.Context, input *PushButtonInput) (*PushButtonResponse, error) {
 	if input == nil {
 		input = &PushButtonInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName) + "/buttons/" + pathEscape(input.ColumnIdOrName)
 	query := url.Values{}
-	var out PushButtonResult
+	var out PushButtonResponse
 	err := c.do(ctx, http.MethodPost, path, query, nil, &out)
 	return &out, err
 }
@@ -1377,24 +1377,24 @@ func (c *Client) SetPackSystemConnection(ctx context.Context, input *SetPackSyst
 	return &out, err
 }
 
-func (c *Client) TriggerWebhookAutomation(ctx context.Context, input *TriggerWebhookAutomationInput) (*WebhookTriggerResult, error) {
+func (c *Client) TriggerWebhookAutomation(ctx context.Context, input *TriggerWebhookAutomationInput) (*WebhookTriggerResponse, error) {
 	if input == nil {
 		input = &TriggerWebhookAutomationInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/hooks/automation/" + pathEscape(input.RuleId)
 	query := url.Values{}
-	var out WebhookTriggerResult
+	var out WebhookTriggerResponse
 	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
 	return &out, err
 }
 
-func (c *Client) UnpublishDoc(ctx context.Context, input *UnpublishDocInput) (*UnpublishResult, error) {
+func (c *Client) UnpublishDoc(ctx context.Context, input *UnpublishDocInput) (*UnpublishResponse, error) {
 	if input == nil {
 		input = &UnpublishDocInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/publish"
 	query := url.Values{}
-	var out UnpublishResult
+	var out UnpublishResponse
 	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
 	return &out, err
 }
@@ -1421,13 +1421,13 @@ func (c *Client) UpdateCustomDocDomain(ctx context.Context, input *UpdateCustomD
 	return &out, err
 }
 
-func (c *Client) UpdateDoc(ctx context.Context, input *UpdateDocInput) (*DocUpdate2, error) {
+func (c *Client) UpdateDoc(ctx context.Context, input *UpdateDocInput) (*DocUpdateResponse, error) {
 	if input == nil {
 		input = &UpdateDocInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId)
 	query := url.Values{}
-	var out DocUpdate2
+	var out DocUpdateResponse
 	err := c.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
 	return &out, err
 }
@@ -1487,25 +1487,25 @@ func (c *Client) UpdatePackRelease(ctx context.Context, input *UpdatePackRelease
 	return &out, err
 }
 
-func (c *Client) UpdatePage(ctx context.Context, input *UpdatePageInput) (*PageUpdateResult, error) {
+func (c *Client) UpdatePage(ctx context.Context, input *UpdatePageInput) (*PageUpdateResponse, error) {
 	if input == nil {
 		input = &UpdatePageInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName)
 	query := url.Values{}
-	var out PageUpdateResult
+	var out PageUpdateResponse
 	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
 	return &out, err
 }
 
-func (c *Client) UpdateRow(ctx context.Context, input *UpdateRowInput) (*RowUpdateResult, error) {
+func (c *Client) UpdateRow(ctx context.Context, input *UpdateRowInput) (*RowUpdateResponse, error) {
 	if input == nil {
 		input = &UpdateRowInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName)
 	query := url.Values{}
 	addQueryValue(query, "disableParsing", input.DisableParsing)
-	var out RowUpdateResult
+	var out RowUpdateResponse
 	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
 	return &out, err
 }
@@ -1543,14 +1543,14 @@ func (c *Client) UpsertPackListingDraft(ctx context.Context, input *UpsertPackLi
 	return &out, err
 }
 
-func (c *Client) UpsertRows(ctx context.Context, input *UpsertRowsInput) (*RowsUpsertResult, error) {
+func (c *Client) UpsertRows(ctx context.Context, input *UpsertRowsInput) (*RowsUpsertResponse, error) {
 	if input == nil {
 		input = &UpsertRowsInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows"
 	query := url.Values{}
 	addQueryValue(query, "disableParsing", input.DisableParsing)
-	var out RowsUpsertResult
+	var out RowsUpsertResponse
 	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
 	return &out, err
 }

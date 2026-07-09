@@ -11,6 +11,32 @@ from typing import Any
 
 
 HTTP_METHODS = {"get", "put", "post", "delete", "patch", "head", "options"}
+SHAPE_RENAMES = {
+    "Acl2": "SharingMetadata",
+    "AddPackMakerResponse2": "DeletePackMakerResponse",
+    "AddGoLinkResult": "AddGoLinkResponse",
+    "AddPermissionResult": "AddPermissionResponse",
+    "ChangeRoleResult": "ChangeRoleResponse",
+    "ControlType2": "ControlResourceType",
+    "DeleteFolderResult": "DeleteFolderResponse",
+    "DeletePermissionResult": "DeletePermissionResponse",
+    "DocUpdate2": "DocUpdateResponse",
+    "DocUpdateResult": "DocUpdateResponse",
+    "PageContentDeleteResult": "PageContentDeleteResponse",
+    "PageCreateResult": "PageCreateResponse",
+    "PageDeleteResult": "PageDeleteResponse",
+    "PageType2": "PageResourceType",
+    "PageUpdateResult": "PageUpdateResponse",
+    "PublishResult": "PublishResponse",
+    "PushButtonResult": "PushButtonResponse",
+    "RowDeleteResult": "RowDeleteResponse",
+    "RowsDeleteResult": "RowsDeleteResponse",
+    "RowsUpsertResult": "RowsUpsertResponse",
+    "RowUpdateResult": "RowUpdateResponse",
+    "TableType2": "TableResourceType",
+    "UnpublishResult": "UnpublishResponse",
+    "WebhookTriggerResult": "WebhookTriggerResponse",
+}
 DOMAIN_BY_TAG = {
     "Account": "docs",
     "Automations": "docs",
@@ -552,6 +578,31 @@ class Generator:
             for name, text, domain_file in operations
         ]
 
+    def normalize_shape_names(
+        self, operations: list[tuple[str, str, str]]
+    ) -> list[tuple[str, str, str]]:
+        """Replace generated collision suffixes with stable domain names."""
+        for old_name, new_name in SHAPE_RENAMES.items():
+            if old_name not in self.shapes:
+                continue
+            self.shapes[new_name] = re.sub(
+                rf"\b{re.escape(old_name)}\b", new_name, self.shapes.pop(old_name)
+            )
+            self.shape_kind[new_name] = self.shape_kind.pop(old_name)
+            self.shape_files[new_name] = self.shape_files.pop(old_name)
+
+        for shape_name, shape_text in list(self.shapes.items()):
+            for old_name, new_name in SHAPE_RENAMES.items():
+                shape_text = re.sub(rf"\b{re.escape(old_name)}\b", new_name, shape_text)
+            self.shapes[shape_name] = shape_text
+
+        renamed_operations: list[tuple[str, str, str]] = []
+        for name, text, domain_file in operations:
+            for old_name, new_name in SHAPE_RENAMES.items():
+                text = re.sub(rf"\b{re.escape(old_name)}\b", new_name, text)
+            renamed_operations.append((name, text, domain_file))
+        return renamed_operations
+
     def generate(self, output_dir: Path) -> None:
         for component in self.spec.get("components", {}).get("schemas", {}):
             self.ensure_component(component)
@@ -576,6 +627,7 @@ class Generator:
                 if method.lower() in HTTP_METHODS:
                     operations.append(self.build_operation(path, method, op, common_errors))
         operations = self.normalize_doc_create_result(operations)
+        operations = self.normalize_shape_names(operations)
 
         model_dir = output_dir / "model"
         model_dir.mkdir(parents=True, exist_ok=True)

@@ -553,7 +553,7 @@ operation AddPackMaker {
 @http(method: "DELETE", uri: "/packs/{packId}/maker/{loginId}", code: 200)
 operation DeletePackMaker {
     input: DeletePackMakerInput
-    output: AddPackMakerResponse2
+    output: DeletePackMakerResponse
     errors: [
         BadRequestWithValidationErrors
         UnauthorizedError

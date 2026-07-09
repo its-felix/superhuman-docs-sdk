@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  SMITHY_VERSION: "1.72.0"
+
+jobs:
+  verify:
+    name: Verify generated SDKs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.mod
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: python/pyproject.toml
+
+      - name: Set up Zig
+        uses: mlugg/setup-zig@v2
+
+      - name: Install Smithy CLI
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/smithy-cli.zip" \
+            "https://github.com/smithy-lang/smithy/releases/download/${SMITHY_VERSION}/smithy-cli-linux-x86_64.zip"
+          unzip -q "$RUNNER_TEMP/smithy-cli.zip" -d "$RUNNER_TEMP/smithy-cli"
+          smithy_bin="$(find "$RUNNER_TEMP/smithy-cli" -type f -path "*/bin/smithy" | head -n 1)"
+          if [ -z "$smithy_bin" ]; then
+            echo "Could not find smithy binary in extracted archive" >&2
+            exit 1
+          fi
+          echo "$(dirname "$smithy_bin")" >> "$GITHUB_PATH"
+
+      - name: Validate Smithy model
+        run: smithy validate smithy/model
+
+      - name: Regenerate SDKs
+        run: |
+          python3 go/scripts/generate.py
+          python3 python/scripts/generate.py
+          python3 zig/tools/generate.py
+
+      - name: Check generated sources are committed
+        run: git diff --exit-code -- go python zig build.zig build.zig.zon
+
+      - name: Test Go SDK
+        run: go test ./...
+
+      - name: Test Python SDK
+        working-directory: python
+        run: python -m unittest discover -s tests
+
+      - name: Test Zig SDK
+        run: zig build test

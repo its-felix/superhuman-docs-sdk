@@ -49,7 +49,7 @@ structure Acl {
 }
 
 @documentation("Doc level metadata associated with ACL.")
-structure Acl2 {
+structure SharingMetadata {
     @documentation("When true, the user of the api can share")
     @required
     canShare: Boolean
@@ -117,7 +117,7 @@ structure AddGoLinkPayload {
 }
 
 @documentation("The result of adding a Go Link.")
-structure AddGoLinkResult {}
+structure AddGoLinkResponse {}
 
 @documentation("Payload for adding a Pack Category.")
 structure AddPackCategoryPayload {
@@ -140,7 +140,7 @@ structure AddPackMakerPayload {
 structure AddPackMakerResponse {}
 
 @documentation("Confirmation of successfully deleting a Pack maker.")
-structure AddPackMakerResponse2 {}
+structure DeletePackMakerResponse {}
 
 @documentation("Payload for upserting a Pack permission.")
 structure AddPackPermissionPayload {
@@ -171,7 +171,7 @@ structure AddPermissionPayload {
 }
 
 @documentation("The result of sharing a doc.")
-structure AddPermissionResult {}
+structure AddPermissionResponse {}
 
 structure AddedAnyonePrincipal {
     @documentation("The type of this principal.")
@@ -444,7 +444,7 @@ structure ChangeRole {
 }
 
 @documentation("The result of changing a user's workspace user role.")
-structure ChangeRoleResult {
+structure ChangeRoleResponse {
     @documentation("Timestamp for when the user's role last changed in this workspace.")
     @required
     roleChangedAt: String
@@ -696,7 +696,7 @@ structure Control {
 
     @documentation("The type of this resource.")
     @required
-    type: ControlType2
+    type: ControlResourceType
 
     @documentation("API link to the control.")
     @required
@@ -805,7 +805,7 @@ enum ControlType {
 }
 
 @documentation("The type of this resource.")
-enum ControlType2 {
+enum ControlResourceType {
     @enumValue("control")
     CONTROL
 }
@@ -1090,7 +1090,7 @@ structure DateTimeColumnFormat {
 structure DeleteCustomDocDomainResponse {}
 
 @documentation("The result of a folder deletion.")
-structure DeleteFolderResult {}
+structure DeleteFolderResponse {}
 
 @documentation("Confirmation of successfully deleting a Pack category.")
 structure DeletePackCategoryResponse {}
@@ -1108,7 +1108,7 @@ structure DeletePackPermissionResponse {}
 structure DeletePackResponse {}
 
 @documentation("The result of deleting a permission.")
-structure DeletePermissionResult {}
+structure DeletePermissionResponse {}
 
 @documentation("Confirmation of successfully deleting a user's permissions for a Pack.")
 structure DeleteUserPackPermissionsResponse {}
@@ -1541,7 +1541,7 @@ structure DocUpdate {
 }
 
 @documentation("The result of a doc update")
-structure DocUpdate2 {}
+structure DocUpdateResponse {}
 
 @documentation("Base response type for an operation that mutates a document.")
 structure DocumentMutateResponse {
@@ -5903,7 +5903,7 @@ structure Page {
 
     @documentation("The type of this resource.")
     @required
-    type: PageType2
+    type: PageResourceType
 
     @documentation("API link to the page.")
     @required
@@ -6056,7 +6056,7 @@ list PageContentDeleteElementIds {
 }
 
 @documentation("The result of a page content deletion.")
-structure PageContentDeleteResult {
+structure PageContentDeleteResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String
@@ -6325,7 +6325,7 @@ enum PageCreateContentVariant3Variant2Type {
 }
 
 @documentation("The result of a page creation.")
-structure PageCreateResult {
+structure PageCreateResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String
@@ -6336,7 +6336,7 @@ structure PageCreateResult {
 }
 
 @documentation("The result of a page deletion.")
-structure PageDeleteResult {
+structure PageDeleteResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String
@@ -6450,7 +6450,7 @@ enum PageType {
 }
 
 @documentation("The type of this resource.")
-enum PageType2 {
+enum PageResourceType {
     @enumValue("page")
     PAGE
 }
@@ -6476,7 +6476,7 @@ structure PageUpdate {
 }
 
 @documentation("The result of a page update.")
-structure PageUpdateResult {
+structure PageUpdateResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String
@@ -6597,7 +6597,7 @@ enum PrincipalType {
 }
 
 @documentation("The result of publishing a doc.")
-structure PublishResult {
+structure PublishResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String
@@ -6618,7 +6618,7 @@ structure PublishingCategory {
 }
 
 @documentation("The result of a push button.")
-structure PushButtonResult {
+structure PushButtonResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String
@@ -6721,7 +6721,7 @@ structure Row {
 }
 
 @documentation("The result of a row deletion.")
-structure RowDeleteResult {
+structure RowDeleteResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String
@@ -6826,7 +6826,7 @@ structure RowUpdate {
 }
 
 @documentation("The result of a row update.")
-structure RowUpdateResult {
+structure RowUpdateResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String
@@ -6896,7 +6896,7 @@ structure RowsDelete {
 }
 
 @documentation("The result of a rows delete operation.")
-structure RowsDeleteResult {
+structure RowsDeleteResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String
@@ -6943,7 +6943,7 @@ list RowsUpsertKeyColumns {
 }
 
 @documentation("The result of a rows insert/upsert operation.")
-structure RowsUpsertResult {
+structure RowsUpsertResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String
@@ -7150,7 +7150,7 @@ structure Table {
 
     @documentation("The type of this resource.")
     @required
-    type: TableType2
+    type: TableResourceType
 
     @required
     tableType: TableType
@@ -7262,7 +7262,7 @@ enum TableType {
 }
 
 @documentation("The type of this resource.")
-enum TableType2 {
+enum TableResourceType {
     @enumValue("table")
     TABLE
 }
@@ -7437,7 +7437,7 @@ enum Type {
 }
 
 @documentation("The result of unpublishing a doc.")
-structure UnpublishResult {}
+structure UnpublishResponse {}
 
 @documentation("Request to update ACL settings for a doc.")
 structure UpdateAclSettingsPayload {
@@ -7796,7 +7796,7 @@ list ValueVariant2MemberVariant2 {
 structure WebhookTriggerPayload {}
 
 @documentation("The result of triggering a webhook")
-structure WebhookTriggerResult {
+structure WebhookTriggerResponse {
     @documentation("An arbitrary unique identifier for this request.")
     @required
     requestId: String

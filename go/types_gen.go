@@ -30,13 +30,6 @@ type ACL struct {
 	NextPageLink  *NextPageLink  `json:"nextPageLink,omitempty"`
 }
 
-type ACL2 struct {
-	CanShare              bool `json:"canShare"`
-	CanShareWithWorkspace bool `json:"canShareWithWorkspace"`
-	CanShareWithOrg       bool `json:"canShareWithOrg"`
-	CanCopy               bool `json:"canCopy"`
-}
-
 type AclItems []Permission
 
 type AclSettings struct {
@@ -70,7 +63,7 @@ type AddGoLinkPayload struct {
 	CreatorEmail   *string `json:"creatorEmail,omitempty"`
 }
 
-type AddGoLinkResult struct {
+type AddGoLinkResponse struct {
 }
 
 type AddPackCategoryInput struct {
@@ -95,9 +88,6 @@ type AddPackMakerPayload struct {
 }
 
 type AddPackMakerResponse struct {
-}
-
-type AddPackMakerResponse2 struct {
 }
 
 type AddPackPermissionInput struct {
@@ -125,7 +115,7 @@ type AddPermissionPayload struct {
 	SuppressEmail *bool             `json:"suppressEmail,omitempty"`
 }
 
-type AddPermissionResult struct {
+type AddPermissionResponse struct {
 }
 
 type AddedAnyonePrincipal struct {
@@ -334,7 +324,7 @@ type ChangeRole struct {
 	NewRole WorkspaceUserRole `json:"newRole"`
 }
 
-type ChangeRoleResult struct {
+type ChangeRoleResponse struct {
 	RoleChangedAt string `json:"roleChangedAt"`
 }
 
@@ -473,13 +463,13 @@ const (
 func (v ColumnType) String() string { return string(v) }
 
 type Control struct {
-	ID          string         `json:"id"`
-	TypeValue   ControlType2   `json:"type"`
-	Href        string         `json:"href"`
-	Name        string         `json:"name"`
-	Parent      *PageReference `json:"parent,omitempty"`
-	ControlType ControlType    `json:"controlType"`
-	Value       Value          `json:"value"`
+	ID          string              `json:"id"`
+	TypeValue   ControlResourceType `json:"type"`
+	Href        string              `json:"href"`
+	Name        string              `json:"name"`
+	Parent      *PageReference      `json:"parent,omitempty"`
+	ControlType ControlType         `json:"controlType"`
+	Value       Value               `json:"value"`
 }
 
 type ControlList struct {
@@ -507,6 +497,14 @@ const (
 
 func (v ControlReferenceType) String() string { return string(v) }
 
+type ControlResourceType string
+
+const (
+	ControlResourceTypeCONTROL ControlResourceType = "control"
+)
+
+func (v ControlResourceType) String() string { return string(v) }
+
 type ControlType string
 
 const (
@@ -527,14 +525,6 @@ const (
 )
 
 func (v ControlType) String() string { return string(v) }
-
-type ControlType2 string
-
-const (
-	ControlType2CONTROL ControlType2 = "control"
-)
-
-func (v ControlType2) String() string { return string(v) }
 
 type CreateDocInput struct {
 	Payload DocCreate `json:"payload"`
@@ -741,7 +731,7 @@ type DeleteFolderInput struct {
 	FolderId string `json:"folderId"`
 }
 
-type DeleteFolderResult struct {
+type DeleteFolderResponse struct {
 }
 
 type DeletePackCategoryInput struct {
@@ -776,6 +766,9 @@ type DeletePackMakerInput struct {
 	LoginId string `json:"loginId"`
 }
 
+type DeletePackMakerResponse struct {
+}
+
 type DeletePackPermissionInput struct {
 	PackId       int    `json:"packId"`
 	PermissionId string `json:"permissionId"`
@@ -803,7 +796,7 @@ type DeletePermissionInput struct {
 	PermissionId string `json:"permissionId"`
 }
 
-type DeletePermissionResult struct {
+type DeletePermissionResponse struct {
 }
 
 type DeleteRowInput struct {
@@ -1023,7 +1016,7 @@ type DocUpdate struct {
 	IconName *string `json:"iconName,omitempty"`
 }
 
-type DocUpdate2 struct {
+type DocUpdateResponse struct {
 }
 
 type DocumentMutateResponse struct {
@@ -4086,24 +4079,24 @@ const (
 func (v PacksSortBy) String() string { return string(v) }
 
 type Page struct {
-	ID                  string          `json:"id"`
-	TypeValue           PageType2       `json:"type"`
-	Href                string          `json:"href"`
-	BrowserLink         string          `json:"browserLink"`
-	Name                string          `json:"name"`
-	Subtitle            *string         `json:"subtitle,omitempty"`
-	Icon                *Icon           `json:"icon,omitempty"`
-	Image               *Image          `json:"image,omitempty"`
-	ContentType         PageType        `json:"contentType"`
-	IsHidden            bool            `json:"isHidden"`
-	IsEffectivelyHidden bool            `json:"isEffectivelyHidden"`
-	Parent              *PageReference  `json:"parent,omitempty"`
-	Children            []PageReference `json:"children"`
-	Authors             []PersonValue   `json:"authors,omitempty"`
-	CreatedAt           *string         `json:"createdAt,omitempty"`
-	CreatedBy           *PersonValue    `json:"createdBy,omitempty"`
-	UpdatedAt           *string         `json:"updatedAt,omitempty"`
-	UpdatedBy           *PersonValue    `json:"updatedBy,omitempty"`
+	ID                  string           `json:"id"`
+	TypeValue           PageResourceType `json:"type"`
+	Href                string           `json:"href"`
+	BrowserLink         string           `json:"browserLink"`
+	Name                string           `json:"name"`
+	Subtitle            *string          `json:"subtitle,omitempty"`
+	Icon                *Icon            `json:"icon,omitempty"`
+	Image               *Image           `json:"image,omitempty"`
+	ContentType         PageType         `json:"contentType"`
+	IsHidden            bool             `json:"isHidden"`
+	IsEffectivelyHidden bool             `json:"isEffectivelyHidden"`
+	Parent              *PageReference   `json:"parent,omitempty"`
+	Children            []PageReference  `json:"children"`
+	Authors             []PersonValue    `json:"authors,omitempty"`
+	CreatedAt           *string          `json:"createdAt,omitempty"`
+	CreatedBy           *PersonValue     `json:"createdBy,omitempty"`
+	UpdatedAt           *string          `json:"updatedAt,omitempty"`
+	UpdatedBy           *PersonValue     `json:"updatedBy,omitempty"`
 }
 
 type PageAnalyticsCollection struct {
@@ -4152,7 +4145,7 @@ type PageContentDelete struct {
 
 type PageContentDeleteElementIds []string
 
-type PageContentDeleteResult struct {
+type PageContentDeleteResponse struct {
 	RequestId string `json:"requestId"`
 	ID        string `json:"id"`
 }
@@ -4340,12 +4333,12 @@ const (
 
 func (v PageCreateContentVariant3Variant2Type) String() string { return string(v) }
 
-type PageCreateResult struct {
+type PageCreateResponse struct {
 	RequestId string `json:"requestId"`
 	ID        string `json:"id"`
 }
 
-type PageDeleteResult struct {
+type PageDeleteResponse struct {
 	RequestId string `json:"requestId"`
 	ID        string `json:"id"`
 }
@@ -4402,6 +4395,14 @@ const (
 
 func (v PageReferenceType) String() string { return string(v) }
 
+type PageResourceType string
+
+const (
+	PageResourceTypePAGE PageResourceType = "page"
+)
+
+func (v PageResourceType) String() string { return string(v) }
+
 type PageType string
 
 const (
@@ -4412,14 +4413,6 @@ const (
 
 func (v PageType) String() string { return string(v) }
 
-type PageType2 string
-
-const (
-	PageType2PAGE PageType2 = "page"
-)
-
-func (v PageType2) String() string { return string(v) }
-
 type PageUpdate struct {
 	Name          *string            `json:"name,omitempty"`
 	Subtitle      *string            `json:"subtitle,omitempty"`
@@ -4429,7 +4422,7 @@ type PageUpdate struct {
 	ContentUpdate *PageContentUpdate `json:"contentUpdate,omitempty"`
 }
 
-type PageUpdateResult struct {
+type PageUpdateResponse struct {
 	RequestId string `json:"requestId"`
 	ID        string `json:"id"`
 }
@@ -4521,7 +4514,7 @@ type PublishDocInput struct {
 	Payload DocPublish `json:"payload"`
 }
 
-type PublishResult struct {
+type PublishResponse struct {
 	RequestId string `json:"requestId"`
 }
 
@@ -4538,7 +4531,7 @@ type PushButtonInput struct {
 	ColumnIdOrName string `json:"columnIdOrName"`
 }
 
-type PushButtonResult struct {
+type PushButtonResponse struct {
 	RequestId string `json:"requestId"`
 	RowId     string `json:"rowId"`
 	ColumnId  string `json:"columnId"`
@@ -4605,7 +4598,7 @@ type Row struct {
 	Values      map[string]CellValue `json:"values"`
 }
 
-type RowDeleteResult struct {
+type RowDeleteResponse struct {
 	RequestId string `json:"requestId"`
 	ID        string `json:"id"`
 }
@@ -4661,7 +4654,7 @@ type RowUpdate struct {
 	Row RowEdit `json:"row"`
 }
 
-type RowUpdateResult struct {
+type RowUpdateResponse struct {
 	RequestId string `json:"requestId"`
 	ID        string `json:"id"`
 }
@@ -4699,7 +4692,7 @@ type RowsDelete struct {
 	RowIds []string `json:"rowIds"`
 }
 
-type RowsDeleteResult struct {
+type RowsDeleteResponse struct {
 	RequestId string   `json:"requestId"`
 	RowIds    []string `json:"rowIds"`
 }
@@ -4725,7 +4718,7 @@ type RowsUpsert struct {
 
 type RowsUpsertKeyColumns []string
 
-type RowsUpsertResult struct {
+type RowsUpsertResponse struct {
 	RequestId   string   `json:"requestId"`
 	AddedRowIds []string `json:"addedRowIds,omitempty"`
 }
@@ -4799,6 +4792,13 @@ type SetPackSystemConnectionPayload struct {
 	Credentials PackSystemConnectionCredentials `json:"credentials"`
 }
 
+type SharingMetadata struct {
+	CanShare              bool `json:"canShare"`
+	CanShareWithWorkspace bool `json:"canShareWithWorkspace"`
+	CanShareWithOrg       bool `json:"canShareWithOrg"`
+	CanCopy               bool `json:"canCopy"`
+}
+
 type SimpleColumnFormat struct {
 	TypeValue ColumnFormatType `json:"type"`
 	IsArray   bool             `json:"isArray"`
@@ -4867,21 +4867,21 @@ const (
 func (v SyncPageType) String() string { return string(v) }
 
 type Table struct {
-	ID            string          `json:"id"`
-	TypeValue     TableType2      `json:"type"`
-	TableType     TableType       `json:"tableType"`
-	Href          string          `json:"href"`
-	BrowserLink   string          `json:"browserLink"`
-	Name          string          `json:"name"`
-	Parent        PageReference   `json:"parent"`
-	ParentTable   *TableReference `json:"parentTable,omitempty"`
-	DisplayColumn ColumnReference `json:"displayColumn"`
-	RowCount      int             `json:"rowCount"`
-	Sorts         []Sort          `json:"sorts"`
-	Layout        Layout          `json:"layout"`
-	Filter        *FormulaDetail  `json:"filter,omitempty"`
-	CreatedAt     string          `json:"createdAt"`
-	UpdatedAt     string          `json:"updatedAt"`
+	ID            string            `json:"id"`
+	TypeValue     TableResourceType `json:"type"`
+	TableType     TableType         `json:"tableType"`
+	Href          string            `json:"href"`
+	BrowserLink   string            `json:"browserLink"`
+	Name          string            `json:"name"`
+	Parent        PageReference     `json:"parent"`
+	ParentTable   *TableReference   `json:"parentTable,omitempty"`
+	DisplayColumn ColumnReference   `json:"displayColumn"`
+	RowCount      int               `json:"rowCount"`
+	Sorts         []Sort            `json:"sorts"`
+	Layout        Layout            `json:"layout"`
+	Filter        *FormulaDetail    `json:"filter,omitempty"`
+	CreatedAt     string            `json:"createdAt"`
+	UpdatedAt     string            `json:"updatedAt"`
 }
 
 type TableList struct {
@@ -4911,6 +4911,14 @@ const (
 
 func (v TableReferenceType) String() string { return string(v) }
 
+type TableResourceType string
+
+const (
+	TableResourceTypeTABLE TableResourceType = "table"
+)
+
+func (v TableResourceType) String() string { return string(v) }
+
 type TableSorts []Sort
 
 type TableType string
@@ -4921,14 +4929,6 @@ const (
 )
 
 func (v TableType) String() string { return string(v) }
-
-type TableType2 string
-
-const (
-	TableType2TABLE TableType2 = "table"
-)
-
-func (v TableType2) String() string { return string(v) }
 
 type TimeColumnFormat struct {
 	TypeValue ColumnFormatType `json:"type"`
@@ -5022,7 +5022,7 @@ type UnpublishDocInput struct {
 	DocId string `json:"docId"`
 }
 
-type UnpublishResult struct {
+type UnpublishResponse struct {
 }
 
 type UpdateAclSettingsInput struct {
@@ -5293,7 +5293,7 @@ type ValueVariant2MemberVariant2 []ScalarValue
 type WebhookTriggerPayload struct {
 }
 
-type WebhookTriggerResult struct {
+type WebhookTriggerResponse struct {
 	RequestId string `json:"requestId"`
 }
 
