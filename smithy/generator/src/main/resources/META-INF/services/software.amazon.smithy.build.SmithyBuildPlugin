@@ -2,4 +2,5 @@ com.github.its_felix.superhuman_docs_sdk.smithy.codegen.SuperhumanDocsCodegenPlu
 com.github.its_felix.superhuman_docs_sdk.smithy.codegen.MarkdownCodegenPlugin
 com.github.its_felix.superhuman_docs_sdk.smithy.codegen.PythonCodegenPlugin
 com.github.its_felix.superhuman_docs_sdk.smithy.codegen.GoCodegenPlugin
+com.github.its_felix.superhuman_docs_sdk.smithy.codegen.RustCodegenPlugin
 com.github.its_felix.superhuman_docs_sdk.smithy.codegen.ZigCodegenPlugin

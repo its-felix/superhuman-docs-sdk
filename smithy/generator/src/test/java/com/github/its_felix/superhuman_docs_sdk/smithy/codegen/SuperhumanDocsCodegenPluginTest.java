@@ -35,9 +35,11 @@ final class SuperhumanDocsCodegenPluginTest {
         assertTrue(manifest.hasFile("sdk/python/src/superhuman_docs/_generated.py"));
         assertTrue(manifest.hasFile("sdk/go/types_gen.go"));
         assertTrue(manifest.hasFile("sdk/go/operations_gen.go"));
+        assertTrue(manifest.hasFile("sdk/rust/src/generated/operations.rs"));
         assertTrue(manifest.hasFile("sdk/zig/src/generated/operations.zig"));
         assertTrue(mockManifest.expectFileString("sdk/python/src/superhuman_docs/_generated.py").contains("ListDocs"));
         assertTrue(mockManifest.expectFileString("sdk/go/operations_gen.go").contains("func (c *Client) ListDocs"));
+        assertTrue(mockManifest.expectFileString("sdk/rust/src/generated/operations.rs").contains("pub fn build_list_docs"));
         assertTrue(mockManifest.expectFileString("sdk/zig/src/generated/operations.zig").contains("pub fn buildListDocs"));
     }
 
@@ -53,6 +55,7 @@ final class SuperhumanDocsCodegenPluginTest {
         assertTrue(manifest.hasFile("sdk/python/src/superhuman_docs/_generated.py"));
         assertTrue(mockManifest.expectFileString("sdk/python/src/superhuman_docs/_generated.py").contains("ListDocs"));
         assertFalse(manifest.hasFile("sdk/go/types_gen.go"));
+        assertFalse(manifest.hasFile("sdk/rust/src/generated/operations.rs"));
         assertFalse(manifest.hasFile("sdk/zig/src/generated/operations.zig"));
     }
 
@@ -63,6 +66,7 @@ final class SuperhumanDocsCodegenPluginTest {
         assertNotNull(factory.apply(MarkdownCodegenPlugin.PLUGIN_ID).orElse(null));
         assertNotNull(factory.apply(PythonCodegenPlugin.PLUGIN_ID).orElse(null));
         assertNotNull(factory.apply(GoCodegenPlugin.PLUGIN_ID).orElse(null));
+        assertNotNull(factory.apply(RustCodegenPlugin.PLUGIN_ID).orElse(null));
         assertNotNull(factory.apply(ZigCodegenPlugin.PLUGIN_ID).orElse(null));
     }
 

@@ -21,6 +21,10 @@
           "service": "com.superhuman.docs.v1#SuperhumanDocsApi",
           "edition": "docs"
         },
+        "superhuman-docs-rust-codegen": {
+          "service": "com.superhuman.docs.v1#SuperhumanDocsApi",
+          "edition": "docs"
+        },
         "superhuman-docs-zig-codegen": {
           "service": "com.superhuman.docs.v1#SuperhumanDocsApi",
           "edition": "docs"

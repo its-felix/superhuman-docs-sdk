@@ -9,6 +9,7 @@ public final class SuperhumanDocsCodegenPlugin implements SmithyBuildPlugin {
             new MarkdownSdkGenerator(),
             new PythonSdkGenerator(),
             new GoSdkGenerator(),
+            new RustSdkGenerator(),
             new ZigSdkGenerator()
     };
 

@@ -16,6 +16,7 @@ package identifiers cannot contain hyphens.
 - `superhuman-docs-markdown-codegen`
 - `superhuman-docs-python-codegen`
 - `superhuman-docs-go-codegen`
+- `superhuman-docs-rust-codegen`
 - `superhuman-docs-zig-codegen`
 - `superhuman-docs-client-codegen`, a compatibility plugin that runs all targets
 
@@ -39,6 +40,7 @@ The repository helper supports the same target split:
 ```sh
 ./build.sh python
 ./build.sh go
+./build.sh rust
 ./build.sh zig
 ./build.sh markdown
 ```
@@ -49,8 +51,8 @@ The repository helper supports the same target split:
 - `MarkdownSdkGenerator`, `PythonSdkGenerator`, `GoSdkGenerator`, and
   `ZigSdkGenerator` each write one target's artifacts.
 - `SuperhumanDocsCodegenPlugin` keeps the previous all-target plugin behavior.
-- `PythonRenderer`, `GoRenderer`, and `ZigRenderer` contain target-specific
-  rendering routines.
+- `PythonRenderer`, `GoRenderer`, `RustRenderer`, and `ZigRenderer` contain
+  target-specific rendering routines.
 - `SdkCodegen` contains shared Smithy model helpers.
 - `SmithyBuildCommand` is a fallback for environments without a standalone
   `smithy` CLI.

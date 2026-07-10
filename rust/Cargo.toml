@@ -1,0 +1,11 @@
+[package]
+name = "superhuman-docs"
+version = "0.1.0"
+edition = "2021"
+description = "Rust SDK request builders for the Superhuman Docs API"
+license = "MIT"
+repository = "https://github.com/its-felix/superhuman-docs-sdk"
+
+[lib]
+name = "superhuman_docs"
+path = "src/lib.rs"
