@@ -30,7 +30,7 @@ func NewClient(token string, opts ...Option) *Client {
 		BaseURL:    DefaultBaseURL,
 		Token:      token,
 		HTTPClient: http.DefaultClient,
-		UserAgent:  "superhuman-docs-go/0.1.0",
+		UserAgent:  "superhuman-docs-go/0.2.0",
 		Headers:    make(http.Header),
 	}
 	for _, opt := range opts {

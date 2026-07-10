@@ -22,7 +22,7 @@ Smithy namespace is `com.superhuman.docs.v1`.
 Go:
 
 ```sh
-go get github.com/its-felix/superhuman-docs-sdk/go@v0.1.0
+go get github.com/its-felix/superhuman-docs-sdk/go@v0.2.0
 ```
 
 Python:
