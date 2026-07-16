@@ -7,7 +7,7 @@ name = "superhuman-docs"
 version = "0.2.0"
 description = "Python SDK for the Superhuman Docs API"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Superhuman Docs SDK contributors" }]
 dependencies = []

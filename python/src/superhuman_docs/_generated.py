@@ -3,10 +3,33 @@ from __future__ import annotations
 
 from typing import Any
 
+from ._models import *  # noqa: F403
 from ._runtime import Operation, PathLabel, QueryBinding
 
 
 OPERATIONS = {
+    "Whoami": Operation(
+        name="Whoami",
+        method="GET",
+        path="/whoami",
+        status_code=200,
+        path_parts=('/whoami',),
+        labels=(),
+        queries=(),
+        payload=None,
+        required=(),
+    ),
+    "ResolveBrowserLink": Operation(
+        name="ResolveBrowserLink",
+        method="GET",
+        path="/resolveBrowserLink",
+        status_code=200,
+        path_parts=('/resolveBrowserLink',),
+        labels=(),
+        queries=(QueryBinding("url", "url"), QueryBinding("degradeGracefully", "degradeGracefully")),
+        payload=None,
+        required=('url',),
+    ),
     "ListCategories": Operation(
         name="ListCategories",
         method="GET",
@@ -15,17 +38,6 @@ OPERATIONS = {
         path_parts=('/categories',),
         labels=(),
         queries=(),
-        payload=None,
-        required=(),
-    ),
-    "ListDocs": Operation(
-        name="ListDocs",
-        method="GET",
-        path="/docs",
-        status_code=200,
-        path_parts=('/docs',),
-        labels=(),
-        queries=(QueryBinding("isOwner", "isOwner"), QueryBinding("isPublished", "isPublished"), QueryBinding("query", "query"), QueryBinding("sourceDoc", "sourceDoc"), QueryBinding("isStarred", "isStarred"), QueryBinding("inGallery", "inGallery"), QueryBinding("workspaceId", "workspaceId"), QueryBinding("folderId", "folderId"), QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
         payload=None,
         required=(),
     ),
@@ -51,6 +63,17 @@ OPERATIONS = {
         payload=None,
         required=('docId',),
     ),
+    "UpdateDoc": Operation(
+        name="UpdateDoc",
+        method="PATCH",
+        path="/docs/{docId}",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId")),
+        labels=('docId',),
+        queries=(),
+        payload='payload',
+        required=('docId', 'payload'),
+    ),
     "DeleteDoc": Operation(
         name="DeleteDoc",
         method="DELETE",
@@ -62,16 +85,16 @@ OPERATIONS = {
         payload=None,
         required=('docId',),
     ),
-    "UpdateDoc": Operation(
-        name="UpdateDoc",
-        method="PATCH",
-        path="/docs/{docId}",
+    "ListDocs": Operation(
+        name="ListDocs",
+        method="GET",
+        path="/docs",
         status_code=200,
-        path_parts=('/docs/', PathLabel("docId")),
-        labels=('docId',),
-        queries=(),
-        payload='payload',
-        required=('docId', 'payload'),
+        path_parts=('/docs',),
+        labels=(),
+        queries=(QueryBinding("isOwner", "isOwner"), QueryBinding("isPublished", "isPublished"), QueryBinding("query", "query"), QueryBinding("sourceDoc", "sourceDoc"), QueryBinding("isStarred", "isStarred"), QueryBinding("inGallery", "inGallery"), QueryBinding("workspaceId", "workspaceId"), QueryBinding("folderId", "folderId"), QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
+        payload=None,
+        required=(),
     ),
     "GetSharingMetadata": Operation(
         name="GetSharingMetadata",
@@ -172,17 +195,6 @@ OPERATIONS = {
         payload=None,
         required=('docId',),
     ),
-    "ListPages": Operation(
-        name="ListPages",
-        method="GET",
-        path="/docs/{docId}/pages",
-        status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/pages'),
-        labels=('docId',),
-        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
-        payload=None,
-        required=('docId',),
-    ),
     "CreatePage": Operation(
         name="CreatePage",
         method="POST",
@@ -226,6 +238,17 @@ OPERATIONS = {
         queries=(),
         payload=None,
         required=('docId', 'pageIdOrName'),
+    ),
+    "ListPages": Operation(
+        name="ListPages",
+        method="GET",
+        path="/docs/{docId}/pages",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId"), '/pages'),
+        labels=('docId',),
+        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
+        payload=None,
+        required=('docId',),
     ),
     "ListPageContent": Operation(
         name="ListPageContent",
@@ -271,16 +294,104 @@ OPERATIONS = {
         payload=None,
         required=('docId', 'pageIdOrName', 'requestId'),
     ),
-    "ListTables": Operation(
-        name="ListTables",
+    "GetFormula": Operation(
+        name="GetFormula",
         method="GET",
-        path="/docs/{docId}/tables",
+        path="/docs/{docId}/formulas/{formulaIdOrName}",
         status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/tables'),
+        path_parts=('/docs/', PathLabel("docId"), '/formulas/', PathLabel("formulaIdOrName")),
+        labels=('docId', 'formulaIdOrName'),
+        queries=(),
+        payload=None,
+        required=('docId', 'formulaIdOrName'),
+    ),
+    "ListFormulas": Operation(
+        name="ListFormulas",
+        method="GET",
+        path="/docs/{docId}/formulas",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId"), '/formulas'),
         labels=('docId',),
-        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("sortBy", "sortBy"), QueryBinding("tableTypes", "tableTypes")),
+        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("sortBy", "sortBy")),
         payload=None,
         required=('docId',),
+    ),
+    "GetControl": Operation(
+        name="GetControl",
+        method="GET",
+        path="/docs/{docId}/controls/{controlIdOrName}",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId"), '/controls/', PathLabel("controlIdOrName")),
+        labels=('docId', 'controlIdOrName'),
+        queries=(),
+        payload=None,
+        required=('docId', 'controlIdOrName'),
+    ),
+    "ListControls": Operation(
+        name="ListControls",
+        method="GET",
+        path="/docs/{docId}/controls",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId"), '/controls'),
+        labels=('docId',),
+        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("sortBy", "sortBy")),
+        payload=None,
+        required=('docId',),
+    ),
+    "AddCustomDocDomain": Operation(
+        name="AddCustomDocDomain",
+        method="POST",
+        path="/docs/{docId}/domains",
+        status_code=202,
+        path_parts=('/docs/', PathLabel("docId"), '/domains'),
+        labels=('docId',),
+        queries=(),
+        payload='payload',
+        required=('docId', 'payload'),
+    ),
+    "UpdateCustomDocDomain": Operation(
+        name="UpdateCustomDocDomain",
+        method="PATCH",
+        path="/docs/{docId}/domains/{customDocDomain}",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId"), '/domains/', PathLabel("customDocDomain")),
+        labels=('docId', 'customDocDomain'),
+        queries=(),
+        payload='payload',
+        required=('docId', 'customDocDomain', 'payload'),
+    ),
+    "DeleteCustomDocDomain": Operation(
+        name="DeleteCustomDocDomain",
+        method="DELETE",
+        path="/docs/{docId}/domains/{customDocDomain}",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId"), '/domains/', PathLabel("customDocDomain")),
+        labels=('docId', 'customDocDomain'),
+        queries=(),
+        payload=None,
+        required=('docId', 'customDocDomain'),
+    ),
+    "ListCustomDocDomains": Operation(
+        name="ListCustomDocDomains",
+        method="GET",
+        path="/docs/{docId}/domains",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId"), '/domains'),
+        labels=('docId',),
+        queries=(),
+        payload=None,
+        required=('docId',),
+    ),
+    "TriggerWebhookAutomation": Operation(
+        name="TriggerWebhookAutomation",
+        method="POST",
+        path="/docs/{docId}/hooks/automation/{ruleId}",
+        status_code=202,
+        path_parts=('/docs/', PathLabel("docId"), '/hooks/automation/', PathLabel("ruleId")),
+        labels=('docId', 'ruleId'),
+        queries=(),
+        payload='payload',
+        required=('docId', 'ruleId'),
     ),
     "GetTable": Operation(
         name="GetTable",
@@ -293,6 +404,28 @@ OPERATIONS = {
         payload=None,
         required=('docId', 'tableIdOrName'),
     ),
+    "ListTables": Operation(
+        name="ListTables",
+        method="GET",
+        path="/docs/{docId}/tables",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId"), '/tables'),
+        labels=('docId',),
+        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("sortBy", "sortBy"), QueryBinding("tableTypes", "tableTypes")),
+        payload=None,
+        required=('docId',),
+    ),
+    "GetColumn": Operation(
+        name="GetColumn",
+        method="GET",
+        path="/docs/{docId}/tables/{tableIdOrName}/columns/{columnIdOrName}",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId"), '/tables/', PathLabel("tableIdOrName"), '/columns/', PathLabel("columnIdOrName")),
+        labels=('docId', 'tableIdOrName', 'columnIdOrName'),
+        queries=(),
+        payload=None,
+        required=('docId', 'tableIdOrName', 'columnIdOrName'),
+    ),
     "ListColumns": Operation(
         name="ListColumns",
         method="GET",
@@ -303,39 +436,6 @@ OPERATIONS = {
         queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("visibleOnly", "visibleOnly")),
         payload=None,
         required=('docId', 'tableIdOrName'),
-    ),
-    "ListRows": Operation(
-        name="ListRows",
-        method="GET",
-        path="/docs/{docId}/tables/{tableIdOrName}/rows",
-        status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/tables/', PathLabel("tableIdOrName"), '/rows'),
-        labels=('docId', 'tableIdOrName'),
-        queries=(QueryBinding("query", "query"), QueryBinding("sortBy", "sortBy"), QueryBinding("useColumnNames", "useColumnNames"), QueryBinding("valueFormat", "valueFormat"), QueryBinding("visibleOnly", "visibleOnly"), QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("syncToken", "syncToken")),
-        payload=None,
-        required=('docId', 'tableIdOrName'),
-    ),
-    "UpsertRows": Operation(
-        name="UpsertRows",
-        method="POST",
-        path="/docs/{docId}/tables/{tableIdOrName}/rows",
-        status_code=202,
-        path_parts=('/docs/', PathLabel("docId"), '/tables/', PathLabel("tableIdOrName"), '/rows'),
-        labels=('docId', 'tableIdOrName'),
-        queries=(QueryBinding("disableParsing", "disableParsing"),),
-        payload='payload',
-        required=('docId', 'tableIdOrName', 'payload'),
-    ),
-    "DeleteRows": Operation(
-        name="DeleteRows",
-        method="DELETE",
-        path="/docs/{docId}/tables/{tableIdOrName}/rows",
-        status_code=202,
-        path_parts=('/docs/', PathLabel("docId"), '/tables/', PathLabel("tableIdOrName"), '/rows'),
-        labels=('docId', 'tableIdOrName'),
-        queries=(),
-        payload='payload',
-        required=('docId', 'tableIdOrName', 'payload'),
     ),
     "GetRow": Operation(
         name="GetRow",
@@ -370,6 +470,17 @@ OPERATIONS = {
         payload=None,
         required=('docId', 'tableIdOrName', 'rowIdOrName'),
     ),
+    "ListRows": Operation(
+        name="ListRows",
+        method="GET",
+        path="/docs/{docId}/tables/{tableIdOrName}/rows",
+        status_code=200,
+        path_parts=('/docs/', PathLabel("docId"), '/tables/', PathLabel("tableIdOrName"), '/rows'),
+        labels=('docId', 'tableIdOrName'),
+        queries=(QueryBinding("query", "query"), QueryBinding("sortBy", "sortBy"), QueryBinding("useColumnNames", "useColumnNames"), QueryBinding("valueFormat", "valueFormat"), QueryBinding("visibleOnly", "visibleOnly"), QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("syncToken", "syncToken")),
+        payload=None,
+        required=('docId', 'tableIdOrName'),
+    ),
     "PushButton": Operation(
         name="PushButton",
         method="POST",
@@ -381,126 +492,27 @@ OPERATIONS = {
         payload=None,
         required=('docId', 'tableIdOrName', 'rowIdOrName', 'columnIdOrName'),
     ),
-    "GetColumn": Operation(
-        name="GetColumn",
-        method="GET",
-        path="/docs/{docId}/tables/{tableIdOrName}/columns/{columnIdOrName}",
-        status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/tables/', PathLabel("tableIdOrName"), '/columns/', PathLabel("columnIdOrName")),
-        labels=('docId', 'tableIdOrName', 'columnIdOrName'),
-        queries=(),
-        payload=None,
-        required=('docId', 'tableIdOrName', 'columnIdOrName'),
-    ),
-    "ListFormulas": Operation(
-        name="ListFormulas",
-        method="GET",
-        path="/docs/{docId}/formulas",
-        status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/formulas'),
-        labels=('docId',),
-        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("sortBy", "sortBy")),
-        payload=None,
-        required=('docId',),
-    ),
-    "GetFormula": Operation(
-        name="GetFormula",
-        method="GET",
-        path="/docs/{docId}/formulas/{formulaIdOrName}",
-        status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/formulas/', PathLabel("formulaIdOrName")),
-        labels=('docId', 'formulaIdOrName'),
-        queries=(),
-        payload=None,
-        required=('docId', 'formulaIdOrName'),
-    ),
-    "ListControls": Operation(
-        name="ListControls",
-        method="GET",
-        path="/docs/{docId}/controls",
-        status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/controls'),
-        labels=('docId',),
-        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("sortBy", "sortBy")),
-        payload=None,
-        required=('docId',),
-    ),
-    "GetControl": Operation(
-        name="GetControl",
-        method="GET",
-        path="/docs/{docId}/controls/{controlIdOrName}",
-        status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/controls/', PathLabel("controlIdOrName")),
-        labels=('docId', 'controlIdOrName'),
-        queries=(),
-        payload=None,
-        required=('docId', 'controlIdOrName'),
-    ),
-    "ListCustomDocDomains": Operation(
-        name="ListCustomDocDomains",
-        method="GET",
-        path="/docs/{docId}/domains",
-        status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/domains'),
-        labels=('docId',),
-        queries=(),
-        payload=None,
-        required=('docId',),
-    ),
-    "AddCustomDocDomain": Operation(
-        name="AddCustomDocDomain",
+    "UpsertRows": Operation(
+        name="UpsertRows",
         method="POST",
-        path="/docs/{docId}/domains",
+        path="/docs/{docId}/tables/{tableIdOrName}/rows",
         status_code=202,
-        path_parts=('/docs/', PathLabel("docId"), '/domains'),
-        labels=('docId',),
-        queries=(),
+        path_parts=('/docs/', PathLabel("docId"), '/tables/', PathLabel("tableIdOrName"), '/rows'),
+        labels=('docId', 'tableIdOrName'),
+        queries=(QueryBinding("disableParsing", "disableParsing"),),
         payload='payload',
-        required=('docId', 'payload'),
+        required=('docId', 'tableIdOrName', 'payload'),
     ),
-    "DeleteCustomDocDomain": Operation(
-        name="DeleteCustomDocDomain",
+    "DeleteRows": Operation(
+        name="DeleteRows",
         method="DELETE",
-        path="/docs/{docId}/domains/{customDocDomain}",
-        status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/domains/', PathLabel("customDocDomain")),
-        labels=('docId', 'customDocDomain'),
-        queries=(),
-        payload=None,
-        required=('docId', 'customDocDomain'),
-    ),
-    "UpdateCustomDocDomain": Operation(
-        name="UpdateCustomDocDomain",
-        method="PATCH",
-        path="/docs/{docId}/domains/{customDocDomain}",
-        status_code=200,
-        path_parts=('/docs/', PathLabel("docId"), '/domains/', PathLabel("customDocDomain")),
-        labels=('docId', 'customDocDomain'),
+        path="/docs/{docId}/tables/{tableIdOrName}/rows",
+        status_code=202,
+        path_parts=('/docs/', PathLabel("docId"), '/tables/', PathLabel("tableIdOrName"), '/rows'),
+        labels=('docId', 'tableIdOrName'),
         queries=(),
         payload='payload',
-        required=('docId', 'customDocDomain', 'payload'),
-    ),
-    "GetCustomDocDomainProvider": Operation(
-        name="GetCustomDocDomainProvider",
-        method="GET",
-        path="/domains/provider/{customDocDomain}",
-        status_code=200,
-        path_parts=('/domains/provider/', PathLabel("customDocDomain")),
-        labels=('customDocDomain',),
-        queries=(),
-        payload=None,
-        required=('customDocDomain',),
-    ),
-    "ListFolders": Operation(
-        name="ListFolders",
-        method="GET",
-        path="/folders",
-        status_code=200,
-        path_parts=('/folders',),
-        labels=(),
-        queries=(QueryBinding("workspaceId", "workspaceId"), QueryBinding("isStarred", "isStarred"), QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
-        payload=None,
-        required=(),
+        required=('docId', 'tableIdOrName', 'payload'),
     ),
     "CreateFolder": Operation(
         name="CreateFolder",
@@ -546,168 +558,14 @@ OPERATIONS = {
         payload=None,
         required=('folderId',),
     ),
-    "Whoami": Operation(
-        name="Whoami",
+    "ListFolders": Operation(
+        name="ListFolders",
         method="GET",
-        path="/whoami",
+        path="/folders",
         status_code=200,
-        path_parts=('/whoami',),
+        path_parts=('/folders',),
         labels=(),
-        queries=(),
-        payload=None,
-        required=(),
-    ),
-    "ResolveBrowserLink": Operation(
-        name="ResolveBrowserLink",
-        method="GET",
-        path="/resolveBrowserLink",
-        status_code=200,
-        path_parts=('/resolveBrowserLink',),
-        labels=(),
-        queries=(QueryBinding("url", "url"), QueryBinding("degradeGracefully", "degradeGracefully")),
-        payload=None,
-        required=('url',),
-    ),
-    "GetMutationStatus": Operation(
-        name="GetMutationStatus",
-        method="GET",
-        path="/mutationStatus/{requestId}",
-        status_code=200,
-        path_parts=('/mutationStatus/', PathLabel("requestId")),
-        labels=('requestId',),
-        queries=(),
-        payload=None,
-        required=('requestId',),
-    ),
-    "TriggerWebhookAutomation": Operation(
-        name="TriggerWebhookAutomation",
-        method="POST",
-        path="/docs/{docId}/hooks/automation/{ruleId}",
-        status_code=202,
-        path_parts=('/docs/', PathLabel("docId"), '/hooks/automation/', PathLabel("ruleId")),
-        labels=('docId', 'ruleId'),
-        queries=(),
-        payload='payload',
-        required=('docId', 'ruleId'),
-    ),
-    "ListDocAnalytics": Operation(
-        name="ListDocAnalytics",
-        method="GET",
-        path="/analytics/docs",
-        status_code=200,
-        path_parts=('/analytics/docs',),
-        labels=(),
-        queries=(QueryBinding("docIds", "docIds"), QueryBinding("workspaceId", "workspaceId"), QueryBinding("query", "query"), QueryBinding("isPublished", "isPublished"), QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate"), QueryBinding("scale", "scale"), QueryBinding("pageToken", "pageToken"), QueryBinding("orderBy", "orderBy"), QueryBinding("direction", "direction"), QueryBinding("limit", "limit")),
-        payload=None,
-        required=(),
-    ),
-    "ListPageAnalytics": Operation(
-        name="ListPageAnalytics",
-        method="GET",
-        path="/analytics/docs/{docId}/pages",
-        status_code=200,
-        path_parts=('/analytics/docs/', PathLabel("docId"), '/pages'),
-        labels=('docId',),
-        queries=(QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate"), QueryBinding("pageToken", "pageToken"), QueryBinding("limit", "limit")),
-        payload=None,
-        required=('docId',),
-    ),
-    "ListDocAnalyticsSummary": Operation(
-        name="ListDocAnalyticsSummary",
-        method="GET",
-        path="/analytics/docs/summary",
-        status_code=200,
-        path_parts=('/analytics/docs/summary',),
-        labels=(),
-        queries=(QueryBinding("isPublished", "isPublished"), QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate"), QueryBinding("workspaceId", "workspaceId")),
-        payload=None,
-        required=(),
-    ),
-    "ListPackAnalytics": Operation(
-        name="ListPackAnalytics",
-        method="GET",
-        path="/analytics/packs",
-        status_code=200,
-        path_parts=('/analytics/packs',),
-        labels=(),
-        queries=(QueryBinding("packIds", "packIds"), QueryBinding("workspaceId", "workspaceId"), QueryBinding("query", "query"), QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate"), QueryBinding("scale", "scale"), QueryBinding("pageToken", "pageToken"), QueryBinding("orderBy", "orderBy"), QueryBinding("direction", "direction"), QueryBinding("isPublished", "isPublished"), QueryBinding("limit", "limit")),
-        payload=None,
-        required=(),
-    ),
-    "ListPackAnalyticsSummary": Operation(
-        name="ListPackAnalyticsSummary",
-        method="GET",
-        path="/analytics/packs/summary",
-        status_code=200,
-        path_parts=('/analytics/packs/summary',),
-        labels=(),
-        queries=(QueryBinding("packIds", "packIds"), QueryBinding("workspaceId", "workspaceId"), QueryBinding("isPublished", "isPublished"), QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate")),
-        payload=None,
-        required=(),
-    ),
-    "ListPackFormulaAnalytics": Operation(
-        name="ListPackFormulaAnalytics",
-        method="GET",
-        path="/analytics/packs/{packId}/formulas",
-        status_code=200,
-        path_parts=('/analytics/packs/', PathLabel("packId"), '/formulas'),
-        labels=('packId',),
-        queries=(QueryBinding("packFormulaNames", "packFormulaNames"), QueryBinding("packFormulaTypes", "packFormulaTypes"), QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate"), QueryBinding("scale", "scale"), QueryBinding("pageToken", "pageToken"), QueryBinding("orderBy", "orderBy"), QueryBinding("direction", "direction"), QueryBinding("limit", "limit")),
-        payload=None,
-        required=('packId',),
-    ),
-    "GetAnalyticsLastUpdated": Operation(
-        name="GetAnalyticsLastUpdated",
-        method="GET",
-        path="/analytics/updated",
-        status_code=200,
-        path_parts=('/analytics/updated',),
-        labels=(),
-        queries=(),
-        payload=None,
-        required=(),
-    ),
-    "ListWorkspaceMembers": Operation(
-        name="ListWorkspaceMembers",
-        method="GET",
-        path="/workspaces/{workspaceId}/users",
-        status_code=200,
-        path_parts=('/workspaces/', PathLabel("workspaceId"), '/users'),
-        labels=('workspaceId',),
-        queries=(QueryBinding("includedRoles", "includedRoles"), QueryBinding("pageToken", "pageToken")),
-        payload=None,
-        required=('workspaceId',),
-    ),
-    "ChangeUserRole": Operation(
-        name="ChangeUserRole",
-        method="POST",
-        path="/workspaces/{workspaceId}/users/role",
-        status_code=200,
-        path_parts=('/workspaces/', PathLabel("workspaceId"), '/users/role'),
-        labels=('workspaceId',),
-        queries=(),
-        payload='payload',
-        required=('workspaceId', 'payload'),
-    ),
-    "ListWorkspaceRoleActivity": Operation(
-        name="ListWorkspaceRoleActivity",
-        method="GET",
-        path="/workspaces/{workspaceId}/roles",
-        status_code=200,
-        path_parts=('/workspaces/', PathLabel("workspaceId"), '/roles'),
-        labels=('workspaceId',),
-        queries=(),
-        payload=None,
-        required=('workspaceId',),
-    ),
-    "ListPacks": Operation(
-        name="ListPacks",
-        method="GET",
-        path="/packs",
-        status_code=200,
-        path_parts=('/packs',),
-        labels=(),
-        queries=(QueryBinding("accessType", "accessType"), QueryBinding("accessTypes", "accessTypes"), QueryBinding("sortBy", "sortBy"), QueryBinding("limit", "limit"), QueryBinding("direction", "direction"), QueryBinding("pageToken", "pageToken"), QueryBinding("onlyWorkspaceId", "onlyWorkspaceId"), QueryBinding("parentWorkspaceIds", "parentWorkspaceIds"), QueryBinding("excludePublicPacks", "excludePublicPacks"), QueryBinding("packEntrypoint", "packEntrypoint")),
+        queries=(QueryBinding("workspaceId", "workspaceId"), QueryBinding("isStarred", "isStarred"), QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
         payload=None,
         required=(),
     ),
@@ -755,6 +613,17 @@ OPERATIONS = {
         payload=None,
         required=('packId',),
     ),
+    "ListPacks": Operation(
+        name="ListPacks",
+        method="GET",
+        path="/packs",
+        status_code=200,
+        path_parts=('/packs',),
+        labels=(),
+        queries=(QueryBinding("accessType", "accessType"), QueryBinding("accessTypes", "accessTypes"), QueryBinding("sortBy", "sortBy"), QueryBinding("limit", "limit"), QueryBinding("direction", "direction"), QueryBinding("pageToken", "pageToken"), QueryBinding("onlyWorkspaceId", "onlyWorkspaceId"), QueryBinding("parentWorkspaceIds", "parentWorkspaceIds"), QueryBinding("excludePublicPacks", "excludePublicPacks"), QueryBinding("packEntrypoint", "packEntrypoint")),
+        payload=None,
+        required=(),
+    ),
     "GetPackConfigurationSchema": Operation(
         name="GetPackConfigurationSchema",
         method="GET",
@@ -763,17 +632,6 @@ OPERATIONS = {
         path_parts=('/packs/', PathLabel("packId"), '/configurations/schema'),
         labels=('packId',),
         queries=(),
-        payload=None,
-        required=('packId',),
-    ),
-    "ListPackVersions": Operation(
-        name="ListPackVersions",
-        method="GET",
-        path="/packs/{packId}/versions",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/versions'),
-        labels=('packId',),
-        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
         payload=None,
         required=('packId',),
     ),
@@ -799,17 +657,6 @@ OPERATIONS = {
         payload=None,
         required=('packId', 'basePackVersion', 'targetPackVersion'),
     ),
-    "RegisterPackVersion": Operation(
-        name="RegisterPackVersion",
-        method="POST",
-        path="/packs/{packId}/versions/{packVersion}/register",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/versions/', PathLabel("packVersion"), '/register'),
-        labels=('packId', 'packVersion'),
-        queries=(),
-        payload='payload',
-        required=('packId', 'packVersion', 'payload'),
-    ),
     "PackVersionUploadComplete": Operation(
         name="PackVersionUploadComplete",
         method="POST",
@@ -820,72 +667,6 @@ OPERATIONS = {
         queries=(),
         payload='payload',
         required=('packId', 'packVersion', 'payload'),
-    ),
-    "CreatePackRelease": Operation(
-        name="CreatePackRelease",
-        method="POST",
-        path="/packs/{packId}/releases",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/releases'),
-        labels=('packId',),
-        queries=(),
-        payload='payload',
-        required=('packId', 'payload'),
-    ),
-    "ListPackReleases": Operation(
-        name="ListPackReleases",
-        method="GET",
-        path="/packs/{packId}/releases",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/releases'),
-        labels=('packId',),
-        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
-        payload=None,
-        required=('packId',),
-    ),
-    "UpdatePackRelease": Operation(
-        name="UpdatePackRelease",
-        method="PUT",
-        path="/packs/{packId}/releases/{packReleaseId}",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/releases/', PathLabel("packReleaseId")),
-        labels=('packId', 'packReleaseId'),
-        queries=(),
-        payload='payload',
-        required=('packId', 'packReleaseId', 'payload'),
-    ),
-    "ListPackReviews": Operation(
-        name="ListPackReviews",
-        method="GET",
-        path="/packs/{packId}/reviews",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/reviews'),
-        labels=('packId',),
-        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("status", "status")),
-        payload=None,
-        required=('packId',),
-    ),
-    "CreatePackReview": Operation(
-        name="CreatePackReview",
-        method="POST",
-        path="/packs/{packId}/reviews",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/reviews'),
-        labels=('packId',),
-        queries=(),
-        payload='payload',
-        required=('packId', 'payload'),
-    ),
-    "CancelPackReview": Operation(
-        name="CancelPackReview",
-        method="POST",
-        path="/packs/{packId}/reviews/pending/cancel",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/reviews/pending/cancel'),
-        labels=('packId',),
-        queries=(),
-        payload=None,
-        required=('packId',),
     ),
     "GetPackListingDraft": Operation(
         name="GetPackListingDraft",
@@ -975,182 +756,6 @@ OPERATIONS = {
         payload=None,
         required=('packId',),
     ),
-    "GetPackPermissions": Operation(
-        name="GetPackPermissions",
-        method="GET",
-        path="/packs/{packId}/permissions",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/permissions'),
-        labels=('packId',),
-        queries=(),
-        payload=None,
-        required=('packId',),
-    ),
-    "AddPackPermission": Operation(
-        name="AddPackPermission",
-        method="POST",
-        path="/packs/{packId}/permissions",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/permissions'),
-        labels=('packId',),
-        queries=(),
-        payload='payload',
-        required=('packId', 'payload'),
-    ),
-    "DeleteUserPackPermission": Operation(
-        name="DeleteUserPackPermission",
-        method="DELETE",
-        path="/packs/{packId}/permissions",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/permissions'),
-        labels=('packId',),
-        queries=(),
-        payload=None,
-        required=('packId',),
-    ),
-    "DeletePackPermission": Operation(
-        name="DeletePackPermission",
-        method="DELETE",
-        path="/packs/{packId}/permissions/{permissionId}",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/permissions/', PathLabel("permissionId")),
-        labels=('packId', 'permissionId'),
-        queries=(),
-        payload=None,
-        required=('packId', 'permissionId'),
-    ),
-    "ListUserPackInvitations": Operation(
-        name="ListUserPackInvitations",
-        method="GET",
-        path="/packs/invitations",
-        status_code=200,
-        path_parts=('/packs/invitations',),
-        labels=(),
-        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
-        payload=None,
-        required=(),
-    ),
-    "ListPackInvitations": Operation(
-        name="ListPackInvitations",
-        method="GET",
-        path="/packs/{packId}/invitations",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/invitations'),
-        labels=('packId',),
-        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
-        payload=None,
-        required=('packId',),
-    ),
-    "CreatePackInvitation": Operation(
-        name="CreatePackInvitation",
-        method="POST",
-        path="/packs/{packId}/invitations",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/invitations'),
-        labels=('packId',),
-        queries=(),
-        payload='payload',
-        required=('packId', 'payload'),
-    ),
-    "UpdatePackInvitation": Operation(
-        name="UpdatePackInvitation",
-        method="PUT",
-        path="/packs/{packId}/invitations/{invitationId}",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/invitations/', PathLabel("invitationId")),
-        labels=('packId', 'invitationId'),
-        queries=(),
-        payload='payload',
-        required=('packId', 'invitationId', 'payload'),
-    ),
-    "DeletePackInvitation": Operation(
-        name="DeletePackInvitation",
-        method="DELETE",
-        path="/packs/{packId}/invitations/{invitationId}",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/invitations/', PathLabel("invitationId")),
-        labels=('packId', 'invitationId'),
-        queries=(),
-        payload=None,
-        required=('packId', 'invitationId'),
-    ),
-    "ReplyToPackInvitation": Operation(
-        name="ReplyToPackInvitation",
-        method="POST",
-        path="/packs/invitations/{invitationId}/reply",
-        status_code=200,
-        path_parts=('/packs/invitations/', PathLabel("invitationId"), '/reply'),
-        labels=('invitationId',),
-        queries=(),
-        payload='payload',
-        required=('invitationId', 'payload'),
-    ),
-    "ListPackMakers": Operation(
-        name="ListPackMakers",
-        method="GET",
-        path="/packs/{packId}/makers",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/makers'),
-        labels=('packId',),
-        queries=(),
-        payload=None,
-        required=('packId',),
-    ),
-    "AddPackMaker": Operation(
-        name="AddPackMaker",
-        method="POST",
-        path="/packs/{packId}/maker",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/maker'),
-        labels=('packId',),
-        queries=(),
-        payload='payload',
-        required=('packId', 'payload'),
-    ),
-    "DeletePackMaker": Operation(
-        name="DeletePackMaker",
-        method="DELETE",
-        path="/packs/{packId}/maker/{loginId}",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/maker/', PathLabel("loginId")),
-        labels=('packId', 'loginId'),
-        queries=(),
-        payload=None,
-        required=('packId', 'loginId'),
-    ),
-    "ListPackCategories": Operation(
-        name="ListPackCategories",
-        method="GET",
-        path="/packs/{packId}/categories",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/categories'),
-        labels=('packId',),
-        queries=(),
-        payload=None,
-        required=('packId',),
-    ),
-    "AddPackCategory": Operation(
-        name="AddPackCategory",
-        method="POST",
-        path="/packs/{packId}/category",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/category'),
-        labels=('packId',),
-        queries=(),
-        payload='payload',
-        required=('packId', 'payload'),
-    ),
-    "DeletePackCategory": Operation(
-        name="DeletePackCategory",
-        method="DELETE",
-        path="/packs/{packId}/category/{categoryName}",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/category/', PathLabel("categoryName")),
-        labels=('packId', 'categoryName'),
-        queries=(),
-        payload=None,
-        required=('packId', 'categoryName'),
-    ),
     "UploadPackAsset": Operation(
         name="UploadPackAsset",
         method="POST",
@@ -1183,50 +788,6 @@ OPERATIONS = {
         queries=(),
         payload=None,
         required=('packId', 'packAssetId', 'packAssetType'),
-    ),
-    "PackSourceCodeUploadComplete": Operation(
-        name="PackSourceCodeUploadComplete",
-        method="POST",
-        path="/packs/{packId}/versions/{packVersion}/sourceCode/uploadComplete",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/versions/', PathLabel("packVersion"), '/sourceCode/uploadComplete'),
-        labels=('packId', 'packVersion'),
-        queries=(),
-        payload='payload',
-        required=('packId', 'packVersion', 'payload'),
-    ),
-    "GetPackSourceCode": Operation(
-        name="GetPackSourceCode",
-        method="GET",
-        path="/packs/{packId}/versions/{packVersion}/sourceCode",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/versions/', PathLabel("packVersion"), '/sourceCode'),
-        labels=('packId', 'packVersion'),
-        queries=(),
-        payload=None,
-        required=('packId', 'packVersion'),
-    ),
-    "ListPackListings": Operation(
-        name="ListPackListings",
-        method="GET",
-        path="/packs/listings",
-        status_code=200,
-        path_parts=('/packs/listings',),
-        labels=(),
-        queries=(QueryBinding("packAccessTypes", "packAccessTypes"), QueryBinding("packIds", "packIds"), QueryBinding("onlyWorkspaceId", "onlyWorkspaceId"), QueryBinding("parentWorkspaceIds", "parentWorkspaceIds"), QueryBinding("excludePublicPacks", "excludePublicPacks"), QueryBinding("packEntrypoint", "packEntrypoint"), QueryBinding("certifiedAgentsOnly", "certifiedAgentsOnly"), QueryBinding("packCategories", "packCategories"), QueryBinding("sortBy", "sortBy"), QueryBinding("orderBy", "orderBy"), QueryBinding("direction", "direction"), QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("installContext", "installContext")),
-        payload=None,
-        required=(),
-    ),
-    "GetPackListing": Operation(
-        name="GetPackListing",
-        method="GET",
-        path="/packs/{packId}/listing",
-        status_code=200,
-        path_parts=('/packs/', PathLabel("packId"), '/listing'),
-        labels=('packId',),
-        queries=(QueryBinding("workspaceId", "workspaceId"), QueryBinding("docId", "docId"), QueryBinding("ingestionId", "ingestionId"), QueryBinding("installContext", "installContext"), QueryBinding("releaseChannel", "releaseChannel")),
-        payload=None,
-        required=('packId',),
     ),
     "ListPackLogs": Operation(
         name="ListPackLogs",
@@ -1327,6 +888,347 @@ OPERATIONS = {
         payload='payload',
         required=('packId', 'payload'),
     ),
+    "ListPackVersions": Operation(
+        name="ListPackVersions",
+        method="GET",
+        path="/packs/{packId}/versions",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/versions'),
+        labels=('packId',),
+        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
+        payload=None,
+        required=('packId',),
+    ),
+    "RegisterPackVersion": Operation(
+        name="RegisterPackVersion",
+        method="POST",
+        path="/packs/{packId}/versions/{packVersion}/register",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/versions/', PathLabel("packVersion"), '/register'),
+        labels=('packId', 'packVersion'),
+        queries=(),
+        payload='payload',
+        required=('packId', 'packVersion', 'payload'),
+    ),
+    "PackSourceCodeUploadComplete": Operation(
+        name="PackSourceCodeUploadComplete",
+        method="POST",
+        path="/packs/{packId}/versions/{packVersion}/sourceCode/uploadComplete",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/versions/', PathLabel("packVersion"), '/sourceCode/uploadComplete'),
+        labels=('packId', 'packVersion'),
+        queries=(),
+        payload='payload',
+        required=('packId', 'packVersion', 'payload'),
+    ),
+    "GetPackSourceCode": Operation(
+        name="GetPackSourceCode",
+        method="GET",
+        path="/packs/{packId}/versions/{packVersion}/sourceCode",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/versions/', PathLabel("packVersion"), '/sourceCode'),
+        labels=('packId', 'packVersion'),
+        queries=(),
+        payload=None,
+        required=('packId', 'packVersion'),
+    ),
+    "CreatePackRelease": Operation(
+        name="CreatePackRelease",
+        method="POST",
+        path="/packs/{packId}/releases",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/releases'),
+        labels=('packId',),
+        queries=(),
+        payload='payload',
+        required=('packId', 'payload'),
+    ),
+    "UpdatePackRelease": Operation(
+        name="UpdatePackRelease",
+        method="PUT",
+        path="/packs/{packId}/releases/{packReleaseId}",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/releases/', PathLabel("packReleaseId")),
+        labels=('packId', 'packReleaseId'),
+        queries=(),
+        payload='payload',
+        required=('packId', 'packReleaseId', 'payload'),
+    ),
+    "ListPackReleases": Operation(
+        name="ListPackReleases",
+        method="GET",
+        path="/packs/{packId}/releases",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/releases'),
+        labels=('packId',),
+        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
+        payload=None,
+        required=('packId',),
+    ),
+    "CreatePackReview": Operation(
+        name="CreatePackReview",
+        method="POST",
+        path="/packs/{packId}/reviews",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/reviews'),
+        labels=('packId',),
+        queries=(),
+        payload='payload',
+        required=('packId', 'payload'),
+    ),
+    "ListPackReviews": Operation(
+        name="ListPackReviews",
+        method="GET",
+        path="/packs/{packId}/reviews",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/reviews'),
+        labels=('packId',),
+        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("status", "status")),
+        payload=None,
+        required=('packId',),
+    ),
+    "CancelPackReview": Operation(
+        name="CancelPackReview",
+        method="POST",
+        path="/packs/{packId}/reviews/pending/cancel",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/reviews/pending/cancel'),
+        labels=('packId',),
+        queries=(),
+        payload=None,
+        required=('packId',),
+    ),
+    "AddPackPermission": Operation(
+        name="AddPackPermission",
+        method="POST",
+        path="/packs/{packId}/permissions",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/permissions'),
+        labels=('packId',),
+        queries=(),
+        payload='payload',
+        required=('packId', 'payload'),
+    ),
+    "DeletePackPermission": Operation(
+        name="DeletePackPermission",
+        method="DELETE",
+        path="/packs/{packId}/permissions/{permissionId}",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/permissions/', PathLabel("permissionId")),
+        labels=('packId', 'permissionId'),
+        queries=(),
+        payload=None,
+        required=('packId', 'permissionId'),
+    ),
+    "GetPackPermissions": Operation(
+        name="GetPackPermissions",
+        method="GET",
+        path="/packs/{packId}/permissions",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/permissions'),
+        labels=('packId',),
+        queries=(),
+        payload=None,
+        required=('packId',),
+    ),
+    "DeleteUserPackPermission": Operation(
+        name="DeleteUserPackPermission",
+        method="DELETE",
+        path="/packs/{packId}/permissions",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/permissions'),
+        labels=('packId',),
+        queries=(),
+        payload=None,
+        required=('packId',),
+    ),
+    "CreatePackInvitation": Operation(
+        name="CreatePackInvitation",
+        method="POST",
+        path="/packs/{packId}/invitations",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/invitations'),
+        labels=('packId',),
+        queries=(),
+        payload='payload',
+        required=('packId', 'payload'),
+    ),
+    "UpdatePackInvitation": Operation(
+        name="UpdatePackInvitation",
+        method="PUT",
+        path="/packs/{packId}/invitations/{invitationId}",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/invitations/', PathLabel("invitationId")),
+        labels=('packId', 'invitationId'),
+        queries=(),
+        payload='payload',
+        required=('packId', 'invitationId', 'payload'),
+    ),
+    "DeletePackInvitation": Operation(
+        name="DeletePackInvitation",
+        method="DELETE",
+        path="/packs/{packId}/invitations/{invitationId}",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/invitations/', PathLabel("invitationId")),
+        labels=('packId', 'invitationId'),
+        queries=(),
+        payload=None,
+        required=('packId', 'invitationId'),
+    ),
+    "ListPackInvitations": Operation(
+        name="ListPackInvitations",
+        method="GET",
+        path="/packs/{packId}/invitations",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/invitations'),
+        labels=('packId',),
+        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
+        payload=None,
+        required=('packId',),
+    ),
+    "AddPackMaker": Operation(
+        name="AddPackMaker",
+        method="POST",
+        path="/packs/{packId}/maker",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/maker'),
+        labels=('packId',),
+        queries=(),
+        payload='payload',
+        required=('packId', 'payload'),
+    ),
+    "DeletePackMaker": Operation(
+        name="DeletePackMaker",
+        method="DELETE",
+        path="/packs/{packId}/maker/{loginId}",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/maker/', PathLabel("loginId")),
+        labels=('packId', 'loginId'),
+        queries=(),
+        payload=None,
+        required=('packId', 'loginId'),
+    ),
+    "ListPackMakers": Operation(
+        name="ListPackMakers",
+        method="GET",
+        path="/packs/{packId}/makers",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/makers'),
+        labels=('packId',),
+        queries=(),
+        payload=None,
+        required=('packId',),
+    ),
+    "AddPackCategory": Operation(
+        name="AddPackCategory",
+        method="POST",
+        path="/packs/{packId}/category",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/category'),
+        labels=('packId',),
+        queries=(),
+        payload='payload',
+        required=('packId', 'payload'),
+    ),
+    "DeletePackCategory": Operation(
+        name="DeletePackCategory",
+        method="DELETE",
+        path="/packs/{packId}/category/{categoryName}",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/category/', PathLabel("categoryName")),
+        labels=('packId', 'categoryName'),
+        queries=(),
+        payload=None,
+        required=('packId', 'categoryName'),
+    ),
+    "ListPackCategories": Operation(
+        name="ListPackCategories",
+        method="GET",
+        path="/packs/{packId}/categories",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/categories'),
+        labels=('packId',),
+        queries=(),
+        payload=None,
+        required=('packId',),
+    ),
+    "GetPackListing": Operation(
+        name="GetPackListing",
+        method="GET",
+        path="/packs/{packId}/listing",
+        status_code=200,
+        path_parts=('/packs/', PathLabel("packId"), '/listing'),
+        labels=('packId',),
+        queries=(QueryBinding("workspaceId", "workspaceId"), QueryBinding("docId", "docId"), QueryBinding("ingestionId", "ingestionId"), QueryBinding("installContext", "installContext"), QueryBinding("releaseChannel", "releaseChannel")),
+        payload=None,
+        required=('packId',),
+    ),
+    "ListPackListings": Operation(
+        name="ListPackListings",
+        method="GET",
+        path="/packs/listings",
+        status_code=200,
+        path_parts=('/packs/listings',),
+        labels=(),
+        queries=(QueryBinding("packAccessTypes", "packAccessTypes"), QueryBinding("packIds", "packIds"), QueryBinding("onlyWorkspaceId", "onlyWorkspaceId"), QueryBinding("parentWorkspaceIds", "parentWorkspaceIds"), QueryBinding("excludePublicPacks", "excludePublicPacks"), QueryBinding("packEntrypoint", "packEntrypoint"), QueryBinding("certifiedAgentsOnly", "certifiedAgentsOnly"), QueryBinding("packCategories", "packCategories"), QueryBinding("sortBy", "sortBy"), QueryBinding("orderBy", "orderBy"), QueryBinding("direction", "direction"), QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken"), QueryBinding("installContext", "installContext")),
+        payload=None,
+        required=(),
+    ),
+    "ListUserPackInvitations": Operation(
+        name="ListUserPackInvitations",
+        method="GET",
+        path="/packs/invitations",
+        status_code=200,
+        path_parts=('/packs/invitations',),
+        labels=(),
+        queries=(QueryBinding("limit", "limit"), QueryBinding("pageToken", "pageToken")),
+        payload=None,
+        required=(),
+    ),
+    "ReplyToPackInvitation": Operation(
+        name="ReplyToPackInvitation",
+        method="POST",
+        path="/packs/invitations/{invitationId}/reply",
+        status_code=200,
+        path_parts=('/packs/invitations/', PathLabel("invitationId"), '/reply'),
+        labels=('invitationId',),
+        queries=(),
+        payload='payload',
+        required=('invitationId', 'payload'),
+    ),
+    "ListWorkspaceMembers": Operation(
+        name="ListWorkspaceMembers",
+        method="GET",
+        path="/workspaces/{workspaceId}/users",
+        status_code=200,
+        path_parts=('/workspaces/', PathLabel("workspaceId"), '/users'),
+        labels=('workspaceId',),
+        queries=(QueryBinding("includedRoles", "includedRoles"), QueryBinding("pageToken", "pageToken")),
+        payload=None,
+        required=('workspaceId',),
+    ),
+    "ChangeUserRole": Operation(
+        name="ChangeUserRole",
+        method="POST",
+        path="/workspaces/{workspaceId}/users/role",
+        status_code=200,
+        path_parts=('/workspaces/', PathLabel("workspaceId"), '/users/role'),
+        labels=('workspaceId',),
+        queries=(),
+        payload='payload',
+        required=('workspaceId', 'payload'),
+    ),
+    "ListWorkspaceRoleActivity": Operation(
+        name="ListWorkspaceRoleActivity",
+        method="GET",
+        path="/workspaces/{workspaceId}/roles",
+        status_code=200,
+        path_parts=('/workspaces/', PathLabel("workspaceId"), '/roles'),
+        labels=('workspaceId',),
+        queries=(),
+        payload=None,
+        required=('workspaceId',),
+    ),
     "AddGoLink": Operation(
         name="AddGoLink",
         method="POST",
@@ -1337,6 +1239,83 @@ OPERATIONS = {
         queries=(),
         payload='payload',
         required=('organizationId', 'payload'),
+    ),
+    "ListDocAnalytics": Operation(
+        name="ListDocAnalytics",
+        method="GET",
+        path="/analytics/docs",
+        status_code=200,
+        path_parts=('/analytics/docs',),
+        labels=(),
+        queries=(QueryBinding("docIds", "docIds"), QueryBinding("workspaceId", "workspaceId"), QueryBinding("query", "query"), QueryBinding("isPublished", "isPublished"), QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate"), QueryBinding("scale", "scale"), QueryBinding("pageToken", "pageToken"), QueryBinding("orderBy", "orderBy"), QueryBinding("direction", "direction"), QueryBinding("limit", "limit")),
+        payload=None,
+        required=(),
+    ),
+    "ListPageAnalytics": Operation(
+        name="ListPageAnalytics",
+        method="GET",
+        path="/analytics/docs/{docId}/pages",
+        status_code=200,
+        path_parts=('/analytics/docs/', PathLabel("docId"), '/pages'),
+        labels=('docId',),
+        queries=(QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate"), QueryBinding("pageToken", "pageToken"), QueryBinding("limit", "limit")),
+        payload=None,
+        required=('docId',),
+    ),
+    "ListDocAnalyticsSummary": Operation(
+        name="ListDocAnalyticsSummary",
+        method="GET",
+        path="/analytics/docs/summary",
+        status_code=200,
+        path_parts=('/analytics/docs/summary',),
+        labels=(),
+        queries=(QueryBinding("isPublished", "isPublished"), QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate"), QueryBinding("workspaceId", "workspaceId")),
+        payload=None,
+        required=(),
+    ),
+    "ListPackAnalytics": Operation(
+        name="ListPackAnalytics",
+        method="GET",
+        path="/analytics/packs",
+        status_code=200,
+        path_parts=('/analytics/packs',),
+        labels=(),
+        queries=(QueryBinding("packIds", "packIds"), QueryBinding("workspaceId", "workspaceId"), QueryBinding("query", "query"), QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate"), QueryBinding("scale", "scale"), QueryBinding("pageToken", "pageToken"), QueryBinding("orderBy", "orderBy"), QueryBinding("direction", "direction"), QueryBinding("isPublished", "isPublished"), QueryBinding("limit", "limit")),
+        payload=None,
+        required=(),
+    ),
+    "ListPackAnalyticsSummary": Operation(
+        name="ListPackAnalyticsSummary",
+        method="GET",
+        path="/analytics/packs/summary",
+        status_code=200,
+        path_parts=('/analytics/packs/summary',),
+        labels=(),
+        queries=(QueryBinding("packIds", "packIds"), QueryBinding("workspaceId", "workspaceId"), QueryBinding("isPublished", "isPublished"), QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate")),
+        payload=None,
+        required=(),
+    ),
+    "ListPackFormulaAnalytics": Operation(
+        name="ListPackFormulaAnalytics",
+        method="GET",
+        path="/analytics/packs/{packId}/formulas",
+        status_code=200,
+        path_parts=('/analytics/packs/', PathLabel("packId"), '/formulas'),
+        labels=('packId',),
+        queries=(QueryBinding("packFormulaNames", "packFormulaNames"), QueryBinding("packFormulaTypes", "packFormulaTypes"), QueryBinding("sinceDate", "sinceDate"), QueryBinding("untilDate", "untilDate"), QueryBinding("scale", "scale"), QueryBinding("pageToken", "pageToken"), QueryBinding("orderBy", "orderBy"), QueryBinding("direction", "direction"), QueryBinding("limit", "limit")),
+        payload=None,
+        required=('packId',),
+    ),
+    "GetAnalyticsLastUpdated": Operation(
+        name="GetAnalyticsLastUpdated",
+        method="GET",
+        path="/analytics/updated",
+        status_code=200,
+        path_parts=('/analytics/updated',),
+        labels=(),
+        queries=(),
+        payload=None,
+        required=(),
     ),
     "ListAgentSessionIds": Operation(
         name="ListAgentSessionIds",
@@ -1371,1531 +1350,1767 @@ OPERATIONS = {
         payload=None,
         required=('tenantId', 'agentInstanceId', 'logId', 'detailsKey'),
     ),
+    "GetMutationStatus": Operation(
+        name="GetMutationStatus",
+        method="GET",
+        path="/mutationStatus/{requestId}",
+        status_code=200,
+        path_parts=('/mutationStatus/', PathLabel("requestId")),
+        labels=('requestId',),
+        queries=(),
+        payload=None,
+        required=('requestId',),
+    ),
+    "GetCustomDocDomainProvider": Operation(
+        name="GetCustomDocDomainProvider",
+        method="GET",
+        path="/domains/provider/{customDocDomain}",
+        status_code=200,
+        path_parts=('/domains/provider/', PathLabel("customDocDomain")),
+        labels=('customDocDomain',),
+        queries=(),
+        payload=None,
+        required=('customDocDomain',),
+    ),
 }
 
 
-class GeneratedOperationsMixin:
+class CategoriesResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
 
-    def list_categories(self) -> Any:
+    def list(self, options: ListCategoriesInput | None = None) -> DocCategoryList:
         """Get doc categories
 
         HTTP GET /categories
         """
+        if options is None:
+            options = ListCategoriesInput()
         params = {}
-        return self._request(OPERATIONS["ListCategories"], params)
+        return self._client._request(OPERATIONS["ListCategories"], params, DocCategoryList)
 
-    def list_docs(self, *, is_owner: Any = None, is_published: Any = None, query: Any = None, source_doc: Any = None, is_starred: Any = None, in_gallery: Any = None, workspace_id: Any = None, folder_id: Any = None, limit: Any = None, page_token: Any = None) -> Any:
-        """List available docs
+class DocsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
 
-        HTTP GET /docs
-        """
-        params = {
-            "isOwner": is_owner,
-            "isPublished": is_published,
-            "query": query,
-            "sourceDoc": source_doc,
-            "isStarred": is_starred,
-            "inGallery": in_gallery,
-            "workspaceId": workspace_id,
-            "folderId": folder_id,
-            "limit": limit,
-            "pageToken": page_token,
-        }
-        return self._request(OPERATIONS["ListDocs"], params)
+    def pages(self) -> PagesResourceClient:
+        return PagesResourceClient(self._client)
 
-    def create_doc(self, *, payload: Any) -> Any:
+    def formulas(self) -> FormulasResourceClient:
+        return FormulasResourceClient(self._client)
+
+    def controls(self) -> ControlsResourceClient:
+        return ControlsResourceClient(self._client)
+
+    def custom_doc_domains(self) -> CustomDocDomainsResourceClient:
+        return CustomDocDomainsResourceClient(self._client)
+
+    def automations(self) -> AutomationsResourceClient:
+        return AutomationsResourceClient(self._client)
+
+    def create(self, options: CreateDocInput) -> Doc:
         """Create doc
 
         HTTP POST /docs
         """
         params = {
-            "payload": payload,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["CreateDoc"], params)
+        return self._client._request(OPERATIONS["CreateDoc"], params, Doc)
 
-    def get_doc(self, *, doc_id: Any) -> Any:
+    def read(self, options: GetDocInput) -> Doc:
         """Get info about a doc
 
         HTTP GET /docs/{docId}
         """
         params = {
-            "docId": doc_id,
+            "docId": options.doc_id,
         }
-        return self._request(OPERATIONS["GetDoc"], params)
+        return self._client._request(OPERATIONS["GetDoc"], params, Doc)
 
-    def delete_doc(self, *, doc_id: Any) -> Any:
-        """Delete doc
-
-        HTTP DELETE /docs/{docId}
-        """
-        params = {
-            "docId": doc_id,
-        }
-        return self._request(OPERATIONS["DeleteDoc"], params)
-
-    def update_doc(self, *, doc_id: Any, payload: Any) -> Any:
+    def update(self, options: UpdateDocInput) -> DocUpdateResponse:
         """Update doc
 
         HTTP PATCH /docs/{docId}
         """
         params = {
-            "docId": doc_id,
-            "payload": payload,
+            "docId": options.doc_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["UpdateDoc"], params)
+        return self._client._request(OPERATIONS["UpdateDoc"], params, DocUpdateResponse)
 
-    def get_sharing_metadata(self, *, doc_id: Any) -> Any:
+    def delete(self, options: DeleteDocInput) -> DocDelete:
+        """Delete doc
+
+        HTTP DELETE /docs/{docId}
+        """
+        params = {
+            "docId": options.doc_id,
+        }
+        return self._client._request(OPERATIONS["DeleteDoc"], params, DocDelete)
+
+    def list(self, options: ListDocsInput | None = None) -> DocList:
+        """List available docs
+
+        HTTP GET /docs
+        """
+        if options is None:
+            options = ListDocsInput()
+        params = {
+            "isOwner": options.is_owner,
+            "isPublished": options.is_published,
+            "query": options.query,
+            "sourceDoc": options.source_doc,
+            "isStarred": options.is_starred,
+            "inGallery": options.in_gallery,
+            "workspaceId": options.workspace_id,
+            "folderId": options.folder_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+        }
+        return self._client._request(OPERATIONS["ListDocs"], params, DocList)
+
+    def get_sharing_metadata(self, options: GetSharingMetadataInput) -> SharingMetadata:
         """Get sharing metadata
 
         HTTP GET /docs/{docId}/acl/metadata
         """
         params = {
-            "docId": doc_id,
+            "docId": options.doc_id,
         }
-        return self._request(OPERATIONS["GetSharingMetadata"], params)
+        return self._client._request(OPERATIONS["GetSharingMetadata"], params, SharingMetadata)
 
-    def get_permissions(self, *, doc_id: Any, limit: Any = None, page_token: Any = None) -> Any:
+    def get_permissions(self, options: GetPermissionsInput) -> Acl:
         """List permissions
 
         HTTP GET /docs/{docId}/acl/permissions
         """
         params = {
-            "docId": doc_id,
-            "limit": limit,
-            "pageToken": page_token,
+            "docId": options.doc_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
         }
-        return self._request(OPERATIONS["GetPermissions"], params)
+        return self._client._request(OPERATIONS["GetPermissions"], params, Acl)
 
-    def add_permission(self, *, doc_id: Any, payload: Any) -> Any:
+    def add_permission(self, options: AddPermissionInput) -> AddPermissionResponse:
         """Add permission
 
         HTTP POST /docs/{docId}/acl/permissions
         """
         params = {
-            "docId": doc_id,
-            "payload": payload,
+            "docId": options.doc_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["AddPermission"], params)
+        return self._client._request(OPERATIONS["AddPermission"], params, AddPermissionResponse)
 
-    def delete_permission(self, *, doc_id: Any, permission_id: Any) -> Any:
+    def delete_permission(self, options: DeletePermissionInput) -> DeletePermissionResponse:
         """Delete permission
 
         HTTP DELETE /docs/{docId}/acl/permissions/{permissionId}
         """
         params = {
-            "docId": doc_id,
-            "permissionId": permission_id,
+            "docId": options.doc_id,
+            "permissionId": options.permission_id,
         }
-        return self._request(OPERATIONS["DeletePermission"], params)
+        return self._client._request(OPERATIONS["DeletePermission"], params, DeletePermissionResponse)
 
-    def search_principals(self, *, doc_id: Any, query: Any = None) -> Any:
+    def search_principals(self, options: SearchPrincipalsInput) -> SearchPrincipalsResponse:
         """Search principals
 
         HTTP GET /docs/{docId}/acl/principals/search
         """
         params = {
-            "docId": doc_id,
-            "query": query,
+            "docId": options.doc_id,
+            "query": options.query,
         }
-        return self._request(OPERATIONS["SearchPrincipals"], params)
+        return self._client._request(OPERATIONS["SearchPrincipals"], params, SearchPrincipalsResponse)
 
-    def get_acl_settings(self, *, doc_id: Any) -> Any:
+    def get_acl_settings(self, options: GetAclSettingsInput) -> AclSettings:
         """Get ACL settings
 
         HTTP GET /docs/{docId}/acl/settings
         """
         params = {
-            "docId": doc_id,
+            "docId": options.doc_id,
         }
-        return self._request(OPERATIONS["GetAclSettings"], params)
+        return self._client._request(OPERATIONS["GetAclSettings"], params, AclSettings)
 
-    def update_acl_settings(self, *, doc_id: Any, payload: Any) -> Any:
+    def update_acl_settings(self, options: UpdateAclSettingsInput) -> AclSettings:
         """Update ACL settings
 
         HTTP PATCH /docs/{docId}/acl/settings
         """
         params = {
-            "docId": doc_id,
-            "payload": payload,
+            "docId": options.doc_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["UpdateAclSettings"], params)
+        return self._client._request(OPERATIONS["UpdateAclSettings"], params, AclSettings)
 
-    def publish_doc(self, *, doc_id: Any, payload: Any) -> Any:
+    def publish_doc(self, options: PublishDocInput) -> PublishResponse:
         """Publish doc
 
         HTTP PUT /docs/{docId}/publish
         """
         params = {
-            "docId": doc_id,
-            "payload": payload,
+            "docId": options.doc_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["PublishDoc"], params)
+        return self._client._request(OPERATIONS["PublishDoc"], params, PublishResponse)
 
-    def unpublish_doc(self, *, doc_id: Any) -> Any:
+    def unpublish_doc(self, options: UnpublishDocInput) -> UnpublishResponse:
         """Unpublish doc
 
         HTTP DELETE /docs/{docId}/publish
         """
         params = {
-            "docId": doc_id,
+            "docId": options.doc_id,
         }
-        return self._request(OPERATIONS["UnpublishDoc"], params)
+        return self._client._request(OPERATIONS["UnpublishDoc"], params, UnpublishResponse)
 
-    def list_pages(self, *, doc_id: Any, limit: Any = None, page_token: Any = None) -> Any:
-        """List pages
+class PagesResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
 
-        HTTP GET /docs/{docId}/pages
-        """
-        params = {
-            "docId": doc_id,
-            "limit": limit,
-            "pageToken": page_token,
-        }
-        return self._request(OPERATIONS["ListPages"], params)
-
-    def create_page(self, *, doc_id: Any, payload: Any) -> Any:
+    def create(self, options: CreatePageInput) -> PageCreateResponse:
         """Create a page
 
         HTTP POST /docs/{docId}/pages
         """
         params = {
-            "docId": doc_id,
-            "payload": payload,
+            "docId": options.doc_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["CreatePage"], params)
+        return self._client._request(OPERATIONS["CreatePage"], params, PageCreateResponse)
 
-    def get_page(self, *, doc_id: Any, page_id_or_name: Any) -> Any:
+    def read(self, options: GetPageInput) -> Page:
         """Get a page
 
         HTTP GET /docs/{docId}/pages/{pageIdOrName}
         """
         params = {
-            "docId": doc_id,
-            "pageIdOrName": page_id_or_name,
+            "docId": options.doc_id,
+            "pageIdOrName": options.page_id_or_name,
         }
-        return self._request(OPERATIONS["GetPage"], params)
+        return self._client._request(OPERATIONS["GetPage"], params, Page)
 
-    def update_page(self, *, doc_id: Any, page_id_or_name: Any, payload: Any) -> Any:
+    def update(self, options: UpdatePageInput) -> PageUpdateResponse:
         """Update a page
 
         HTTP PUT /docs/{docId}/pages/{pageIdOrName}
         """
         params = {
-            "docId": doc_id,
-            "pageIdOrName": page_id_or_name,
-            "payload": payload,
+            "docId": options.doc_id,
+            "pageIdOrName": options.page_id_or_name,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["UpdatePage"], params)
+        return self._client._request(OPERATIONS["UpdatePage"], params, PageUpdateResponse)
 
-    def delete_page(self, *, doc_id: Any, page_id_or_name: Any) -> Any:
+    def delete(self, options: DeletePageInput) -> PageDeleteResponse:
         """Delete a page
 
         HTTP DELETE /docs/{docId}/pages/{pageIdOrName}
         """
         params = {
-            "docId": doc_id,
-            "pageIdOrName": page_id_or_name,
+            "docId": options.doc_id,
+            "pageIdOrName": options.page_id_or_name,
         }
-        return self._request(OPERATIONS["DeletePage"], params)
+        return self._client._request(OPERATIONS["DeletePage"], params, PageDeleteResponse)
 
-    def list_page_content(self, *, doc_id: Any, page_id_or_name: Any, limit: Any = None, page_token: Any = None, content_format: Any = None) -> Any:
+    def list(self, options: ListPagesInput) -> PageList:
+        """List pages
+
+        HTTP GET /docs/{docId}/pages
+        """
+        params = {
+            "docId": options.doc_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+        }
+        return self._client._request(OPERATIONS["ListPages"], params, PageList)
+
+    def list_page_content(self, options: ListPageContentInput) -> PageContentList:
         """List page content
 
         HTTP GET /docs/{docId}/pages/{pageIdOrName}/content
         """
         params = {
-            "docId": doc_id,
-            "pageIdOrName": page_id_or_name,
-            "limit": limit,
-            "pageToken": page_token,
-            "contentFormat": content_format,
+            "docId": options.doc_id,
+            "pageIdOrName": options.page_id_or_name,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "contentFormat": options.content_format,
         }
-        return self._request(OPERATIONS["ListPageContent"], params)
+        return self._client._request(OPERATIONS["ListPageContent"], params, PageContentList)
 
-    def delete_page_content(self, *, doc_id: Any, page_id_or_name: Any, payload: Any = None) -> Any:
+    def delete_page_content(self, options: DeletePageContentInput) -> PageContentDeleteResponse:
         """Delete page content
 
         HTTP DELETE /docs/{docId}/pages/{pageIdOrName}/content
         """
         params = {
-            "docId": doc_id,
-            "pageIdOrName": page_id_or_name,
-            "payload": payload,
+            "docId": options.doc_id,
+            "pageIdOrName": options.page_id_or_name,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["DeletePageContent"], params)
+        return self._client._request(OPERATIONS["DeletePageContent"], params, PageContentDeleteResponse)
 
-    def begin_page_content_export(self, *, doc_id: Any, page_id_or_name: Any, payload: Any) -> Any:
+    def begin_page_content_export(self, options: BeginPageContentExportInput) -> BeginPageContentExportResponse:
         """Begin content export
 
         HTTP POST /docs/{docId}/pages/{pageIdOrName}/export
         """
         params = {
-            "docId": doc_id,
-            "pageIdOrName": page_id_or_name,
-            "payload": payload,
+            "docId": options.doc_id,
+            "pageIdOrName": options.page_id_or_name,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["BeginPageContentExport"], params)
+        return self._client._request(OPERATIONS["BeginPageContentExport"], params, BeginPageContentExportResponse)
 
-    def get_page_content_export_status(self, *, doc_id: Any, page_id_or_name: Any, request_id: Any) -> Any:
+    def get_page_content_export_status(self, options: GetPageContentExportStatusInput) -> PageContentExportStatusResponse:
         """Content export status
 
         HTTP GET /docs/{docId}/pages/{pageIdOrName}/export/{requestId}
         """
         params = {
-            "docId": doc_id,
-            "pageIdOrName": page_id_or_name,
-            "requestId": request_id,
+            "docId": options.doc_id,
+            "pageIdOrName": options.page_id_or_name,
+            "requestId": options.request_id,
         }
-        return self._request(OPERATIONS["GetPageContentExportStatus"], params)
+        return self._client._request(OPERATIONS["GetPageContentExportStatus"], params, PageContentExportStatusResponse)
 
-    def list_tables(self, *, doc_id: Any, limit: Any = None, page_token: Any = None, sort_by: Any = None, table_types: Any = None) -> Any:
-        """List tables
+class FormulasResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
 
-        HTTP GET /docs/{docId}/tables
-        """
-        params = {
-            "docId": doc_id,
-            "limit": limit,
-            "pageToken": page_token,
-            "sortBy": sort_by,
-            "tableTypes": table_types,
-        }
-        return self._request(OPERATIONS["ListTables"], params)
-
-    def get_table(self, *, doc_id: Any, table_id_or_name: Any, use_updated_table_layouts: Any = None) -> Any:
-        """Get a table
-
-        HTTP GET /docs/{docId}/tables/{tableIdOrName}
-        """
-        params = {
-            "docId": doc_id,
-            "tableIdOrName": table_id_or_name,
-            "useUpdatedTableLayouts": use_updated_table_layouts,
-        }
-        return self._request(OPERATIONS["GetTable"], params)
-
-    def list_columns(self, *, doc_id: Any, table_id_or_name: Any, limit: Any = None, page_token: Any = None, visible_only: Any = None) -> Any:
-        """List columns
-
-        HTTP GET /docs/{docId}/tables/{tableIdOrName}/columns
-        """
-        params = {
-            "docId": doc_id,
-            "tableIdOrName": table_id_or_name,
-            "limit": limit,
-            "pageToken": page_token,
-            "visibleOnly": visible_only,
-        }
-        return self._request(OPERATIONS["ListColumns"], params)
-
-    def list_rows(self, *, doc_id: Any, table_id_or_name: Any, query: Any = None, sort_by: Any = None, use_column_names: Any = None, value_format: Any = None, visible_only: Any = None, limit: Any = None, page_token: Any = None, sync_token: Any = None) -> Any:
-        """List table rows
-
-        HTTP GET /docs/{docId}/tables/{tableIdOrName}/rows
-        """
-        params = {
-            "docId": doc_id,
-            "tableIdOrName": table_id_or_name,
-            "query": query,
-            "sortBy": sort_by,
-            "useColumnNames": use_column_names,
-            "valueFormat": value_format,
-            "visibleOnly": visible_only,
-            "limit": limit,
-            "pageToken": page_token,
-            "syncToken": sync_token,
-        }
-        return self._request(OPERATIONS["ListRows"], params)
-
-    def upsert_rows(self, *, doc_id: Any, table_id_or_name: Any, payload: Any, disable_parsing: Any = None) -> Any:
-        """Insert/upsert rows
-
-        HTTP POST /docs/{docId}/tables/{tableIdOrName}/rows
-        """
-        params = {
-            "docId": doc_id,
-            "tableIdOrName": table_id_or_name,
-            "payload": payload,
-            "disableParsing": disable_parsing,
-        }
-        return self._request(OPERATIONS["UpsertRows"], params)
-
-    def delete_rows(self, *, doc_id: Any, table_id_or_name: Any, payload: Any) -> Any:
-        """Delete multiple rows
-
-        HTTP DELETE /docs/{docId}/tables/{tableIdOrName}/rows
-        """
-        params = {
-            "docId": doc_id,
-            "tableIdOrName": table_id_or_name,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["DeleteRows"], params)
-
-    def get_row(self, *, doc_id: Any, table_id_or_name: Any, row_id_or_name: Any, use_column_names: Any = None, value_format: Any = None) -> Any:
-        """Get a row
-
-        HTTP GET /docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
-        """
-        params = {
-            "docId": doc_id,
-            "tableIdOrName": table_id_or_name,
-            "rowIdOrName": row_id_or_name,
-            "useColumnNames": use_column_names,
-            "valueFormat": value_format,
-        }
-        return self._request(OPERATIONS["GetRow"], params)
-
-    def update_row(self, *, doc_id: Any, table_id_or_name: Any, row_id_or_name: Any, payload: Any, disable_parsing: Any = None) -> Any:
-        """Update row
-
-        HTTP PUT /docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
-        """
-        params = {
-            "docId": doc_id,
-            "tableIdOrName": table_id_or_name,
-            "rowIdOrName": row_id_or_name,
-            "payload": payload,
-            "disableParsing": disable_parsing,
-        }
-        return self._request(OPERATIONS["UpdateRow"], params)
-
-    def delete_row(self, *, doc_id: Any, table_id_or_name: Any, row_id_or_name: Any) -> Any:
-        """Delete row
-
-        HTTP DELETE /docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
-        """
-        params = {
-            "docId": doc_id,
-            "tableIdOrName": table_id_or_name,
-            "rowIdOrName": row_id_or_name,
-        }
-        return self._request(OPERATIONS["DeleteRow"], params)
-
-    def push_button(self, *, doc_id: Any, table_id_or_name: Any, row_id_or_name: Any, column_id_or_name: Any) -> Any:
-        """Push a button
-
-        HTTP POST /docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}/buttons/{columnIdOrName}
-        """
-        params = {
-            "docId": doc_id,
-            "tableIdOrName": table_id_or_name,
-            "rowIdOrName": row_id_or_name,
-            "columnIdOrName": column_id_or_name,
-        }
-        return self._request(OPERATIONS["PushButton"], params)
-
-    def get_column(self, *, doc_id: Any, table_id_or_name: Any, column_id_or_name: Any) -> Any:
-        """Get a column
-
-        HTTP GET /docs/{docId}/tables/{tableIdOrName}/columns/{columnIdOrName}
-        """
-        params = {
-            "docId": doc_id,
-            "tableIdOrName": table_id_or_name,
-            "columnIdOrName": column_id_or_name,
-        }
-        return self._request(OPERATIONS["GetColumn"], params)
-
-    def list_formulas(self, *, doc_id: Any, limit: Any = None, page_token: Any = None, sort_by: Any = None) -> Any:
-        """List formulas
-
-        HTTP GET /docs/{docId}/formulas
-        """
-        params = {
-            "docId": doc_id,
-            "limit": limit,
-            "pageToken": page_token,
-            "sortBy": sort_by,
-        }
-        return self._request(OPERATIONS["ListFormulas"], params)
-
-    def get_formula(self, *, doc_id: Any, formula_id_or_name: Any) -> Any:
+    def read(self, options: GetFormulaInput) -> Formula:
         """Get a formula
 
         HTTP GET /docs/{docId}/formulas/{formulaIdOrName}
         """
         params = {
-            "docId": doc_id,
-            "formulaIdOrName": formula_id_or_name,
+            "docId": options.doc_id,
+            "formulaIdOrName": options.formula_id_or_name,
         }
-        return self._request(OPERATIONS["GetFormula"], params)
+        return self._client._request(OPERATIONS["GetFormula"], params, Formula)
 
-    def list_controls(self, *, doc_id: Any, limit: Any = None, page_token: Any = None, sort_by: Any = None) -> Any:
-        """List controls
+    def list(self, options: ListFormulasInput) -> FormulaList:
+        """List formulas
 
-        HTTP GET /docs/{docId}/controls
+        HTTP GET /docs/{docId}/formulas
         """
         params = {
-            "docId": doc_id,
-            "limit": limit,
-            "pageToken": page_token,
-            "sortBy": sort_by,
+            "docId": options.doc_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "sortBy": options.sort_by,
         }
-        return self._request(OPERATIONS["ListControls"], params)
+        return self._client._request(OPERATIONS["ListFormulas"], params, FormulaList)
 
-    def get_control(self, *, doc_id: Any, control_id_or_name: Any) -> Any:
+class ControlsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def read(self, options: GetControlInput) -> Control:
         """Get a control
 
         HTTP GET /docs/{docId}/controls/{controlIdOrName}
         """
         params = {
-            "docId": doc_id,
-            "controlIdOrName": control_id_or_name,
+            "docId": options.doc_id,
+            "controlIdOrName": options.control_id_or_name,
         }
-        return self._request(OPERATIONS["GetControl"], params)
+        return self._client._request(OPERATIONS["GetControl"], params, Control)
 
-    def list_custom_doc_domains(self, *, doc_id: Any) -> Any:
-        """List custom doc domains
+    def list(self, options: ListControlsInput) -> ControlList:
+        """List controls
 
-        HTTP GET /docs/{docId}/domains
+        HTTP GET /docs/{docId}/controls
         """
         params = {
-            "docId": doc_id,
+            "docId": options.doc_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "sortBy": options.sort_by,
         }
-        return self._request(OPERATIONS["ListCustomDocDomains"], params)
+        return self._client._request(OPERATIONS["ListControls"], params, ControlList)
 
-    def add_custom_doc_domain(self, *, doc_id: Any, payload: Any) -> Any:
+class CustomDocDomainsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def create(self, options: AddCustomDocDomainInput) -> AddCustomDocDomainResponse:
         """Add custom domain
 
         HTTP POST /docs/{docId}/domains
         """
         params = {
-            "docId": doc_id,
-            "payload": payload,
+            "docId": options.doc_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["AddCustomDocDomain"], params)
+        return self._client._request(OPERATIONS["AddCustomDocDomain"], params, AddCustomDocDomainResponse)
 
-    def delete_custom_doc_domain(self, *, doc_id: Any, custom_doc_domain: Any) -> Any:
-        """Deletes a custom domain
-
-        HTTP DELETE /docs/{docId}/domains/{customDocDomain}
-        """
-        params = {
-            "docId": doc_id,
-            "customDocDomain": custom_doc_domain,
-        }
-        return self._request(OPERATIONS["DeleteCustomDocDomain"], params)
-
-    def update_custom_doc_domain(self, *, doc_id: Any, custom_doc_domain: Any, payload: Any) -> Any:
+    def update(self, options: UpdateCustomDocDomainInput) -> UpdateCustomDocDomainResponse:
         """Updates a custom domain
 
         HTTP PATCH /docs/{docId}/domains/{customDocDomain}
         """
         params = {
-            "docId": doc_id,
-            "customDocDomain": custom_doc_domain,
-            "payload": payload,
+            "docId": options.doc_id,
+            "customDocDomain": options.custom_doc_domain,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["UpdateCustomDocDomain"], params)
+        return self._client._request(OPERATIONS["UpdateCustomDocDomain"], params, UpdateCustomDocDomainResponse)
 
-    def get_custom_doc_domain_provider(self, *, custom_doc_domain: Any) -> Any:
-        """Gets custom doc domains providers
+    def delete(self, options: DeleteCustomDocDomainInput) -> DeleteCustomDocDomainResponse:
+        """Deletes a custom domain
 
-        HTTP GET /domains/provider/{customDocDomain}
+        HTTP DELETE /docs/{docId}/domains/{customDocDomain}
         """
         params = {
-            "customDocDomain": custom_doc_domain,
+            "docId": options.doc_id,
+            "customDocDomain": options.custom_doc_domain,
         }
-        return self._request(OPERATIONS["GetCustomDocDomainProvider"], params)
+        return self._client._request(OPERATIONS["DeleteCustomDocDomain"], params, DeleteCustomDocDomainResponse)
 
-    def list_folders(self, *, workspace_id: Any = None, is_starred: Any = None, limit: Any = None, page_token: Any = None) -> Any:
-        """List folders
+    def list(self, options: ListCustomDocDomainsInput) -> CustomDocDomainList:
+        """List custom doc domains
 
-        HTTP GET /folders
+        HTTP GET /docs/{docId}/domains
         """
         params = {
-            "workspaceId": workspace_id,
-            "isStarred": is_starred,
-            "limit": limit,
-            "pageToken": page_token,
+            "docId": options.doc_id,
         }
-        return self._request(OPERATIONS["ListFolders"], params)
+        return self._client._request(OPERATIONS["ListCustomDocDomains"], params, CustomDocDomainList)
 
-    def create_folder(self, *, payload: Any) -> Any:
-        """Create folder
+class AutomationsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
 
-        HTTP POST /folders
-        """
-        params = {
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["CreateFolder"], params)
-
-    def get_folder(self, *, folder_id: Any) -> Any:
-        """Get folder
-
-        HTTP GET /folders/{folderId}
-        """
-        params = {
-            "folderId": folder_id,
-        }
-        return self._request(OPERATIONS["GetFolder"], params)
-
-    def update_folder(self, *, folder_id: Any, payload: Any) -> Any:
-        """Update folder
-
-        HTTP PATCH /folders/{folderId}
-        """
-        params = {
-            "folderId": folder_id,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["UpdateFolder"], params)
-
-    def delete_folder(self, *, folder_id: Any) -> Any:
-        """Delete folder
-
-        HTTP DELETE /folders/{folderId}
-        """
-        params = {
-            "folderId": folder_id,
-        }
-        return self._request(OPERATIONS["DeleteFolder"], params)
-
-    def whoami(self) -> Any:
-        """Get user info
-
-        HTTP GET /whoami
-        """
-        params = {}
-        return self._request(OPERATIONS["Whoami"], params)
-
-    def resolve_browser_link(self, *, url: Any, degrade_gracefully: Any = None) -> Any:
-        """Resolve browser link
-
-        HTTP GET /resolveBrowserLink
-        """
-        params = {
-            "url": url,
-            "degradeGracefully": degrade_gracefully,
-        }
-        return self._request(OPERATIONS["ResolveBrowserLink"], params)
-
-    def get_mutation_status(self, *, request_id: Any) -> Any:
-        """Get mutation status
-
-        HTTP GET /mutationStatus/{requestId}
-        """
-        params = {
-            "requestId": request_id,
-        }
-        return self._request(OPERATIONS["GetMutationStatus"], params)
-
-    def trigger_webhook_automation(self, *, doc_id: Any, rule_id: Any, payload: Any = None) -> Any:
+    def trigger_webhook_automation(self, options: TriggerWebhookAutomationInput) -> WebhookTriggerResponse:
         """Trigger automation
 
         HTTP POST /docs/{docId}/hooks/automation/{ruleId}
         """
         params = {
-            "docId": doc_id,
-            "ruleId": rule_id,
-            "payload": payload,
+            "docId": options.doc_id,
+            "ruleId": options.rule_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["TriggerWebhookAutomation"], params)
+        return self._client._request(OPERATIONS["TriggerWebhookAutomation"], params, WebhookTriggerResponse)
 
-    def list_doc_analytics(self, *, doc_ids: Any = None, workspace_id: Any = None, query: Any = None, is_published: Any = None, since_date: Any = None, until_date: Any = None, scale: Any = None, page_token: Any = None, order_by: Any = None, direction: Any = None, limit: Any = None) -> Any:
-        """List doc analytics
+class TablesResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
 
-        HTTP GET /analytics/docs
+    def columns(self) -> ColumnsResourceClient:
+        return ColumnsResourceClient(self._client)
+
+    def rows(self) -> RowsResourceClient:
+        return RowsResourceClient(self._client)
+
+    def read(self, options: GetTableInput) -> Table:
+        """Get a table
+
+        HTTP GET /docs/{docId}/tables/{tableIdOrName}
         """
         params = {
-            "docIds": doc_ids,
-            "workspaceId": workspace_id,
-            "query": query,
-            "isPublished": is_published,
-            "sinceDate": since_date,
-            "untilDate": until_date,
-            "scale": scale,
-            "pageToken": page_token,
-            "orderBy": order_by,
-            "direction": direction,
-            "limit": limit,
+            "docId": options.doc_id,
+            "tableIdOrName": options.table_id_or_name,
+            "useUpdatedTableLayouts": options.use_updated_table_layouts,
         }
-        return self._request(OPERATIONS["ListDocAnalytics"], params)
+        return self._client._request(OPERATIONS["GetTable"], params, Table)
 
-    def list_page_analytics(self, *, doc_id: Any, since_date: Any = None, until_date: Any = None, page_token: Any = None, limit: Any = None) -> Any:
-        """List page analytics
+    def list(self, options: ListTablesInput) -> TableList:
+        """List tables
 
-        HTTP GET /analytics/docs/{docId}/pages
+        HTTP GET /docs/{docId}/tables
         """
         params = {
-            "docId": doc_id,
-            "sinceDate": since_date,
-            "untilDate": until_date,
-            "pageToken": page_token,
-            "limit": limit,
+            "docId": options.doc_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "sortBy": options.sort_by,
+            "tableTypes": options.table_types,
         }
-        return self._request(OPERATIONS["ListPageAnalytics"], params)
+        return self._client._request(OPERATIONS["ListTables"], params, TableList)
 
-    def list_doc_analytics_summary(self, *, is_published: Any = None, since_date: Any = None, until_date: Any = None, workspace_id: Any = None) -> Any:
-        """Get doc analytics summary
+class ColumnsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
 
-        HTTP GET /analytics/docs/summary
+    def read(self, options: GetColumnInput) -> ColumnDetail:
+        """Get a column
+
+        HTTP GET /docs/{docId}/tables/{tableIdOrName}/columns/{columnIdOrName}
         """
         params = {
-            "isPublished": is_published,
-            "sinceDate": since_date,
-            "untilDate": until_date,
-            "workspaceId": workspace_id,
+            "docId": options.doc_id,
+            "tableIdOrName": options.table_id_or_name,
+            "columnIdOrName": options.column_id_or_name,
         }
-        return self._request(OPERATIONS["ListDocAnalyticsSummary"], params)
+        return self._client._request(OPERATIONS["GetColumn"], params, ColumnDetail)
 
-    def list_pack_analytics(self, *, pack_ids: Any = None, workspace_id: Any = None, query: Any = None, since_date: Any = None, until_date: Any = None, scale: Any = None, page_token: Any = None, order_by: Any = None, direction: Any = None, is_published: Any = None, limit: Any = None) -> Any:
-        """List Pack analytics
+    def list(self, options: ListColumnsInput) -> ColumnList:
+        """List columns
 
-        HTTP GET /analytics/packs
+        HTTP GET /docs/{docId}/tables/{tableIdOrName}/columns
         """
         params = {
-            "packIds": pack_ids,
-            "workspaceId": workspace_id,
-            "query": query,
-            "sinceDate": since_date,
-            "untilDate": until_date,
-            "scale": scale,
-            "pageToken": page_token,
-            "orderBy": order_by,
-            "direction": direction,
-            "isPublished": is_published,
-            "limit": limit,
+            "docId": options.doc_id,
+            "tableIdOrName": options.table_id_or_name,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "visibleOnly": options.visible_only,
         }
-        return self._request(OPERATIONS["ListPackAnalytics"], params)
+        return self._client._request(OPERATIONS["ListColumns"], params, ColumnList)
 
-    def list_pack_analytics_summary(self, *, pack_ids: Any = None, workspace_id: Any = None, is_published: Any = None, since_date: Any = None, until_date: Any = None) -> Any:
-        """Get Pack analytics summary
+class RowsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
 
-        HTTP GET /analytics/packs/summary
+    def read(self, options: GetRowInput) -> RowDetail:
+        """Get a row
+
+        HTTP GET /docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
         """
         params = {
-            "packIds": pack_ids,
-            "workspaceId": workspace_id,
-            "isPublished": is_published,
-            "sinceDate": since_date,
-            "untilDate": until_date,
+            "docId": options.doc_id,
+            "tableIdOrName": options.table_id_or_name,
+            "rowIdOrName": options.row_id_or_name,
+            "useColumnNames": options.use_column_names,
+            "valueFormat": options.value_format,
         }
-        return self._request(OPERATIONS["ListPackAnalyticsSummary"], params)
+        return self._client._request(OPERATIONS["GetRow"], params, RowDetail)
 
-    def list_pack_formula_analytics(self, *, pack_id: Any, pack_formula_names: Any = None, pack_formula_types: Any = None, since_date: Any = None, until_date: Any = None, scale: Any = None, page_token: Any = None, order_by: Any = None, direction: Any = None, limit: Any = None) -> Any:
-        """List Pack formula analytics
+    def update(self, options: UpdateRowInput) -> RowUpdateResponse:
+        """Update row
 
-        HTTP GET /analytics/packs/{packId}/formulas
+        HTTP PUT /docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
         """
         params = {
-            "packId": pack_id,
-            "packFormulaNames": pack_formula_names,
-            "packFormulaTypes": pack_formula_types,
-            "sinceDate": since_date,
-            "untilDate": until_date,
-            "scale": scale,
-            "pageToken": page_token,
-            "orderBy": order_by,
-            "direction": direction,
-            "limit": limit,
+            "docId": options.doc_id,
+            "tableIdOrName": options.table_id_or_name,
+            "rowIdOrName": options.row_id_or_name,
+            "disableParsing": options.disable_parsing,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["ListPackFormulaAnalytics"], params)
+        return self._client._request(OPERATIONS["UpdateRow"], params, RowUpdateResponse)
 
-    def get_analytics_last_updated(self) -> Any:
-        """Get analytics last updated day
+    def delete(self, options: DeleteRowInput) -> RowDeleteResponse:
+        """Delete row
 
-        HTTP GET /analytics/updated
-        """
-        params = {}
-        return self._request(OPERATIONS["GetAnalyticsLastUpdated"], params)
-
-    def list_workspace_members(self, *, workspace_id: Any, included_roles: Any = None, page_token: Any = None) -> Any:
-        """List workspace users
-
-        HTTP GET /workspaces/{workspaceId}/users
+        HTTP DELETE /docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}
         """
         params = {
-            "workspaceId": workspace_id,
-            "includedRoles": included_roles,
-            "pageToken": page_token,
+            "docId": options.doc_id,
+            "tableIdOrName": options.table_id_or_name,
+            "rowIdOrName": options.row_id_or_name,
         }
-        return self._request(OPERATIONS["ListWorkspaceMembers"], params)
+        return self._client._request(OPERATIONS["DeleteRow"], params, RowDeleteResponse)
 
-    def change_user_role(self, *, workspace_id: Any, payload: Any) -> Any:
-        """Updates user role
+    def list(self, options: ListRowsInput) -> RowList:
+        """List table rows
 
-        HTTP POST /workspaces/{workspaceId}/users/role
+        HTTP GET /docs/{docId}/tables/{tableIdOrName}/rows
         """
         params = {
-            "workspaceId": workspace_id,
-            "payload": payload,
+            "docId": options.doc_id,
+            "tableIdOrName": options.table_id_or_name,
+            "query": options.query,
+            "sortBy": options.sort_by,
+            "useColumnNames": options.use_column_names,
+            "valueFormat": options.value_format,
+            "visibleOnly": options.visible_only,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "syncToken": options.sync_token,
         }
-        return self._request(OPERATIONS["ChangeUserRole"], params)
+        return self._client._request(OPERATIONS["ListRows"], params, RowList)
 
-    def list_workspace_role_activity(self, *, workspace_id: Any) -> Any:
-        """List workspace roles
+    def push_button(self, options: PushButtonInput) -> PushButtonResponse:
+        """Push a button
 
-        HTTP GET /workspaces/{workspaceId}/roles
+        HTTP POST /docs/{docId}/tables/{tableIdOrName}/rows/{rowIdOrName}/buttons/{columnIdOrName}
         """
         params = {
-            "workspaceId": workspace_id,
+            "docId": options.doc_id,
+            "tableIdOrName": options.table_id_or_name,
+            "rowIdOrName": options.row_id_or_name,
+            "columnIdOrName": options.column_id_or_name,
         }
-        return self._request(OPERATIONS["ListWorkspaceRoleActivity"], params)
+        return self._client._request(OPERATIONS["PushButton"], params, PushButtonResponse)
 
-    def list_packs(self, *, access_type: Any = None, access_types: Any = None, sort_by: Any = None, limit: Any = None, direction: Any = None, page_token: Any = None, only_workspace_id: Any = None, parent_workspace_ids: Any = None, exclude_public_packs: Any = None, pack_entrypoint: Any = None) -> Any:
-        """List Packs
+    def upsert_rows(self, options: UpsertRowsInput) -> RowsUpsertResponse:
+        """Insert/upsert rows
 
-        HTTP GET /packs
+        HTTP POST /docs/{docId}/tables/{tableIdOrName}/rows
         """
         params = {
-            "accessType": access_type,
-            "accessTypes": access_types,
-            "sortBy": sort_by,
-            "limit": limit,
-            "direction": direction,
-            "pageToken": page_token,
-            "onlyWorkspaceId": only_workspace_id,
-            "parentWorkspaceIds": parent_workspace_ids,
-            "excludePublicPacks": exclude_public_packs,
-            "packEntrypoint": pack_entrypoint,
+            "docId": options.doc_id,
+            "tableIdOrName": options.table_id_or_name,
+            "disableParsing": options.disable_parsing,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["ListPacks"], params)
+        return self._client._request(OPERATIONS["UpsertRows"], params, RowsUpsertResponse)
 
-    def create_pack(self, *, payload: Any) -> Any:
+    def delete_rows(self, options: DeleteRowsInput) -> RowsDeleteResponse:
+        """Delete multiple rows
+
+        HTTP DELETE /docs/{docId}/tables/{tableIdOrName}/rows
+        """
+        params = {
+            "docId": options.doc_id,
+            "tableIdOrName": options.table_id_or_name,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["DeleteRows"], params, RowsDeleteResponse)
+
+class FoldersResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def create(self, options: CreateFolderInput) -> Folder:
+        """Create folder
+
+        HTTP POST /folders
+        """
+        params = {
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["CreateFolder"], params, Folder)
+
+    def read(self, options: GetFolderInput) -> Folder:
+        """Get folder
+
+        HTTP GET /folders/{folderId}
+        """
+        params = {
+            "folderId": options.folder_id,
+        }
+        return self._client._request(OPERATIONS["GetFolder"], params, Folder)
+
+    def update(self, options: UpdateFolderInput) -> Folder:
+        """Update folder
+
+        HTTP PATCH /folders/{folderId}
+        """
+        params = {
+            "folderId": options.folder_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["UpdateFolder"], params, Folder)
+
+    def delete(self, options: DeleteFolderInput) -> DeleteFolderResponse:
+        """Delete folder
+
+        HTTP DELETE /folders/{folderId}
+        """
+        params = {
+            "folderId": options.folder_id,
+        }
+        return self._client._request(OPERATIONS["DeleteFolder"], params, DeleteFolderResponse)
+
+    def list(self, options: ListFoldersInput | None = None) -> FolderList:
+        """List folders
+
+        HTTP GET /folders
+        """
+        if options is None:
+            options = ListFoldersInput()
+        params = {
+            "workspaceId": options.workspace_id,
+            "isStarred": options.is_starred,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+        }
+        return self._client._request(OPERATIONS["ListFolders"], params, FolderList)
+
+class PacksResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def pack_versions(self) -> PackVersionsResourceClient:
+        return PackVersionsResourceClient(self._client)
+
+    def pack_releases(self) -> PackReleasesResourceClient:
+        return PackReleasesResourceClient(self._client)
+
+    def pack_reviews(self) -> PackReviewsResourceClient:
+        return PackReviewsResourceClient(self._client)
+
+    def pack_permissions(self) -> PackPermissionsResourceClient:
+        return PackPermissionsResourceClient(self._client)
+
+    def pack_invitations(self) -> PackInvitationsResourceClient:
+        return PackInvitationsResourceClient(self._client)
+
+    def pack_makers(self) -> PackMakersResourceClient:
+        return PackMakersResourceClient(self._client)
+
+    def pack_categories(self) -> PackCategoriesResourceClient:
+        return PackCategoriesResourceClient(self._client)
+
+    def create(self, options: CreatePackInput) -> CreatePackResponse:
         """Create Pack
 
         HTTP POST /packs
         """
         params = {
-            "payload": payload,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["CreatePack"], params)
+        return self._client._request(OPERATIONS["CreatePack"], params, CreatePackResponse)
 
-    def get_pack(self, *, pack_id: Any) -> Any:
+    def read(self, options: GetPackInput) -> Pack:
         """Get a single Pack
 
         HTTP GET /packs/{packId}
         """
         params = {
-            "packId": pack_id,
+            "packId": options.pack_id,
         }
-        return self._request(OPERATIONS["GetPack"], params)
+        return self._client._request(OPERATIONS["GetPack"], params, Pack)
 
-    def update_pack(self, *, pack_id: Any, payload: Any) -> Any:
+    def update(self, options: UpdatePackInput) -> Pack:
         """Update Pack
 
         HTTP PATCH /packs/{packId}
         """
         params = {
-            "packId": pack_id,
-            "payload": payload,
+            "packId": options.pack_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["UpdatePack"], params)
+        return self._client._request(OPERATIONS["UpdatePack"], params, Pack)
 
-    def delete_pack(self, *, pack_id: Any) -> Any:
+    def delete(self, options: DeletePackInput) -> DeletePackResponse:
         """Delete Pack
 
         HTTP DELETE /packs/{packId}
         """
         params = {
-            "packId": pack_id,
+            "packId": options.pack_id,
         }
-        return self._request(OPERATIONS["DeletePack"], params)
+        return self._client._request(OPERATIONS["DeletePack"], params, DeletePackResponse)
 
-    def get_pack_configuration_schema(self, *, pack_id: Any) -> Any:
+    def list(self, options: ListPacksInput | None = None) -> PackSummaryList:
+        """List Packs
+
+        HTTP GET /packs
+        """
+        if options is None:
+            options = ListPacksInput()
+        params = {
+            "accessType": options.access_type,
+            "accessTypes": options.access_types,
+            "sortBy": options.sort_by,
+            "limit": options.limit,
+            "direction": options.direction,
+            "pageToken": options.page_token,
+            "onlyWorkspaceId": options.only_workspace_id,
+            "parentWorkspaceIds": options.parent_workspace_ids,
+            "excludePublicPacks": options.exclude_public_packs,
+            "packEntrypoint": options.pack_entrypoint,
+        }
+        return self._client._request(OPERATIONS["ListPacks"], params, PackSummaryList)
+
+    def get_pack_configuration_schema(self, options: GetPackConfigurationSchemaInput) -> GetPackConfigurationJsonSchemaResponse:
         """Gets the JSON Schema for Pack configuration.
 
         HTTP GET /packs/{packId}/configurations/schema
         """
         params = {
-            "packId": pack_id,
+            "packId": options.pack_id,
         }
-        return self._request(OPERATIONS["GetPackConfigurationSchema"], params)
+        return self._client._request(OPERATIONS["GetPackConfigurationSchema"], params, GetPackConfigurationJsonSchemaResponse)
 
-    def list_pack_versions(self, *, pack_id: Any, limit: Any = None, page_token: Any = None) -> Any:
-        """List the versions for a Pack.
-
-        HTTP GET /packs/{packId}/versions
-        """
-        params = {
-            "packId": pack_id,
-            "limit": limit,
-            "pageToken": page_token,
-        }
-        return self._request(OPERATIONS["ListPackVersions"], params)
-
-    def get_next_pack_version(self, *, pack_id: Any, payload: Any = None) -> Any:
+    def get_next_pack_version(self, options: GetNextPackVersionInput) -> NextPackVersionInfo:
         """Get the next valid version for a Pack.
 
         HTTP POST /packs/{packId}/nextVersion
         """
         params = {
-            "packId": pack_id,
-            "payload": payload,
+            "packId": options.pack_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["GetNextPackVersion"], params)
+        return self._client._request(OPERATIONS["GetNextPackVersion"], params, NextPackVersionInfo)
 
-    def get_pack_version_diffs(self, *, pack_id: Any, base_pack_version: Any, target_pack_version: Any) -> Any:
+    def get_pack_version_diffs(self, options: GetPackVersionDiffsInput) -> PackVersionDiffs:
         """Get the difference between two pack versions.
 
         HTTP GET /packs/{packId}/versions/{basePackVersion}/diff/{targetPackVersion}
         """
         params = {
-            "packId": pack_id,
-            "basePackVersion": base_pack_version,
-            "targetPackVersion": target_pack_version,
+            "packId": options.pack_id,
+            "basePackVersion": options.base_pack_version,
+            "targetPackVersion": options.target_pack_version,
         }
-        return self._request(OPERATIONS["GetPackVersionDiffs"], params)
+        return self._client._request(OPERATIONS["GetPackVersionDiffs"], params, PackVersionDiffs)
 
-    def register_pack_version(self, *, pack_id: Any, pack_version: Any, payload: Any) -> Any:
-        """Register Pack version
-
-        HTTP POST /packs/{packId}/versions/{packVersion}/register
-        """
-        params = {
-            "packId": pack_id,
-            "packVersion": pack_version,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["RegisterPackVersion"], params)
-
-    def pack_version_upload_complete(self, *, pack_id: Any, pack_version: Any, payload: Any) -> Any:
+    def pack_version_upload_complete(self, options: PackVersionUploadCompleteInput) -> CreatePackVersionResponse:
         """Pack version upload complete
 
         HTTP POST /packs/{packId}/versions/{packVersion}/uploadComplete
         """
         params = {
-            "packId": pack_id,
-            "packVersion": pack_version,
-            "payload": payload,
+            "packId": options.pack_id,
+            "packVersion": options.pack_version,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["PackVersionUploadComplete"], params)
+        return self._client._request(OPERATIONS["PackVersionUploadComplete"], params, CreatePackVersionResponse)
 
-    def create_pack_release(self, *, pack_id: Any, payload: Any) -> Any:
-        """Create a new Pack release.
-
-        HTTP POST /packs/{packId}/releases
-        """
-        params = {
-            "packId": pack_id,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["CreatePackRelease"], params)
-
-    def list_pack_releases(self, *, pack_id: Any, limit: Any = None, page_token: Any = None) -> Any:
-        """List the releases for a Pack.
-
-        HTTP GET /packs/{packId}/releases
-        """
-        params = {
-            "packId": pack_id,
-            "limit": limit,
-            "pageToken": page_token,
-        }
-        return self._request(OPERATIONS["ListPackReleases"], params)
-
-    def update_pack_release(self, *, pack_id: Any, pack_release_id: Any, payload: Any) -> Any:
-        """Update an existing Pack release.
-
-        HTTP PUT /packs/{packId}/releases/{packReleaseId}
-        """
-        params = {
-            "packId": pack_id,
-            "packReleaseId": pack_release_id,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["UpdatePackRelease"], params)
-
-    def list_pack_reviews(self, *, pack_id: Any, limit: Any = None, page_token: Any = None, status: Any = None) -> Any:
-        """List pack reviews
-
-        HTTP GET /packs/{packId}/reviews
-        """
-        params = {
-            "packId": pack_id,
-            "limit": limit,
-            "pageToken": page_token,
-            "status": status,
-        }
-        return self._request(OPERATIONS["ListPackReviews"], params)
-
-    def create_pack_review(self, *, pack_id: Any, payload: Any) -> Any:
-        """Create pack review
-
-        HTTP POST /packs/{packId}/reviews
-        """
-        params = {
-            "packId": pack_id,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["CreatePackReview"], params)
-
-    def cancel_pack_review(self, *, pack_id: Any) -> Any:
-        """Cancel pending pack review
-
-        HTTP POST /packs/{packId}/reviews/pending/cancel
-        """
-        params = {
-            "packId": pack_id,
-        }
-        return self._request(OPERATIONS["CancelPackReview"], params)
-
-    def get_pack_listing_draft(self, *, pack_id: Any) -> Any:
+    def get_pack_listing_draft(self, options: GetPackListingDraftInput) -> GetPackListingDraftResponse:
         """Get Pack listing draft
 
         HTTP GET /packs/{packId}/listingDraft
         """
         params = {
-            "packId": pack_id,
+            "packId": options.pack_id,
         }
-        return self._request(OPERATIONS["GetPackListingDraft"], params)
+        return self._client._request(OPERATIONS["GetPackListingDraft"], params, GetPackListingDraftResponse)
 
-    def upsert_pack_listing_draft(self, *, pack_id: Any, payload: Any) -> Any:
+    def upsert_pack_listing_draft(self, options: UpsertPackListingDraftInput) -> UpsertPackListingDraftResponse:
         """Upsert Pack listing draft
 
         HTTP PUT /packs/{packId}/listingDraft
         """
         params = {
-            "packId": pack_id,
-            "payload": payload,
+            "packId": options.pack_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["UpsertPackListingDraft"], params)
+        return self._client._request(OPERATIONS["UpsertPackListingDraft"], params, UpsertPackListingDraftResponse)
 
-    def delete_pack_listing_draft(self, *, pack_id: Any) -> Any:
+    def delete_pack_listing_draft(self, options: DeletePackListingDraftInput) -> DeletePackListingDraftResponse:
         """Delete Pack listing draft
 
         HTTP DELETE /packs/{packId}/listingDraft
         """
         params = {
-            "packId": pack_id,
+            "packId": options.pack_id,
         }
-        return self._request(OPERATIONS["DeletePackListingDraft"], params)
+        return self._client._request(OPERATIONS["DeletePackListingDraft"], params, DeletePackListingDraftResponse)
 
-    def set_pack_oauth_config(self, *, pack_id: Any, payload: Any) -> Any:
+    def set_pack_oauth_config(self, options: SetPackOauthConfigInput) -> PackOauthConfigMetadata:
         """Set the OAuth configurations of the Pack.
 
         HTTP PUT /packs/{packId}/oauthConfig
         """
         params = {
-            "packId": pack_id,
-            "payload": payload,
+            "packId": options.pack_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["SetPackOauthConfig"], params)
+        return self._client._request(OPERATIONS["SetPackOauthConfig"], params, PackOauthConfigMetadata)
 
-    def get_pack_oauth_config(self, *, pack_id: Any) -> Any:
+    def get_pack_oauth_config(self, options: GetPackOauthConfigInput) -> PackOauthConfigMetadata:
         """Retrieve the OAuth configuration of the Pack.
 
         HTTP GET /packs/{packId}/oauthConfig
         """
         params = {
-            "packId": pack_id,
+            "packId": options.pack_id,
         }
-        return self._request(OPERATIONS["GetPackOauthConfig"], params)
+        return self._client._request(OPERATIONS["GetPackOauthConfig"], params, PackOauthConfigMetadata)
 
-    def set_pack_system_connection(self, *, pack_id: Any, payload: Any) -> Any:
+    def set_pack_system_connection(self, options: SetPackSystemConnectionInput) -> SetPackSystemConnectionOutput:
         """Set the system connection credentials of the Pack.
 
         HTTP PUT /packs/{packId}/systemConnection
         """
         params = {
-            "packId": pack_id,
-            "payload": payload,
+            "packId": options.pack_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["SetPackSystemConnection"], params)
+        return self._client._request(OPERATIONS["SetPackSystemConnection"], params, SetPackSystemConnectionOutput)
 
-    def patch_pack_system_connection(self, *, pack_id: Any, payload: Any) -> Any:
+    def patch_pack_system_connection(self, options: PatchPackSystemConnectionInput) -> PatchPackSystemConnectionOutput:
         """Patch the system connection credentials of the Pack.
 
         HTTP PATCH /packs/{packId}/systemConnection
         """
         params = {
-            "packId": pack_id,
-            "payload": payload,
+            "packId": options.pack_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["PatchPackSystemConnection"], params)
+        return self._client._request(OPERATIONS["PatchPackSystemConnection"], params, PatchPackSystemConnectionOutput)
 
-    def get_pack_system_connection(self, *, pack_id: Any) -> Any:
+    def get_pack_system_connection(self, options: GetPackSystemConnectionInput) -> GetPackSystemConnectionOutput:
         """Retrieve the system connection metadata of the Pack.
 
         HTTP GET /packs/{packId}/systemConnection
         """
         params = {
-            "packId": pack_id,
+            "packId": options.pack_id,
         }
-        return self._request(OPERATIONS["GetPackSystemConnection"], params)
+        return self._client._request(OPERATIONS["GetPackSystemConnection"], params, GetPackSystemConnectionOutput)
 
-    def get_pack_permissions(self, *, pack_id: Any) -> Any:
-        """List permissions for a Pack
-
-        HTTP GET /packs/{packId}/permissions
-        """
-        params = {
-            "packId": pack_id,
-        }
-        return self._request(OPERATIONS["GetPackPermissions"], params)
-
-    def add_pack_permission(self, *, pack_id: Any, payload: Any) -> Any:
-        """Add a permission for Pack
-
-        HTTP POST /packs/{packId}/permissions
-        """
-        params = {
-            "packId": pack_id,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["AddPackPermission"], params)
-
-    def delete_user_pack_permission(self, *, pack_id: Any) -> Any:
-        """Delete a user's own permissions for Pack
-
-        HTTP DELETE /packs/{packId}/permissions
-        """
-        params = {
-            "packId": pack_id,
-        }
-        return self._request(OPERATIONS["DeleteUserPackPermission"], params)
-
-    def delete_pack_permission(self, *, pack_id: Any, permission_id: Any) -> Any:
-        """Delete a permission for Pack
-
-        HTTP DELETE /packs/{packId}/permissions/{permissionId}
-        """
-        params = {
-            "packId": pack_id,
-            "permissionId": permission_id,
-        }
-        return self._request(OPERATIONS["DeletePackPermission"], params)
-
-    def list_user_pack_invitations(self, *, limit: Any = None, page_token: Any = None) -> Any:
-        """List pending Pack invitations for the current user
-
-        HTTP GET /packs/invitations
-        """
-        params = {
-            "limit": limit,
-            "pageToken": page_token,
-        }
-        return self._request(OPERATIONS["ListUserPackInvitations"], params)
-
-    def list_pack_invitations(self, *, pack_id: Any, limit: Any = None, page_token: Any = None) -> Any:
-        """List invitations for a Pack
-
-        HTTP GET /packs/{packId}/invitations
-        """
-        params = {
-            "packId": pack_id,
-            "limit": limit,
-            "pageToken": page_token,
-        }
-        return self._request(OPERATIONS["ListPackInvitations"], params)
-
-    def create_pack_invitation(self, *, pack_id: Any, payload: Any) -> Any:
-        """Create an invitation for Pack
-
-        HTTP POST /packs/{packId}/invitations
-        """
-        params = {
-            "packId": pack_id,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["CreatePackInvitation"], params)
-
-    def update_pack_invitation(self, *, pack_id: Any, invitation_id: Any, payload: Any) -> Any:
-        """Update an invitation for Pack
-
-        HTTP PUT /packs/{packId}/invitations/{invitationId}
-        """
-        params = {
-            "packId": pack_id,
-            "invitationId": invitation_id,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["UpdatePackInvitation"], params)
-
-    def delete_pack_invitation(self, *, pack_id: Any, invitation_id: Any) -> Any:
-        """Revoke an invitation for Pack
-
-        HTTP DELETE /packs/{packId}/invitations/{invitationId}
-        """
-        params = {
-            "packId": pack_id,
-            "invitationId": invitation_id,
-        }
-        return self._request(OPERATIONS["DeletePackInvitation"], params)
-
-    def reply_to_pack_invitation(self, *, invitation_id: Any, payload: Any) -> Any:
-        """Reply to a Pack invitation
-
-        HTTP POST /packs/invitations/{invitationId}/reply
-        """
-        params = {
-            "invitationId": invitation_id,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["ReplyToPackInvitation"], params)
-
-    def list_pack_makers(self, *, pack_id: Any) -> Any:
-        """List makers for Pack
-
-        HTTP GET /packs/{packId}/makers
-        """
-        params = {
-            "packId": pack_id,
-        }
-        return self._request(OPERATIONS["ListPackMakers"], params)
-
-    def add_pack_maker(self, *, pack_id: Any, payload: Any) -> Any:
-        """Add a maker for Pack
-
-        HTTP POST /packs/{packId}/maker
-        """
-        params = {
-            "packId": pack_id,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["AddPackMaker"], params)
-
-    def delete_pack_maker(self, *, pack_id: Any, login_id: Any) -> Any:
-        """Delete a maker for Pack
-
-        HTTP DELETE /packs/{packId}/maker/{loginId}
-        """
-        params = {
-            "packId": pack_id,
-            "loginId": login_id,
-        }
-        return self._request(OPERATIONS["DeletePackMaker"], params)
-
-    def list_pack_categories(self, *, pack_id: Any) -> Any:
-        """List categories for Pack
-
-        HTTP GET /packs/{packId}/categories
-        """
-        params = {
-            "packId": pack_id,
-        }
-        return self._request(OPERATIONS["ListPackCategories"], params)
-
-    def add_pack_category(self, *, pack_id: Any, payload: Any) -> Any:
-        """Add a category for Pack
-
-        HTTP POST /packs/{packId}/category
-        """
-        params = {
-            "packId": pack_id,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["AddPackCategory"], params)
-
-    def delete_pack_category(self, *, pack_id: Any, category_name: Any) -> Any:
-        """Delete a category for Pack
-
-        HTTP DELETE /packs/{packId}/category/{categoryName}
-        """
-        params = {
-            "packId": pack_id,
-            "categoryName": category_name,
-        }
-        return self._request(OPERATIONS["DeletePackCategory"], params)
-
-    def upload_pack_asset(self, *, pack_id: Any, payload: Any) -> Any:
+    def upload_pack_asset(self, options: UploadPackAssetInput) -> PackAssetUploadInfo:
         """Upload a Pack asset.
 
         HTTP POST /packs/{packId}/uploadAsset
         """
         params = {
-            "packId": pack_id,
-            "payload": payload,
+            "packId": options.pack_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["UploadPackAsset"], params)
+        return self._client._request(OPERATIONS["UploadPackAsset"], params, PackAssetUploadInfo)
 
-    def upload_pack_source_code(self, *, pack_id: Any, payload: Any) -> Any:
+    def upload_pack_source_code(self, options: UploadPackSourceCodeInput) -> PackSourceCodeUploadInfo:
         """Upload Pack source code.
 
         HTTP POST /packs/{packId}/uploadSourceCode
         """
         params = {
-            "packId": pack_id,
-            "payload": payload,
+            "packId": options.pack_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["UploadPackSourceCode"], params)
+        return self._client._request(OPERATIONS["UploadPackSourceCode"], params, PackSourceCodeUploadInfo)
 
-    def pack_asset_upload_complete(self, *, pack_id: Any, pack_asset_id: Any, pack_asset_type: Any) -> Any:
+    def pack_asset_upload_complete(self, options: PackAssetUploadCompleteInput) -> PackAssetUploadCompleteResponse:
         """Pack asset upload complete
 
         HTTP POST /packs/{packId}/assets/{packAssetId}/assetType/{packAssetType}/uploadComplete
         """
         params = {
-            "packId": pack_id,
-            "packAssetId": pack_asset_id,
-            "packAssetType": pack_asset_type,
+            "packId": options.pack_id,
+            "packAssetId": options.pack_asset_id,
+            "packAssetType": options.pack_asset_type,
         }
-        return self._request(OPERATIONS["PackAssetUploadComplete"], params)
+        return self._client._request(OPERATIONS["PackAssetUploadComplete"], params, PackAssetUploadCompleteResponse)
 
-    def pack_source_code_upload_complete(self, *, pack_id: Any, pack_version: Any, payload: Any) -> Any:
-        """Pack source code upload complete
-
-        HTTP POST /packs/{packId}/versions/{packVersion}/sourceCode/uploadComplete
-        """
-        params = {
-            "packId": pack_id,
-            "packVersion": pack_version,
-            "payload": payload,
-        }
-        return self._request(OPERATIONS["PackSourceCodeUploadComplete"], params)
-
-    def get_pack_source_code(self, *, pack_id: Any, pack_version: Any) -> Any:
-        """get the source code for a Pack version.
-
-        HTTP GET /packs/{packId}/versions/{packVersion}/sourceCode
-        """
-        params = {
-            "packId": pack_id,
-            "packVersion": pack_version,
-        }
-        return self._request(OPERATIONS["GetPackSourceCode"], params)
-
-    def list_pack_listings(self, *, pack_access_types: Any = None, pack_ids: Any = None, only_workspace_id: Any = None, parent_workspace_ids: Any = None, exclude_public_packs: Any = None, pack_entrypoint: Any = None, certified_agents_only: Any = None, pack_categories: Any = None, sort_by: Any = None, order_by: Any = None, direction: Any = None, limit: Any = None, page_token: Any = None, install_context: Any = None) -> Any:
-        """List the Pack listings accessible to a user.
-
-        HTTP GET /packs/listings
-        """
-        params = {
-            "packAccessTypes": pack_access_types,
-            "packIds": pack_ids,
-            "onlyWorkspaceId": only_workspace_id,
-            "parentWorkspaceIds": parent_workspace_ids,
-            "excludePublicPacks": exclude_public_packs,
-            "packEntrypoint": pack_entrypoint,
-            "certifiedAgentsOnly": certified_agents_only,
-            "packCategories": pack_categories,
-            "sortBy": sort_by,
-            "orderBy": order_by,
-            "direction": direction,
-            "limit": limit,
-            "pageToken": page_token,
-            "installContext": install_context,
-        }
-        return self._request(OPERATIONS["ListPackListings"], params)
-
-    def get_pack_listing(self, *, pack_id: Any, workspace_id: Any = None, doc_id: Any = None, ingestion_id: Any = None, install_context: Any = None, release_channel: Any = None) -> Any:
-        """Get detailed listing information for a Pack.
-
-        HTTP GET /packs/{packId}/listing
-        """
-        params = {
-            "packId": pack_id,
-            "workspaceId": workspace_id,
-            "docId": doc_id,
-            "ingestionId": ingestion_id,
-            "installContext": install_context,
-            "releaseChannel": release_channel,
-        }
-        return self._request(OPERATIONS["GetPackListing"], params)
-
-    def list_pack_logs(self, *, pack_id: Any, doc_id: Any, limit: Any = None, page_token: Any = None, log_types: Any = None, before_timestamp: Any = None, after_timestamp: Any = None, order: Any = None, q: Any = None, request_ids: Any = None) -> Any:
+    def list_pack_logs(self, options: ListPackLogsInput) -> PackLogsList:
         """Retrieve the logs of a Pack.
 
         HTTP GET /packs/{packId}/docs/{docId}/logs
         """
         params = {
-            "packId": pack_id,
-            "docId": doc_id,
-            "limit": limit,
-            "pageToken": page_token,
-            "logTypes": log_types,
-            "beforeTimestamp": before_timestamp,
-            "afterTimestamp": after_timestamp,
-            "order": order,
-            "q": q,
-            "requestIds": request_ids,
+            "packId": options.pack_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "docId": options.doc_id,
+            "logTypes": options.log_types,
+            "beforeTimestamp": options.before_timestamp,
+            "afterTimestamp": options.after_timestamp,
+            "order": options.order,
+            "q": options.q,
+            "requestIds": options.request_ids,
         }
-        return self._request(OPERATIONS["ListPackLogs"], params)
+        return self._client._request(OPERATIONS["ListPackLogs"], params, PackLogsList)
 
-    def list_ingestion_logs(self, *, pack_id: Any, tenant_id: Any, root_ingestion_id: Any, limit: Any = None, page_token: Any = None, log_types: Any = None, ingestion_execution_id: Any = None, before_timestamp: Any = None, after_timestamp: Any = None, ingestion_status: Any = None, only_execution_completions: Any = None, order: Any = None, q: Any = None, request_ids: Any = None) -> Any:
+    def list_ingestion_logs(self, options: ListIngestionLogsInput) -> PackLogsList:
         """Retrieve the logs of a Ingestion.
 
         HTTP GET /packs/{packId}/tenantId/{tenantId}/rootIngestionId/{rootIngestionId}/logs
         """
         params = {
-            "packId": pack_id,
-            "tenantId": tenant_id,
-            "rootIngestionId": root_ingestion_id,
-            "limit": limit,
-            "pageToken": page_token,
-            "logTypes": log_types,
-            "ingestionExecutionId": ingestion_execution_id,
-            "beforeTimestamp": before_timestamp,
-            "afterTimestamp": after_timestamp,
-            "ingestionStatus": ingestion_status,
-            "onlyExecutionCompletions": only_execution_completions,
-            "order": order,
-            "q": q,
-            "requestIds": request_ids,
+            "packId": options.pack_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "tenantId": options.tenant_id,
+            "rootIngestionId": options.root_ingestion_id,
+            "logTypes": options.log_types,
+            "ingestionExecutionId": options.ingestion_execution_id,
+            "beforeTimestamp": options.before_timestamp,
+            "afterTimestamp": options.after_timestamp,
+            "ingestionStatus": options.ingestion_status,
+            "onlyExecutionCompletions": options.only_execution_completions,
+            "order": options.order,
+            "q": options.q,
+            "requestIds": options.request_ids,
         }
-        return self._request(OPERATIONS["ListIngestionLogs"], params)
+        return self._client._request(OPERATIONS["ListIngestionLogs"], params, PackLogsList)
 
-    def list_grouped_pack_logs(self, *, pack_id: Any, doc_id: Any, limit: Any = None, page_token: Any = None, before_timestamp: Any = None, after_timestamp: Any = None, order: Any = None, q: Any = None) -> Any:
+    def list_grouped_pack_logs(self, options: ListGroupedPackLogsInput) -> GroupedPackLogsList:
         """Retrieve the grouped logs of a Pack.
 
         HTTP GET /packs/{packId}/docs/{docId}/groupedLogs
         """
         params = {
-            "packId": pack_id,
-            "docId": doc_id,
-            "limit": limit,
-            "pageToken": page_token,
-            "beforeTimestamp": before_timestamp,
-            "afterTimestamp": after_timestamp,
-            "order": order,
-            "q": q,
+            "packId": options.pack_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "docId": options.doc_id,
+            "beforeTimestamp": options.before_timestamp,
+            "afterTimestamp": options.after_timestamp,
+            "order": options.order,
+            "q": options.q,
         }
-        return self._request(OPERATIONS["ListGroupedPackLogs"], params)
+        return self._client._request(OPERATIONS["ListGroupedPackLogs"], params, GroupedPackLogsList)
 
-    def list_grouped_ingestion_logs(self, *, pack_id: Any, tenant_id: Any, root_ingestion_id: Any, limit: Any = None, page_token: Any = None, ingestion_execution_id: Any = None, before_timestamp: Any = None, after_timestamp: Any = None, order: Any = None, q: Any = None) -> Any:
+    def list_grouped_ingestion_logs(self, options: ListGroupedIngestionLogsInput) -> GroupedPackLogsList:
         """Retrieve the grouped logs of a Pack for a specific ingestionExecutionId.
 
         HTTP GET /packs/{packId}/tenantId/{tenantId}/rootIngestionId/{rootIngestionId}/groupedLogs
         """
         params = {
-            "packId": pack_id,
-            "tenantId": tenant_id,
-            "rootIngestionId": root_ingestion_id,
-            "limit": limit,
-            "pageToken": page_token,
-            "ingestionExecutionId": ingestion_execution_id,
-            "beforeTimestamp": before_timestamp,
-            "afterTimestamp": after_timestamp,
-            "order": order,
-            "q": q,
+            "packId": options.pack_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "tenantId": options.tenant_id,
+            "rootIngestionId": options.root_ingestion_id,
+            "ingestionExecutionId": options.ingestion_execution_id,
+            "beforeTimestamp": options.before_timestamp,
+            "afterTimestamp": options.after_timestamp,
+            "order": options.order,
+            "q": options.q,
         }
-        return self._request(OPERATIONS["ListGroupedIngestionLogs"], params)
+        return self._client._request(OPERATIONS["ListGroupedIngestionLogs"], params, GroupedPackLogsList)
 
-    def list_ingestion_batch_executions(self, *, pack_id: Any, tenant_id: Any, root_ingestion_id: Any, page_token: Any = None, limit: Any = None, datasource: Any = None, execution_type: Any = None, include_deleted_ingestions: Any = None, ingestion_execution_id: Any = None, ingestion_id: Any = None, ingestion_status: Any = None) -> Any:
+    def list_ingestion_batch_executions(self, options: ListIngestionBatchExecutionsInput) -> IngestionBatchExecutionsList:
         """Retrieve a list of ingestion batch executions for the given root ingestion id.
 
         HTTP GET /packs/{packId}/tenantId/{tenantId}/rootIngestionId/{rootIngestionId}/ingestionBatchExecutions
         """
         params = {
-            "packId": pack_id,
-            "tenantId": tenant_id,
-            "rootIngestionId": root_ingestion_id,
-            "pageToken": page_token,
-            "limit": limit,
-            "datasource": datasource,
-            "executionType": execution_type,
-            "includeDeletedIngestions": include_deleted_ingestions,
-            "ingestionExecutionId": ingestion_execution_id,
-            "ingestionId": ingestion_id,
-            "ingestionStatus": ingestion_status,
+            "packId": options.pack_id,
+            "tenantId": options.tenant_id,
+            "rootIngestionId": options.root_ingestion_id,
+            "pageToken": options.page_token,
+            "limit": options.limit,
+            "datasource": options.datasource,
+            "executionType": options.execution_type,
+            "includeDeletedIngestions": options.include_deleted_ingestions,
+            "ingestionExecutionId": options.ingestion_execution_id,
+            "ingestionId": options.ingestion_id,
+            "ingestionStatus": options.ingestion_status,
         }
-        return self._request(OPERATIONS["ListIngestionBatchExecutions"], params)
+        return self._client._request(OPERATIONS["ListIngestionBatchExecutions"], params, IngestionBatchExecutionsList)
 
-    def list_ingestion_parent_items(self, *, pack_id: Any, tenant_id: Any, root_ingestion_id: Any, ingestion_execution_id: Any, ingestion_id: Any, page_token: Any = None, limit: Any = None, ingestion_status: Any = None) -> Any:
+    def list_ingestion_parent_items(self, options: ListIngestionParentItemsInput) -> IngestionParentItemsList:
         """Retrieve a list of parent items for the given ingestion batch execution id.
 
         HTTP GET /packs/{packId}/tenantId/{tenantId}/rootIngestionId/{rootIngestionId}/ingestionBatchExecutions/{ingestionExecutionId}/parentItems
         """
         params = {
-            "packId": pack_id,
-            "tenantId": tenant_id,
-            "rootIngestionId": root_ingestion_id,
-            "ingestionExecutionId": ingestion_execution_id,
-            "ingestionId": ingestion_id,
-            "pageToken": page_token,
-            "limit": limit,
-            "ingestionStatus": ingestion_status,
+            "packId": options.pack_id,
+            "tenantId": options.tenant_id,
+            "rootIngestionId": options.root_ingestion_id,
+            "pageToken": options.page_token,
+            "limit": options.limit,
+            "ingestionExecutionId": options.ingestion_execution_id,
+            "ingestionId": options.ingestion_id,
+            "ingestionStatus": options.ingestion_status,
         }
-        return self._request(OPERATIONS["ListIngestionParentItems"], params)
+        return self._client._request(OPERATIONS["ListIngestionParentItems"], params, IngestionParentItemsList)
 
-    def get_pack_log_details(self, *, pack_id: Any, tenant_id: Any, root_ingestion_id: Any, log_id: Any, details_key: Any) -> Any:
+    def get_pack_log_details(self, options: GetPackLogDetailsInput) -> GetPackLogDetailsOutput:
         """Retrieve the information for a specific log.
 
         HTTP GET /packs/{packId}/tenantId/{tenantId}/rootIngestionId/{rootIngestionId}/logs/{logId}
         """
         params = {
-            "packId": pack_id,
-            "tenantId": tenant_id,
-            "rootIngestionId": root_ingestion_id,
-            "logId": log_id,
-            "detailsKey": details_key,
+            "packId": options.pack_id,
+            "tenantId": options.tenant_id,
+            "rootIngestionId": options.root_ingestion_id,
+            "logId": options.log_id,
+            "detailsKey": options.details_key,
         }
-        return self._request(OPERATIONS["GetPackLogDetails"], params)
+        return self._client._request(OPERATIONS["GetPackLogDetails"], params, GetPackLogDetailsOutput)
 
-    def list_pack_featured_docs(self, *, pack_id: Any) -> Any:
+    def list_pack_featured_docs(self, options: ListPackFeaturedDocsInput) -> PackFeaturedDocsResponse:
         """List featured docs for a Pack
 
         HTTP GET /packs/{packId}/featuredDocs
         """
         params = {
-            "packId": pack_id,
+            "packId": options.pack_id,
         }
-        return self._request(OPERATIONS["ListPackFeaturedDocs"], params)
+        return self._client._request(OPERATIONS["ListPackFeaturedDocs"], params, PackFeaturedDocsResponse)
 
-    def update_pack_featured_docs(self, *, pack_id: Any, payload: Any) -> Any:
+    def update_pack_featured_docs(self, options: UpdatePackFeaturedDocsInput) -> UpdatePackFeaturedDocsResponse:
         """Update featured docs for a Pack
 
         HTTP PUT /packs/{packId}/featuredDocs
         """
         params = {
-            "packId": pack_id,
-            "payload": payload,
+            "packId": options.pack_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["UpdatePackFeaturedDocs"], params)
+        return self._client._request(OPERATIONS["UpdatePackFeaturedDocs"], params, UpdatePackFeaturedDocsResponse)
 
-    def add_go_link(self, *, organization_id: Any, payload: Any) -> Any:
+class PackVersionsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def list(self, options: ListPackVersionsInput) -> PackVersionList:
+        """List the versions for a Pack.
+
+        HTTP GET /packs/{packId}/versions
+        """
+        params = {
+            "packId": options.pack_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+        }
+        return self._client._request(OPERATIONS["ListPackVersions"], params, PackVersionList)
+
+    def register_pack_version(self, options: RegisterPackVersionInput) -> PackVersionUploadInfo:
+        """Register Pack version
+
+        HTTP POST /packs/{packId}/versions/{packVersion}/register
+        """
+        params = {
+            "packId": options.pack_id,
+            "packVersion": options.pack_version,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["RegisterPackVersion"], params, PackVersionUploadInfo)
+
+    def pack_source_code_upload_complete(self, options: PackSourceCodeUploadCompleteInput) -> PackSourceCodeUploadCompleteResponse:
+        """Pack source code upload complete
+
+        HTTP POST /packs/{packId}/versions/{packVersion}/sourceCode/uploadComplete
+        """
+        params = {
+            "packId": options.pack_id,
+            "packVersion": options.pack_version,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["PackSourceCodeUploadComplete"], params, PackSourceCodeUploadCompleteResponse)
+
+    def get_pack_source_code(self, options: GetPackSourceCodeInput) -> PackSourceCodeInfo:
+        """get the source code for a Pack version.
+
+        HTTP GET /packs/{packId}/versions/{packVersion}/sourceCode
+        """
+        params = {
+            "packId": options.pack_id,
+            "packVersion": options.pack_version,
+        }
+        return self._client._request(OPERATIONS["GetPackSourceCode"], params, PackSourceCodeInfo)
+
+class PackReleasesResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def create(self, options: CreatePackReleaseInput) -> PackRelease:
+        """Create a new Pack release.
+
+        HTTP POST /packs/{packId}/releases
+        """
+        params = {
+            "packId": options.pack_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["CreatePackRelease"], params, PackRelease)
+
+    def update(self, options: UpdatePackReleaseInput) -> PackRelease:
+        """Update an existing Pack release.
+
+        HTTP PUT /packs/{packId}/releases/{packReleaseId}
+        """
+        params = {
+            "packId": options.pack_id,
+            "packReleaseId": options.pack_release_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["UpdatePackRelease"], params, PackRelease)
+
+    def list(self, options: ListPackReleasesInput) -> PackReleaseList:
+        """List the releases for a Pack.
+
+        HTTP GET /packs/{packId}/releases
+        """
+        params = {
+            "packId": options.pack_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+        }
+        return self._client._request(OPERATIONS["ListPackReleases"], params, PackReleaseList)
+
+class PackReviewsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def create(self, options: CreatePackReviewInput) -> CreatePackReviewResponse:
+        """Create pack review
+
+        HTTP POST /packs/{packId}/reviews
+        """
+        params = {
+            "packId": options.pack_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["CreatePackReview"], params, CreatePackReviewResponse)
+
+    def list(self, options: ListPackReviewsInput) -> ListPackReviewsResponse:
+        """List pack reviews
+
+        HTTP GET /packs/{packId}/reviews
+        """
+        params = {
+            "packId": options.pack_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "status": options.status,
+        }
+        return self._client._request(OPERATIONS["ListPackReviews"], params, ListPackReviewsResponse)
+
+    def cancel_pack_review(self, options: CancelPackReviewInput) -> CancelPackReviewResponse:
+        """Cancel pending pack review
+
+        HTTP POST /packs/{packId}/reviews/pending/cancel
+        """
+        params = {
+            "packId": options.pack_id,
+        }
+        return self._client._request(OPERATIONS["CancelPackReview"], params, CancelPackReviewResponse)
+
+class PackPermissionsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def create(self, options: AddPackPermissionInput) -> AddPackPermissionResponse:
+        """Add a permission for Pack
+
+        HTTP POST /packs/{packId}/permissions
+        """
+        params = {
+            "packId": options.pack_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["AddPackPermission"], params, AddPackPermissionResponse)
+
+    def delete(self, options: DeletePackPermissionInput) -> DeletePackPermissionResponse:
+        """Delete a permission for Pack
+
+        HTTP DELETE /packs/{packId}/permissions/{permissionId}
+        """
+        params = {
+            "packId": options.pack_id,
+            "permissionId": options.permission_id,
+        }
+        return self._client._request(OPERATIONS["DeletePackPermission"], params, DeletePackPermissionResponse)
+
+    def list(self, options: GetPackPermissionsInput) -> PackPermissionList:
+        """List permissions for a Pack
+
+        HTTP GET /packs/{packId}/permissions
+        """
+        params = {
+            "packId": options.pack_id,
+        }
+        return self._client._request(OPERATIONS["GetPackPermissions"], params, PackPermissionList)
+
+    def delete_user_pack_permission(self, options: DeleteUserPackPermissionInput) -> DeleteUserPackPermissionsResponse:
+        """Delete a user's own permissions for Pack
+
+        HTTP DELETE /packs/{packId}/permissions
+        """
+        params = {
+            "packId": options.pack_id,
+        }
+        return self._client._request(OPERATIONS["DeleteUserPackPermission"], params, DeleteUserPackPermissionsResponse)
+
+class PackInvitationsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def create(self, options: CreatePackInvitationInput) -> CreatePackInvitationResponse:
+        """Create an invitation for Pack
+
+        HTTP POST /packs/{packId}/invitations
+        """
+        params = {
+            "packId": options.pack_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["CreatePackInvitation"], params, CreatePackInvitationResponse)
+
+    def update(self, options: UpdatePackInvitationInput) -> UpdatePackInvitationResponse:
+        """Update an invitation for Pack
+
+        HTTP PUT /packs/{packId}/invitations/{invitationId}
+        """
+        params = {
+            "packId": options.pack_id,
+            "invitationId": options.invitation_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["UpdatePackInvitation"], params, UpdatePackInvitationResponse)
+
+    def delete(self, options: DeletePackInvitationInput) -> DeletePackInvitationResponse:
+        """Revoke an invitation for Pack
+
+        HTTP DELETE /packs/{packId}/invitations/{invitationId}
+        """
+        params = {
+            "packId": options.pack_id,
+            "invitationId": options.invitation_id,
+        }
+        return self._client._request(OPERATIONS["DeletePackInvitation"], params, DeletePackInvitationResponse)
+
+    def list(self, options: ListPackInvitationsInput) -> PackInvitationList:
+        """List invitations for a Pack
+
+        HTTP GET /packs/{packId}/invitations
+        """
+        params = {
+            "packId": options.pack_id,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+        }
+        return self._client._request(OPERATIONS["ListPackInvitations"], params, PackInvitationList)
+
+class PackMakersResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def create(self, options: AddPackMakerInput) -> AddPackMakerResponse:
+        """Add a maker for Pack
+
+        HTTP POST /packs/{packId}/maker
+        """
+        params = {
+            "packId": options.pack_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["AddPackMaker"], params, AddPackMakerResponse)
+
+    def delete(self, options: DeletePackMakerInput) -> DeletePackMakerResponse:
+        """Delete a maker for Pack
+
+        HTTP DELETE /packs/{packId}/maker/{loginId}
+        """
+        params = {
+            "packId": options.pack_id,
+            "loginId": options.login_id,
+        }
+        return self._client._request(OPERATIONS["DeletePackMaker"], params, DeletePackMakerResponse)
+
+    def list(self, options: ListPackMakersInput) -> ListPackMakersResponse:
+        """List makers for Pack
+
+        HTTP GET /packs/{packId}/makers
+        """
+        params = {
+            "packId": options.pack_id,
+        }
+        return self._client._request(OPERATIONS["ListPackMakers"], params, ListPackMakersResponse)
+
+class PackCategoriesResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def create(self, options: AddPackCategoryInput) -> AddPackCategoryResponse:
+        """Add a category for Pack
+
+        HTTP POST /packs/{packId}/category
+        """
+        params = {
+            "packId": options.pack_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["AddPackCategory"], params, AddPackCategoryResponse)
+
+    def delete(self, options: DeletePackCategoryInput) -> DeletePackCategoryResponse:
+        """Delete a category for Pack
+
+        HTTP DELETE /packs/{packId}/category/{categoryName}
+        """
+        params = {
+            "packId": options.pack_id,
+            "categoryName": options.category_name,
+        }
+        return self._client._request(OPERATIONS["DeletePackCategory"], params, DeletePackCategoryResponse)
+
+    def list(self, options: ListPackCategoriesInput) -> ListPackCategoriesResponse:
+        """List categories for Pack
+
+        HTTP GET /packs/{packId}/categories
+        """
+        params = {
+            "packId": options.pack_id,
+        }
+        return self._client._request(OPERATIONS["ListPackCategories"], params, ListPackCategoriesResponse)
+
+class MarketplacePackListingsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def read(self, options: GetPackListingInput) -> PackListingDetail:
+        """Get detailed listing information for a Pack.
+
+        HTTP GET /packs/{packId}/listing
+        """
+        params = {
+            "packId": options.pack_id,
+            "workspaceId": options.workspace_id,
+            "docId": options.doc_id,
+            "ingestionId": options.ingestion_id,
+            "installContext": options.install_context,
+            "releaseChannel": options.release_channel,
+        }
+        return self._client._request(OPERATIONS["GetPackListing"], params, PackListingDetail)
+
+    def list(self, options: ListPackListingsInput | None = None) -> PackListingList:
+        """List the Pack listings accessible to a user.
+
+        HTTP GET /packs/listings
+        """
+        if options is None:
+            options = ListPackListingsInput()
+        params = {
+            "packAccessTypes": options.pack_access_types,
+            "packIds": options.pack_ids,
+            "onlyWorkspaceId": options.only_workspace_id,
+            "parentWorkspaceIds": options.parent_workspace_ids,
+            "excludePublicPacks": options.exclude_public_packs,
+            "packEntrypoint": options.pack_entrypoint,
+            "certifiedAgentsOnly": options.certified_agents_only,
+            "packCategories": options.pack_categories,
+            "sortBy": options.sort_by,
+            "orderBy": options.order_by,
+            "direction": options.direction,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "installContext": options.install_context,
+        }
+        return self._client._request(OPERATIONS["ListPackListings"], params, PackListingList)
+
+class UserPackInvitationsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def list(self, options: ListUserPackInvitationsInput | None = None) -> PackInvitationWithPackList:
+        """List pending Pack invitations for the current user
+
+        HTTP GET /packs/invitations
+        """
+        if options is None:
+            options = ListUserPackInvitationsInput()
+        params = {
+            "limit": options.limit,
+            "pageToken": options.page_token,
+        }
+        return self._client._request(OPERATIONS["ListUserPackInvitations"], params, PackInvitationWithPackList)
+
+    def reply_to_pack_invitation(self, options: ReplyToPackInvitationInput) -> HandlePackInvitationResponse:
+        """Reply to a Pack invitation
+
+        HTTP POST /packs/invitations/{invitationId}/reply
+        """
+        params = {
+            "invitationId": options.invitation_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["ReplyToPackInvitation"], params, HandlePackInvitationResponse)
+
+class WorkspacesResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def list_workspace_members(self, options: ListWorkspaceMembersInput) -> WorkspaceMembersList:
+        """List workspace users
+
+        HTTP GET /workspaces/{workspaceId}/users
+        """
+        params = {
+            "workspaceId": options.workspace_id,
+            "includedRoles": options.included_roles,
+            "pageToken": options.page_token,
+        }
+        return self._client._request(OPERATIONS["ListWorkspaceMembers"], params, WorkspaceMembersList)
+
+    def change_user_role(self, options: ChangeUserRoleInput) -> ChangeRoleResponse:
+        """Updates user role
+
+        HTTP POST /workspaces/{workspaceId}/users/role
+        """
+        params = {
+            "workspaceId": options.workspace_id,
+            "payload": options.payload,
+        }
+        return self._client._request(OPERATIONS["ChangeUserRole"], params, ChangeRoleResponse)
+
+    def list_workspace_role_activity(self, options: ListWorkspaceRoleActivityInput) -> GetWorkspaceRoleActivity:
+        """List workspace roles
+
+        HTTP GET /workspaces/{workspaceId}/roles
+        """
+        params = {
+            "workspaceId": options.workspace_id,
+        }
+        return self._client._request(OPERATIONS["ListWorkspaceRoleActivity"], params, GetWorkspaceRoleActivity)
+
+class OrganizationsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def add_go_link(self, options: AddGoLinkInput) -> AddGoLinkResponse:
         """Add a go link
 
         HTTP POST /organizations/{organizationId}/goLinks
         """
         params = {
-            "organizationId": organization_id,
-            "payload": payload,
+            "organizationId": options.organization_id,
+            "payload": options.payload,
         }
-        return self._request(OPERATIONS["AddGoLink"], params)
+        return self._client._request(OPERATIONS["AddGoLink"], params, AddGoLinkResponse)
 
-    def list_agent_session_ids(self, *, tenant_id: Any, agent_instance_id: Any, limit: Any = None, page_token: Any = None, agent_session_id: Any = None, log_types: Any = None, before_timestamp: Any = None, after_timestamp: Any = None, order: Any = None, q: Any = None, request_ids: Any = None) -> Any:
+class AnalyticsResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def list_doc_analytics(self, options: ListDocAnalyticsInput | None = None) -> DocAnalyticsCollection:
+        """List doc analytics
+
+        HTTP GET /analytics/docs
+        """
+        if options is None:
+            options = ListDocAnalyticsInput()
+        params = {
+            "docIds": options.doc_ids,
+            "workspaceId": options.workspace_id,
+            "query": options.query,
+            "isPublished": options.is_published,
+            "sinceDate": options.since_date,
+            "untilDate": options.until_date,
+            "scale": options.scale,
+            "pageToken": options.page_token,
+            "orderBy": options.order_by,
+            "direction": options.direction,
+            "limit": options.limit,
+        }
+        return self._client._request(OPERATIONS["ListDocAnalytics"], params, DocAnalyticsCollection)
+
+    def list_page_analytics(self, options: ListPageAnalyticsInput) -> PageAnalyticsCollection:
+        """List page analytics
+
+        HTTP GET /analytics/docs/{docId}/pages
+        """
+        params = {
+            "docId": options.doc_id,
+            "sinceDate": options.since_date,
+            "untilDate": options.until_date,
+            "pageToken": options.page_token,
+            "limit": options.limit,
+        }
+        return self._client._request(OPERATIONS["ListPageAnalytics"], params, PageAnalyticsCollection)
+
+    def list_doc_analytics_summary(self, options: ListDocAnalyticsSummaryInput | None = None) -> DocAnalyticsSummary:
+        """Get doc analytics summary
+
+        HTTP GET /analytics/docs/summary
+        """
+        if options is None:
+            options = ListDocAnalyticsSummaryInput()
+        params = {
+            "isPublished": options.is_published,
+            "sinceDate": options.since_date,
+            "untilDate": options.until_date,
+            "workspaceId": options.workspace_id,
+        }
+        return self._client._request(OPERATIONS["ListDocAnalyticsSummary"], params, DocAnalyticsSummary)
+
+    def list_pack_analytics(self, options: ListPackAnalyticsInput | None = None) -> PackAnalyticsCollection:
+        """List Pack analytics
+
+        HTTP GET /analytics/packs
+        """
+        if options is None:
+            options = ListPackAnalyticsInput()
+        params = {
+            "packIds": options.pack_ids,
+            "workspaceId": options.workspace_id,
+            "query": options.query,
+            "sinceDate": options.since_date,
+            "untilDate": options.until_date,
+            "scale": options.scale,
+            "pageToken": options.page_token,
+            "orderBy": options.order_by,
+            "direction": options.direction,
+            "isPublished": options.is_published,
+            "limit": options.limit,
+        }
+        return self._client._request(OPERATIONS["ListPackAnalytics"], params, PackAnalyticsCollection)
+
+    def list_pack_analytics_summary(self, options: ListPackAnalyticsSummaryInput | None = None) -> PackAnalyticsSummary:
+        """Get Pack analytics summary
+
+        HTTP GET /analytics/packs/summary
+        """
+        if options is None:
+            options = ListPackAnalyticsSummaryInput()
+        params = {
+            "packIds": options.pack_ids,
+            "workspaceId": options.workspace_id,
+            "isPublished": options.is_published,
+            "sinceDate": options.since_date,
+            "untilDate": options.until_date,
+        }
+        return self._client._request(OPERATIONS["ListPackAnalyticsSummary"], params, PackAnalyticsSummary)
+
+    def list_pack_formula_analytics(self, options: ListPackFormulaAnalyticsInput) -> PackFormulaAnalyticsCollection:
+        """List Pack formula analytics
+
+        HTTP GET /analytics/packs/{packId}/formulas
+        """
+        params = {
+            "packFormulaNames": options.pack_formula_names,
+            "packFormulaTypes": options.pack_formula_types,
+            "packId": options.pack_id,
+            "sinceDate": options.since_date,
+            "untilDate": options.until_date,
+            "scale": options.scale,
+            "pageToken": options.page_token,
+            "orderBy": options.order_by,
+            "direction": options.direction,
+            "limit": options.limit,
+        }
+        return self._client._request(OPERATIONS["ListPackFormulaAnalytics"], params, PackFormulaAnalyticsCollection)
+
+    def get_analytics_last_updated(self, options: GetAnalyticsLastUpdatedInput | None = None) -> AnalyticsLastUpdatedResponse:
+        """Get analytics last updated day
+
+        HTTP GET /analytics/updated
+        """
+        if options is None:
+            options = GetAnalyticsLastUpdatedInput()
+        params = {}
+        return self._client._request(OPERATIONS["GetAnalyticsLastUpdated"], params, AnalyticsLastUpdatedResponse)
+
+class AgentInstancesResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def list_agent_session_ids(self, options: ListAgentSessionIdsInput) -> PackLogsList:
         """Retrieve the chat sessions of an agent instance.
 
         HTTP GET /go/tenants/{tenantId}/agentInstances/{agentInstanceId}/agentSessionIds
         """
         params = {
-            "tenantId": tenant_id,
-            "agentInstanceId": agent_instance_id,
-            "limit": limit,
-            "pageToken": page_token,
-            "agentSessionId": agent_session_id,
-            "logTypes": log_types,
-            "beforeTimestamp": before_timestamp,
-            "afterTimestamp": after_timestamp,
-            "order": order,
-            "q": q,
-            "requestIds": request_ids,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "tenantId": options.tenant_id,
+            "agentInstanceId": options.agent_instance_id,
+            "agentSessionId": options.agent_session_id,
+            "logTypes": options.log_types,
+            "beforeTimestamp": options.before_timestamp,
+            "afterTimestamp": options.after_timestamp,
+            "order": options.order,
+            "q": options.q,
+            "requestIds": options.request_ids,
         }
-        return self._request(OPERATIONS["ListAgentSessionIds"], params)
+        return self._client._request(OPERATIONS["ListAgentSessionIds"], params, PackLogsList)
 
-    def list_agent_logs(self, *, tenant_id: Any, agent_instance_id: Any, limit: Any = None, page_token: Any = None, log_types: Any = None, agent_session_id: Any = None, before_timestamp: Any = None, after_timestamp: Any = None, order: Any = None, q: Any = None, request_ids: Any = None) -> Any:
+    def list_agent_logs(self, options: ListAgentLogsInput) -> PackLogsList:
         """Retrieve the logs of an agent instance.
 
         HTTP GET /go/tenants/{tenantId}/agentInstances/{agentInstanceId}/logs
         """
         params = {
-            "tenantId": tenant_id,
-            "agentInstanceId": agent_instance_id,
-            "limit": limit,
-            "pageToken": page_token,
-            "logTypes": log_types,
-            "agentSessionId": agent_session_id,
-            "beforeTimestamp": before_timestamp,
-            "afterTimestamp": after_timestamp,
-            "order": order,
-            "q": q,
-            "requestIds": request_ids,
+            "limit": options.limit,
+            "pageToken": options.page_token,
+            "tenantId": options.tenant_id,
+            "agentInstanceId": options.agent_instance_id,
+            "logTypes": options.log_types,
+            "agentSessionId": options.agent_session_id,
+            "beforeTimestamp": options.before_timestamp,
+            "afterTimestamp": options.after_timestamp,
+            "order": options.order,
+            "q": options.q,
+            "requestIds": options.request_ids,
         }
-        return self._request(OPERATIONS["ListAgentLogs"], params)
+        return self._client._request(OPERATIONS["ListAgentLogs"], params, PackLogsList)
 
-    def get_agent_pack_log_details(self, *, tenant_id: Any, agent_instance_id: Any, log_id: Any, details_key: Any) -> Any:
+    def get_agent_pack_log_details(self, options: GetAgentPackLogDetailsInput) -> GetAgentPackLogDetailsOutput:
         """Retrieve the information for a specific log.
 
         HTTP GET /go/tenants/{tenantId}/agentInstances/{agentInstanceId}/logs/{logId}
         """
         params = {
-            "tenantId": tenant_id,
-            "agentInstanceId": agent_instance_id,
-            "logId": log_id,
-            "detailsKey": details_key,
+            "tenantId": options.tenant_id,
+            "agentInstanceId": options.agent_instance_id,
+            "logId": options.log_id,
+            "detailsKey": options.details_key,
         }
-        return self._request(OPERATIONS["GetAgentPackLogDetails"], params)
+        return self._client._request(OPERATIONS["GetAgentPackLogDetails"], params, GetAgentPackLogDetailsOutput)
+
+class MutationStatusResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def read(self, options: GetMutationStatusInput) -> MutationStatus:
+        """Get mutation status
+
+        HTTP GET /mutationStatus/{requestId}
+        """
+        params = {
+            "requestId": options.request_id,
+        }
+        return self._client._request(OPERATIONS["GetMutationStatus"], params, MutationStatus)
+
+class CustomDocDomainProvidersResourceClient:
+    def __init__(self, client: Any) -> None:
+        self._client = client
+
+    def read(self, options: GetCustomDocDomainProviderInput) -> CustomDocDomainProviderResponse:
+        """Gets custom doc domains providers
+
+        HTTP GET /domains/provider/{customDocDomain}
+        """
+        params = {
+            "customDocDomain": options.custom_doc_domain,
+        }
+        return self._client._request(OPERATIONS["GetCustomDocDomainProvider"], params, CustomDocDomainProviderResponse)
+
+
+class GeneratedServiceClientMixin:
+
+    def whoami(self, options: WhoamiInput | None = None) -> User:
+        """Get user info
+
+        HTTP GET /whoami
+        """
+        if options is None:
+            options = WhoamiInput()
+        params = {}
+        return self._request(OPERATIONS["Whoami"], params, User)
+
+    def resolve_browser_link(self, options: ResolveBrowserLinkInput) -> ApiLink:
+        """Resolve browser link
+
+        HTTP GET /resolveBrowserLink
+        """
+        params = {
+            "url": options.url,
+            "degradeGracefully": options.degrade_gracefully,
+        }
+        return self._request(OPERATIONS["ResolveBrowserLink"], params, ApiLink)
+
+    def categories(self) -> CategoriesResourceClient:
+        return CategoriesResourceClient(self)
+
+    def docs(self) -> DocsResourceClient:
+        return DocsResourceClient(self)
+
+    def tables(self) -> TablesResourceClient:
+        return TablesResourceClient(self)
+
+    def folders(self) -> FoldersResourceClient:
+        return FoldersResourceClient(self)
+
+    def packs(self) -> PacksResourceClient:
+        return PacksResourceClient(self)
+
+    def marketplace_pack_listings(self) -> MarketplacePackListingsResourceClient:
+        return MarketplacePackListingsResourceClient(self)
+
+    def user_pack_invitations(self) -> UserPackInvitationsResourceClient:
+        return UserPackInvitationsResourceClient(self)
+
+    def workspaces(self) -> WorkspacesResourceClient:
+        return WorkspacesResourceClient(self)
+
+    def organizations(self) -> OrganizationsResourceClient:
+        return OrganizationsResourceClient(self)
+
+    def analytics(self) -> AnalyticsResourceClient:
+        return AnalyticsResourceClient(self)
+
+    def agent_instances(self) -> AgentInstancesResourceClient:
+        return AgentInstancesResourceClient(self)
+
+    def mutation_status(self) -> MutationStatusResourceClient:
+        return MutationStatusResourceClient(self)
+
+    def custom_doc_domain_providers(self) -> CustomDocDomainProvidersResourceClient:
+        return CustomDocDomainProvidersResourceClient(self)

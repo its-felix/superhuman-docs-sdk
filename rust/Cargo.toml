@@ -2,10 +2,14 @@
 name = "superhuman-docs"
 version = "0.2.0"
 edition = "2021"
-description = "Rust SDK request builders for the Superhuman Docs API"
+description = "Typed Rust SDK for the Superhuman Docs API"
 license = "MIT"
 repository = "https://github.com/its-felix/superhuman-docs-sdk"
 
 [lib]
 name = "superhuman_docs"
 path = "src/lib.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

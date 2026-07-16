@@ -907,7 +907,7 @@ operation GetAgentPackLogDetails {
 structure AddPackCategoryInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -917,7 +917,7 @@ structure AddPackCategoryInput {
 structure AddPackMakerInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -927,7 +927,7 @@ structure AddPackMakerInput {
 structure AddPackPermissionInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -937,7 +937,7 @@ structure AddPackPermissionInput {
 structure CancelPackReviewInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure CreatePackInput {
@@ -949,7 +949,7 @@ structure CreatePackInput {
 structure CreatePackInvitationInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -959,7 +959,7 @@ structure CreatePackInvitationInput {
 structure CreatePackReleaseInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -969,7 +969,7 @@ structure CreatePackReleaseInput {
 structure CreatePackReviewInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -979,7 +979,7 @@ structure CreatePackReviewInput {
 structure DeletePackCategoryInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -989,13 +989,13 @@ structure DeletePackCategoryInput {
 structure DeletePackInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure DeletePackInvitationInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1005,13 +1005,13 @@ structure DeletePackInvitationInput {
 structure DeletePackListingDraftInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure DeletePackMakerInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1021,7 +1021,7 @@ structure DeletePackMakerInput {
 structure DeletePackPermissionInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1031,7 +1031,7 @@ structure DeletePackPermissionInput {
 structure DeleteUserPackPermissionInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure GetAgentPackLogDetailsInput {
@@ -1060,7 +1060,7 @@ structure GetAgentPackLogDetailsOutput {
 structure GetNextPackVersionInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     payload: GetNextPackVersionPayload
@@ -1069,25 +1069,25 @@ structure GetNextPackVersionInput {
 structure GetPackConfigurationSchemaInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure GetPackInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure GetPackListingDraftInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure GetPackListingInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpQuery("workspaceId")
     workspaceId: String
@@ -1108,7 +1108,7 @@ structure GetPackListingInput {
 structure GetPackLogDetailsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1135,19 +1135,19 @@ structure GetPackLogDetailsOutput {
 structure GetPackOauthConfigInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure GetPackPermissionsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure GetPackSourceCodeInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1157,7 +1157,7 @@ structure GetPackSourceCodeInput {
 structure GetPackSystemConnectionInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure GetPackSystemConnectionOutput {
@@ -1168,7 +1168,7 @@ structure GetPackSystemConnectionOutput {
 structure GetPackVersionDiffsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1288,7 +1288,7 @@ list ListAgentSessionIdsRequestIds {
 structure ListGroupedIngestionLogsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpQuery("limit")
     limit: Integer
@@ -1331,7 +1331,7 @@ enum ListGroupedIngestionLogsOrder {
 structure ListGroupedPackLogsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpQuery("limit")
     limit: Integer
@@ -1367,7 +1367,7 @@ enum ListGroupedPackLogsOrder {
 structure ListIngestionBatchExecutionsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1405,7 +1405,7 @@ structure ListIngestionBatchExecutionsInput {
 structure ListIngestionLogsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpQuery("limit")
     limit: Integer
@@ -1468,7 +1468,7 @@ list ListIngestionLogsRequestIds {
 structure ListIngestionParentItemsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1499,19 +1499,19 @@ structure ListIngestionParentItemsInput {
 structure ListPackCategoriesInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure ListPackFeaturedDocsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure ListPackInvitationsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpQuery("limit")
     limit: Integer
@@ -1579,7 +1579,7 @@ list ListPackListingsParentWorkspaceIds {
 structure ListPackLogsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpQuery("limit")
     limit: Integer
@@ -1629,13 +1629,13 @@ list ListPackLogsRequestIds {
 structure ListPackMakersInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 }
 
 structure ListPackReleasesInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpQuery("limit")
     limit: Integer
@@ -1647,7 +1647,7 @@ structure ListPackReleasesInput {
 structure ListPackReviewsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpQuery("limit")
     limit: Integer
@@ -1662,7 +1662,7 @@ structure ListPackReviewsInput {
 structure ListPackVersionsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpQuery("limit")
     limit: Integer
@@ -1722,7 +1722,7 @@ structure ListUserPackInvitationsInput {
 structure PackAssetUploadCompleteInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1736,7 +1736,7 @@ structure PackAssetUploadCompleteInput {
 structure PackSourceCodeUploadCompleteInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1750,7 +1750,7 @@ structure PackSourceCodeUploadCompleteInput {
 structure PackVersionUploadCompleteInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1764,7 +1764,7 @@ structure PackVersionUploadCompleteInput {
 structure PatchPackSystemConnectionInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -1779,7 +1779,7 @@ structure PatchPackSystemConnectionOutput {
 structure RegisterPackVersionInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1803,7 +1803,7 @@ structure ReplyToPackInvitationInput {
 structure SetPackOauthConfigInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -1813,7 +1813,7 @@ structure SetPackOauthConfigInput {
 structure SetPackSystemConnectionInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -1828,7 +1828,7 @@ structure SetPackSystemConnectionOutput {
 structure UpdatePackFeaturedDocsInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -1838,7 +1838,7 @@ structure UpdatePackFeaturedDocsInput {
 structure UpdatePackInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -1848,7 +1848,7 @@ structure UpdatePackInput {
 structure UpdatePackInvitationInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
@@ -1862,11 +1862,11 @@ structure UpdatePackInvitationInput {
 structure UpdatePackReleaseInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpLabel
     @required
-    packReleaseId: Integer
+    packReleaseId: String
 
     @httpPayload
     @required
@@ -1876,7 +1876,7 @@ structure UpdatePackReleaseInput {
 structure UploadPackAssetInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -1886,7 +1886,7 @@ structure UploadPackAssetInput {
 structure UploadPackSourceCodeInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required
@@ -1896,7 +1896,7 @@ structure UploadPackSourceCodeInput {
 structure UpsertPackListingDraftInput {
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpPayload
     @required

@@ -16,22 +16,34 @@ import (
 const DefaultBaseURL = "https://coda.io/apis/v1"
 
 type Client struct {
-	BaseURL    string
-	Token      string
-	HTTPClient *http.Client
-	UserAgent  string
-	Headers    http.Header
+	BaseURL   string
+	Token     string
+	Sender    RequestSender
+	UserAgent string
+	Headers   http.Header
+}
+
+// RequestSender is the transport hook used by Client.SendRequest.
+// Implementations can add tracing, retries, fixtures, or a non-standard transport.
+type RequestSender interface {
+	Do(*http.Request) (*http.Response, error)
+}
+
+type RequestSenderFunc func(*http.Request) (*http.Response, error)
+
+func (f RequestSenderFunc) Do(request *http.Request) (*http.Response, error) {
+	return f(request)
 }
 
 type Option func(*Client)
 
 func NewClient(token string, opts ...Option) *Client {
 	c := &Client{
-		BaseURL:    DefaultBaseURL,
-		Token:      token,
-		HTTPClient: http.DefaultClient,
-		UserAgent:  "superhuman-docs-go/0.2.0",
-		Headers:    make(http.Header),
+		BaseURL:   DefaultBaseURL,
+		Token:     token,
+		Sender:    http.DefaultClient,
+		UserAgent: "superhuman-docs-go/0.2.0",
+		Headers:   make(http.Header),
 	}
 	for _, opt := range opts {
 		opt(c)
@@ -45,11 +57,9 @@ func WithBaseURL(baseURL string) Option {
 	}
 }
 
-func WithHTTPClient(httpClient *http.Client) Option {
+func WithRequestSender(sender RequestSender) Option {
 	return func(c *Client) {
-		if httpClient != nil {
-			c.HTTPClient = httpClient
-		}
+		c.Sender = sender
 	}
 }
 
@@ -82,9 +92,6 @@ func (e *APIError) Error() string {
 func (c *Client) do(ctx context.Context, method, path string, query url.Values, payload any, out any) error {
 	if c == nil {
 		return errors.New("superhuman docs: nil client")
-	}
-	if c.HTTPClient == nil {
-		c.HTTPClient = http.DefaultClient
 	}
 	endpoint, err := c.endpoint(path)
 	if err != nil {
@@ -123,9 +130,15 @@ func (c *Client) do(ctx context.Context, method, path string, query url.Values, 
 		}
 	}
 
-	resp, err := c.HTTPClient.Do(req)
+	resp, err := c.SendRequest(req)
 	if err != nil {
 		return err
+	}
+	if resp == nil {
+		return errors.New("superhuman docs: request sender returned a nil response")
+	}
+	if resp.Body == nil {
+		resp.Body = http.NoBody
 	}
 	defer resp.Body.Close()
 
@@ -164,6 +177,19 @@ func (c *Client) do(ctx context.Context, method, path string, query url.Values, 
 	return nil
 }
 
+// SendRequest is the single transport boundary used by all generated operations.
+// It uses the configured RequestSender, falling back to the standard HTTP client.
+func (c *Client) SendRequest(request *http.Request) (*http.Response, error) {
+	if c == nil {
+		return nil, errors.New("superhuman docs: nil client")
+	}
+	sender := c.Sender
+	if sender == nil {
+		sender = http.DefaultClient
+	}
+	return sender.Do(request)
+}
+
 func (c *Client) endpoint(path string) (*url.URL, error) {
 	base := DefaultBaseURL
 	if c.BaseURL != "" {
@@ -173,12 +199,20 @@ func (c *Client) endpoint(path string) (*url.URL, error) {
 	if err != nil {
 		return nil, err
 	}
-	u.Path = strings.TrimRight(u.Path, "/") + "/" + strings.TrimLeft(path, "/")
+	// The generated path already escapes label values. Keep that escaped path in
+	// RawPath so URL.String does not turn `%2F` into `%252F`.
+	escapedPath := strings.TrimRight(u.EscapedPath(), "/") + "/" + strings.TrimLeft(path, "/")
+	decodedPath, err := url.PathUnescape(escapedPath)
+	if err != nil {
+		return nil, err
+	}
+	u.Path = decodedPath
+	u.RawPath = escapedPath
 	return u, nil
 }
 
 func addQueryValue(values url.Values, name string, value any) {
-	if value == nil {
+	if isNilValue(value) {
 		return
 	}
 	switch v := value.(type) {

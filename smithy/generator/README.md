@@ -18,7 +18,6 @@ package identifiers cannot contain hyphens.
 - `superhuman-docs-go-codegen`
 - `superhuman-docs-rust-codegen`
 - `superhuman-docs-zig-codegen`
-- `superhuman-docs-client-codegen`, a compatibility plugin that runs all targets
 
 Smithy-Build plugin entries are the native way to choose targets. To generate a
 single SDK, run a projection that contains only that target plugin.
@@ -48,9 +47,8 @@ The repository helper supports the same target split:
 ## Structure
 
 - `TargetCodegenPlugin` adapts a target generator to Smithy's `SmithyBuildPlugin`.
-- `MarkdownSdkGenerator`, `PythonSdkGenerator`, `GoSdkGenerator`, and
-  `ZigSdkGenerator` each write one target's artifacts.
-- `SuperhumanDocsCodegenPlugin` keeps the previous all-target plugin behavior.
+- `MarkdownSdkGenerator`, `PythonSdkGenerator`, `GoSdkGenerator`,
+  `RustSdkGenerator`, and `ZigSdkGenerator` each write one target's artifacts.
 - `PythonRenderer`, `GoRenderer`, `RustRenderer`, and `ZigRenderer` contain
   target-specific rendering routines.
 - `SdkCodegen` contains shared Smithy model helpers.

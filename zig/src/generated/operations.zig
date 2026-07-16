@@ -6,6 +6,1653 @@ const core = @import("../core.zig");
 const Allocator = std.mem.Allocator;
 
 pub const operation_count = 124;
+pub const ClientOptions = core.ClientOptions;
+pub const Transport = core.Transport;
+
+pub const AccessType = enum {
+    readonly,
+    write,
+    comment,
+    none,
+};
+
+pub const AccessTypeNotNone = enum {
+    readonly,
+    write,
+    comment,
+};
+
+pub const Acl = struct {
+    items: AclItems,
+    href: []const u8,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const AclItems = []const Permission;
+
+pub const AclSettings = struct {
+    allowEditorsToChangePermissions: bool,
+    allowCopying: bool,
+    allowViewersToRequestEditing: bool,
+};
+
+pub const AddCustomDocDomainInput = struct {
+    docId: []const u8,
+    payload: AddCustomDocDomainPayload,
+};
+
+pub const AddCustomDocDomainPayload = struct {
+    customDocDomain: []const u8,
+};
+
+pub const AddCustomDocDomainResponse = struct {
+};
+
+pub const AddGoLinkInput = struct {
+    organizationId: []const u8,
+    payload: AddGoLinkPayload,
+};
+
+pub const AddGoLinkPayload = struct {
+    name: []const u8,
+    destinationUrl: []const u8,
+    description: ?[]const u8 = null,
+    urlPattern: ?[]const u8 = null,
+    creatorEmail: ?[]const u8 = null,
+};
+
+pub const AddGoLinkResponse = struct {
+};
+
+pub const AddPackCategoryInput = struct {
+    packId: PackId,
+    payload: AddPackCategoryPayload,
+};
+
+pub const AddPackCategoryPayload = struct {
+    categoryName: []const u8,
+};
+
+pub const AddPackCategoryResponse = struct {
+};
+
+pub const AddPackMakerInput = struct {
+    packId: PackId,
+    payload: AddPackMakerPayload,
+};
+
+pub const AddPackMakerPayload = struct {
+    loginId: []const u8,
+};
+
+pub const AddPackMakerResponse = struct {
+};
+
+pub const AddPackPermissionInput = struct {
+    packId: PackId,
+    payload: AddPackPermissionPayload,
+};
+
+pub const AddPackPermissionPayload = struct {
+    principal: PackPrincipal,
+    access: PackAccessType,
+};
+
+pub const AddPackPermissionResponse = struct {
+    permissionId: []const u8,
+};
+
+pub const AddPermissionInput = struct {
+    docId: []const u8,
+    payload: AddPermissionPayload,
+};
+
+pub const AddPermissionPayload = struct {
+    access: AccessTypeNotNone,
+    principal: AddedPrincipal,
+    suppressEmail: ?bool = null,
+};
+
+pub const AddPermissionResponse = struct {
+};
+
+pub const AddedAnyonePrincipal = struct {
+    type: AddedAnyonePrincipalType,
+};
+
+pub const AddedAnyonePrincipalType = enum {
+    anyone,
+};
+
+pub const AddedDomainPrincipal = struct {
+    type: AddedDomainPrincipalType,
+    domain: []const u8,
+};
+
+pub const AddedDomainPrincipalType = enum {
+    domain,
+};
+
+pub const AddedEmailPrincipal = struct {
+    type: AddedEmailPrincipalType,
+    email: []const u8,
+};
+
+pub const AddedEmailPrincipalType = enum {
+    email,
+};
+
+pub const AddedGroupPrincipal = struct {
+    type: AddedGroupPrincipalType,
+    groupId: []const u8,
+};
+
+pub const AddedGroupPrincipalType = enum {
+    group,
+};
+
+pub const AddedPrincipal = union(enum) {
+    addedEmailPrincipal: AddedEmailPrincipal,
+    addedGroupPrincipal: AddedGroupPrincipal,
+    addedDomainPrincipal: AddedDomainPrincipal,
+    addedWorkspacePrincipal: AddedWorkspacePrincipal,
+    addedAnyonePrincipal: AddedAnyonePrincipal,
+};
+
+pub const AddedWorkspacePrincipal = struct {
+    type: AddedWorkspacePrincipalType,
+    workspaceId: []const u8,
+};
+
+pub const AddedWorkspacePrincipalType = enum {
+    workspace,
+};
+
+pub const AnalyticsLastUpdatedResponse = struct {
+    docAnalyticsLastUpdated: []const u8,
+    packAnalyticsLastUpdated: []const u8,
+    packFormulaAnalyticsLastUpdated: []const u8,
+};
+
+pub const AnalyticsScale = enum {
+    daily,
+    cumulative,
+};
+
+pub const AnyonePrincipal = struct {
+    type: AnyonePrincipalType,
+};
+
+pub const AnyonePrincipalType = enum {
+    anyone,
+};
+
+pub const ApiLink = struct {
+    type: ApiLinkType,
+    href: []const u8,
+    browserLink: ?[]const u8 = null,
+    resource: ApiLinkResolvedResource,
+};
+
+pub const ApiLinkResolvedResource = struct {
+    type: Type,
+    id: []const u8,
+    name: ?[]const u8 = null,
+    href: []const u8,
+};
+
+pub const ApiLinkType = enum {
+    apiLink,
+};
+
+pub const BadRequestError = struct {
+    statusCode: f64,
+    statusMessage: []const u8,
+    message: []const u8,
+};
+
+pub const BadRequestWithValidationErrors = struct {
+    statusCode: f64,
+    statusMessage: []const u8,
+    message: []const u8,
+    codaDetail: ?BadRequestWithValidationErrorsCodaDetail = null,
+};
+
+pub const BadRequestWithValidationErrorsCodaDetail = struct {
+    validationErrors: ?BadRequestWithValidationErrorsCodaDetailValidationErrors = null,
+};
+
+pub const BadRequestWithValidationErrorsCodaDetailValidationErrors = []const ValidationError;
+
+pub const BeginPageContentExportInput = struct {
+    docId: []const u8,
+    pageIdOrName: []const u8,
+    payload: BeginPageContentExportPayload,
+};
+
+pub const BeginPageContentExportPayload = struct {
+    outputFormat: PageContentOutputFormat,
+};
+
+pub const BeginPageContentExportResponse = struct {
+    id: []const u8,
+    status: []const u8,
+    href: []const u8,
+};
+
+pub const BundledPackPlan = struct {
+    packPlanId: []const u8,
+    packId: PackId,
+    pricing: BundledPackPlanPricing,
+    createdAt: []const u8,
+};
+
+pub const BundledPackPlanPricing = struct {
+    type: BundledPackPlanPricingType,
+    minimumFeatureSet: PaidFeatureSet,
+};
+
+pub const BundledPackPlanPricingType = enum {
+    BundledWithTier,
+};
+
+pub const ButtonColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    label: ?[]const u8 = null,
+    disableIf: ?[]const u8 = null,
+    action: ?[]const u8 = null,
+};
+
+pub const CancelPackReviewInput = struct {
+    packId: PackId,
+};
+
+pub const CancelPackReviewResponse = struct {
+};
+
+pub const CellEdit = struct {
+    column: []const u8,
+    value: Value,
+};
+
+pub const CellValue = union(enum) {
+    value: Value,
+    richValue: RichValue,
+};
+
+pub const ChangeRole = struct {
+    email: []const u8,
+    newRole: WorkspaceUserRole,
+};
+
+pub const ChangeRoleResponse = struct {
+    roleChangedAt: []const u8,
+};
+
+pub const ChangeUserRoleInput = struct {
+    workspaceId: []const u8,
+    payload: ChangeRole,
+};
+
+pub const CheckboxColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    displayType: CheckboxDisplayType,
+};
+
+pub const CheckboxDisplayType = enum {
+    toggle,
+    check,
+};
+
+pub const Column = struct {
+    id: []const u8,
+    type: ColumnType,
+    href: []const u8,
+    name: []const u8,
+    display: ?bool = null,
+    calculated: ?bool = null,
+    formula: ?[]const u8 = null,
+    defaultValue: ?[]const u8 = null,
+    format: ColumnFormat,
+};
+
+pub const ColumnDetail = struct {
+    id: []const u8,
+    type: ColumnDetailType,
+    href: []const u8,
+    name: []const u8,
+    display: ?bool = null,
+    calculated: ?bool = null,
+    formula: ?[]const u8 = null,
+    defaultValue: ?[]const u8 = null,
+    format: ColumnFormat,
+    parent: TableReference,
+};
+
+pub const ColumnDetailType = enum {
+    column,
+};
+
+pub const ColumnFormat = union(enum) {
+    buttonColumnFormat: ButtonColumnFormat,
+    checkboxColumnFormat: CheckboxColumnFormat,
+    dateColumnFormat: DateColumnFormat,
+    dateTimeColumnFormat: DateTimeColumnFormat,
+    durationColumnFormat: DurationColumnFormat,
+    emailColumnFormat: EmailColumnFormat,
+    linkColumnFormat: LinkColumnFormat,
+    currencyColumnFormat: CurrencyColumnFormat,
+    imageReferenceColumnFormat: ImageReferenceColumnFormat,
+    numericColumnFormat: NumericColumnFormat,
+    referenceColumnFormat: ReferenceColumnFormat,
+    selectColumnFormat: SelectColumnFormat,
+    simpleColumnFormat: SimpleColumnFormat,
+    scaleColumnFormat: ScaleColumnFormat,
+    sliderColumnFormat: SliderColumnFormat,
+    timeColumnFormat: TimeColumnFormat,
+};
+
+pub const ColumnFormatType = enum {
+    text,
+    person,
+    lookup,
+    number,
+    percent,
+    currency,
+    date,
+    dateTime,
+    time,
+    duration,
+    email,
+    link,
+    slider,
+    scale,
+    image,
+    imageReference,
+    attachments,
+    button,
+    checkbox,
+    select,
+    packObject,
+    reaction,
+    canvas,
+    other,
+};
+
+pub const ColumnList = struct {
+    items: ColumnListItems,
+    href: ?[]const u8 = null,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const ColumnListItems = []const Column;
+
+pub const ColumnReference = struct {
+    id: []const u8,
+    type: ColumnReferenceType,
+    href: []const u8,
+};
+
+pub const ColumnReferenceType = enum {
+    column,
+};
+
+pub const ColumnType = enum {
+    column,
+};
+
+pub const Control = struct {
+    id: []const u8,
+    type: ControlResourceType,
+    href: []const u8,
+    name: []const u8,
+    parent: ?PageReference = null,
+    controlType: ControlType,
+    value: Value,
+};
+
+pub const ControlList = struct {
+    items: ControlListItems,
+    href: ?[]const u8 = null,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const ControlListItems = []const ControlReference;
+
+pub const ControlReference = struct {
+    id: []const u8,
+    type: ControlReferenceType,
+    href: []const u8,
+    name: []const u8,
+    parent: ?PageReference = null,
+};
+
+pub const ControlReferenceType = enum {
+    control,
+};
+
+pub const ControlResourceType = enum {
+    control,
+};
+
+pub const ControlType = enum {
+    aiBlock,
+    button,
+    checkbox,
+    datePicker,
+    dateRangePicker,
+    dateTimePicker,
+    lookup,
+    multiselect,
+    select,
+    scale,
+    slider,
+    reaction,
+    textbox,
+    timePicker,
+};
+
+pub const CreateDocInput = struct {
+    payload: DocCreate,
+};
+
+pub const CreateFolderInput = struct {
+    payload: CreateFolderPayload,
+};
+
+pub const CreateFolderPayload = struct {
+    name: []const u8,
+    workspaceId: []const u8,
+    description: ?[]const u8 = null,
+};
+
+pub const CreatePackInput = struct {
+    payload: CreatePackPayload,
+};
+
+pub const CreatePackInvitationInput = struct {
+    packId: PackId,
+    payload: CreatePackInvitationPayload,
+};
+
+pub const CreatePackInvitationPayload = struct {
+    email: []const u8,
+    access: PackAccessType,
+};
+
+pub const CreatePackInvitationResponse = struct {
+    invitationId: []const u8,
+};
+
+pub const CreatePackPayload = struct {
+    workspaceId: ?[]const u8 = null,
+    name: ?[]const u8 = null,
+    description: ?[]const u8 = null,
+    sourcePackId: ?f64 = null,
+};
+
+pub const CreatePackReleaseInput = struct {
+    packId: PackId,
+    payload: CreatePackReleasePayload,
+};
+
+pub const CreatePackReleasePayload = struct {
+    packVersion: []const u8,
+    releaseNotes: ?[]const u8 = null,
+};
+
+pub const CreatePackResponse = struct {
+    packId: PackId,
+};
+
+pub const CreatePackReviewInput = struct {
+    packId: PackId,
+    payload: CreatePackReviewPayload,
+};
+
+pub const CreatePackReviewPayload = struct {
+    packVersion: ?[]const u8 = null,
+    releaseNotes: ?[]const u8 = null,
+};
+
+pub const CreatePackReviewResponse = struct {
+    packReviewId: []const u8,
+};
+
+pub const CreatePackVersionRequest = struct {
+    notes: ?[]const u8 = null,
+    source: ?PackSource = null,
+    allowOlderSdkVersion: ?bool = null,
+};
+
+pub const CreatePackVersionResponse = struct {
+    deprecationWarnings: ?CreatePackVersionResponseDeprecationWarnings = null,
+};
+
+pub const CreatePackVersionResponseDeprecationWarnings = []const ValidationError;
+
+pub const CreatePageInput = struct {
+    docId: []const u8,
+    payload: PageCreate,
+};
+
+pub const CurrencyAmount = union(enum) {
+    variant1: []const u8,
+    variant2: f64,
+};
+
+pub const CurrencyColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    currencyCode: ?[]const u8 = null,
+    precision: ?i32 = null,
+    format: ?CurrencyFormatType = null,
+};
+
+pub const CurrencyFormatType = enum {
+    currency,
+    accounting,
+    financial,
+};
+
+pub const CurrencyValue = struct {
+    @"@context": []const u8,
+    @"@type": CurrencyValueType,
+    additionalType: ?[]const u8 = null,
+    currency: []const u8,
+    amount: CurrencyAmount,
+};
+
+pub const CurrencyValueType = enum {
+    MonetaryAmount,
+};
+
+pub const CustomDocDomain = struct {
+    customDocDomain: []const u8,
+    hasCertificate: bool,
+    hasDnsDocId: bool,
+    setupStatus: CustomDocDomainSetupStatus,
+    domainStatus: CustomDomainConnectedStatus,
+    lastVerifiedTimestamp: ?[]const u8 = null,
+};
+
+pub const CustomDocDomainList = struct {
+    customDocDomains: CustomDocDomainListCustomDocDomains,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const CustomDocDomainListCustomDocDomains = []const CustomDocDomain;
+
+pub const CustomDocDomainProvider = enum {
+    GoDaddy,
+    Namecheap,
+    @"Hover (Tucows)",
+    @"Network Solutions",
+    @"Google Domains",
+    Other,
+};
+
+pub const CustomDocDomainProviderResponse = struct {
+    provider: CustomDocDomainProvider,
+};
+
+pub const CustomDocDomainSetupStatus = enum {
+    pending,
+    succeeded,
+    failed,
+};
+
+pub const CustomDomainConnectedStatus = enum {
+    connected,
+    notConnected,
+};
+
+pub const DateColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    format: ?[]const u8 = null,
+};
+
+pub const DateTimeColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    dateFormat: ?[]const u8 = null,
+    timeFormat: ?[]const u8 = null,
+};
+
+pub const DeleteCustomDocDomainInput = struct {
+    docId: []const u8,
+    customDocDomain: []const u8,
+};
+
+pub const DeleteCustomDocDomainResponse = struct {
+};
+
+pub const DeleteDocInput = struct {
+    docId: []const u8,
+};
+
+pub const DeleteFolderInput = struct {
+    folderId: []const u8,
+};
+
+pub const DeleteFolderResponse = struct {
+};
+
+pub const DeletePackCategoryInput = struct {
+    packId: PackId,
+    categoryName: []const u8,
+};
+
+pub const DeletePackCategoryResponse = struct {
+};
+
+pub const DeletePackInput = struct {
+    packId: PackId,
+};
+
+pub const DeletePackInvitationInput = struct {
+    packId: PackId,
+    invitationId: []const u8,
+};
+
+pub const DeletePackInvitationResponse = struct {
+};
+
+pub const DeletePackListingDraftInput = struct {
+    packId: PackId,
+};
+
+pub const DeletePackListingDraftResponse = struct {
+};
+
+pub const DeletePackMakerInput = struct {
+    packId: PackId,
+    loginId: []const u8,
+};
+
+pub const DeletePackMakerResponse = struct {
+};
+
+pub const DeletePackPermissionInput = struct {
+    packId: PackId,
+    permissionId: []const u8,
+};
+
+pub const DeletePackPermissionResponse = struct {
+};
+
+pub const DeletePackResponse = struct {
+};
+
+pub const DeletePageContentInput = struct {
+    docId: []const u8,
+    pageIdOrName: []const u8,
+    payload: ?PageContentDelete = null,
+};
+
+pub const DeletePageInput = struct {
+    docId: []const u8,
+    pageIdOrName: []const u8,
+};
+
+pub const DeletePermissionInput = struct {
+    docId: []const u8,
+    permissionId: []const u8,
+};
+
+pub const DeletePermissionResponse = struct {
+};
+
+pub const DeleteRowInput = struct {
+    docId: []const u8,
+    tableIdOrName: []const u8,
+    rowIdOrName: []const u8,
+};
+
+pub const DeleteRowsInput = struct {
+    docId: []const u8,
+    tableIdOrName: []const u8,
+    payload: RowsDelete,
+};
+
+pub const DeleteUserPackPermissionInput = struct {
+    packId: PackId,
+};
+
+pub const DeleteUserPackPermissionsResponse = struct {
+};
+
+pub const Doc = struct {
+    id: []const u8,
+    type: DocType,
+    href: []const u8,
+    browserLink: []const u8,
+    icon: ?Icon = null,
+    name: []const u8,
+    owner: []const u8,
+    ownerName: []const u8,
+    docSize: ?DocSize = null,
+    sourceDoc: ?DocReference = null,
+    createdAt: []const u8,
+    updatedAt: []const u8,
+    published: ?DocPublished = null,
+    folder: FolderReference,
+    workspace: WorkspaceReference,
+    workspaceId: []const u8,
+    folderId: []const u8,
+    requestId: ?[]const u8 = null,
+};
+
+pub const DocAnalyticsCollection = struct {
+    items: DocAnalyticsCollectionItems,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const DocAnalyticsCollectionItems = []const DocAnalyticsItem;
+
+pub const DocAnalyticsDetails = struct {
+    id: []const u8,
+    type: DocAnalyticsDetailsType,
+    href: []const u8,
+    browserLink: []const u8,
+    title: []const u8,
+    icon: ?Icon = null,
+    createdAt: []const u8,
+    publishedAt: ?[]const u8 = null,
+};
+
+pub const DocAnalyticsDetailsType = enum {
+    doc,
+};
+
+pub const DocAnalyticsItem = struct {
+    doc: DocAnalyticsDetails,
+    metrics: DocAnalyticsItemMetrics,
+};
+
+pub const DocAnalyticsItemMetrics = []const DocAnalyticsMetrics;
+
+pub const DocAnalyticsMetrics = struct {
+    date: []const u8,
+    views: i32,
+    copies: i32,
+    likes: i32,
+    sessionsMobile: i32,
+    sessionsDesktop: i32,
+    sessionsOther: i32,
+    totalSessions: i32,
+    aiCreditsChat: ?i32 = null,
+    aiCreditsBlock: ?i32 = null,
+    aiCreditsColumn: ?i32 = null,
+    aiCreditsAssistant: ?i32 = null,
+    aiCreditsReviewer: ?i32 = null,
+    aiCredits: ?i32 = null,
+};
+
+pub const DocAnalyticsOrderBy = enum {
+    date,
+    docId,
+    title,
+    createdAt,
+    publishedAt,
+    likes,
+    copies,
+    views,
+    sessionsDesktop,
+    sessionsMobile,
+    sessionsOther,
+    totalSessions,
+    aiCreditsChat,
+    aiCreditsBlock,
+    aiCreditsColumn,
+    aiCreditsAssistant,
+    aiCreditsReviewer,
+    aiCredits,
+};
+
+pub const DocAnalyticsSummary = struct {
+    totalSessions: i32,
+};
+
+pub const DocCategory = struct {
+    name: []const u8,
+};
+
+pub const DocCategoryList = struct {
+    items: DocCategoryListItems,
+};
+
+pub const DocCategoryListItems = []const DocCategory;
+
+pub const DocCreate = struct {
+    title: ?[]const u8 = null,
+    sourceDoc: ?[]const u8 = null,
+    timezone: ?[]const u8 = null,
+    folderId: ?[]const u8 = null,
+    initialPage: ?PageCreate = null,
+};
+
+pub const DocDelete = struct {
+};
+
+pub const DocList = struct {
+    items: DocListItems,
+    href: ?[]const u8 = null,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const DocListItems = []const Doc;
+
+pub const DocPublish = struct {
+    slug: ?[]const u8 = null,
+    discoverable: ?bool = null,
+    earnCredit: ?bool = null,
+    categoryNames: ?DocPublishCategoryNames = null,
+    mode: ?DocPublishMode = null,
+};
+
+pub const DocPublishCategoryNames = []const []const u8;
+
+pub const DocPublishMode = enum {
+    view,
+    play,
+    edit,
+};
+
+pub const DocPublished = struct {
+    description: ?[]const u8 = null,
+    browserLink: []const u8,
+    imageLink: ?[]const u8 = null,
+    discoverable: bool,
+    earnCredit: bool,
+    mode: DocPublishMode,
+    categories: DocPublishedCategories,
+};
+
+pub const DocPublishedCategories = []const DocCategory;
+
+pub const DocReference = struct {
+    id: []const u8,
+    type: DocReferenceType,
+    href: []const u8,
+    browserLink: []const u8,
+};
+
+pub const DocReferenceType = enum {
+    doc,
+};
+
+pub const DocSize = struct {
+    totalRowCount: f64,
+    tableAndViewCount: f64,
+    pageCount: f64,
+    overApiSizeLimit: bool,
+};
+
+pub const DocType = enum {
+    doc,
+};
+
+pub const DocUpdate = struct {
+    title: ?[]const u8 = null,
+    iconName: ?[]const u8 = null,
+};
+
+pub const DocUpdateResponse = struct {
+};
+
+pub const DocumentMutateResponse = struct {
+    requestId: []const u8,
+};
+
+pub const DomainPrincipal = struct {
+    type: DomainPrincipalType,
+    domain: []const u8,
+};
+
+pub const DomainPrincipalType = enum {
+    domain,
+};
+
+pub const DurationColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    precision: ?i32 = null,
+    maxUnit: ?DurationUnit = null,
+};
+
+pub const DurationUnit = enum {
+    days,
+    hours,
+    minutes,
+    seconds,
+};
+
+pub const EmailColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    display: ?EmailDisplayType = null,
+    autocomplete: ?bool = null,
+};
+
+pub const EmailDisplayType = enum {
+    iconAndEmail,
+    iconOnly,
+    emailOnly,
+};
+
+pub const EmailPrincipal = struct {
+    type: EmailPrincipalType,
+    email: []const u8,
+};
+
+pub const EmailPrincipalType = enum {
+    email,
+};
+
+pub const FeatureSet = enum {
+    Basic,
+    Pro,
+    Team,
+    Enterprise,
+};
+
+pub const FeaturedDocStatus = enum {
+    docInaccessibleOrDoesNotExist,
+    invalidPublishedDocUrl,
+};
+
+pub const Folder = struct {
+    id: []const u8,
+    type: FolderType,
+    name: []const u8,
+    browserLink: []const u8,
+    description: ?[]const u8 = null,
+    icon: ?Icon = null,
+    createdAt: ?[]const u8 = null,
+    canEdit: ?bool = null,
+    workspace: WorkspaceReference,
+};
+
+pub const FolderList = struct {
+    items: FolderListItems,
+    href: ?[]const u8 = null,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const FolderListItems = []const Folder;
+
+pub const FolderReference = struct {
+    id: []const u8,
+    type: FolderReferenceType,
+    browserLink: []const u8,
+    name: ?[]const u8 = null,
+};
+
+pub const FolderReferenceType = enum {
+    folder,
+};
+
+pub const FolderType = enum {
+    folder,
+};
+
+pub const ForbiddenError = struct {
+    statusCode: f64,
+    statusMessage: []const u8,
+    message: []const u8,
+};
+
+pub const Formula = struct {
+    id: []const u8,
+    type: FormulaType,
+    href: []const u8,
+    name: []const u8,
+    parent: ?PageReference = null,
+    value: Value,
+};
+
+pub const FormulaDetail = struct {
+    valid: bool,
+    isVolatile: ?bool = null,
+    hasUserFormula: ?bool = null,
+    hasTodayFormula: ?bool = null,
+    hasNowFormula: ?bool = null,
+};
+
+pub const FormulaList = struct {
+    items: FormulaListItems,
+    href: ?[]const u8 = null,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const FormulaListItems = []const FormulaReference;
+
+pub const FormulaReference = struct {
+    id: []const u8,
+    type: FormulaReferenceType,
+    href: []const u8,
+    name: []const u8,
+    parent: ?PageReference = null,
+};
+
+pub const FormulaReferenceType = enum {
+    formula,
+};
+
+pub const FormulaType = enum {
+    formula,
+};
+
+pub const FreePackPlanPricing = struct {
+    type: FreePackPlanPricingType,
+};
+
+pub const FreePackPlanPricingType = enum {
+    Free,
+};
+
+pub const GetAclSettingsInput = struct {
+    docId: []const u8,
+};
+
+pub const GetAgentPackLogDetailsInput = struct {
+    tenantId: []const u8,
+    agentInstanceId: []const u8,
+    logId: []const u8,
+    detailsKey: []const u8,
+};
+
+pub const GetAgentPackLogDetailsOutput = struct {
+    body: ?PackLogDetails = null,
+};
+
+pub const GetAnalyticsLastUpdatedInput = struct {
+};
+
+pub const GetColumnInput = struct {
+    docId: []const u8,
+    tableIdOrName: []const u8,
+    columnIdOrName: []const u8,
+};
+
+pub const GetControlInput = struct {
+    docId: []const u8,
+    controlIdOrName: []const u8,
+};
+
+pub const GetCustomDocDomainProviderInput = struct {
+    customDocDomain: []const u8,
+};
+
+pub const GetDocInput = struct {
+    docId: []const u8,
+};
+
+pub const GetFolderInput = struct {
+    folderId: []const u8,
+};
+
+pub const GetFormulaInput = struct {
+    docId: []const u8,
+    formulaIdOrName: []const u8,
+};
+
+pub const GetMutationStatusInput = struct {
+    requestId: []const u8,
+};
+
+pub const GetNextPackVersionInput = struct {
+    packId: PackId,
+    payload: ?GetNextPackVersionPayload = null,
+};
+
+pub const GetNextPackVersionPayload = struct {
+    proposedMetadata: []const u8,
+    sdkVersion: ?[]const u8 = null,
+};
+
+pub const GetPackConfigurationJsonSchemaResponse = struct {
+};
+
+pub const GetPackConfigurationSchemaInput = struct {
+    packId: PackId,
+};
+
+pub const GetPackInput = struct {
+    packId: PackId,
+};
+
+pub const GetPackListingDraftInput = struct {
+    packId: PackId,
+};
+
+pub const GetPackListingDraftResponse = struct {
+    packListingDraftId: ?[]const u8 = null,
+    listingData: ?PackListingDraftData = null,
+};
+
+pub const GetPackListingInput = struct {
+    packId: PackId,
+    workspaceId: ?[]const u8 = null,
+    docId: ?[]const u8 = null,
+    ingestionId: ?[]const u8 = null,
+    installContext: ?PackListingInstallContextType = null,
+    releaseChannel: ?IngestionPackReleaseChannel = null,
+};
+
+pub const GetPackLogDetailsInput = struct {
+    packId: PackId,
+    tenantId: []const u8,
+    rootIngestionId: []const u8,
+    logId: []const u8,
+    detailsKey: []const u8,
+};
+
+pub const GetPackLogDetailsOutput = struct {
+    body: ?PackLogDetails = null,
+};
+
+pub const GetPackOauthConfigInput = struct {
+    packId: PackId,
+};
+
+pub const GetPackPermissionsInput = struct {
+    packId: PackId,
+};
+
+pub const GetPackSourceCodeInput = struct {
+    packId: PackId,
+    packVersion: []const u8,
+};
+
+pub const GetPackSystemConnectionInput = struct {
+    packId: PackId,
+};
+
+pub const GetPackSystemConnectionOutput = struct {
+    body: ?PackSystemConnectionMetadata = null,
+};
+
+pub const GetPackVersionDiffsInput = struct {
+    packId: PackId,
+    basePackVersion: []const u8,
+    targetPackVersion: []const u8,
+};
+
+pub const GetPageContentExportStatusInput = struct {
+    docId: []const u8,
+    pageIdOrName: []const u8,
+    requestId: []const u8,
+};
+
+pub const GetPageInput = struct {
+    docId: []const u8,
+    pageIdOrName: []const u8,
+};
+
+pub const GetPermissionsInput = struct {
+    docId: []const u8,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+};
+
+pub const GetRowInput = struct {
+    docId: []const u8,
+    tableIdOrName: []const u8,
+    rowIdOrName: []const u8,
+    useColumnNames: ?bool = null,
+    valueFormat: ?ValueFormat = null,
+};
+
+pub const GetSharingMetadataInput = struct {
+    docId: []const u8,
+};
+
+pub const GetTableInput = struct {
+    docId: []const u8,
+    tableIdOrName: []const u8,
+    useUpdatedTableLayouts: ?bool = null,
+};
+
+pub const GetWorkspaceRoleActivity = struct {
+    items: GetWorkspaceRoleActivityItems,
+};
+
+pub const GetWorkspaceRoleActivityItems = []const WorkspaceRoleActivity;
+
+pub const GoneError = struct {
+    statusCode: f64,
+    statusMessage: []const u8,
+    message: []const u8,
+};
+
+pub const GroupPrincipal = struct {
+    type: GroupPrincipalType,
+    groupId: []const u8,
+    groupName: []const u8,
+};
+
+pub const GroupPrincipalType = enum {
+    group,
+};
+
+pub const GroupedPackAuthLog = struct {
+    type: GroupedPackAuthLogType,
+    authLog: PackAuthLog,
+    relatedLogs: GroupedPackAuthLogRelatedLogs,
+};
+
+pub const GroupedPackAuthLogRelatedLogs = []const PackLog;
+
+pub const GroupedPackAuthLogType = enum {
+    auth,
+};
+
+pub const GroupedPackInvocationLog = struct {
+    type: GroupedPackInvocationLogType,
+    invocationLog: PackInvocationLog,
+    relatedLogs: GroupedPackInvocationLogRelatedLogs,
+};
+
+pub const GroupedPackInvocationLogRelatedLogs = []const PackLog;
+
+pub const GroupedPackInvocationLogType = enum {
+    invocation,
+};
+
+pub const GroupedPackLog = union(enum) {
+    groupedPackInvocationLog: GroupedPackInvocationLog,
+    groupedPackAuthLog: GroupedPackAuthLog,
+};
+
+pub const GroupedPackLogsList = struct {
+    items: GroupedPackLogsListItems,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+    incompleteRelatedLogs: bool,
+};
+
+pub const GroupedPackLogsListItems = []const GroupedPackLog;
+
+pub const HandlePackInvitationRequest = struct {
+    accept: bool,
+};
+
+pub const HandlePackInvitationResponse = struct {
+    permissionId: ?[]const u8 = null,
+};
+
+pub const Icon = struct {
+    name: []const u8,
+    type: []const u8,
+    browserLink: []const u8,
+};
+
+pub const IconSet = enum {
+    star,
+    circle,
+    fire,
+    bug,
+    diamond,
+    bell,
+    thumbsup,
+    heart,
+    chili,
+    smiley,
+    lightning,
+    currency,
+    coffee,
+    person,
+    battery,
+    cocktail,
+    cloud,
+    sun,
+    checkmark,
+    lightbulb,
+};
+
+pub const Image = struct {
+    browserLink: []const u8,
+    type: ?[]const u8 = null,
+    width: ?f64 = null,
+    height: ?f64 = null,
+};
+
+pub const ImageFileForUpdatePackRequest = struct {
+    assetId: []const u8,
+    filename: []const u8,
+    mimeType: ?[]const u8 = null,
+};
+
+pub const ImageReferenceColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    width: NumberOrNumberFormula,
+    height: NumberOrNumberFormula,
+    style: ImageShapeStyle,
+};
+
+pub const ImageShapeStyle = enum {
+    auto,
+    circle,
+};
+
+pub const ImageStatus = enum {
+    live,
+    deleted,
+    failed,
+};
+
+pub const ImageUrlValue = struct {
+    @"@context": []const u8,
+    @"@type": ImageUrlValueType,
+    additionalType: ?[]const u8 = null,
+    name: ?[]const u8 = null,
+    url: ?[]const u8 = null,
+    height: ?f64 = null,
+    width: ?f64 = null,
+    status: ?ImageStatus = null,
+};
+
+pub const ImageUrlValueType = enum {
+    ImageObject,
+};
+
+pub const IngestionBatchExecution = struct {
+    completionTimestamp: f64,
+    creationTimestamp: f64,
+    dynamicLabel: ?[]const u8 = null,
+    dynamicUrl: ?[]const u8 = null,
+    executionType: IngestionExecutionType,
+    fullExecutionId: []const u8,
+    ingestionExecutionId: []const u8,
+    ingestionId: []const u8,
+    ingestionName: []const u8,
+    ingestionStatusCounts: ?IngestionBatchExecutionIngestionStatusCounts = null,
+    lastFinishedFullWorkflowExecutionId: ?[]const u8 = null,
+    lastFinishedIncrementalWorkflowExecutionId: ?[]const u8 = null,
+    latestFullWorkflowExecutionId: ?[]const u8 = null,
+    latestIncrementalWorkflowExecutionId: ?[]const u8 = null,
+    latestIngestionSequenceId: ?[]const u8 = null,
+    liveIngestionSequenceId: ?[]const u8 = null,
+    parentSyncTableIngestionId: ?[]const u8 = null,
+    startTimestamp: f64,
+    totalRowCount: ?f64 = null,
+};
+
+pub const IngestionBatchExecutionIngestionStatusCounts = std.json.ArrayHashMap(i32);
+
+pub const IngestionBatchExecutionsList = struct {
+    items: IngestionBatchExecutionsListItems,
+    nextPageToken: ?NextPageToken = null,
+};
+
+pub const IngestionBatchExecutionsListItems = []const IngestionBatchExecution;
+
+pub const IngestionChildExecutionType = enum {
+    FULL,
+    INCREMENTAL,
+    PATCH,
+};
+
+pub const IngestionExecutionAttempt = struct {
+    csbIngestionExecutionId: []const u8,
+    attemptNumber: f64,
+    ingestionStatus: ?IngestionStatus = null,
+    startTimestamp: f64,
+    completionTimestamp: f64,
+    errorMessage: []const u8,
+    rowCountInAttempt: ?[]const u8 = null,
+    latestCheckpointTimestamp: ?f64 = null,
+};
+
+pub const IngestionExecutionAttemptsList = struct {
+    items: IngestionExecutionAttemptsListItems,
+    nextPageToken: ?NextPageToken = null,
+};
+
+pub const IngestionExecutionAttemptsListItems = []const IngestionExecutionAttempt;
+
+pub const IngestionExecutionContext = struct {
+    ingestionName: []const u8,
+    csbIngestionId: []const u8,
+    csbIngestionExecutionId: []const u8,
+    creationTimestamp: f64,
+    parentItemId: []const u8,
+    startTimestamp: f64,
+    completionTimestamp: f64,
+    nextEligibleTimestamp: f64,
+    nextEligibleIncrementalTimestamp: f64,
+    attemptNumber: f64,
+    ingestionStatus: IngestionStatus,
+    executionType: IngestionExecutionType,
+    errorMessage: []const u8,
+    totalRowCount: ?[]const u8 = null,
+    latestCheckpointTimestamp: ?f64 = null,
+};
+
+pub const IngestionExecutionType = enum {
+    FULL,
+    INCREMENTAL,
+};
+
+pub const IngestionExecutionsList = struct {
+    items: IngestionExecutionsListItems,
+    nextPageToken: ?NextPageToken = null,
+};
+
+pub const IngestionExecutionsListItems = []const IngestionExecutionContext;
+
+pub const IngestionLimitSettings = struct {
+    tableSettings: ?IngestionLimitSettingsTableSettings = null,
+    maxBytesPerSyncTableDefault: f64,
+    allowedTablesCount: f64,
+};
+
+pub const IngestionLimitSettingsTableSettings = std.json.ArrayHashMap(IngestionTableSetting);
+
+pub const IngestionPackReleaseChannel = enum {
+    LIVE,
+    LATEST,
+};
+
+pub const IngestionParentItem = struct {
+    attemptNumber: ?f64 = null,
+    completionTimestamp: f64,
+    errorMessage: []const u8,
+    executionType: IngestionChildExecutionType,
+    ingestionChildExecutionIndex: ?f64 = null,
+    ingestionExecutionId: []const u8,
+    ingestionName: []const u8,
+    ingestionStatus: ?IngestionStatus = null,
+    parentItemId: []const u8,
+    startTimestamp: f64,
+    rowCount: ?f64 = null,
+    latestCheckpointTimestamp: ?f64 = null,
+};
+
+pub const IngestionParentItemsList = struct {
+    items: IngestionParentItemsListItems,
+    nextPageToken: ?NextPageToken = null,
+};
+
+pub const IngestionParentItemsListItems = []const IngestionParentItem;
+
+pub const IngestionStatus = enum {
+    QUEUED,
+    STARTED,
+    CANCELLED,
+    UP_FOR_RETRY,
+    COMPLETED,
+    FAILED,
+};
+
+pub const IngestionTableSetting = struct {
+    maxBytesPerSyncTableOverride: ?f64 = null,
+    excludeIngestionByDefault: ?bool = null,
+    parameterLimits: ?IngestionTableSettingParameterLimits = null,
+};
+
+pub const IngestionTableSettingParameterLimits = std.json.ArrayHashMap(ParameterSetting);
+
+pub const InternalAccessPrincipal = struct {
+    type: InternalAccessPrincipalType,
+    internalAccessType: []const u8,
+};
+
+pub const InternalAccessPrincipalType = enum {
+    internalAccess,
+};
+
+pub const Layout = enum {
+    default,
+    areaChart,
+    barChart,
+    bubbleChart,
+    calendar,
+    card,
+    detail,
+    form,
+    ganttChart,
+    lineChart,
+    masterDetail,
+    pieChart,
+    scatterChart,
+    slide,
+    wordCloud,
+};
+
+pub const LinkColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    display: ?LinkDisplayType = null,
+    force: ?bool = null,
+};
+
+pub const LinkDisplayType = enum {
+    iconOnly,
+    url,
+    title,
+    card,
+    embed,
+};
+
+pub const LinkedDataObject = struct {
+    @"@context": []const u8,
+    @"@type": LinkedDataType,
+    additionalType: ?[]const u8 = null,
+};
+
+pub const LinkedDataType = enum {
+    ImageObject,
+    MonetaryAmount,
+    Person,
+    WebPage,
+    StructuredValue,
+};
+
+pub const ListAgentLogsInput = struct {
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+    tenantId: []const u8,
+    agentInstanceId: []const u8,
+    logTypes: ?ListAgentLogsLogTypes = null,
+    agentSessionId: ?[]const u8 = null,
+    beforeTimestamp: ?[]const u8 = null,
+    afterTimestamp: ?[]const u8 = null,
+    order: ?ListAgentLogsOrder = null,
+    q: ?[]const u8 = null,
+    requestIds: ?ListAgentLogsRequestIds = null,
+};
+
+pub const ListAgentLogsLogTypes = []const PackLogType;
+
+pub const ListAgentLogsOrder = enum {
+    asc,
+    desc,
+};
+
+pub const ListAgentLogsRequestIds = []const []const u8;
+
+pub const ListAgentSessionIdsInput = struct {
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+    tenantId: []const u8,
+    agentInstanceId: []const u8,
+    agentSessionId: ?[]const u8 = null,
+    logTypes: ?ListAgentSessionIdsLogTypes = null,
+    beforeTimestamp: ?[]const u8 = null,
+    afterTimestamp: ?[]const u8 = null,
+    order: ?ListAgentSessionIdsOrder = null,
+    q: ?[]const u8 = null,
+    requestIds: ?ListAgentSessionIdsRequestIds = null,
+};
+
+pub const ListAgentSessionIdsLogTypes = []const PackLogType;
+
+pub const ListAgentSessionIdsOrder = enum {
+    asc,
+    desc,
+};
+
+pub const ListAgentSessionIdsRequestIds = []const []const u8;
+
+pub const ListCategoriesInput = struct {
+};
+
+pub const ListColumnsInput = struct {
+    docId: []const u8,
+    tableIdOrName: []const u8,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+    visibleOnly: ?bool = null,
+};
+
+pub const ListControlsInput = struct {
+    docId: []const u8,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+    sortBy: ?SortBy = null,
+};
+
+pub const ListCustomDocDomainsInput = struct {
+    docId: []const u8,
+};
+
+pub const ListDocAnalyticsDocIds = []const []const u8;
+
+pub const ListDocAnalyticsInput = struct {
+    docIds: ?ListDocAnalyticsDocIds = null,
+    workspaceId: ?[]const u8 = null,
+    query: ?[]const u8 = null,
+    isPublished: ?bool = null,
+    sinceDate: ?[]const u8 = null,
+    untilDate: ?[]const u8 = null,
+    scale: ?AnalyticsScale = null,
+    pageToken: ?[]const u8 = null,
+    orderBy: ?DocAnalyticsOrderBy = null,
+    direction: ?SortDirection = null,
+    limit: ?i32 = null,
+};
+
+pub const ListDocAnalyticsSummaryInput = struct {
+    isPublished: ?bool = null,
+    sinceDate: ?[]const u8 = null,
+    untilDate: ?[]const u8 = null,
+    workspaceId: ?[]const u8 = null,
+};
 
 pub const ListDocsInput = struct {
     isOwner: ?bool = null,
@@ -16,191 +1663,2276 @@ pub const ListDocsInput = struct {
     inGallery: ?bool = null,
     workspaceId: ?[]const u8 = null,
     folderId: ?[]const u8 = null,
-    limit: ?i64 = null,
+    limit: ?i32 = null,
     pageToken: ?[]const u8 = null,
 };
 
-pub const CreateDocInput = struct {
-    payload: []const u8,
-};
-
-pub const GetDocInput = struct {
-    docId: []const u8,
-};
-
-pub const DeleteDocInput = struct {
-    docId: []const u8,
-};
-
-pub const UpdateDocInput = struct {
-    docId: []const u8,
-    payload: []const u8,
-};
-
-pub const GetSharingMetadataInput = struct {
-    docId: []const u8,
-};
-
-pub const GetPermissionsInput = struct {
-    docId: []const u8,
-    limit: ?i64 = null,
+pub const ListFoldersInput = struct {
+    workspaceId: ?[]const u8 = null,
+    isStarred: ?bool = null,
+    limit: ?i32 = null,
     pageToken: ?[]const u8 = null,
 };
 
-pub const AddPermissionInput = struct {
+pub const ListFormulasInput = struct {
     docId: []const u8,
-    payload: []const u8,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+    sortBy: ?SortBy = null,
 };
 
-pub const DeletePermissionInput = struct {
-    docId: []const u8,
-    permissionId: []const u8,
+pub const ListGroupedIngestionLogsInput = struct {
+    packId: PackId,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+    tenantId: []const u8,
+    rootIngestionId: []const u8,
+    ingestionExecutionId: ?[]const u8 = null,
+    beforeTimestamp: ?[]const u8 = null,
+    afterTimestamp: ?[]const u8 = null,
+    order: ?ListGroupedIngestionLogsOrder = null,
+    q: ?[]const u8 = null,
 };
 
-pub const SearchPrincipalsInput = struct {
+pub const ListGroupedIngestionLogsOrder = enum {
+    asc,
+    desc,
+};
+
+pub const ListGroupedPackLogsInput = struct {
+    packId: PackId,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
     docId: []const u8,
+    beforeTimestamp: ?[]const u8 = null,
+    afterTimestamp: ?[]const u8 = null,
+    order: ?ListGroupedPackLogsOrder = null,
+    q: ?[]const u8 = null,
+};
+
+pub const ListGroupedPackLogsOrder = enum {
+    asc,
+    desc,
+};
+
+pub const ListIngestionBatchExecutionsInput = struct {
+    packId: PackId,
+    tenantId: []const u8,
+    rootIngestionId: []const u8,
+    pageToken: ?[]const u8 = null,
+    limit: ?i32 = null,
+    datasource: ?[]const u8 = null,
+    executionType: ?IngestionExecutionType = null,
+    includeDeletedIngestions: ?bool = null,
+    ingestionExecutionId: ?[]const u8 = null,
+    ingestionId: ?[]const u8 = null,
+    ingestionStatus: ?IngestionStatus = null,
+};
+
+pub const ListIngestionLogsInput = struct {
+    packId: PackId,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+    tenantId: []const u8,
+    rootIngestionId: []const u8,
+    logTypes: ?ListIngestionLogsLogTypes = null,
+    ingestionExecutionId: ?[]const u8 = null,
+    beforeTimestamp: ?[]const u8 = null,
+    afterTimestamp: ?[]const u8 = null,
+    ingestionStatus: ?IngestionStatus = null,
+    onlyExecutionCompletions: ?bool = null,
+    order: ?ListIngestionLogsOrder = null,
+    q: ?[]const u8 = null,
+    requestIds: ?ListIngestionLogsRequestIds = null,
+};
+
+pub const ListIngestionLogsLogTypes = []const PackLogType;
+
+pub const ListIngestionLogsOrder = enum {
+    asc,
+    desc,
+};
+
+pub const ListIngestionLogsRequestIds = []const []const u8;
+
+pub const ListIngestionParentItemsInput = struct {
+    packId: PackId,
+    tenantId: []const u8,
+    rootIngestionId: []const u8,
+    pageToken: ?[]const u8 = null,
+    limit: ?i32 = null,
+    ingestionExecutionId: []const u8,
+    ingestionId: []const u8,
+    ingestionStatus: ?IngestionStatus = null,
+};
+
+pub const ListPackAnalyticsInput = struct {
+    packIds: ?ListPackAnalyticsPackIds = null,
+    workspaceId: ?[]const u8 = null,
     query: ?[]const u8 = null,
+    sinceDate: ?[]const u8 = null,
+    untilDate: ?[]const u8 = null,
+    scale: ?AnalyticsScale = null,
+    pageToken: ?[]const u8 = null,
+    orderBy: ?PackAnalyticsOrderBy = null,
+    direction: ?SortDirection = null,
+    isPublished: ?bool = null,
+    limit: ?i32 = null,
 };
 
-pub const GetAclSettingsInput = struct {
-    docId: []const u8,
+pub const ListPackAnalyticsPackIds = []const i32;
+
+pub const ListPackAnalyticsSummaryInput = struct {
+    packIds: ?ListPackAnalyticsSummaryPackIds = null,
+    workspaceId: ?[]const u8 = null,
+    isPublished: ?bool = null,
+    sinceDate: ?[]const u8 = null,
+    untilDate: ?[]const u8 = null,
 };
 
-pub const UpdateAclSettingsInput = struct {
-    docId: []const u8,
-    payload: []const u8,
+pub const ListPackAnalyticsSummaryPackIds = []const i32;
+
+pub const ListPackCategoriesInput = struct {
+    packId: PackId,
 };
 
-pub const PublishDocInput = struct {
-    docId: []const u8,
-    payload: []const u8,
+pub const ListPackCategoriesResponse = struct {
+    categories: ListPackCategoriesResponseCategories,
 };
 
-pub const UnpublishDocInput = struct {
-    docId: []const u8,
+pub const ListPackCategoriesResponseCategories = []const PublishingCategory;
+
+pub const ListPackFeaturedDocsInput = struct {
+    packId: PackId,
 };
 
-pub const ListPagesInput = struct {
-    docId: []const u8,
-    limit: ?i64 = null,
+pub const ListPackFormulaAnalyticsInput = struct {
+    packFormulaNames: ?ListPackFormulaAnalyticsPackFormulaNames = null,
+    packFormulaTypes: ?ListPackFormulaAnalyticsPackFormulaTypes = null,
+    packId: PackId,
+    sinceDate: ?[]const u8 = null,
+    untilDate: ?[]const u8 = null,
+    scale: ?AnalyticsScale = null,
+    pageToken: ?[]const u8 = null,
+    orderBy: ?PackFormulaAnalyticsOrderBy = null,
+    direction: ?SortDirection = null,
+    limit: ?i32 = null,
+};
+
+pub const ListPackFormulaAnalyticsPackFormulaNames = []const []const u8;
+
+pub const ListPackFormulaAnalyticsPackFormulaTypes = []const PackFormulaType;
+
+pub const ListPackInvitationsInput = struct {
+    packId: PackId,
+    limit: ?i32 = null,
     pageToken: ?[]const u8 = null,
 };
 
-pub const CreatePageInput = struct {
-    docId: []const u8,
-    payload: []const u8,
+pub const ListPackListingsInput = struct {
+    packAccessTypes: ?PackAccessTypes = null,
+    packIds: ?ListPackListingsPackIds = null,
+    onlyWorkspaceId: ?[]const u8 = null,
+    parentWorkspaceIds: ?ListPackListingsParentWorkspaceIds = null,
+    excludePublicPacks: ?bool = null,
+    packEntrypoint: ?PackEntrypoint = null,
+    certifiedAgentsOnly: ?bool = null,
+    packCategories: ?ListPackListingsPackCategories = null,
+    sortBy: ?PackListingsSortBy = null,
+    orderBy: ?PackListingsSortBy = null,
+    direction: ?SortDirection = null,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+    installContext: ?PackListingInstallContextType = null,
 };
 
-pub const GetPageInput = struct {
+pub const ListPackListingsPackCategories = []const PackCategoryType;
+
+pub const ListPackListingsPackIds = []const i32;
+
+pub const ListPackListingsParentWorkspaceIds = []const []const u8;
+
+pub const ListPackLogsInput = struct {
+    packId: PackId,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
     docId: []const u8,
-    pageIdOrName: []const u8,
+    logTypes: ?ListPackLogsLogTypes = null,
+    beforeTimestamp: ?[]const u8 = null,
+    afterTimestamp: ?[]const u8 = null,
+    order: ?ListPackLogsOrder = null,
+    q: ?[]const u8 = null,
+    requestIds: ?ListPackLogsRequestIds = null,
 };
 
-pub const UpdatePageInput = struct {
-    docId: []const u8,
-    pageIdOrName: []const u8,
-    payload: []const u8,
+pub const ListPackLogsLogTypes = []const PackLogType;
+
+pub const ListPackLogsOrder = enum {
+    asc,
+    desc,
 };
 
-pub const DeletePageInput = struct {
+pub const ListPackLogsRequestIds = []const []const u8;
+
+pub const ListPackMakersInput = struct {
+    packId: PackId,
+};
+
+pub const ListPackMakersResponse = struct {
+    makers: ListPackMakersResponseMakers,
+};
+
+pub const ListPackMakersResponseMakers = []const Maker;
+
+pub const ListPackReleasesInput = struct {
+    packId: PackId,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+};
+
+pub const ListPackReviewsInput = struct {
+    packId: PackId,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+    status: ?PackReviewStatus = null,
+};
+
+pub const ListPackReviewsResponse = struct {
+    items: ListPackReviewsResponseItems,
+    nextPageToken: ?[]const u8 = null,
+    nextPageLink: ?[]const u8 = null,
+};
+
+pub const ListPackReviewsResponseItems = []const PackReview;
+
+pub const ListPackVersionsInput = struct {
+    packId: PackId,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+};
+
+pub const ListPacksAccessTypes = []const PackAccessType;
+
+pub const ListPacksInput = struct {
+    accessType: ?PackAccessType = null,
+    accessTypes: ?ListPacksAccessTypes = null,
+    sortBy: ?PacksSortBy = null,
+    limit: ?i32 = null,
+    direction: ?SortDirection = null,
+    pageToken: ?[]const u8 = null,
+    onlyWorkspaceId: ?[]const u8 = null,
+    parentWorkspaceIds: ?ListPacksParentWorkspaceIds = null,
+    excludePublicPacks: ?bool = null,
+    packEntrypoint: ?PackEntrypoint = null,
+};
+
+pub const ListPacksParentWorkspaceIds = []const []const u8;
+
+pub const ListPageAnalyticsInput = struct {
     docId: []const u8,
-    pageIdOrName: []const u8,
+    sinceDate: ?[]const u8 = null,
+    untilDate: ?[]const u8 = null,
+    pageToken: ?[]const u8 = null,
+    limit: ?i32 = null,
+};
+
+pub const ListPageContentContentFormat = enum {
+    plainText,
 };
 
 pub const ListPageContentInput = struct {
     docId: []const u8,
     pageIdOrName: []const u8,
-    limit: ?i64 = null,
+    limit: ?i32 = null,
     pageToken: ?[]const u8 = null,
-    contentFormat: ?[]const u8 = null,
+    contentFormat: ?ListPageContentContentFormat = null,
 };
 
-pub const DeletePageContentInput = struct {
+pub const ListPagesInput = struct {
     docId: []const u8,
-    pageIdOrName: []const u8,
-    payload: ?[]const u8 = null,
-};
-
-pub const BeginPageContentExportInput = struct {
-    docId: []const u8,
-    pageIdOrName: []const u8,
-    payload: []const u8,
-};
-
-pub const GetPageContentExportStatusInput = struct {
-    docId: []const u8,
-    pageIdOrName: []const u8,
-    requestId: []const u8,
-};
-
-pub const ListTablesInput = struct {
-    docId: []const u8,
-    limit: ?i64 = null,
+    limit: ?i32 = null,
     pageToken: ?[]const u8 = null,
-    sortBy: ?[]const u8 = null,
-    tableTypes: ?[]const []const u8 = null,
-};
-
-pub const GetTableInput = struct {
-    docId: []const u8,
-    tableIdOrName: []const u8,
-    useUpdatedTableLayouts: ?bool = null,
-};
-
-pub const ListColumnsInput = struct {
-    docId: []const u8,
-    tableIdOrName: []const u8,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-    visibleOnly: ?bool = null,
 };
 
 pub const ListRowsInput = struct {
     docId: []const u8,
     tableIdOrName: []const u8,
     query: ?[]const u8 = null,
-    sortBy: ?[]const u8 = null,
+    sortBy: ?RowsSortBy = null,
     useColumnNames: ?bool = null,
-    valueFormat: ?[]const u8 = null,
+    valueFormat: ?ValueFormat = null,
     visibleOnly: ?bool = null,
-    limit: ?i64 = null,
+    limit: ?i32 = null,
     pageToken: ?[]const u8 = null,
     syncToken: ?[]const u8 = null,
 };
 
-pub const UpsertRowsInput = struct {
+pub const ListTablesInput = struct {
     docId: []const u8,
-    tableIdOrName: []const u8,
-    disableParsing: ?bool = null,
-    payload: []const u8,
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
+    sortBy: ?SortBy = null,
+    tableTypes: ?ListTablesTableTypes = null,
 };
 
-pub const DeleteRowsInput = struct {
-    docId: []const u8,
-    tableIdOrName: []const u8,
-    payload: []const u8,
+pub const ListTablesTableTypes = []const TableType;
+
+pub const ListUserPackInvitationsInput = struct {
+    limit: ?i32 = null,
+    pageToken: ?[]const u8 = null,
 };
 
-pub const GetRowInput = struct {
-    docId: []const u8,
-    tableIdOrName: []const u8,
-    rowIdOrName: []const u8,
-    useColumnNames: ?bool = null,
-    valueFormat: ?[]const u8 = null,
+pub const ListWorkspaceMembersIncludedRoles = []const WorkspaceUserRole;
+
+pub const ListWorkspaceMembersInput = struct {
+    workspaceId: []const u8,
+    includedRoles: ?ListWorkspaceMembersIncludedRoles = null,
+    pageToken: ?[]const u8 = null,
 };
 
-pub const UpdateRowInput = struct {
-    docId: []const u8,
-    tableIdOrName: []const u8,
-    rowIdOrName: []const u8,
-    disableParsing: ?bool = null,
-    payload: []const u8,
+pub const ListWorkspaceRoleActivityInput = struct {
+    workspaceId: []const u8,
 };
 
-pub const DeleteRowInput = struct {
+pub const LogLevel = enum {
+    @"error",
+    warn,
+    info,
+    debug,
+    trace,
+    unknown,
+};
+
+pub const Maker = struct {
+    name: []const u8,
+    pictureLink: ?[]const u8 = null,
+    slug: ?[]const u8 = null,
+    jobTitle: ?[]const u8 = null,
+    employer: ?[]const u8 = null,
+    description: ?[]const u8 = null,
+    loginId: []const u8,
+};
+
+pub const MakerSummary = struct {
+    name: []const u8,
+    pictureLink: ?[]const u8 = null,
+    slug: ?[]const u8 = null,
+    jobTitle: ?[]const u8 = null,
+    employer: ?[]const u8 = null,
+    description: ?[]const u8 = null,
+};
+
+pub const MonthlyDocMakerPackPlanPricing = struct {
+    type: MonthlyDocMakerPackPlanPricingType,
+    amount: f64,
+    currency: PackPlanCurrency,
+};
+
+pub const MonthlyDocMakerPackPlanPricingType = enum {
+    MonthlyDocMaker,
+};
+
+pub const MutationStatus = struct {
+    completed: bool,
+    warning: ?[]const u8 = null,
+};
+
+pub const NextPackVersionInfo = struct {
+    nextVersion: []const u8,
+    findings: NextPackVersionInfoFindings,
+    findingDetails: NextPackVersionInfoFindingDetails,
+};
+
+pub const NextPackVersionInfoFindingDetails = []const NextPackVersionInfoFindingDetailsMember;
+
+pub const NextPackVersionInfoFindingDetailsMember = struct {
+    finding: []const u8,
+    path: []const u8,
+};
+
+pub const NextPackVersionInfoFindings = []const []const u8;
+
+pub const NextPageLink = []const u8;
+
+pub const NextPageToken = []const u8;
+
+pub const NextSyncToken = []const u8;
+
+pub const NotFoundError = struct {
+    statusCode: f64,
+    statusMessage: []const u8,
+    message: []const u8,
+};
+
+pub const NumberOrNumberFormula = union(enum) {
+    variant1: f64,
+    variant2: []const u8,
+};
+
+pub const NumericColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    precision: ?i32 = null,
+    useThousandsSeparator: ?bool = null,
+};
+
+pub const Pack = struct {
+    id: PackId,
+    logoUrl: ?[]const u8 = null,
+    coverUrl: ?[]const u8 = null,
+    exampleImages: ?PackExampleImages = null,
+    agentImages: ?PackAgentImages = null,
+    workspaceId: []const u8,
+    categories: PackCategories,
+    certified: ?bool = null,
+    certifiedAgent: ?bool = null,
+    sourceCodeVisibility: ?PackSourceCodeVisibility = null,
+    packEntrypoints: ?PackPackEntrypoints = null,
+    verifiedVersion: ?[]const u8 = null,
+    name: []const u8,
+    description: []const u8,
+    shortDescription: []const u8,
+    agentShortDescription: ?[]const u8 = null,
+    agentDescription: ?[]const u8 = null,
+    supportEmail: ?[]const u8 = null,
+    termsOfServiceUrl: ?[]const u8 = null,
+    privacyPolicyUrl: ?[]const u8 = null,
+    overallRateLimit: ?PackRateLimit = null,
+    perConnectionRateLimit: ?PackRateLimit = null,
+    featuredDocStatus: ?FeaturedDocStatus = null,
+    additionalInformation: ?PackListingAdditionalInformation = null,
+};
+
+pub const PackAccessType = enum {
+    none,
+    view,
+    @"test",
+    edit,
+    admin,
+};
+
+pub const PackAccessTypes = []const PackAccessType;
+
+pub const PackAgentImages = []const PackImageFile;
+
+pub const PackAgentRuntimeLog = struct {
+    type: PackAgentRuntimeLogType,
+    context: PackLogContext,
+    turnType: []const u8,
+    durationMs: ?f64 = null,
+    name: ?[]const u8 = null,
+    model: ?[]const u8 = null,
+    tokenUsage: ?[]const u8 = null,
+    instructions: ?[]const u8 = null,
+    fromAgent: ?[]const u8 = null,
+    toAgent: ?[]const u8 = null,
+};
+
+pub const PackAgentRuntimeLogDetails = struct {
+    type: PackAgentRuntimeLogDetailsType,
+    input: ?[]const u8 = null,
+    output: ?[]const u8 = null,
+};
+
+pub const PackAgentRuntimeLogDetailsType = enum {
+    agentRuntime,
+};
+
+pub const PackAgentRuntimeLogType = enum {
+    agentRuntime,
+};
+
+pub const PackAnalyticsCollection = struct {
+    items: PackAnalyticsCollectionItems,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const PackAnalyticsCollectionItems = []const PackAnalyticsItem;
+
+pub const PackAnalyticsDetails = struct {
+    id: f64,
+    name: []const u8,
+    logoUrl: ?[]const u8 = null,
+    createdAt: []const u8,
+};
+
+pub const PackAnalyticsItem = struct {
+    pack: PackAnalyticsDetails,
+    metrics: PackAnalyticsItemMetrics,
+};
+
+pub const PackAnalyticsItemMetrics = []const PackAnalyticsMetrics;
+
+pub const PackAnalyticsMetrics = struct {
+    date: []const u8,
+    docInstalls: i32,
+    workspaceInstalls: i32,
+    numFormulaInvocations: i32,
+    numActionInvocations: i32,
+    numSyncInvocations: i32,
+    numMetadataInvocations: i32,
+    docsActivelyUsing: i32,
+    docsActivelyUsing7Day: i32,
+    docsActivelyUsing30Day: i32,
+    docsActivelyUsing90Day: i32,
+    docsActivelyUsingAllTime: i32,
+    workspacesActivelyUsing: i32,
+    workspacesActivelyUsing7Day: i32,
+    workspacesActivelyUsing30Day: i32,
+    workspacesActivelyUsing90Day: i32,
+    workspacesActivelyUsingAllTime: i32,
+    workspacesActivelyTrialing: i32,
+    workspacesActivelyTrialing7Day: i32,
+    workspacesActivelyTrialing30Day: i32,
+    workspacesActivelyTrialing90Day: i32,
+    workspacesActivelyTrialingAllTime: i32,
+    workspacesNewlySubscribed: i32,
+    workspacesWithActiveSubscriptions: i32,
+    workspacesWithSuccessfulTrials: i32,
+    revenueUsd: []const u8,
+};
+
+pub const PackAnalyticsOrderBy = enum {
+    date,
+    packId,
+    name,
+    createdAt,
+    docInstalls,
+    workspaceInstalls,
+    numFormulaInvocations,
+    numActionInvocations,
+    numSyncInvocations,
+    numMetadataInvocations,
+    docsActivelyUsing,
+    docsActivelyUsing7Day,
+    docsActivelyUsing30Day,
+    docsActivelyUsing90Day,
+    docsActivelyUsingAllTime,
+    workspacesActivelyUsing,
+    workspacesActivelyUsing7Day,
+    workspacesActivelyUsing30Day,
+    workspacesActivelyUsing90Day,
+    workspacesActivelyUsingAllTime,
+    workspacesWithActiveSubscriptions,
+    workspacesWithSuccessfulTrials,
+    revenueUsd,
+};
+
+pub const PackAnalyticsSummary = struct {
+    totalDocInstalls: i32,
+    totalWorkspaceInstalls: i32,
+    totalInvocations: i32,
+};
+
+pub const PackAssetType = enum {
+    logo,
+    cover,
+    exampleImage,
+    agentImage,
+};
+
+pub const PackAssetUploadCompleteInput = struct {
+    packId: PackId,
+    packAssetId: []const u8,
+    packAssetType: PackAssetType,
+};
+
+pub const PackAssetUploadCompletePayload = struct {
+    packAssetType: PackAssetType,
+};
+
+pub const PackAssetUploadCompleteResponse = struct {
+    requestId: []const u8,
+    assetId: []const u8,
+};
+
+pub const PackAssetUploadInfo = struct {
+    uploadUrl: []const u8,
+    packAssetUploadedPathName: []const u8,
+    headers: PackAssetUploadInfoHeaders,
+};
+
+pub const PackAssetUploadInfoHeaders = std.json.ArrayHashMap([]const u8);
+
+pub const PackAuthLog = struct {
+    type: PackAuthLogType,
+    context: PackLogContext,
+    path: []const u8,
+    errorMessage: ?[]const u8 = null,
+    errorStack: ?[]const u8 = null,
+};
+
+pub const PackAuthLogType = enum {
+    auth,
+};
+
+pub const PackCategories = []const PublishingCategory;
+
+pub const PackCategoryType = enum {
+    connector,
+    agent,
+    customAgent,
+};
+
+pub const PackConfigurationEntry = struct {
+    configurationId: []const u8,
+    name: []const u8,
+    policy: ?PackConfigurationEntryPolicy = null,
+};
+
+pub const PackConfigurationEntryPolicy = struct {
+};
+
+pub const PackConnectionAwsAccessKeyCredentials = struct {
+    type: PackConnectionAwsAccessKeyCredentialsType,
+    accessKeyId: []const u8,
+    secretAccessKey: []const u8,
+};
+
+pub const PackConnectionAwsAccessKeyCredentialsType = enum {
+    awsAccessKey,
+};
+
+pub const PackConnectionAwsAccessKeyMetadata = struct {
+    type: PackConnectionAwsAccessKeyMetadataType,
+    service: []const u8,
+    maskedAccessKeyId: []const u8,
+    maskedSecretAccessKey: []const u8,
+};
+
+pub const PackConnectionAwsAccessKeyMetadataType = enum {
+    awsAccessKey,
+};
+
+pub const PackConnectionAwsAccessKeyPatch = struct {
+    type: PackConnectionAwsAccessKeyPatchType,
+    accessKeyId: ?[]const u8 = null,
+    secretAccessKey: ?[]const u8 = null,
+};
+
+pub const PackConnectionAwsAccessKeyPatchType = enum {
+    awsAccessKey,
+};
+
+pub const PackConnectionAwsAssumeRoleCredentials = struct {
+    type: PackConnectionAwsAssumeRoleCredentialsType,
+    roleArn: []const u8,
+    externalId: []const u8,
+};
+
+pub const PackConnectionAwsAssumeRoleCredentialsType = enum {
+    awsAssumeRole,
+};
+
+pub const PackConnectionAwsAssumeRoleMetadata = struct {
+    type: PackConnectionAwsAssumeRoleMetadataType,
+    service: []const u8,
+    roleArn: []const u8,
+    externalId: []const u8,
+};
+
+pub const PackConnectionAwsAssumeRoleMetadataType = enum {
+    awsAssumeRole,
+};
+
+pub const PackConnectionAwsAssumeRolePatch = struct {
+    type: PackConnectionAwsAssumeRolePatchType,
+    roleArn: ?[]const u8 = null,
+    externalId: ?[]const u8 = null,
+};
+
+pub const PackConnectionAwsAssumeRolePatchType = enum {
+    awsAssumeRole,
+};
+
+pub const PackConnectionCustomCredentials = struct {
+    type: PackConnectionCustomCredentialsType,
+    params: PackConnectionCustomCredentialsParams,
+};
+
+pub const PackConnectionCustomCredentialsParams = []const PackConnectionCustomCredentialsParamsMember;
+
+pub const PackConnectionCustomCredentialsParamsMember = struct {
+    key: []const u8,
+    value: []const u8,
+};
+
+pub const PackConnectionCustomCredentialsType = enum {
+    custom,
+};
+
+pub const PackConnectionCustomMetadata = struct {
+    type: PackConnectionCustomMetadataType,
+    params: PackConnectionCustomMetadataParams,
+    domain: []const u8,
+    presetKeys: PackConnectionCustomMetadataPresetKeys,
+};
+
+pub const PackConnectionCustomMetadataParams = []const PackConnectionCustomMetadataParamsMember;
+
+pub const PackConnectionCustomMetadataParamsMember = struct {
+    key: []const u8,
+    maskedValue: []const u8,
+};
+
+pub const PackConnectionCustomMetadataPresetKeys = []const []const u8;
+
+pub const PackConnectionCustomMetadataType = enum {
+    custom,
+};
+
+pub const PackConnectionCustomPatch = struct {
+    type: PackConnectionCustomPatchType,
+    paramsToPatch: ?PackConnectionCustomPatchParamsToPatch = null,
+};
+
+pub const PackConnectionCustomPatchParamsToPatch = []const PackConnectionCustomPatchParamsToPatchMember;
+
+pub const PackConnectionCustomPatchParamsToPatchMember = struct {
+    key: []const u8,
+    value: []const u8,
+};
+
+pub const PackConnectionCustomPatchType = enum {
+    custom,
+};
+
+pub const PackConnectionGoogleServiceAccountCredentials = struct {
+    type: PackConnectionGoogleServiceAccountCredentialsType,
+    serviceAccountKey: []const u8,
+};
+
+pub const PackConnectionGoogleServiceAccountCredentialsType = enum {
+    googleServiceAccount,
+};
+
+pub const PackConnectionGoogleServiceAccountMetadata = struct {
+    type: PackConnectionGoogleServiceAccountMetadataType,
+    maskedServiceAccountKey: []const u8,
+};
+
+pub const PackConnectionGoogleServiceAccountMetadataType = enum {
+    googleServiceAccount,
+};
+
+pub const PackConnectionGoogleServiceAccountPatch = struct {
+    type: PackConnectionGoogleServiceAccountPatchType,
+    serviceAccountKey: ?[]const u8 = null,
+};
+
+pub const PackConnectionGoogleServiceAccountPatchType = enum {
+    googleServiceAccount,
+};
+
+pub const PackConnectionHeaderCredentials = struct {
+    type: PackConnectionHeaderCredentialsType,
+    token: []const u8,
+};
+
+pub const PackConnectionHeaderCredentialsType = enum {
+    header,
+};
+
+pub const PackConnectionHeaderMetadata = struct {
+    type: PackConnectionHeaderMetadataType,
+    maskedToken: ?[]const u8 = null,
+    headerName: []const u8,
+    tokenPrefix: []const u8,
+};
+
+pub const PackConnectionHeaderMetadataType = enum {
+    header,
+};
+
+pub const PackConnectionHeaderPatch = struct {
+    type: PackConnectionHeaderPatchType,
+    token: ?[]const u8 = null,
+};
+
+pub const PackConnectionHeaderPatchType = enum {
+    header,
+};
+
+pub const PackConnectionHttpBasicCredentials = struct {
+    type: PackConnectionHttpBasicCredentialsType,
+    username: []const u8,
+    password: ?[]const u8 = null,
+};
+
+pub const PackConnectionHttpBasicCredentialsType = enum {
+    httpBasic,
+};
+
+pub const PackConnectionHttpBasicMetadata = struct {
+    type: PackConnectionHttpBasicMetadataType,
+    maskedUsername: ?[]const u8 = null,
+    maskedPassword: ?[]const u8 = null,
+};
+
+pub const PackConnectionHttpBasicMetadataType = enum {
+    httpBasic,
+};
+
+pub const PackConnectionHttpBasicPatch = struct {
+    type: PackConnectionHttpBasicPatchType,
+    username: ?[]const u8 = null,
+    password: ?[]const u8 = null,
+};
+
+pub const PackConnectionHttpBasicPatchType = enum {
+    httpBasic,
+};
+
+pub const PackConnectionMultiHeaderCredentials = struct {
+    type: PackConnectionMultiHeaderCredentialsType,
+    tokens: PackConnectionMultiHeaderCredentialsTokens,
+};
+
+pub const PackConnectionMultiHeaderCredentialsTokens = []const PackConnectionMultiHeaderCredentialsTokensMember;
+
+pub const PackConnectionMultiHeaderCredentialsTokensMember = struct {
+    key: []const u8,
+    value: []const u8,
+};
+
+pub const PackConnectionMultiHeaderCredentialsType = enum {
+    multiHeader,
+};
+
+pub const PackConnectionMultiHeaderMetadata = struct {
+    type: PackConnectionMultiHeaderMetadataType,
+    headers: PackConnectionMultiHeaderMetadataHeaders,
+    presets: PackConnectionMultiHeaderMetadataPresets,
+};
+
+pub const PackConnectionMultiHeaderMetadataHeaders = []const PackConnectionMultiHeaderMetadataHeadersMember;
+
+pub const PackConnectionMultiHeaderMetadataHeadersMember = struct {
+    headerName: []const u8,
+    maskedToken: []const u8,
+    tokenPrefix: ?[]const u8 = null,
+};
+
+pub const PackConnectionMultiHeaderMetadataPresets = []const PackConnectionMultiHeaderMetadataPresetsMember;
+
+pub const PackConnectionMultiHeaderMetadataPresetsMember = struct {
+    headerName: []const u8,
+    tokenPrefix: ?[]const u8 = null,
+};
+
+pub const PackConnectionMultiHeaderMetadataType = enum {
+    multiHeader,
+};
+
+pub const PackConnectionMultiHeaderPatch = struct {
+    type: PackConnectionMultiHeaderPatchType,
+    tokensToPatch: ?PackConnectionMultiHeaderPatchTokensToPatch = null,
+};
+
+pub const PackConnectionMultiHeaderPatchTokensToPatch = []const PackConnectionMultiHeaderPatchTokensToPatchMember;
+
+pub const PackConnectionMultiHeaderPatchTokensToPatchMember = struct {
+    key: []const u8,
+    value: []const u8,
+};
+
+pub const PackConnectionMultiHeaderPatchType = enum {
+    multiHeader,
+};
+
+pub const PackConnectionOauth2ClientCredentials = struct {
+    type: PackConnectionOauth2ClientCredentialsType,
+    clientId: []const u8,
+    clientSecret: []const u8,
+};
+
+pub const PackConnectionOauth2ClientCredentialsMetadata = struct {
+    type: PackConnectionOauth2ClientCredentialsMetadataType,
+    location: PackOAuth2ClientCredentialsLocation,
+    maskedClientId: []const u8,
+    maskedClientSecret: []const u8,
+};
+
+pub const PackConnectionOauth2ClientCredentialsMetadataType = enum {
+    oauth2ClientCredentials,
+};
+
+pub const PackConnectionOauth2ClientCredentialsPatch = struct {
+    type: PackConnectionOauth2ClientCredentialsPatchType,
+    clientId: ?[]const u8 = null,
+    clientSecret: ?[]const u8 = null,
+};
+
+pub const PackConnectionOauth2ClientCredentialsPatchType = enum {
+    oauth2ClientCredentials,
+};
+
+pub const PackConnectionOauth2ClientCredentialsType = enum {
+    oauth2ClientCredentials,
+};
+
+pub const PackConnectionType = enum {
+    header,
+    multiHeader,
+    urlParam,
+    httpBasic,
+    custom,
+    oauth2ClientCredentials,
+    googleServiceAccount,
+    awsAssumeRole,
+    awsAccessKey,
+};
+
+pub const PackConnectionUrlParamCredentials = struct {
+    type: PackConnectionUrlParamCredentialsType,
+    params: PackConnectionUrlParamCredentialsParams,
+};
+
+pub const PackConnectionUrlParamCredentialsParams = []const PackConnectionUrlParamCredentialsParamsMember;
+
+pub const PackConnectionUrlParamCredentialsParamsMember = struct {
+    key: []const u8,
+    value: []const u8,
+};
+
+pub const PackConnectionUrlParamCredentialsType = enum {
+    urlParam,
+};
+
+pub const PackConnectionUrlParamMetadata = struct {
+    type: PackConnectionUrlParamMetadataType,
+    params: PackConnectionUrlParamMetadataParams,
+    domain: []const u8,
+    presetKeys: PackConnectionUrlParamMetadataPresetKeys,
+};
+
+pub const PackConnectionUrlParamMetadataParams = []const PackConnectionUrlParamMetadataParamsMember;
+
+pub const PackConnectionUrlParamMetadataParamsMember = struct {
+    key: []const u8,
+    maskedValue: []const u8,
+};
+
+pub const PackConnectionUrlParamMetadataPresetKeys = []const []const u8;
+
+pub const PackConnectionUrlParamMetadataType = enum {
+    urlParam,
+};
+
+pub const PackConnectionUrlParamPatch = struct {
+    type: PackConnectionUrlParamPatchType,
+    paramsToPatch: ?PackConnectionUrlParamPatchParamsToPatch = null,
+};
+
+pub const PackConnectionUrlParamPatchParamsToPatch = []const PackConnectionUrlParamPatchParamsToPatchMember;
+
+pub const PackConnectionUrlParamPatchParamsToPatchMember = struct {
+    key: []const u8,
+    value: []const u8,
+};
+
+pub const PackConnectionUrlParamPatchType = enum {
+    urlParam,
+};
+
+pub const PackCustomLog = struct {
+    type: PackCustomLogType,
+    context: PackLogContext,
+    message: []const u8,
+    level: LogLevel,
+};
+
+pub const PackCustomLogType = enum {
+    custom,
+};
+
+pub const PackDiscoverability = enum {
+    public,
+    nomosOrganization,
+    group,
+    grammarlyInstitution,
+    workspace,
+    private,
+};
+
+pub const PackEntrypoint = enum {
+    go,
+    docs,
+};
+
+pub const PackExampleImages = []const PackImageFile;
+
+pub const PackFeaturedDoc = struct {
+    doc: DocReference,
+    isPinned: bool,
+    docStatus: ?FeaturedDocStatus = null,
+    publishedUrl: ?[]const u8 = null,
+};
+
+pub const PackFeaturedDocRequestItem = struct {
+    url: []const u8,
+    isPinned: ?bool = null,
+};
+
+pub const PackFeaturedDocsResponse = struct {
+    items: PackFeaturedDocsResponseItems,
+};
+
+pub const PackFeaturedDocsResponseItems = []const PackFeaturedDoc;
+
+pub const PackFetcherLog = struct {
+    type: PackFetcherLogType,
+    context: PackLogContext,
+    requestSizeBytes: ?f64 = null,
+    responseCode: ?f64 = null,
+    responseSizeBytes: ?f64 = null,
+    method: ?PackFetcherLogMethod = null,
+    baseUrl: ?[]const u8 = null,
+    cacheHit: ?bool = null,
+    duration: ?f64 = null,
+};
+
+pub const PackFetcherLogDetails = struct {
+    type: PackFetcherLogDetailsType,
+    request: []const u8,
+    response: ?[]const u8 = null,
+};
+
+pub const PackFetcherLogDetailsType = enum {
+    fetcher,
+};
+
+pub const PackFetcherLogMethod = enum {
+    GET,
+    POST,
+    PUT,
+    DELETE,
+    PATCH,
+    HEAD,
+};
+
+pub const PackFetcherLogType = enum {
+    fetcher,
+};
+
+pub const PackFormulaAnalyticsCollection = struct {
+    items: PackFormulaAnalyticsCollectionItems,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const PackFormulaAnalyticsCollectionItems = []const PackFormulaAnalyticsItem;
+
+pub const PackFormulaAnalyticsItem = struct {
+    formula: PackFormulaIdentifier,
+    metrics: PackFormulaAnalyticsItemMetrics,
+};
+
+pub const PackFormulaAnalyticsItemMetrics = []const PackFormulaAnalyticsMetrics;
+
+pub const PackFormulaAnalyticsMetrics = struct {
+    date: []const u8,
+    formulaInvocations: i32,
+    errors: i32,
+    medianLatencyMs: ?i32 = null,
+    medianResponseSizeBytes: ?i32 = null,
+    docsActivelyUsing: i32,
+    docsActivelyUsing7Day: i32,
+    docsActivelyUsing30Day: i32,
+    docsActivelyUsing90Day: i32,
+    docsActivelyUsingAllTime: i32,
+    workspacesActivelyUsing: i32,
+    workspacesActivelyUsing7Day: i32,
+    workspacesActivelyUsing30Day: i32,
+    workspacesActivelyUsing90Day: i32,
+    workspacesActivelyUsingAllTime: i32,
+    workspacesActivelyTrialing: ?i32 = null,
+    workspacesActivelyTrialing7Day: ?i32 = null,
+    workspacesActivelyTrialing30Day: ?i32 = null,
+    workspacesActivelyTrialing90Day: ?i32 = null,
+    workspacesActivelyTrialingAllTime: ?i32 = null,
+    workspacesNewlySubscribed: ?i32 = null,
+    workspacesWithActiveSubscriptions: ?i32 = null,
+    workspacesWithSuccessfulTrials: ?i32 = null,
+    revenueUsd: ?[]const u8 = null,
+};
+
+pub const PackFormulaAnalyticsOrderBy = enum {
+    date,
+    formulaName,
+    formulaType,
+    formulaInvocations,
+    medianLatencyMs,
+    medianResponseSizeBytes,
+    errors,
+    docsActivelyUsing,
+    docsActivelyUsing7Day,
+    docsActivelyUsing30Day,
+    docsActivelyUsing90Day,
+    docsActivelyUsingAllTime,
+    workspacesActivelyUsing,
+    workspacesActivelyUsing7Day,
+    workspacesActivelyUsing30Day,
+    workspacesActivelyUsing90Day,
+    workspacesActivelyUsingAllTime,
+};
+
+pub const PackFormulaIdentifier = struct {
+    name: []const u8,
+    type: PackFormulaType,
+};
+
+pub const PackFormulaType = enum {
+    action,
+    formula,
+    sync,
+    metadata,
+};
+
+pub const PackGlobalPrincipal = struct {
+    type: PackGlobalPrincipalType,
+};
+
+pub const PackGlobalPrincipalType = enum {
+    worldwide,
+};
+
+pub const PackGrammarlyInstitutionPrincipal = struct {
+    type: PackGrammarlyInstitutionPrincipalType,
+    grammarlyInstitutionId: i64,
+};
+
+pub const PackGrammarlyInstitutionPrincipalType = enum {
+    grammarlyInstitution,
+};
+
+pub const PackGroupPrincipal = struct {
+    type: PackGroupPrincipalType,
+    groupId: []const u8,
+    groupName: ?[]const u8 = null,
+};
+
+pub const PackGroupPrincipalType = enum {
+    group,
+};
+
+pub const PackId = []const u8;
+
+pub const PackImageFile = struct {
+    filename: []const u8,
+    imageUrl: []const u8,
+    assetId: []const u8,
+    altText: ?[]const u8 = null,
+    mimeType: ?[]const u8 = null,
+};
+
+pub const PackIngestionDebugLog = struct {
+    type: PackIngestionDebugLogType,
+    context: PackLogContext,
+    message: []const u8,
+    level: LogLevel,
+};
+
+pub const PackIngestionDebugLogType = enum {
+    ingestionDebug,
+};
+
+pub const PackIngestionLifecycleLog = struct {
+    type: PackIngestionLifecycleLogType,
+    context: PackLogContext,
+    message: []const u8,
+    level: LogLevel,
+};
+
+pub const PackIngestionLifecycleLogType = enum {
+    ingestionLifecycle,
+};
+
+pub const PackInternalLog = struct {
+    type: PackInternalLogType,
+    context: PackLogContext,
+    message: []const u8,
+    level: LogLevel,
+};
+
+pub const PackInternalLogType = enum {
+    internal,
+};
+
+pub const PackInvitation = struct {
+    invitationId: []const u8,
+    packId: PackId,
+    inviteeEmail: []const u8,
+    inviterUserId: i32,
+    access: PackAccessType,
+    createdAt: []const u8,
+    expiresAt: []const u8,
+};
+
+pub const PackInvitationList = struct {
+    items: PackInvitationListItems,
+    nextPageToken: ?[]const u8 = null,
+    nextPageLink: ?[]const u8 = null,
+};
+
+pub const PackInvitationListItems = []const PackInvitation;
+
+pub const PackInvitationWithPack = struct {
+    invitation: PackInvitation,
+    pack: PackSummary,
+    makers: PackInvitationWithPackMakers,
+    networkDomains: PackInvitationWithPackNetworkDomains,
+};
+
+pub const PackInvitationWithPackList = struct {
+    items: PackInvitationWithPackListItems,
+    nextPageToken: ?[]const u8 = null,
+    nextPageLink: ?[]const u8 = null,
+};
+
+pub const PackInvitationWithPackListItems = []const PackInvitationWithPack;
+
+pub const PackInvitationWithPackMakers = []const Maker;
+
+pub const PackInvitationWithPackNetworkDomains = []const []const u8;
+
+pub const PackInvocationLog = struct {
+    type: PackInvocationLogType,
+    context: PackLogContext,
+    cacheHit: ?bool = null,
+    duration: ?f64 = null,
+    @"error": ?PackInvocationLogError = null,
+};
+
+pub const PackInvocationLogDetails = struct {
+    type: PackInvocationLogDetailsType,
+    result: ?PackInvocationLogDetailsResult = null,
+    resultDetail: ?[]const u8 = null,
+    continuationJson: ?[]const u8 = null,
+    completionJson: ?[]const u8 = null,
+    deletedItemIdsJson: ?[]const u8 = null,
+    permissionsContextJson: ?[]const u8 = null,
+};
+
+pub const PackInvocationLogDetailsResult = struct {
+    stringVal: []const u8,
+    int64Val: f64,
+    doubleVal: f64,
+    objectVal: []const u8,
+    boolVal: bool,
+    dateVal: f64,
+};
+
+pub const PackInvocationLogDetailsType = enum {
+    invocation,
+};
+
+pub const PackInvocationLogError = struct {
+    message: []const u8,
+    stack: ?[]const u8 = null,
+};
+
+pub const PackInvocationLogType = enum {
+    invocation,
+};
+
+pub const PackListing = struct {
+    packId: PackId,
+    packVersion: []const u8,
+    releaseId: ?f64 = null,
+    lastReleasedAt: ?[]const u8 = null,
+    logoUrl: []const u8,
+    logo: PackImageFile,
+    coverUrl: ?[]const u8 = null,
+    cover: ?PackImageFile = null,
+    exampleImages: ?PackListingExampleImages = null,
+    agentImages: ?PackListingAgentImages = null,
+    name: []const u8,
+    description: []const u8,
+    shortDescription: []const u8,
+    agentShortDescription: ?[]const u8 = null,
+    agentDescription: ?[]const u8 = null,
+    supportEmail: ?[]const u8 = null,
+    termsOfServiceUrl: ?[]const u8 = null,
+    privacyPolicyUrl: ?[]const u8 = null,
+    categories: PackListingCategories,
+    makers: PackListingMakers,
+    certified: ?bool = null,
+    certifiedAgent: ?bool = null,
+    minimumFeatureSet: ?FeatureSet = null,
+    unrestrictedFeatureSet: ?FeatureSet = null,
+    externalMetadataUrl: []const u8,
+    standardPackPlan: ?StandardPackPlan = null,
+    bundledPackPlan: ?BundledPackPlan = null,
+    sourceCodeVisibility: ?PackSourceCodeVisibility = null,
+    sdkVersion: []const u8,
+    packCategoryType: PackCategoryType,
+};
+
+pub const PackListingAdditionalInformation = struct {
+    privacyCollectsPersonalInfo: ?bool = null,
+    privacyPersonalInfoCategories: ?PackListingAdditionalInformationPrivacyPersonalInfoCategories = null,
+    privacyDataUsagePurposes: ?PackListingAdditionalInformationPrivacyDataUsagePurposes = null,
+    privacyDataCollectedBy: ?PackListingAdditionalInformationPrivacyDataCollectedBy = null,
+};
+
+pub const PackListingAdditionalInformationPrivacyDataCollectedBy = []const []const u8;
+
+pub const PackListingAdditionalInformationPrivacyDataUsagePurposes = []const []const u8;
+
+pub const PackListingAdditionalInformationPrivacyPersonalInfoCategories = []const []const u8;
+
+pub const PackListingAgentImages = []const PackImageFile;
+
+pub const PackListingCategories = []const PublishingCategory;
+
+pub const PackListingDetail = struct {
+    packId: PackId,
+    packVersion: []const u8,
+    releaseId: ?f64 = null,
+    lastReleasedAt: ?[]const u8 = null,
+    logoUrl: []const u8,
+    logo: PackImageFile,
+    coverUrl: ?[]const u8 = null,
+    cover: ?PackImageFile = null,
+    exampleImages: ?PackListingDetailExampleImages = null,
+    agentImages: ?PackListingDetailAgentImages = null,
+    name: []const u8,
+    description: []const u8,
+    shortDescription: []const u8,
+    agentShortDescription: ?[]const u8 = null,
+    agentDescription: ?[]const u8 = null,
+    supportEmail: ?[]const u8 = null,
+    termsOfServiceUrl: ?[]const u8 = null,
+    privacyPolicyUrl: ?[]const u8 = null,
+    categories: PackListingDetailCategories,
+    makers: PackListingDetailMakers,
+    certified: ?bool = null,
+    certifiedAgent: ?bool = null,
+    minimumFeatureSet: ?FeatureSet = null,
+    unrestrictedFeatureSet: ?FeatureSet = null,
+    externalMetadataUrl: []const u8,
+    standardPackPlan: ?StandardPackPlan = null,
+    bundledPackPlan: ?BundledPackPlan = null,
+    sourceCodeVisibility: ?PackSourceCodeVisibility = null,
+    sdkVersion: []const u8,
+    packCategoryType: PackCategoryType,
+    discoverability: PackDiscoverability,
+    userAccess: PackUserAccess,
+    codaHelpCenterUrl: ?[]const u8 = null,
+    configuration: ?PackConfigurationEntry = null,
+};
+
+pub const PackListingDetailAgentImages = []const PackImageFile;
+
+pub const PackListingDetailCategories = []const PublishingCategory;
+
+pub const PackListingDetailExampleImages = []const PackImageFile;
+
+pub const PackListingDetailMakers = []const MakerSummary;
+
+pub const PackListingDraftData = struct {
+    name: ?[]const u8 = null,
+    description: ?[]const u8 = null,
+    shortDescription: ?[]const u8 = null,
+    logo: ?PackImageFile = null,
+    cover: ?PackImageFile = null,
+    exampleImages: ?PackListingDraftDataExampleImages = null,
+    agentImages: ?PackListingDraftDataAgentImages = null,
+    categoryIds: ?PackListingDraftDataCategoryIds = null,
+    supportEmail: ?[]const u8 = null,
+    termsOfServiceUrl: ?[]const u8 = null,
+    privacyPolicyUrl: ?[]const u8 = null,
+    sourceCodeVisibility: ?PackSourceCodeVisibility = null,
+    agentShortDescription: ?[]const u8 = null,
+    agentDescription: ?[]const u8 = null,
+    additionalInformation: ?PackListingAdditionalInformation = null,
+};
+
+pub const PackListingDraftDataAgentImages = []const PackImageFile;
+
+pub const PackListingDraftDataCategoryIds = []const []const u8;
+
+pub const PackListingDraftDataExampleImages = []const PackImageFile;
+
+pub const PackListingDraftInputData = struct {
+    name: ?[]const u8 = null,
+    description: ?[]const u8 = null,
+    shortDescription: ?[]const u8 = null,
+    logo: ?PackImageFile = null,
+    cover: ?PackImageFile = null,
+    exampleImages: ?PackListingDraftInputDataExampleImages = null,
+    agentImages: ?PackListingDraftInputDataAgentImages = null,
+    categoryIds: ?PackListingDraftInputDataCategoryIds = null,
+    supportEmail: ?[]const u8 = null,
+    termsOfServiceUrl: ?[]const u8 = null,
+    privacyPolicyUrl: ?[]const u8 = null,
+    sourceCodeVisibility: ?PackSourceCodeVisibility = null,
+    agentShortDescription: ?[]const u8 = null,
+    agentDescription: ?[]const u8 = null,
+    additionalInformation: ?PackListingAdditionalInformation = null,
+};
+
+pub const PackListingDraftInputDataAgentImages = []const ImageFileForUpdatePackRequest;
+
+pub const PackListingDraftInputDataCategoryIds = []const []const u8;
+
+pub const PackListingDraftInputDataExampleImages = []const PackImageFile;
+
+pub const PackListingExampleImages = []const PackImageFile;
+
+pub const PackListingInstallContextType = enum {
+    workspace,
+    doc,
+};
+
+pub const PackListingList = struct {
+    items: PackListingListItems,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const PackListingListItems = []const PackListing;
+
+pub const PackListingMakers = []const MakerSummary;
+
+pub const PackListingsSortBy = enum {
+    packId,
+    name,
+    packVersion,
+    packVersionModifiedAt,
+    agentDirectorySort,
+};
+
+pub const PackLog = union(enum) {
+    packCustomLog: PackCustomLog,
+    packInvocationLog: PackInvocationLog,
+    packFetcherLog: PackFetcherLog,
+    packInternalLog: PackInternalLog,
+    packAuthLog: PackAuthLog,
+    packIngestionLifecycleLog: PackIngestionLifecycleLog,
+    packIngestionDebugLog: PackIngestionDebugLog,
+    packAgentRuntimeLog: PackAgentRuntimeLog,
+    packMcpLog: PackMcpLog,
+};
+
+pub const PackLogContext = struct {
     docId: []const u8,
-    tableIdOrName: []const u8,
-    rowIdOrName: []const u8,
+    packId: []const u8,
+    packVersion: []const u8,
+    formulaName: []const u8,
+    userId: []const u8,
+    connectionId: []const u8,
+    connectionName: ?[]const u8 = null,
+    requestId: []const u8,
+    requestType: PackLogRequestType,
+    createdAt: []const u8,
+    logId: []const u8,
+    docObjectId: ?[]const u8 = null,
+    docRowId: ?[]const u8 = null,
+    docColumnId: ?[]const u8 = null,
+    isSyncTable: ?bool = null,
+    isContinuedSyncTable: ?bool = null,
+    autocompleteParameterName: ?[]const u8 = null,
+    invocationSource: ?[]const u8 = null,
+    detailsKey: []const u8,
+    ingestionChildExecutionIndex: ?f64 = null,
+    ingestionId: ?[]const u8 = null,
+    rootIngestionId: ?[]const u8 = null,
+    ingestionExecutionId: ?[]const u8 = null,
+    ingestionStage: ?[]const u8 = null,
+    ingestionParentStage: ?[]const u8 = null,
+    ingestionExecutionAttempt: ?i32 = null,
+    ingestionParentItemId: ?[]const u8 = null,
+    ingestionProcessId: ?[]const u8 = null,
+    additionalMetadata: ?PackLogContextAdditionalMetadata = null,
+    agentSessionId: ?[]const u8 = null,
+    agentInstanceId: ?[]const u8 = null,
+    executingAgentInstanceId: ?[]const u8 = null,
+};
+
+pub const PackLogContextAdditionalMetadata = struct {
+};
+
+pub const PackLogDetails = union(enum) {
+    packFetcherLogDetails: PackFetcherLogDetails,
+    packInvocationLogDetails: PackInvocationLogDetails,
+    packAgentRuntimeLogDetails: PackAgentRuntimeLogDetails,
+};
+
+pub const PackLogRequestType = enum {
+    unknown,
+    connectionNameMetadataRequest,
+    parameterAutocompleteMetadataRequest,
+    postAuthSetupMetadataRequest,
+    propertyOptionsMetadataRequest,
+    getSyncTableSchemaMetadataRequest,
+    getDynamicSyncTableNameMetadataRequest,
+    listSyncTableDynamicUrlsMetadataRequest,
+    searchSyncTableDynamicUrlsMetadataRequest,
+    getDynamicSyncTableDisplayUrlMetadataRequest,
+    getIdentifiersForConnectionRequest,
+    invokeFormulaRequest,
+    invokeSyncFormulaRequest,
+    invokeSyncUpdateFormulaRequest,
+    invokeExecuteGetPermissionsRequest,
+    validateParametersMetadataRequest,
+    mcp,
+};
+
+pub const PackLogType = enum {
+    custom,
+    fetcher,
+    invocation,
+    internal,
+    auth,
+    ingestionLifecycle,
+    ingestionDebug,
+    agentRuntime,
+    mcp,
+};
+
+pub const PackLogsList = struct {
+    items: PackLogsListItems,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const PackLogsListItems = []const PackLog;
+
+pub const PackMcpLog = struct {
+    type: PackMcpLogType,
+    context: PackLogContext,
+    message: ?[]const u8 = null,
+    @"error": ?PackMcpLogError = null,
+};
+
+pub const PackMcpLogError = struct {
+    message: []const u8,
+    stack: ?[]const u8 = null,
+};
+
+pub const PackMcpLogType = enum {
+    mcp,
+};
+
+pub const PackNomosOrganizationPrincipal = struct {
+    type: PackNomosOrganizationPrincipalType,
+    nomosOrganizationId: []const u8,
+};
+
+pub const PackNomosOrganizationPrincipalType = enum {
+    nomosOrganization,
+};
+
+pub const PackOAuth2ClientCredentialsLocation = enum {
+    automatic,
+    body,
+    header,
+};
+
+pub const PackOauthConfigMetadata = struct {
+    maskedClientId: []const u8,
+    maskedClientSecret: []const u8,
+    authorizationUrl: []const u8,
+    tokenUrl: []const u8,
+    tokenPrefix: ?[]const u8 = null,
+    scopes: ?[]const u8 = null,
+    redirectUri: []const u8,
+    useDynamicClientRegistration: ?bool = null,
+};
+
+pub const PackOrganizationAccessForCodaBrain = struct {
+    canRequestAccess: bool,
+    hasRequestedAccess: bool,
+    requiresConfiguration: bool,
+    allowedConfigurations: ?PackOrganizationAccessForCodaBrainAllowedConfigurations = null,
+    allowedPackIds: ?PackOrganizationAccessForCodaBrainAllowedPackIds = null,
+};
+
+pub const PackOrganizationAccessForCodaBrainAllowedConfigurations = []const PackConfigurationEntry;
+
+pub const PackOrganizationAccessForCodaBrainAllowedPackIds = []const f64;
+
+pub const PackOrganizationAccessForDocs = struct {
+    canRequestAccess: bool,
+    hasRequestedAccess: bool,
+    requiresConfiguration: bool,
+    allowedConfigurations: ?PackOrganizationAccessForDocsAllowedConfigurations = null,
+    allowedPackIds: ?PackOrganizationAccessForDocsAllowedPackIds = null,
+    incompatibleDocPermissions: ?PackOrganizationAccessForDocsIncompatibleDocPermissions = null,
+    incompatibleDocOwner: ?UserSummary = null,
+    incompatibleDocFolder: ?FolderReference = null,
+    isDocOwner: ?bool = null,
+};
+
+pub const PackOrganizationAccessForDocsAllowedConfigurations = []const PackConfigurationEntry;
+
+pub const PackOrganizationAccessForDocsAllowedPackIds = []const f64;
+
+pub const PackOrganizationAccessForDocsIncompatibleDocPermissions = []const Permission;
+
+pub const PackPackEntrypoints = []const PackEntrypoint;
+
+pub const PackPermission = struct {
+    id: []const u8,
+    principal: PackPrincipal,
+    access: PackAccessType,
+};
+
+pub const PackPermissionList = struct {
+    items: PackPermissionListItems,
+    permissionUsers: PackPermissionListPermissionUsers,
+};
+
+pub const PackPermissionListItems = []const PackPermission;
+
+pub const PackPermissionListPermissionUsers = []const UserSummary;
+
+pub const PackPlanCurrency = enum {
+    USD,
+};
+
+pub const PackPlanPricingType = enum {
+    Free,
+    MonthlyDocMaker,
+    BundledWithTier,
+};
+
+pub const PackPrincipal = union(enum) {
+    packUserPrincipal: PackUserPrincipal,
+    packWorkspacePrincipal: PackWorkspacePrincipal,
+    packGlobalPrincipal: PackGlobalPrincipal,
+    packNomosOrganizationPrincipal: PackNomosOrganizationPrincipal,
+    packGroupPrincipal: PackGroupPrincipal,
+    packGrammarlyInstitutionPrincipal: PackGrammarlyInstitutionPrincipal,
+};
+
+pub const PackPrincipalType = enum {
+    user,
+    workspace,
+    worldwide,
+    nomosOrganization,
+    group,
+    grammarlyInstitution,
+};
+
+pub const PackRateLimit = struct {
+    intervalSeconds: i32,
+    operationsPerInterval: i32,
+};
+
+pub const PackRelease = struct {
+    packId: PackId,
+    releaseNotes: []const u8,
+    createdAt: []const u8,
+    releaseId: f64,
+    packVersion: []const u8,
+    sdkVersion: []const u8,
+};
+
+pub const PackReleaseList = struct {
+    items: PackReleaseListItems,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const PackReleaseListItems = []const PackRelease;
+
+pub const PackReview = struct {
+    packReviewId: []const u8,
+    packId: PackId,
+    packVersion: ?[]const u8 = null,
+    includesListingReview: ?bool = null,
+    packReviewStatus: PackReviewStatus,
+    submittedByUserId: i32,
+    submissionTimestamp: []const u8,
+    additionalInformation: ?PackReviewAdditionalInformation = null,
+};
+
+pub const PackReviewAdditionalInformation = struct {
+    privacyCollectsPersonalInfo: ?bool = null,
+    privacyPersonalInfoCategories: ?PackReviewAdditionalInformationPrivacyPersonalInfoCategories = null,
+    privacyDataUsagePurposes: ?PackReviewAdditionalInformationPrivacyDataUsagePurposes = null,
+    privacyDataCollectedBy: ?PackReviewAdditionalInformationPrivacyDataCollectedBy = null,
+};
+
+pub const PackReviewAdditionalInformationPrivacyDataCollectedBy = []const []const u8;
+
+pub const PackReviewAdditionalInformationPrivacyDataUsagePurposes = []const []const u8;
+
+pub const PackReviewAdditionalInformationPrivacyPersonalInfoCategories = []const []const u8;
+
+pub const PackReviewStatus = enum {
+    pending,
+    approved,
+    denied,
+    canceled,
+    superseded,
+};
+
+pub const PackSource = enum {
+    web,
+    cli,
+};
+
+pub const PackSourceCode = struct {
+    filename: []const u8,
+    url: []const u8,
+};
+
+pub const PackSourceCodeInfo = struct {
+    files: PackSourceCodeInfoFiles,
+};
+
+pub const PackSourceCodeInfoFiles = []const PackSourceCode;
+
+pub const PackSourceCodeUploadCompleteInput = struct {
+    packId: PackId,
+    packVersion: []const u8,
+    payload: PackSourceCodeUploadCompletePayload,
+};
+
+pub const PackSourceCodeUploadCompletePayload = struct {
+    filename: []const u8,
+    codeHash: []const u8,
+};
+
+pub const PackSourceCodeUploadCompleteResponse = struct {
+    requestId: []const u8,
+};
+
+pub const PackSourceCodeUploadInfo = struct {
+    uploadUrl: []const u8,
+    uploadedPathName: []const u8,
+    headers: PackSourceCodeUploadInfoHeaders,
+};
+
+pub const PackSourceCodeUploadInfoHeaders = std.json.ArrayHashMap([]const u8);
+
+pub const PackSourceCodeVisibility = enum {
+    private,
+    shared,
+};
+
+pub const PackSummary = struct {
+    id: f64,
+    logoUrl: ?[]const u8 = null,
+    coverUrl: ?[]const u8 = null,
+    exampleImages: ?PackSummaryExampleImages = null,
+    agentImages: ?PackSummaryAgentImages = null,
+    workspaceId: []const u8,
+    categories: PackSummaryCategories,
+    certified: ?bool = null,
+    certifiedAgent: ?bool = null,
+    sourceCodeVisibility: ?PackSourceCodeVisibility = null,
+    packEntrypoints: ?PackSummaryPackEntrypoints = null,
+    verifiedVersion: ?[]const u8 = null,
+    name: []const u8,
+    description: []const u8,
+    shortDescription: []const u8,
+    agentShortDescription: ?[]const u8 = null,
+    agentDescription: ?[]const u8 = null,
+    supportEmail: ?[]const u8 = null,
+    termsOfServiceUrl: ?[]const u8 = null,
+    privacyPolicyUrl: ?[]const u8 = null,
+};
+
+pub const PackSummaryAgentImages = []const PackImageFile;
+
+pub const PackSummaryCategories = []const PublishingCategory;
+
+pub const PackSummaryExampleImages = []const PackImageFile;
+
+pub const PackSummaryList = struct {
+    items: PackSummaryListItems,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const PackSummaryListItems = []const PackSummary;
+
+pub const PackSummaryPackEntrypoints = []const PackEntrypoint;
+
+pub const PackSystemConnectionCredentials = union(enum) {
+    packConnectionHeaderCredentials: PackConnectionHeaderCredentials,
+    packConnectionMultiHeaderCredentials: PackConnectionMultiHeaderCredentials,
+    packConnectionUrlParamCredentials: PackConnectionUrlParamCredentials,
+    packConnectionHttpBasicCredentials: PackConnectionHttpBasicCredentials,
+    packConnectionCustomCredentials: PackConnectionCustomCredentials,
+    packConnectionOauth2ClientCredentials: PackConnectionOauth2ClientCredentials,
+    packConnectionGoogleServiceAccountCredentials: PackConnectionGoogleServiceAccountCredentials,
+    packConnectionAwsAssumeRoleCredentials: PackConnectionAwsAssumeRoleCredentials,
+    packConnectionAwsAccessKeyCredentials: PackConnectionAwsAccessKeyCredentials,
+};
+
+pub const PackSystemConnectionMetadata = union(enum) {
+    packConnectionHeaderMetadata: PackConnectionHeaderMetadata,
+    packConnectionMultiHeaderMetadata: PackConnectionMultiHeaderMetadata,
+    packConnectionUrlParamMetadata: PackConnectionUrlParamMetadata,
+    packConnectionHttpBasicMetadata: PackConnectionHttpBasicMetadata,
+    packConnectionCustomMetadata: PackConnectionCustomMetadata,
+    packConnectionOauth2ClientCredentialsMetadata: PackConnectionOauth2ClientCredentialsMetadata,
+    packConnectionGoogleServiceAccountMetadata: PackConnectionGoogleServiceAccountMetadata,
+    packConnectionAwsAssumeRoleMetadata: PackConnectionAwsAssumeRoleMetadata,
+    packConnectionAwsAccessKeyMetadata: PackConnectionAwsAccessKeyMetadata,
+};
+
+pub const PackUserAccess = struct {
+    canEdit: bool,
+    canTest: bool,
+    canView: bool,
+    canInstall: bool,
+    canPurchase: bool,
+    requiresTrial: bool,
+    canConnectAccount: bool,
+    organization: ?PackUserAccessOrganization = null,
+    ingestionLimitSettings: ?IngestionLimitSettings = null,
+};
+
+pub const PackUserAccessOrganization = union(enum) {
+    packOrganizationAccessForDocs: PackOrganizationAccessForDocs,
+    packOrganizationAccessForCodaBrain: PackOrganizationAccessForCodaBrain,
+};
+
+pub const PackUserPrincipal = struct {
+    type: PackUserPrincipalType,
+    email: []const u8,
+};
+
+pub const PackUserPrincipalType = enum {
+    user,
+};
+
+pub const PackVersion = struct {
+    packId: PackId,
+    buildNotes: []const u8,
+    createdAt: []const u8,
+    creationUserLoginId: []const u8,
+    releaseId: ?f64 = null,
+    packVersion: []const u8,
+    sdkVersion: ?[]const u8 = null,
+    source: ?PackSource = null,
+};
+
+pub const PackVersionDiffs = struct {
+    findings: PackVersionDiffsFindings,
+    findingDetails: PackVersionDiffsFindingDetails,
+};
+
+pub const PackVersionDiffsFindingDetails = []const PackVersionDiffsFindingDetailsMember;
+
+pub const PackVersionDiffsFindingDetailsMember = struct {
+    finding: []const u8,
+    path: []const u8,
+};
+
+pub const PackVersionDiffsFindings = []const []const u8;
+
+pub const PackVersionList = struct {
+    items: PackVersionListItems,
+    creationUsers: PackVersionListCreationUsers,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const PackVersionListCreationUsers = []const UserSummary;
+
+pub const PackVersionListItems = []const PackVersion;
+
+pub const PackVersionUploadCompleteInput = struct {
+    packId: PackId,
+    packVersion: []const u8,
+    payload: CreatePackVersionRequest,
+};
+
+pub const PackVersionUploadInfo = struct {
+    uploadUrl: []const u8,
+    headers: PackVersionUploadInfoHeaders,
+};
+
+pub const PackVersionUploadInfoHeaders = std.json.ArrayHashMap([]const u8);
+
+pub const PackWorkspacePrincipal = struct {
+    type: PackWorkspacePrincipalType,
+    workspaceId: []const u8,
+};
+
+pub const PackWorkspacePrincipalType = enum {
+    workspace,
+};
+
+pub const PacksSortBy = enum {
+    title,
+    createdAt,
+    updatedAt,
+};
+
+pub const Page = struct {
+    id: []const u8,
+    type: PageResourceType,
+    href: []const u8,
+    browserLink: []const u8,
+    name: []const u8,
+    subtitle: ?[]const u8 = null,
+    icon: ?Icon = null,
+    image: ?Image = null,
+    contentType: PageType,
+    isHidden: bool,
+    isEffectivelyHidden: bool,
+    parent: ?PageReference = null,
+    children: PageChildren,
+    authors: ?PageAuthors = null,
+    createdAt: ?[]const u8 = null,
+    createdBy: ?PersonValue = null,
+    updatedAt: ?[]const u8 = null,
+    updatedBy: ?PersonValue = null,
+};
+
+pub const PageAnalyticsCollection = struct {
+    items: PageAnalyticsCollectionItems,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const PageAnalyticsCollectionItems = []const PageAnalyticsItem;
+
+pub const PageAnalyticsDetails = struct {
+    id: []const u8,
+    name: []const u8,
+    icon: ?Icon = null,
+};
+
+pub const PageAnalyticsItem = struct {
+    page: PageAnalyticsDetails,
+    metrics: PageAnalyticsItemMetrics,
+};
+
+pub const PageAnalyticsItemMetrics = []const PageAnalyticsMetrics;
+
+pub const PageAnalyticsMetrics = struct {
+    date: []const u8,
+    views: i32,
+    sessions: i32,
+    users: i32,
+    averageSecondsViewed: i32,
+    medianSecondsViewed: i32,
+    tabs: i32,
+};
+
+pub const PageAuthors = []const PersonValue;
+
+pub const PageChildren = []const PageReference;
+
+pub const PageContent = struct {
+    format: PageContentFormat,
+    content: []const u8,
+};
+
+pub const PageContentDelete = struct {
+    elementIds: ?PageContentDeleteElementIds = null,
+};
+
+pub const PageContentDeleteElementIds = []const []const u8;
+
+pub const PageContentDeleteResponse = struct {
+    requestId: []const u8,
+    id: []const u8,
+};
+
+pub const PageContentExportStatus = enum {
+    inProgress,
+    failed,
+    complete,
+};
+
+pub const PageContentExportStatusResponse = struct {
+    id: []const u8,
+    status: []const u8,
+    href: []const u8,
+    downloadLink: ?[]const u8 = null,
+    @"error": ?[]const u8 = null,
+};
+
+pub const PageContentFormat = enum {
+    html,
+    markdown,
+};
+
+pub const PageContentInsertionMode = enum {
+    append,
+    prepend,
+    replace,
+};
+
+pub const PageContentItem = struct {
+    id: []const u8,
+    type: PageContentItemType,
+    itemContent: ?PageContentItemContent = null,
+};
+
+pub const PageContentItemContent = struct {
+    style: PageLineStyle,
+    format: PageContentItemContentFormat,
+    content: []const u8,
+    lineLevel: ?i32 = null,
+};
+
+pub const PageContentItemContentFormat = enum {
+    plainText,
+};
+
+pub const PageContentItemType = enum {
+    line,
+};
+
+pub const PageContentList = struct {
+    items: PageContentListItems,
+    href: []const u8,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const PageContentListItems = []const PageContentItem;
+
+pub const PageContentOutputFormat = enum {
+    html,
+    markdown,
+};
+
+pub const PageContentUpdate = struct {
+    insertionMode: PageContentInsertionMode,
+    elementId: ?[]const u8 = null,
+    canvasContent: PageContent,
+};
+
+pub const PageCreate = struct {
+    name: ?[]const u8 = null,
+    subtitle: ?[]const u8 = null,
+    iconName: ?[]const u8 = null,
+    imageUrl: ?[]const u8 = null,
+    parentPageId: ?[]const u8 = null,
+    pageContent: ?PageCreateContent = null,
+};
+
+pub const PageCreateContent = union(enum) {
+    variant1: PageCreateContentVariant1,
+    variant2: PageCreateContentVariant2,
+    variant3: PageCreateContentVariant3,
+};
+
+pub const PageCreateContentVariant1 = struct {
+    type: PageCreateContentVariant1Type,
+    canvasContent: PageContent,
+};
+
+pub const PageCreateContentVariant1Type = enum {
+    canvas,
+};
+
+pub const PageCreateContentVariant2 = struct {
+    type: PageCreateContentVariant2Type,
+    url: []const u8,
+    renderMethod: ?PageEmbedRenderMethod = null,
+};
+
+pub const PageCreateContentVariant2Type = enum {
+    embed,
+};
+
+pub const PageCreateContentVariant3 = union(enum) {
+    variant1: PageCreateContentVariant3Variant1,
+    variant2: PageCreateContentVariant3Variant2,
+};
+
+pub const PageCreateContentVariant3Variant1 = struct {
+    type: PageCreateContentVariant3Variant1Type,
+    mode: PageCreateContentVariant3Variant1Mode,
+    includeSubpages: bool,
+    sourcePageId: []const u8,
+    sourceDocId: []const u8,
+};
+
+pub const PageCreateContentVariant3Variant1Mode = enum {
+    page,
+};
+
+pub const PageCreateContentVariant3Variant1Type = enum {
+    syncPage,
+};
+
+pub const PageCreateContentVariant3Variant2 = struct {
+    type: PageCreateContentVariant3Variant2Type,
+    mode: PageCreateContentVariant3Variant2Mode,
+    sourceDocId: []const u8,
+};
+
+pub const PageCreateContentVariant3Variant2Mode = enum {
+    document,
+};
+
+pub const PageCreateContentVariant3Variant2Type = enum {
+    syncPage,
+};
+
+pub const PageCreateResponse = struct {
+    requestId: []const u8,
+    id: []const u8,
+};
+
+pub const PageDeleteResponse = struct {
+    requestId: []const u8,
+    id: []const u8,
+};
+
+pub const PageEmbedRenderMethod = enum {
+    compatibility,
+    standard,
+};
+
+pub const PageLineStyle = enum {
+    blockQuote,
+    bulletedList,
+    checkboxList,
+    code,
+    collapsibleList,
+    h1,
+    h2,
+    h3,
+    numberedList,
+    paragraph,
+    pullQuote,
+};
+
+pub const PageList = struct {
+    items: PageListItems,
+    href: ?[]const u8 = null,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const PageListItems = []const Page;
+
+pub const PageReference = struct {
+    id: []const u8,
+    type: PageReferenceType,
+    href: []const u8,
+    browserLink: []const u8,
+    name: []const u8,
+};
+
+pub const PageReferenceType = enum {
+    page,
+};
+
+pub const PageResourceType = enum {
+    page,
+};
+
+pub const PageType = enum {
+    canvas,
+    embed,
+    syncPage,
+};
+
+pub const PageUpdate = struct {
+    name: ?[]const u8 = null,
+    subtitle: ?[]const u8 = null,
+    iconName: ?[]const u8 = null,
+    imageUrl: ?[]const u8 = null,
+    isHidden: ?bool = null,
+    contentUpdate: ?PageContentUpdate = null,
+};
+
+pub const PageUpdateResponse = struct {
+    requestId: []const u8,
+    id: []const u8,
+};
+
+pub const PaidFeatureSet = enum {
+    Pro,
+    Team,
+    Enterprise,
+};
+
+pub const ParameterSetting = struct {
+    default: []const u8,
+    allowed: ParameterSettingAllowed,
+};
+
+pub const ParameterSettingAllowed = []const []const u8;
+
+pub const PatchPackSystemConnectionInput = struct {
+    packId: PackId,
+    payload: PatchPackSystemConnectionPayload,
+};
+
+pub const PatchPackSystemConnectionOutput = struct {
+    body: ?PackSystemConnectionMetadata = null,
+};
+
+pub const PatchPackSystemConnectionPayload = union(enum) {
+    packConnectionHeaderPatch: PackConnectionHeaderPatch,
+    packConnectionMultiHeaderPatch: PackConnectionMultiHeaderPatch,
+    packConnectionUrlParamPatch: PackConnectionUrlParamPatch,
+    packConnectionHttpBasicPatch: PackConnectionHttpBasicPatch,
+    packConnectionCustomPatch: PackConnectionCustomPatch,
+    packConnectionOauth2ClientCredentialsPatch: PackConnectionOauth2ClientCredentialsPatch,
+    packConnectionGoogleServiceAccountPatch: PackConnectionGoogleServiceAccountPatch,
+    packConnectionAwsAssumeRolePatch: PackConnectionAwsAssumeRolePatch,
+    packConnectionAwsAccessKeyPatch: PackConnectionAwsAccessKeyPatch,
+};
+
+pub const Permission = struct {
+    principal: Principal,
+    id: []const u8,
+    access: AccessType,
+};
+
+pub const PersonValue = struct {
+    @"@context": []const u8,
+    @"@type": PersonValueType,
+    additionalType: ?[]const u8 = null,
+    name: []const u8,
+    email: ?[]const u8 = null,
+};
+
+pub const PersonValueType = enum {
+    Person,
+};
+
+pub const Principal = union(enum) {
+    emailPrincipal: EmailPrincipal,
+    groupPrincipal: GroupPrincipal,
+    domainPrincipal: DomainPrincipal,
+    workspacePrincipal: WorkspacePrincipal,
+    anyonePrincipal: AnyonePrincipal,
+    internalAccessPrincipal: InternalAccessPrincipal,
+};
+
+pub const PrincipalType = enum {
+    email,
+    group,
+    domain,
+    workspace,
+    anyone,
+    internalAccess,
+};
+
+pub const PublishDocInput = struct {
+    docId: []const u8,
+    payload: DocPublish,
+};
+
+pub const PublishResponse = struct {
+    requestId: []const u8,
+};
+
+pub const PublishingCategory = struct {
+    categoryId: []const u8,
+    categoryName: []const u8,
+    categorySlug: ?[]const u8 = null,
 };
 
 pub const PushButtonInput = struct {
@@ -210,82 +3942,31 @@ pub const PushButtonInput = struct {
     columnIdOrName: []const u8,
 };
 
-pub const GetColumnInput = struct {
-    docId: []const u8,
-    tableIdOrName: []const u8,
-    columnIdOrName: []const u8,
+pub const PushButtonResponse = struct {
+    requestId: []const u8,
+    rowId: []const u8,
+    columnId: []const u8,
 };
 
-pub const ListFormulasInput = struct {
-    docId: []const u8,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-    sortBy: ?[]const u8 = null,
+pub const ReferenceColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    table: TableReference,
 };
 
-pub const GetFormulaInput = struct {
-    docId: []const u8,
-    formulaIdOrName: []const u8,
+pub const RegisterPackVersionInput = struct {
+    packId: PackId,
+    packVersion: []const u8,
+    payload: RegisterPackVersionPayload,
 };
 
-pub const ListControlsInput = struct {
-    docId: []const u8,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-    sortBy: ?[]const u8 = null,
+pub const RegisterPackVersionPayload = struct {
+    bundleHash: []const u8,
 };
 
-pub const GetControlInput = struct {
-    docId: []const u8,
-    controlIdOrName: []const u8,
-};
-
-pub const ListCustomDocDomainsInput = struct {
-    docId: []const u8,
-};
-
-pub const AddCustomDocDomainInput = struct {
-    docId: []const u8,
-    payload: []const u8,
-};
-
-pub const DeleteCustomDocDomainInput = struct {
-    docId: []const u8,
-    customDocDomain: []const u8,
-};
-
-pub const UpdateCustomDocDomainInput = struct {
-    docId: []const u8,
-    customDocDomain: []const u8,
-    payload: []const u8,
-};
-
-pub const GetCustomDocDomainProviderInput = struct {
-    customDocDomain: []const u8,
-};
-
-pub const ListFoldersInput = struct {
-    workspaceId: ?[]const u8 = null,
-    isStarred: ?bool = null,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-};
-
-pub const CreateFolderInput = struct {
-    payload: []const u8,
-};
-
-pub const GetFolderInput = struct {
-    folderId: []const u8,
-};
-
-pub const UpdateFolderInput = struct {
-    folderId: []const u8,
-    payload: []const u8,
-};
-
-pub const DeleteFolderInput = struct {
-    folderId: []const u8,
+pub const ReplyToPackInvitationInput = struct {
+    invitationId: []const u8,
+    payload: HandlePackInvitationRequest,
 };
 
 pub const ResolveBrowserLinkInput = struct {
@@ -293,495 +3974,1565 @@ pub const ResolveBrowserLinkInput = struct {
     degradeGracefully: ?bool = null,
 };
 
-pub const GetMutationStatusInput = struct {
+pub const RichSingleValue = union(enum) {
+    scalarValue: ScalarValue,
+    currencyValue: CurrencyValue,
+    imageUrlValue: ImageUrlValue,
+    personValue: PersonValue,
+    urlValue: UrlValue,
+    rowValue: RowValue,
+};
+
+pub const RichValue = union(enum) {
+    richSingleValue: RichSingleValue,
+    variant2: RichValueVariant2,
+};
+
+pub const RichValueVariant2 = []const RichValueVariant2Member;
+
+pub const RichValueVariant2Member = union(enum) {
+    richSingleValue: RichSingleValue,
+    variant2: RichValueVariant2MemberVariant2,
+};
+
+pub const RichValueVariant2MemberVariant2 = []const RichSingleValue;
+
+pub const Row = struct {
+    id: []const u8,
+    type: RowType,
+    href: []const u8,
+    name: []const u8,
+    index: i32,
+    browserLink: []const u8,
+    createdAt: []const u8,
+    updatedAt: []const u8,
+    values: RowValues,
+};
+
+pub const RowDeleteResponse = struct {
     requestId: []const u8,
+    id: []const u8,
+};
+
+pub const RowDetail = struct {
+    id: []const u8,
+    type: RowDetailType,
+    href: []const u8,
+    name: []const u8,
+    index: i32,
+    browserLink: []const u8,
+    createdAt: []const u8,
+    updatedAt: []const u8,
+    values: RowDetailValues,
+    parent: TableReference,
+};
+
+pub const RowDetailType = enum {
+    row,
+};
+
+pub const RowDetailValues = std.json.ArrayHashMap(CellValue);
+
+pub const RowEdit = struct {
+    cells: RowEditCells,
+};
+
+pub const RowEditCells = []const CellEdit;
+
+pub const RowList = struct {
+    items: RowListItems,
+    href: ?[]const u8 = null,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+    nextSyncToken: ?NextSyncToken = null,
+};
+
+pub const RowListItems = []const Row;
+
+pub const RowType = enum {
+    row,
+};
+
+pub const RowUpdate = struct {
+    row: RowEdit,
+};
+
+pub const RowUpdateResponse = struct {
+    requestId: []const u8,
+    id: []const u8,
+};
+
+pub const RowValue = struct {
+    @"@context": []const u8,
+    @"@type": RowValueType,
+    additionalType: RowValueAdditionalType,
+    name: []const u8,
+    url: []const u8,
+    tableId: []const u8,
+    rowId: []const u8,
+    tableUrl: []const u8,
+};
+
+pub const RowValueAdditionalType = enum {
+    row,
+};
+
+pub const RowValueType = enum {
+    StructuredValue,
+};
+
+pub const RowValues = std.json.ArrayHashMap(CellValue);
+
+pub const RowsDelete = struct {
+    rowIds: RowsDeleteRowIds,
+};
+
+pub const RowsDeleteResponse = struct {
+    requestId: []const u8,
+    rowIds: RowsDeleteResultRowIds,
+};
+
+pub const RowsDeleteResultRowIds = []const []const u8;
+
+pub const RowsDeleteRowIds = []const []const u8;
+
+pub const RowsSortBy = enum {
+    createdAt,
+    natural,
+    updatedAt,
+};
+
+pub const RowsUpsert = struct {
+    rows: RowsUpsertRows,
+    keyColumns: ?RowsUpsertKeyColumns = null,
+};
+
+pub const RowsUpsertKeyColumns = []const []const u8;
+
+pub const RowsUpsertResponse = struct {
+    requestId: []const u8,
+    addedRowIds: ?RowsUpsertResultAddedRowIds = null,
+};
+
+pub const RowsUpsertResultAddedRowIds = []const []const u8;
+
+pub const RowsUpsertRows = []const RowEdit;
+
+pub const ScalarValue = union(enum) {
+    variant1: []const u8,
+    variant2: f64,
+    variant3: bool,
+};
+
+pub const ScaleColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    maximum: f64,
+    icon: IconSet,
+};
+
+pub const SearchPrincipalsInput = struct {
+    docId: []const u8,
+    query: ?[]const u8 = null,
+};
+
+pub const SearchPrincipalsResponse = struct {
+    users: SearchPrincipalsResponseUsers,
+    groups: SearchPrincipalsResponseGroups,
+};
+
+pub const SearchPrincipalsResponseGroups = []const GroupPrincipal;
+
+pub const SearchPrincipalsResponseUsers = []const UserSummary;
+
+pub const SelectColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    options: ?SelectColumnFormatOptions = null,
+};
+
+pub const SelectColumnFormatOptions = []const SelectOption;
+
+pub const SelectOption = struct {
+    name: []const u8,
+    backgroundColor: ?[]const u8 = null,
+    foregroundColor: ?[]const u8 = null,
+};
+
+pub const SetPackOauthConfigInput = struct {
+    packId: PackId,
+    payload: SetPackOauthConfigPayload,
+};
+
+pub const SetPackOauthConfigPayload = struct {
+    clientId: ?[]const u8 = null,
+    clientSecret: ?[]const u8 = null,
+    redirectUri: ?[]const u8 = null,
+};
+
+pub const SetPackSystemConnectionInput = struct {
+    packId: PackId,
+    payload: SetPackSystemConnectionPayload,
+};
+
+pub const SetPackSystemConnectionOutput = struct {
+    body: ?PackSystemConnectionMetadata = null,
+};
+
+pub const SetPackSystemConnectionPayload = struct {
+    credentials: PackSystemConnectionCredentials,
+};
+
+pub const SharingMetadata = struct {
+    canShare: bool,
+    canShareWithWorkspace: bool,
+    canShareWithOrg: bool,
+    canCopy: bool,
+};
+
+pub const SimpleColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+};
+
+pub const SliderColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    minimum: ?NumberOrNumberFormula = null,
+    maximum: ?NumberOrNumberFormula = null,
+    step: ?NumberOrNumberFormula = null,
+    displayType: ?SliderDisplayType = null,
+    showValue: ?bool = null,
+};
+
+pub const SliderDisplayType = enum {
+    slider,
+    progress,
+};
+
+pub const Sort = struct {
+    column: ColumnReference,
+    direction: SortDirection,
+};
+
+pub const SortBy = enum {
+    name,
+};
+
+pub const SortDirection = enum {
+    ascending,
+    descending,
+};
+
+pub const StandardPackPlan = struct {
+    packPlanId: []const u8,
+    packId: PackId,
+    pricing: StandardPackPlanPricing,
+    createdAt: []const u8,
+};
+
+pub const StandardPackPlanPricing = union(enum) {
+    freePackPlanPricing: FreePackPlanPricing,
+    monthlyDocMakerPackPlanPricing: MonthlyDocMakerPackPlanPricing,
+};
+
+pub const SyncPageType = enum {
+    page,
+    document,
+};
+
+pub const Table = struct {
+    id: []const u8,
+    type: TableResourceType,
+    tableType: TableType,
+    href: []const u8,
+    browserLink: []const u8,
+    name: []const u8,
+    parent: PageReference,
+    parentTable: ?TableReference = null,
+    displayColumn: ColumnReference,
+    rowCount: i32,
+    sorts: TableSorts,
+    layout: Layout,
+    filter: ?FormulaDetail = null,
+    createdAt: []const u8,
+    updatedAt: []const u8,
+};
+
+pub const TableList = struct {
+    items: TableListItems,
+    href: ?[]const u8 = null,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const TableListItems = []const TableReference;
+
+pub const TableReference = struct {
+    id: []const u8,
+    type: TableReferenceType,
+    tableType: TableType,
+    href: []const u8,
+    browserLink: []const u8,
+    name: []const u8,
+    parent: ?PageReference = null,
+};
+
+pub const TableReferenceType = enum {
+    table,
+};
+
+pub const TableResourceType = enum {
+    table,
+};
+
+pub const TableSorts = []const Sort;
+
+pub const TableType = enum {
+    table,
+    view,
+};
+
+pub const TimeColumnFormat = struct {
+    type: ColumnFormatType,
+    isArray: bool,
+    format: ?[]const u8 = null,
+};
+
+pub const TooManyRequestsError = struct {
+    statusCode: f64,
+    statusMessage: []const u8,
+    message: []const u8,
 };
 
 pub const TriggerWebhookAutomationInput = struct {
     docId: []const u8,
     ruleId: []const u8,
-    payload: ?[]const u8 = null,
+    payload: ?WebhookTriggerPayload = null,
 };
 
-pub const ListDocAnalyticsInput = struct {
-    docIds: ?[]const []const u8 = null,
-    workspaceId: ?[]const u8 = null,
-    query: ?[]const u8 = null,
-    isPublished: ?bool = null,
-    sinceDate: ?[]const u8 = null,
-    untilDate: ?[]const u8 = null,
-    scale: ?[]const u8 = null,
-    pageToken: ?[]const u8 = null,
-    orderBy: ?[]const u8 = null,
-    direction: ?[]const u8 = null,
-    limit: ?i64 = null,
+pub const Type = enum {
+    aclMetadata,
+    aclPermissions,
+    aclSettings,
+    agentPackLog,
+    analyticsLastUpdated,
+    apiLink,
+    automation,
+    column,
+    control,
+    doc,
+    customDocDomain,
+    customDocDomainProvider,
+    docAnalytics,
+    docAnalyticsSummary,
+    docAnalyticsV2,
+    folder,
+    formula,
+    goLink,
+    ingestionBatchExecution,
+    ingestionExecution,
+    ingestionExecutionAttempt,
+    ingestionPackLog,
+    ingestionParentItem,
+    mutationStatus,
+    pack,
+    packAclPermissions,
+    packAnalytics,
+    packAnalyticsSummary,
+    packAsset,
+    packCategory,
+    packConfigurationSchema,
+    packFeaturedDocs,
+    packFormulaAnalytics,
+    packInvitation,
+    packListingDraft,
+    packLog,
+    packMaker,
+    packOauthConfig,
+    packRelease,
+    packReview,
+    packSourceCode,
+    packSystemConnection,
+    packVersion,
+    page,
+    pageContentExport,
+    pageContentExportStatus,
+    principal,
+    row,
+    table,
+    user,
+    workspace,
 };
 
-pub const ListPageAnalyticsInput = struct {
+pub const UnauthorizedError = struct {
+    statusCode: f64,
+    statusMessage: []const u8,
+    message: []const u8,
+};
+
+pub const UnprocessableEntityError = struct {
+    statusCode: f64,
+    statusMessage: []const u8,
+    message: []const u8,
+};
+
+pub const UnpublishDocInput = struct {
     docId: []const u8,
-    sinceDate: ?[]const u8 = null,
-    untilDate: ?[]const u8 = null,
-    pageToken: ?[]const u8 = null,
-    limit: ?i64 = null,
 };
 
-pub const ListDocAnalyticsSummaryInput = struct {
-    isPublished: ?bool = null,
-    sinceDate: ?[]const u8 = null,
-    untilDate: ?[]const u8 = null,
-    workspaceId: ?[]const u8 = null,
+pub const UnpublishResponse = struct {
 };
 
-pub const ListPackAnalyticsInput = struct {
-    packIds: ?[]const i64 = null,
-    workspaceId: ?[]const u8 = null,
-    query: ?[]const u8 = null,
-    sinceDate: ?[]const u8 = null,
-    untilDate: ?[]const u8 = null,
-    scale: ?[]const u8 = null,
-    pageToken: ?[]const u8 = null,
-    orderBy: ?[]const u8 = null,
-    direction: ?[]const u8 = null,
-    isPublished: ?bool = null,
-    limit: ?i64 = null,
-};
-
-pub const ListPackAnalyticsSummaryInput = struct {
-    packIds: ?[]const i64 = null,
-    workspaceId: ?[]const u8 = null,
-    isPublished: ?bool = null,
-    sinceDate: ?[]const u8 = null,
-    untilDate: ?[]const u8 = null,
-};
-
-pub const ListPackFormulaAnalyticsInput = struct {
-    packFormulaNames: ?[]const []const u8 = null,
-    packFormulaTypes: ?[]const []const u8 = null,
-    packId: i64,
-    sinceDate: ?[]const u8 = null,
-    untilDate: ?[]const u8 = null,
-    scale: ?[]const u8 = null,
-    pageToken: ?[]const u8 = null,
-    orderBy: ?[]const u8 = null,
-    direction: ?[]const u8 = null,
-    limit: ?i64 = null,
-};
-
-pub const ListWorkspaceMembersInput = struct {
-    workspaceId: []const u8,
-    includedRoles: ?[]const []const u8 = null,
-    pageToken: ?[]const u8 = null,
-};
-
-pub const ChangeUserRoleInput = struct {
-    workspaceId: []const u8,
-    payload: []const u8,
-};
-
-pub const ListWorkspaceRoleActivityInput = struct {
-    workspaceId: []const u8,
-};
-
-pub const ListPacksInput = struct {
-    accessType: ?[]const u8 = null,
-    accessTypes: ?[]const []const u8 = null,
-    sortBy: ?[]const u8 = null,
-    limit: ?i64 = null,
-    direction: ?[]const u8 = null,
-    pageToken: ?[]const u8 = null,
-    onlyWorkspaceId: ?[]const u8 = null,
-    parentWorkspaceIds: ?[]const []const u8 = null,
-    excludePublicPacks: ?bool = null,
-    packEntrypoint: ?[]const u8 = null,
-};
-
-pub const CreatePackInput = struct {
-    payload: []const u8,
-};
-
-pub const GetPackInput = struct {
-    packId: i64,
-};
-
-pub const UpdatePackInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const DeletePackInput = struct {
-    packId: i64,
-};
-
-pub const GetPackConfigurationSchemaInput = struct {
-    packId: i64,
-};
-
-pub const ListPackVersionsInput = struct {
-    packId: i64,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-};
-
-pub const GetNextPackVersionInput = struct {
-    packId: i64,
-    payload: ?[]const u8 = null,
-};
-
-pub const GetPackVersionDiffsInput = struct {
-    packId: i64,
-    basePackVersion: []const u8,
-    targetPackVersion: []const u8,
-};
-
-pub const RegisterPackVersionInput = struct {
-    packId: i64,
-    packVersion: []const u8,
-    payload: []const u8,
-};
-
-pub const PackVersionUploadCompleteInput = struct {
-    packId: i64,
-    packVersion: []const u8,
-    payload: []const u8,
-};
-
-pub const CreatePackReleaseInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const ListPackReleasesInput = struct {
-    packId: i64,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-};
-
-pub const UpdatePackReleaseInput = struct {
-    packId: i64,
-    packReleaseId: i64,
-    payload: []const u8,
-};
-
-pub const ListPackReviewsInput = struct {
-    packId: i64,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-    status: ?[]const u8 = null,
-};
-
-pub const CreatePackReviewInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const CancelPackReviewInput = struct {
-    packId: i64,
-};
-
-pub const GetPackListingDraftInput = struct {
-    packId: i64,
-};
-
-pub const UpsertPackListingDraftInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const DeletePackListingDraftInput = struct {
-    packId: i64,
-};
-
-pub const SetPackOauthConfigInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const GetPackOauthConfigInput = struct {
-    packId: i64,
-};
-
-pub const SetPackSystemConnectionInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const PatchPackSystemConnectionInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const GetPackSystemConnectionInput = struct {
-    packId: i64,
-};
-
-pub const GetPackPermissionsInput = struct {
-    packId: i64,
-};
-
-pub const AddPackPermissionInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const DeleteUserPackPermissionInput = struct {
-    packId: i64,
-};
-
-pub const DeletePackPermissionInput = struct {
-    packId: i64,
-    permissionId: []const u8,
-};
-
-pub const ListUserPackInvitationsInput = struct {
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-};
-
-pub const ListPackInvitationsInput = struct {
-    packId: i64,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-};
-
-pub const CreatePackInvitationInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const UpdatePackInvitationInput = struct {
-    packId: i64,
-    invitationId: []const u8,
-    payload: []const u8,
-};
-
-pub const DeletePackInvitationInput = struct {
-    packId: i64,
-    invitationId: []const u8,
-};
-
-pub const ReplyToPackInvitationInput = struct {
-    invitationId: []const u8,
-    payload: []const u8,
-};
-
-pub const ListPackMakersInput = struct {
-    packId: i64,
-};
-
-pub const AddPackMakerInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const DeletePackMakerInput = struct {
-    packId: i64,
-    loginId: []const u8,
-};
-
-pub const ListPackCategoriesInput = struct {
-    packId: i64,
-};
-
-pub const AddPackCategoryInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const DeletePackCategoryInput = struct {
-    packId: i64,
-    categoryName: []const u8,
-};
-
-pub const UploadPackAssetInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const UploadPackSourceCodeInput = struct {
-    packId: i64,
-    payload: []const u8,
-};
-
-pub const PackAssetUploadCompleteInput = struct {
-    packId: i64,
-    packAssetId: []const u8,
-    packAssetType: []const u8,
-};
-
-pub const PackSourceCodeUploadCompleteInput = struct {
-    packId: i64,
-    packVersion: []const u8,
-    payload: []const u8,
-};
-
-pub const GetPackSourceCodeInput = struct {
-    packId: i64,
-    packVersion: []const u8,
-};
-
-pub const ListPackListingsInput = struct {
-    packAccessTypes: ?[]const []const u8 = null,
-    packIds: ?[]const i64 = null,
-    onlyWorkspaceId: ?[]const u8 = null,
-    parentWorkspaceIds: ?[]const []const u8 = null,
-    excludePublicPacks: ?bool = null,
-    packEntrypoint: ?[]const u8 = null,
-    certifiedAgentsOnly: ?bool = null,
-    packCategories: ?[]const []const u8 = null,
-    sortBy: ?[]const u8 = null,
-    orderBy: ?[]const u8 = null,
-    direction: ?[]const u8 = null,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-    installContext: ?[]const u8 = null,
-};
-
-pub const GetPackListingInput = struct {
-    packId: i64,
-    workspaceId: ?[]const u8 = null,
-    docId: ?[]const u8 = null,
-    ingestionId: ?[]const u8 = null,
-    installContext: ?[]const u8 = null,
-    releaseChannel: ?[]const u8 = null,
-};
-
-pub const ListPackLogsInput = struct {
-    packId: i64,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
+pub const UpdateAclSettingsInput = struct {
     docId: []const u8,
-    logTypes: ?[]const []const u8 = null,
-    beforeTimestamp: ?[]const u8 = null,
-    afterTimestamp: ?[]const u8 = null,
-    order: ?[]const u8 = null,
-    q: ?[]const u8 = null,
-    requestIds: ?[]const []const u8 = null,
+    payload: UpdateAclSettingsPayload,
 };
 
-pub const ListIngestionLogsInput = struct {
-    packId: i64,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-    tenantId: []const u8,
-    rootIngestionId: []const u8,
-    logTypes: ?[]const []const u8 = null,
-    ingestionExecutionId: ?[]const u8 = null,
-    beforeTimestamp: ?[]const u8 = null,
-    afterTimestamp: ?[]const u8 = null,
-    ingestionStatus: ?[]const u8 = null,
-    onlyExecutionCompletions: ?bool = null,
-    order: ?[]const u8 = null,
-    q: ?[]const u8 = null,
-    requestIds: ?[]const []const u8 = null,
+pub const UpdateAclSettingsPayload = struct {
+    allowEditorsToChangePermissions: ?bool = null,
+    allowCopying: ?bool = null,
+    allowViewersToRequestEditing: ?bool = null,
 };
 
-pub const ListGroupedPackLogsInput = struct {
-    packId: i64,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
+pub const UpdateCustomDocDomainInput = struct {
     docId: []const u8,
-    beforeTimestamp: ?[]const u8 = null,
-    afterTimestamp: ?[]const u8 = null,
-    order: ?[]const u8 = null,
-    q: ?[]const u8 = null,
+    customDocDomain: []const u8,
+    payload: UpdateCustomDocDomainPayload,
 };
 
-pub const ListGroupedIngestionLogsInput = struct {
-    packId: i64,
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-    tenantId: []const u8,
-    rootIngestionId: []const u8,
-    ingestionExecutionId: ?[]const u8 = null,
-    beforeTimestamp: ?[]const u8 = null,
-    afterTimestamp: ?[]const u8 = null,
-    order: ?[]const u8 = null,
-    q: ?[]const u8 = null,
+pub const UpdateCustomDocDomainPayload = struct {
 };
 
-pub const ListIngestionBatchExecutionsInput = struct {
-    packId: i64,
-    tenantId: []const u8,
-    rootIngestionId: []const u8,
-    pageToken: ?[]const u8 = null,
-    limit: ?i64 = null,
-    datasource: ?[]const u8 = null,
-    executionType: ?[]const u8 = null,
-    includeDeletedIngestions: ?bool = null,
-    ingestionExecutionId: ?[]const u8 = null,
-    ingestionId: ?[]const u8 = null,
-    ingestionStatus: ?[]const u8 = null,
+pub const UpdateCustomDocDomainResponse = struct {
 };
 
-pub const ListIngestionParentItemsInput = struct {
-    packId: i64,
-    tenantId: []const u8,
-    rootIngestionId: []const u8,
-    pageToken: ?[]const u8 = null,
-    limit: ?i64 = null,
-    ingestionExecutionId: []const u8,
-    ingestionId: []const u8,
-    ingestionStatus: ?[]const u8 = null,
+pub const UpdateDocInput = struct {
+    docId: []const u8,
+    payload: DocUpdate,
 };
 
-pub const GetPackLogDetailsInput = struct {
-    packId: i64,
-    tenantId: []const u8,
-    rootIngestionId: []const u8,
-    logId: []const u8,
-    detailsKey: []const u8,
+pub const UpdateFolderInput = struct {
+    folderId: []const u8,
+    payload: UpdateFolderPayload,
 };
 
-pub const ListPackFeaturedDocsInput = struct {
-    packId: i64,
+pub const UpdateFolderPayload = struct {
+    name: ?[]const u8 = null,
+    description: ?[]const u8 = null,
 };
 
 pub const UpdatePackFeaturedDocsInput = struct {
-    packId: i64,
-    payload: []const u8,
+    packId: PackId,
+    payload: UpdatePackFeaturedDocsPayload,
 };
 
-pub const AddGoLinkInput = struct {
-    organizationId: []const u8,
-    payload: []const u8,
+pub const UpdatePackFeaturedDocsPayload = struct {
+    items: UpdatePackFeaturedDocsPayloadItems,
 };
 
-pub const ListAgentSessionIdsInput = struct {
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-    tenantId: []const u8,
-    agentInstanceId: []const u8,
-    agentSessionId: ?[]const u8 = null,
-    logTypes: ?[]const []const u8 = null,
-    beforeTimestamp: ?[]const u8 = null,
-    afterTimestamp: ?[]const u8 = null,
-    order: ?[]const u8 = null,
-    q: ?[]const u8 = null,
-    requestIds: ?[]const []const u8 = null,
+pub const UpdatePackFeaturedDocsPayloadItems = []const PackFeaturedDocRequestItem;
+
+pub const UpdatePackFeaturedDocsResponse = struct {
 };
 
-pub const ListAgentLogsInput = struct {
-    limit: ?i64 = null,
-    pageToken: ?[]const u8 = null,
-    tenantId: []const u8,
-    agentInstanceId: []const u8,
-    logTypes: ?[]const []const u8 = null,
-    agentSessionId: ?[]const u8 = null,
-    beforeTimestamp: ?[]const u8 = null,
-    afterTimestamp: ?[]const u8 = null,
-    order: ?[]const u8 = null,
-    q: ?[]const u8 = null,
-    requestIds: ?[]const []const u8 = null,
+pub const UpdatePackInput = struct {
+    packId: PackId,
+    payload: UpdatePackPayload,
 };
 
-pub const GetAgentPackLogDetailsInput = struct {
-    tenantId: []const u8,
-    agentInstanceId: []const u8,
-    logId: []const u8,
-    detailsKey: []const u8,
+pub const UpdatePackInvitationInput = struct {
+    packId: PackId,
+    invitationId: []const u8,
+    payload: UpdatePackInvitationPayload,
 };
 
-pub fn buildListCategories(allocator: Allocator, base_url: []const u8, _: void) !core.Request {
+pub const UpdatePackInvitationPayload = struct {
+    access: PackAccessType,
+};
+
+pub const UpdatePackInvitationResponse = struct {
+};
+
+pub const UpdatePackPayload = struct {
+    overallRateLimit: ?UpdatePackPayloadOverallRateLimit = null,
+    perConnectionRateLimit: ?UpdatePackPayloadPerConnectionRateLimit = null,
+    logo: ?UpdatePackPayloadLogo = null,
+    cover: ?UpdatePackPayloadCover = null,
+    exampleImages: ?UpdatePackPayloadExampleImages = null,
+    agentImages: ?UpdatePackPayloadAgentImages = null,
+    sourceCodeVisibility: ?PackSourceCodeVisibility = null,
+    packEntrypoints: ?UpdatePackPayloadPackEntrypoints = null,
+    name: ?[]const u8 = null,
+    description: ?[]const u8 = null,
+    shortDescription: ?[]const u8 = null,
+    agentShortDescription: ?[]const u8 = null,
+    agentDescription: ?[]const u8 = null,
+    supportEmail: ?[]const u8 = null,
+    termsOfServiceUrl: ?[]const u8 = null,
+    privacyPolicyUrl: ?[]const u8 = null,
+};
+
+pub const UpdatePackPayloadAgentImages = []const ImageFileForUpdatePackRequest;
+
+pub const UpdatePackPayloadCover = struct {
+    assetId: []const u8,
+    filename: []const u8,
+    mimeType: ?[]const u8 = null,
+};
+
+pub const UpdatePackPayloadExampleImages = []const ImageFileForUpdatePackRequest;
+
+pub const UpdatePackPayloadLogo = struct {
+    assetId: []const u8,
+    filename: []const u8,
+    mimeType: ?[]const u8 = null,
+};
+
+pub const UpdatePackPayloadOverallRateLimit = struct {
+    intervalSeconds: i32,
+    operationsPerInterval: i32,
+};
+
+pub const UpdatePackPayloadPackEntrypoints = []const PackEntrypoint;
+
+pub const UpdatePackPayloadPerConnectionRateLimit = struct {
+    intervalSeconds: i32,
+    operationsPerInterval: i32,
+};
+
+pub const UpdatePackReleaseInput = struct {
+    packId: PackId,
+    packReleaseId: []const u8,
+    payload: UpdatePackReleasePayload,
+};
+
+pub const UpdatePackReleasePayload = struct {
+    releaseNotes: ?[]const u8 = null,
+};
+
+pub const UpdatePageInput = struct {
+    docId: []const u8,
+    pageIdOrName: []const u8,
+    payload: PageUpdate,
+};
+
+pub const UpdateRowInput = struct {
+    docId: []const u8,
+    tableIdOrName: []const u8,
+    rowIdOrName: []const u8,
+    disableParsing: ?bool = null,
+    payload: RowUpdate,
+};
+
+pub const UploadPackAssetInput = struct {
+    packId: PackId,
+    payload: UploadPackAssetPayload,
+};
+
+pub const UploadPackAssetPayload = struct {
+    packAssetType: PackAssetType,
+    imageHash: []const u8,
+    mimeType: []const u8,
+    filename: []const u8,
+};
+
+pub const UploadPackSourceCodeInput = struct {
+    packId: PackId,
+    payload: UploadPackSourceCodePayload,
+};
+
+pub const UploadPackSourceCodePayload = struct {
+    payloadHash: []const u8,
+    filename: []const u8,
+    packVersion: ?[]const u8 = null,
+};
+
+pub const UpsertPackListingDraftInput = struct {
+    packId: PackId,
+    payload: UpsertPackListingDraftPayload,
+};
+
+pub const UpsertPackListingDraftPayload = struct {
+    listingData: PackListingDraftInputData,
+};
+
+pub const UpsertPackListingDraftResponse = struct {
+    packListingDraftId: []const u8,
+    packId: PackId,
+    listingData: PackListingDraftData,
+};
+
+pub const UpsertRowsInput = struct {
+    docId: []const u8,
+    tableIdOrName: []const u8,
+    disableParsing: ?bool = null,
+    payload: RowsUpsert,
+};
+
+pub const UrlValue = struct {
+    @"@context": []const u8,
+    @"@type": UrlValueType,
+    additionalType: ?[]const u8 = null,
+    name: ?[]const u8 = null,
+    url: []const u8,
+};
+
+pub const UrlValueType = enum {
+    WebPage,
+};
+
+pub const User = struct {
+    name: []const u8,
+    loginId: []const u8,
+    type: UserType,
+    pictureLink: ?[]const u8 = null,
+    scoped: bool,
+    tokenName: []const u8,
+    href: []const u8,
+    workspace: WorkspaceReference,
+};
+
+pub const UserSummary = struct {
+    name: []const u8,
+    loginId: []const u8,
+    type: UserSummaryType,
+    pictureLink: ?[]const u8 = null,
+};
+
+pub const UserSummaryType = enum {
+    user,
+};
+
+pub const UserType = enum {
+    user,
+};
+
+pub const ValidationError = struct {
+    path: []const u8,
+    message: []const u8,
+};
+
+pub const Value = union(enum) {
+    scalarValue: ScalarValue,
+    variant2: ValueVariant2,
+};
+
+pub const ValueFormat = enum {
+    simple,
+    simpleWithArrays,
+    rich,
+};
+
+pub const ValueVariant2 = []const ValueVariant2Member;
+
+pub const ValueVariant2Member = union(enum) {
+    scalarValue: ScalarValue,
+    variant2: ValueVariant2MemberVariant2,
+};
+
+pub const ValueVariant2MemberVariant2 = []const ScalarValue;
+
+pub const WebhookTriggerPayload = struct {
+};
+
+pub const WebhookTriggerResponse = struct {
+    requestId: []const u8,
+};
+
+pub const WhoamiInput = struct {
+};
+
+pub const Workspace = struct {
+    id: []const u8,
+    type: WorkspaceType,
+    organizationId: ?[]const u8 = null,
+    browserLink: []const u8,
+    name: []const u8,
+    description: ?[]const u8 = null,
+};
+
+pub const WorkspaceMembersList = struct {
+    items: WorkspaceMembersListItems,
+    nextPageToken: ?NextPageToken = null,
+    nextPageLink: ?NextPageLink = null,
+};
+
+pub const WorkspaceMembersListItems = []const WorkspaceUser;
+
+pub const WorkspacePrincipal = struct {
+    type: WorkspacePrincipalType,
+    workspaceId: []const u8,
+};
+
+pub const WorkspacePrincipalType = enum {
+    workspace,
+};
+
+pub const WorkspaceReference = struct {
+    id: []const u8,
+    type: WorkspaceReferenceType,
+    organizationId: ?[]const u8 = null,
+    browserLink: []const u8,
+    name: ?[]const u8 = null,
+};
+
+pub const WorkspaceReferenceType = enum {
+    workspace,
+};
+
+pub const WorkspaceRoleActivity = struct {
+    month: []const u8,
+    activeAdminCount: f64,
+    activeDocMakerCount: f64,
+    activeEditorCount: f64,
+    inactiveAdminCount: f64,
+    inactiveDocMakerCount: f64,
+    inactiveEditorCount: f64,
+};
+
+pub const WorkspaceType = enum {
+    workspace,
+};
+
+pub const WorkspaceUser = struct {
+    email: []const u8,
+    name: []const u8,
+    role: WorkspaceUserRole,
+    pictureUrl: ?[]const u8 = null,
+    registeredAt: []const u8,
+    roleChangedAt: ?[]const u8 = null,
+    lastActiveAt: ?[]const u8 = null,
+    ownedDocs: ?f64 = null,
+    docsLastActiveAt: ?[]const u8 = null,
+    docCollaboratorCount: ?f64 = null,
+    totalDocs: ?f64 = null,
+    totalDocsLastActiveAt: ?[]const u8 = null,
+    totalDocCollaboratorsLast90Days: ?f64 = null,
+};
+
+pub const WorkspaceUserRole = enum {
+    Admin,
+    DocMaker,
+    Editor,
+};
+
+pub const Client = struct {
+    runtime: core.ClientCore,
+
+    pub fn init(allocator: Allocator, api_token: []const u8) !Client {
+        return .{ .runtime = try core.ClientCore.init(allocator, api_token) };
+    }
+
+    pub fn initWithOptions(allocator: Allocator, options: ClientOptions) !Client {
+        return .{ .runtime = try core.ClientCore.initWithOptions(allocator, options) };
+    }
+
+    pub fn deinit(self: *Client) void {
+        self.runtime.deinit();
+        self.* = undefined;
+    }
+
+    pub fn sendRequest(self: *Client, request: core.Request) !core.Response {
+        return self.runtime.sendRequest(request);
+    }
+
+    pub fn categories(self: *Client) CategoriesResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn docs(self: *Client) DocsResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn tables(self: *Client) TablesResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn folders(self: *Client) FoldersResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn packs(self: *Client) PacksResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn marketplacePackListings(self: *Client) MarketplacePackListingsResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn userPackInvitations(self: *Client) UserPackInvitationsResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn workspaces(self: *Client) WorkspacesResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn organizations(self: *Client) OrganizationsResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn analytics(self: *Client) AnalyticsResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn agentInstances(self: *Client) AgentInstancesResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn mutationStatus(self: *Client) MutationStatusResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn customDocDomainProviders(self: *Client) CustomDocDomainProvidersResourceClient {
+        return .{ .client = self };
+    }
+
+    pub fn whoami(self: *Client, input: WhoamiInput) !core.TypedResponse(User) {
+        return executeWhoami(&self.runtime, input);
+    }
+
+    pub fn resolveBrowserLink(self: *Client, input: ResolveBrowserLinkInput) !core.TypedResponse(ApiLink) {
+        return executeResolveBrowserLink(&self.runtime, input);
+    }
+
+};
+
+pub const CategoriesResourceClient = struct {
+    client: *Client,
+
+    pub fn list(self: CategoriesResourceClient, input: ListCategoriesInput) !core.TypedResponse(DocCategoryList) {
+        return executeListCategories(&self.client.runtime, input);
+    }
+
+};
+
+pub const DocsResourceClient = struct {
+    client: *Client,
+
+    pub fn pages(self: DocsResourceClient) PagesResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn formulas(self: DocsResourceClient) FormulasResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn controls(self: DocsResourceClient) ControlsResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn customDocDomains(self: DocsResourceClient) CustomDocDomainsResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn automations(self: DocsResourceClient) AutomationsResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn create(self: DocsResourceClient, input: CreateDocInput) !core.TypedResponse(Doc) {
+        return executeCreateDoc(&self.client.runtime, input);
+    }
+
+    pub fn read(self: DocsResourceClient, input: GetDocInput) !core.TypedResponse(Doc) {
+        return executeGetDoc(&self.client.runtime, input);
+    }
+
+    pub fn update(self: DocsResourceClient, input: UpdateDocInput) !core.TypedResponse(DocUpdateResponse) {
+        return executeUpdateDoc(&self.client.runtime, input);
+    }
+
+    pub fn delete(self: DocsResourceClient, input: DeleteDocInput) !core.TypedResponse(DocDelete) {
+        return executeDeleteDoc(&self.client.runtime, input);
+    }
+
+    pub fn list(self: DocsResourceClient, input: ListDocsInput) !core.TypedResponse(DocList) {
+        return executeListDocs(&self.client.runtime, input);
+    }
+
+    pub fn getSharingMetadata(self: DocsResourceClient, input: GetSharingMetadataInput) !core.TypedResponse(SharingMetadata) {
+        return executeGetSharingMetadata(&self.client.runtime, input);
+    }
+
+    pub fn getPermissions(self: DocsResourceClient, input: GetPermissionsInput) !core.TypedResponse(Acl) {
+        return executeGetPermissions(&self.client.runtime, input);
+    }
+
+    pub fn addPermission(self: DocsResourceClient, input: AddPermissionInput) !core.TypedResponse(AddPermissionResponse) {
+        return executeAddPermission(&self.client.runtime, input);
+    }
+
+    pub fn deletePermission(self: DocsResourceClient, input: DeletePermissionInput) !core.TypedResponse(DeletePermissionResponse) {
+        return executeDeletePermission(&self.client.runtime, input);
+    }
+
+    pub fn searchPrincipals(self: DocsResourceClient, input: SearchPrincipalsInput) !core.TypedResponse(SearchPrincipalsResponse) {
+        return executeSearchPrincipals(&self.client.runtime, input);
+    }
+
+    pub fn getAclSettings(self: DocsResourceClient, input: GetAclSettingsInput) !core.TypedResponse(AclSettings) {
+        return executeGetAclSettings(&self.client.runtime, input);
+    }
+
+    pub fn updateAclSettings(self: DocsResourceClient, input: UpdateAclSettingsInput) !core.TypedResponse(AclSettings) {
+        return executeUpdateAclSettings(&self.client.runtime, input);
+    }
+
+    pub fn publishDoc(self: DocsResourceClient, input: PublishDocInput) !core.TypedResponse(PublishResponse) {
+        return executePublishDoc(&self.client.runtime, input);
+    }
+
+    pub fn unpublishDoc(self: DocsResourceClient, input: UnpublishDocInput) !core.TypedResponse(UnpublishResponse) {
+        return executeUnpublishDoc(&self.client.runtime, input);
+    }
+
+};
+
+pub const PagesResourceClient = struct {
+    client: *Client,
+
+    pub fn create(self: PagesResourceClient, input: CreatePageInput) !core.TypedResponse(PageCreateResponse) {
+        return executeCreatePage(&self.client.runtime, input);
+    }
+
+    pub fn read(self: PagesResourceClient, input: GetPageInput) !core.TypedResponse(Page) {
+        return executeGetPage(&self.client.runtime, input);
+    }
+
+    pub fn update(self: PagesResourceClient, input: UpdatePageInput) !core.TypedResponse(PageUpdateResponse) {
+        return executeUpdatePage(&self.client.runtime, input);
+    }
+
+    pub fn delete(self: PagesResourceClient, input: DeletePageInput) !core.TypedResponse(PageDeleteResponse) {
+        return executeDeletePage(&self.client.runtime, input);
+    }
+
+    pub fn list(self: PagesResourceClient, input: ListPagesInput) !core.TypedResponse(PageList) {
+        return executeListPages(&self.client.runtime, input);
+    }
+
+    pub fn listPageContent(self: PagesResourceClient, input: ListPageContentInput) !core.TypedResponse(PageContentList) {
+        return executeListPageContent(&self.client.runtime, input);
+    }
+
+    pub fn deletePageContent(self: PagesResourceClient, input: DeletePageContentInput) !core.TypedResponse(PageContentDeleteResponse) {
+        return executeDeletePageContent(&self.client.runtime, input);
+    }
+
+    pub fn beginPageContentExport(self: PagesResourceClient, input: BeginPageContentExportInput) !core.TypedResponse(BeginPageContentExportResponse) {
+        return executeBeginPageContentExport(&self.client.runtime, input);
+    }
+
+    pub fn getPageContentExportStatus(self: PagesResourceClient, input: GetPageContentExportStatusInput) !core.TypedResponse(PageContentExportStatusResponse) {
+        return executeGetPageContentExportStatus(&self.client.runtime, input);
+    }
+
+};
+
+pub const FormulasResourceClient = struct {
+    client: *Client,
+
+    pub fn read(self: FormulasResourceClient, input: GetFormulaInput) !core.TypedResponse(Formula) {
+        return executeGetFormula(&self.client.runtime, input);
+    }
+
+    pub fn list(self: FormulasResourceClient, input: ListFormulasInput) !core.TypedResponse(FormulaList) {
+        return executeListFormulas(&self.client.runtime, input);
+    }
+
+};
+
+pub const ControlsResourceClient = struct {
+    client: *Client,
+
+    pub fn read(self: ControlsResourceClient, input: GetControlInput) !core.TypedResponse(Control) {
+        return executeGetControl(&self.client.runtime, input);
+    }
+
+    pub fn list(self: ControlsResourceClient, input: ListControlsInput) !core.TypedResponse(ControlList) {
+        return executeListControls(&self.client.runtime, input);
+    }
+
+};
+
+pub const CustomDocDomainsResourceClient = struct {
+    client: *Client,
+
+    pub fn create(self: CustomDocDomainsResourceClient, input: AddCustomDocDomainInput) !core.TypedResponse(AddCustomDocDomainResponse) {
+        return executeAddCustomDocDomain(&self.client.runtime, input);
+    }
+
+    pub fn update(self: CustomDocDomainsResourceClient, input: UpdateCustomDocDomainInput) !core.TypedResponse(UpdateCustomDocDomainResponse) {
+        return executeUpdateCustomDocDomain(&self.client.runtime, input);
+    }
+
+    pub fn delete(self: CustomDocDomainsResourceClient, input: DeleteCustomDocDomainInput) !core.TypedResponse(DeleteCustomDocDomainResponse) {
+        return executeDeleteCustomDocDomain(&self.client.runtime, input);
+    }
+
+    pub fn list(self: CustomDocDomainsResourceClient, input: ListCustomDocDomainsInput) !core.TypedResponse(CustomDocDomainList) {
+        return executeListCustomDocDomains(&self.client.runtime, input);
+    }
+
+};
+
+pub const AutomationsResourceClient = struct {
+    client: *Client,
+
+    pub fn triggerWebhookAutomation(self: AutomationsResourceClient, input: TriggerWebhookAutomationInput) !core.TypedResponse(WebhookTriggerResponse) {
+        return executeTriggerWebhookAutomation(&self.client.runtime, input);
+    }
+
+};
+
+pub const TablesResourceClient = struct {
+    client: *Client,
+
+    pub fn columns(self: TablesResourceClient) ColumnsResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn rows(self: TablesResourceClient) RowsResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn read(self: TablesResourceClient, input: GetTableInput) !core.TypedResponse(Table) {
+        return executeGetTable(&self.client.runtime, input);
+    }
+
+    pub fn list(self: TablesResourceClient, input: ListTablesInput) !core.TypedResponse(TableList) {
+        return executeListTables(&self.client.runtime, input);
+    }
+
+};
+
+pub const ColumnsResourceClient = struct {
+    client: *Client,
+
+    pub fn read(self: ColumnsResourceClient, input: GetColumnInput) !core.TypedResponse(ColumnDetail) {
+        return executeGetColumn(&self.client.runtime, input);
+    }
+
+    pub fn list(self: ColumnsResourceClient, input: ListColumnsInput) !core.TypedResponse(ColumnList) {
+        return executeListColumns(&self.client.runtime, input);
+    }
+
+};
+
+pub const RowsResourceClient = struct {
+    client: *Client,
+
+    pub fn read(self: RowsResourceClient, input: GetRowInput) !core.TypedResponse(RowDetail) {
+        return executeGetRow(&self.client.runtime, input);
+    }
+
+    pub fn update(self: RowsResourceClient, input: UpdateRowInput) !core.TypedResponse(RowUpdateResponse) {
+        return executeUpdateRow(&self.client.runtime, input);
+    }
+
+    pub fn delete(self: RowsResourceClient, input: DeleteRowInput) !core.TypedResponse(RowDeleteResponse) {
+        return executeDeleteRow(&self.client.runtime, input);
+    }
+
+    pub fn list(self: RowsResourceClient, input: ListRowsInput) !core.TypedResponse(RowList) {
+        return executeListRows(&self.client.runtime, input);
+    }
+
+    pub fn pushButton(self: RowsResourceClient, input: PushButtonInput) !core.TypedResponse(PushButtonResponse) {
+        return executePushButton(&self.client.runtime, input);
+    }
+
+    pub fn upsertRows(self: RowsResourceClient, input: UpsertRowsInput) !core.TypedResponse(RowsUpsertResponse) {
+        return executeUpsertRows(&self.client.runtime, input);
+    }
+
+    pub fn deleteRows(self: RowsResourceClient, input: DeleteRowsInput) !core.TypedResponse(RowsDeleteResponse) {
+        return executeDeleteRows(&self.client.runtime, input);
+    }
+
+};
+
+pub const FoldersResourceClient = struct {
+    client: *Client,
+
+    pub fn create(self: FoldersResourceClient, input: CreateFolderInput) !core.TypedResponse(Folder) {
+        return executeCreateFolder(&self.client.runtime, input);
+    }
+
+    pub fn read(self: FoldersResourceClient, input: GetFolderInput) !core.TypedResponse(Folder) {
+        return executeGetFolder(&self.client.runtime, input);
+    }
+
+    pub fn update(self: FoldersResourceClient, input: UpdateFolderInput) !core.TypedResponse(Folder) {
+        return executeUpdateFolder(&self.client.runtime, input);
+    }
+
+    pub fn delete(self: FoldersResourceClient, input: DeleteFolderInput) !core.TypedResponse(DeleteFolderResponse) {
+        return executeDeleteFolder(&self.client.runtime, input);
+    }
+
+    pub fn list(self: FoldersResourceClient, input: ListFoldersInput) !core.TypedResponse(FolderList) {
+        return executeListFolders(&self.client.runtime, input);
+    }
+
+};
+
+pub const PacksResourceClient = struct {
+    client: *Client,
+
+    pub fn packVersions(self: PacksResourceClient) PackVersionsResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn packReleases(self: PacksResourceClient) PackReleasesResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn packReviews(self: PacksResourceClient) PackReviewsResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn packPermissions(self: PacksResourceClient) PackPermissionsResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn packInvitations(self: PacksResourceClient) PackInvitationsResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn packMakers(self: PacksResourceClient) PackMakersResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn packCategories(self: PacksResourceClient) PackCategoriesResourceClient {
+        return .{ .client = self.client };
+    }
+
+    pub fn create(self: PacksResourceClient, input: CreatePackInput) !core.TypedResponse(CreatePackResponse) {
+        return executeCreatePack(&self.client.runtime, input);
+    }
+
+    pub fn read(self: PacksResourceClient, input: GetPackInput) !core.TypedResponse(Pack) {
+        return executeGetPack(&self.client.runtime, input);
+    }
+
+    pub fn update(self: PacksResourceClient, input: UpdatePackInput) !core.TypedResponse(Pack) {
+        return executeUpdatePack(&self.client.runtime, input);
+    }
+
+    pub fn delete(self: PacksResourceClient, input: DeletePackInput) !core.TypedResponse(DeletePackResponse) {
+        return executeDeletePack(&self.client.runtime, input);
+    }
+
+    pub fn list(self: PacksResourceClient, input: ListPacksInput) !core.TypedResponse(PackSummaryList) {
+        return executeListPacks(&self.client.runtime, input);
+    }
+
+    pub fn getPackConfigurationSchema(self: PacksResourceClient, input: GetPackConfigurationSchemaInput) !core.TypedResponse(GetPackConfigurationJsonSchemaResponse) {
+        return executeGetPackConfigurationSchema(&self.client.runtime, input);
+    }
+
+    pub fn getNextPackVersion(self: PacksResourceClient, input: GetNextPackVersionInput) !core.TypedResponse(NextPackVersionInfo) {
+        return executeGetNextPackVersion(&self.client.runtime, input);
+    }
+
+    pub fn getPackVersionDiffs(self: PacksResourceClient, input: GetPackVersionDiffsInput) !core.TypedResponse(PackVersionDiffs) {
+        return executeGetPackVersionDiffs(&self.client.runtime, input);
+    }
+
+    pub fn packVersionUploadComplete(self: PacksResourceClient, input: PackVersionUploadCompleteInput) !core.TypedResponse(CreatePackVersionResponse) {
+        return executePackVersionUploadComplete(&self.client.runtime, input);
+    }
+
+    pub fn getPackListingDraft(self: PacksResourceClient, input: GetPackListingDraftInput) !core.TypedResponse(GetPackListingDraftResponse) {
+        return executeGetPackListingDraft(&self.client.runtime, input);
+    }
+
+    pub fn upsertPackListingDraft(self: PacksResourceClient, input: UpsertPackListingDraftInput) !core.TypedResponse(UpsertPackListingDraftResponse) {
+        return executeUpsertPackListingDraft(&self.client.runtime, input);
+    }
+
+    pub fn deletePackListingDraft(self: PacksResourceClient, input: DeletePackListingDraftInput) !core.TypedResponse(DeletePackListingDraftResponse) {
+        return executeDeletePackListingDraft(&self.client.runtime, input);
+    }
+
+    pub fn setPackOauthConfig(self: PacksResourceClient, input: SetPackOauthConfigInput) !core.TypedResponse(PackOauthConfigMetadata) {
+        return executeSetPackOauthConfig(&self.client.runtime, input);
+    }
+
+    pub fn getPackOauthConfig(self: PacksResourceClient, input: GetPackOauthConfigInput) !core.TypedResponse(PackOauthConfigMetadata) {
+        return executeGetPackOauthConfig(&self.client.runtime, input);
+    }
+
+    pub fn setPackSystemConnection(self: PacksResourceClient, input: SetPackSystemConnectionInput) !core.TypedResponse(SetPackSystemConnectionOutput) {
+        return executeSetPackSystemConnection(&self.client.runtime, input);
+    }
+
+    pub fn patchPackSystemConnection(self: PacksResourceClient, input: PatchPackSystemConnectionInput) !core.TypedResponse(PatchPackSystemConnectionOutput) {
+        return executePatchPackSystemConnection(&self.client.runtime, input);
+    }
+
+    pub fn getPackSystemConnection(self: PacksResourceClient, input: GetPackSystemConnectionInput) !core.TypedResponse(GetPackSystemConnectionOutput) {
+        return executeGetPackSystemConnection(&self.client.runtime, input);
+    }
+
+    pub fn uploadPackAsset(self: PacksResourceClient, input: UploadPackAssetInput) !core.TypedResponse(PackAssetUploadInfo) {
+        return executeUploadPackAsset(&self.client.runtime, input);
+    }
+
+    pub fn uploadPackSourceCode(self: PacksResourceClient, input: UploadPackSourceCodeInput) !core.TypedResponse(PackSourceCodeUploadInfo) {
+        return executeUploadPackSourceCode(&self.client.runtime, input);
+    }
+
+    pub fn packAssetUploadComplete(self: PacksResourceClient, input: PackAssetUploadCompleteInput) !core.TypedResponse(PackAssetUploadCompleteResponse) {
+        return executePackAssetUploadComplete(&self.client.runtime, input);
+    }
+
+    pub fn listPackLogs(self: PacksResourceClient, input: ListPackLogsInput) !core.TypedResponse(PackLogsList) {
+        return executeListPackLogs(&self.client.runtime, input);
+    }
+
+    pub fn listIngestionLogs(self: PacksResourceClient, input: ListIngestionLogsInput) !core.TypedResponse(PackLogsList) {
+        return executeListIngestionLogs(&self.client.runtime, input);
+    }
+
+    pub fn listGroupedPackLogs(self: PacksResourceClient, input: ListGroupedPackLogsInput) !core.TypedResponse(GroupedPackLogsList) {
+        return executeListGroupedPackLogs(&self.client.runtime, input);
+    }
+
+    pub fn listGroupedIngestionLogs(self: PacksResourceClient, input: ListGroupedIngestionLogsInput) !core.TypedResponse(GroupedPackLogsList) {
+        return executeListGroupedIngestionLogs(&self.client.runtime, input);
+    }
+
+    pub fn listIngestionBatchExecutions(self: PacksResourceClient, input: ListIngestionBatchExecutionsInput) !core.TypedResponse(IngestionBatchExecutionsList) {
+        return executeListIngestionBatchExecutions(&self.client.runtime, input);
+    }
+
+    pub fn listIngestionParentItems(self: PacksResourceClient, input: ListIngestionParentItemsInput) !core.TypedResponse(IngestionParentItemsList) {
+        return executeListIngestionParentItems(&self.client.runtime, input);
+    }
+
+    pub fn getPackLogDetails(self: PacksResourceClient, input: GetPackLogDetailsInput) !core.TypedResponse(GetPackLogDetailsOutput) {
+        return executeGetPackLogDetails(&self.client.runtime, input);
+    }
+
+    pub fn listPackFeaturedDocs(self: PacksResourceClient, input: ListPackFeaturedDocsInput) !core.TypedResponse(PackFeaturedDocsResponse) {
+        return executeListPackFeaturedDocs(&self.client.runtime, input);
+    }
+
+    pub fn updatePackFeaturedDocs(self: PacksResourceClient, input: UpdatePackFeaturedDocsInput) !core.TypedResponse(UpdatePackFeaturedDocsResponse) {
+        return executeUpdatePackFeaturedDocs(&self.client.runtime, input);
+    }
+
+};
+
+pub const PackVersionsResourceClient = struct {
+    client: *Client,
+
+    pub fn list(self: PackVersionsResourceClient, input: ListPackVersionsInput) !core.TypedResponse(PackVersionList) {
+        return executeListPackVersions(&self.client.runtime, input);
+    }
+
+    pub fn registerPackVersion(self: PackVersionsResourceClient, input: RegisterPackVersionInput) !core.TypedResponse(PackVersionUploadInfo) {
+        return executeRegisterPackVersion(&self.client.runtime, input);
+    }
+
+    pub fn packSourceCodeUploadComplete(self: PackVersionsResourceClient, input: PackSourceCodeUploadCompleteInput) !core.TypedResponse(PackSourceCodeUploadCompleteResponse) {
+        return executePackSourceCodeUploadComplete(&self.client.runtime, input);
+    }
+
+    pub fn getPackSourceCode(self: PackVersionsResourceClient, input: GetPackSourceCodeInput) !core.TypedResponse(PackSourceCodeInfo) {
+        return executeGetPackSourceCode(&self.client.runtime, input);
+    }
+
+};
+
+pub const PackReleasesResourceClient = struct {
+    client: *Client,
+
+    pub fn create(self: PackReleasesResourceClient, input: CreatePackReleaseInput) !core.TypedResponse(PackRelease) {
+        return executeCreatePackRelease(&self.client.runtime, input);
+    }
+
+    pub fn update(self: PackReleasesResourceClient, input: UpdatePackReleaseInput) !core.TypedResponse(PackRelease) {
+        return executeUpdatePackRelease(&self.client.runtime, input);
+    }
+
+    pub fn list(self: PackReleasesResourceClient, input: ListPackReleasesInput) !core.TypedResponse(PackReleaseList) {
+        return executeListPackReleases(&self.client.runtime, input);
+    }
+
+};
+
+pub const PackReviewsResourceClient = struct {
+    client: *Client,
+
+    pub fn create(self: PackReviewsResourceClient, input: CreatePackReviewInput) !core.TypedResponse(CreatePackReviewResponse) {
+        return executeCreatePackReview(&self.client.runtime, input);
+    }
+
+    pub fn list(self: PackReviewsResourceClient, input: ListPackReviewsInput) !core.TypedResponse(ListPackReviewsResponse) {
+        return executeListPackReviews(&self.client.runtime, input);
+    }
+
+    pub fn cancelPackReview(self: PackReviewsResourceClient, input: CancelPackReviewInput) !core.TypedResponse(CancelPackReviewResponse) {
+        return executeCancelPackReview(&self.client.runtime, input);
+    }
+
+};
+
+pub const PackPermissionsResourceClient = struct {
+    client: *Client,
+
+    pub fn create(self: PackPermissionsResourceClient, input: AddPackPermissionInput) !core.TypedResponse(AddPackPermissionResponse) {
+        return executeAddPackPermission(&self.client.runtime, input);
+    }
+
+    pub fn delete(self: PackPermissionsResourceClient, input: DeletePackPermissionInput) !core.TypedResponse(DeletePackPermissionResponse) {
+        return executeDeletePackPermission(&self.client.runtime, input);
+    }
+
+    pub fn list(self: PackPermissionsResourceClient, input: GetPackPermissionsInput) !core.TypedResponse(PackPermissionList) {
+        return executeGetPackPermissions(&self.client.runtime, input);
+    }
+
+    pub fn deleteUserPackPermission(self: PackPermissionsResourceClient, input: DeleteUserPackPermissionInput) !core.TypedResponse(DeleteUserPackPermissionsResponse) {
+        return executeDeleteUserPackPermission(&self.client.runtime, input);
+    }
+
+};
+
+pub const PackInvitationsResourceClient = struct {
+    client: *Client,
+
+    pub fn create(self: PackInvitationsResourceClient, input: CreatePackInvitationInput) !core.TypedResponse(CreatePackInvitationResponse) {
+        return executeCreatePackInvitation(&self.client.runtime, input);
+    }
+
+    pub fn update(self: PackInvitationsResourceClient, input: UpdatePackInvitationInput) !core.TypedResponse(UpdatePackInvitationResponse) {
+        return executeUpdatePackInvitation(&self.client.runtime, input);
+    }
+
+    pub fn delete(self: PackInvitationsResourceClient, input: DeletePackInvitationInput) !core.TypedResponse(DeletePackInvitationResponse) {
+        return executeDeletePackInvitation(&self.client.runtime, input);
+    }
+
+    pub fn list(self: PackInvitationsResourceClient, input: ListPackInvitationsInput) !core.TypedResponse(PackInvitationList) {
+        return executeListPackInvitations(&self.client.runtime, input);
+    }
+
+};
+
+pub const PackMakersResourceClient = struct {
+    client: *Client,
+
+    pub fn create(self: PackMakersResourceClient, input: AddPackMakerInput) !core.TypedResponse(AddPackMakerResponse) {
+        return executeAddPackMaker(&self.client.runtime, input);
+    }
+
+    pub fn delete(self: PackMakersResourceClient, input: DeletePackMakerInput) !core.TypedResponse(DeletePackMakerResponse) {
+        return executeDeletePackMaker(&self.client.runtime, input);
+    }
+
+    pub fn list(self: PackMakersResourceClient, input: ListPackMakersInput) !core.TypedResponse(ListPackMakersResponse) {
+        return executeListPackMakers(&self.client.runtime, input);
+    }
+
+};
+
+pub const PackCategoriesResourceClient = struct {
+    client: *Client,
+
+    pub fn create(self: PackCategoriesResourceClient, input: AddPackCategoryInput) !core.TypedResponse(AddPackCategoryResponse) {
+        return executeAddPackCategory(&self.client.runtime, input);
+    }
+
+    pub fn delete(self: PackCategoriesResourceClient, input: DeletePackCategoryInput) !core.TypedResponse(DeletePackCategoryResponse) {
+        return executeDeletePackCategory(&self.client.runtime, input);
+    }
+
+    pub fn list(self: PackCategoriesResourceClient, input: ListPackCategoriesInput) !core.TypedResponse(ListPackCategoriesResponse) {
+        return executeListPackCategories(&self.client.runtime, input);
+    }
+
+};
+
+pub const MarketplacePackListingsResourceClient = struct {
+    client: *Client,
+
+    pub fn read(self: MarketplacePackListingsResourceClient, input: GetPackListingInput) !core.TypedResponse(PackListingDetail) {
+        return executeGetPackListing(&self.client.runtime, input);
+    }
+
+    pub fn list(self: MarketplacePackListingsResourceClient, input: ListPackListingsInput) !core.TypedResponse(PackListingList) {
+        return executeListPackListings(&self.client.runtime, input);
+    }
+
+};
+
+pub const UserPackInvitationsResourceClient = struct {
+    client: *Client,
+
+    pub fn list(self: UserPackInvitationsResourceClient, input: ListUserPackInvitationsInput) !core.TypedResponse(PackInvitationWithPackList) {
+        return executeListUserPackInvitations(&self.client.runtime, input);
+    }
+
+    pub fn replyToPackInvitation(self: UserPackInvitationsResourceClient, input: ReplyToPackInvitationInput) !core.TypedResponse(HandlePackInvitationResponse) {
+        return executeReplyToPackInvitation(&self.client.runtime, input);
+    }
+
+};
+
+pub const WorkspacesResourceClient = struct {
+    client: *Client,
+
+    pub fn listWorkspaceMembers(self: WorkspacesResourceClient, input: ListWorkspaceMembersInput) !core.TypedResponse(WorkspaceMembersList) {
+        return executeListWorkspaceMembers(&self.client.runtime, input);
+    }
+
+    pub fn changeUserRole(self: WorkspacesResourceClient, input: ChangeUserRoleInput) !core.TypedResponse(ChangeRoleResponse) {
+        return executeChangeUserRole(&self.client.runtime, input);
+    }
+
+    pub fn listWorkspaceRoleActivity(self: WorkspacesResourceClient, input: ListWorkspaceRoleActivityInput) !core.TypedResponse(GetWorkspaceRoleActivity) {
+        return executeListWorkspaceRoleActivity(&self.client.runtime, input);
+    }
+
+};
+
+pub const OrganizationsResourceClient = struct {
+    client: *Client,
+
+    pub fn addGoLink(self: OrganizationsResourceClient, input: AddGoLinkInput) !core.TypedResponse(AddGoLinkResponse) {
+        return executeAddGoLink(&self.client.runtime, input);
+    }
+
+};
+
+pub const AnalyticsResourceClient = struct {
+    client: *Client,
+
+    pub fn listDocAnalytics(self: AnalyticsResourceClient, input: ListDocAnalyticsInput) !core.TypedResponse(DocAnalyticsCollection) {
+        return executeListDocAnalytics(&self.client.runtime, input);
+    }
+
+    pub fn listPageAnalytics(self: AnalyticsResourceClient, input: ListPageAnalyticsInput) !core.TypedResponse(PageAnalyticsCollection) {
+        return executeListPageAnalytics(&self.client.runtime, input);
+    }
+
+    pub fn listDocAnalyticsSummary(self: AnalyticsResourceClient, input: ListDocAnalyticsSummaryInput) !core.TypedResponse(DocAnalyticsSummary) {
+        return executeListDocAnalyticsSummary(&self.client.runtime, input);
+    }
+
+    pub fn listPackAnalytics(self: AnalyticsResourceClient, input: ListPackAnalyticsInput) !core.TypedResponse(PackAnalyticsCollection) {
+        return executeListPackAnalytics(&self.client.runtime, input);
+    }
+
+    pub fn listPackAnalyticsSummary(self: AnalyticsResourceClient, input: ListPackAnalyticsSummaryInput) !core.TypedResponse(PackAnalyticsSummary) {
+        return executeListPackAnalyticsSummary(&self.client.runtime, input);
+    }
+
+    pub fn listPackFormulaAnalytics(self: AnalyticsResourceClient, input: ListPackFormulaAnalyticsInput) !core.TypedResponse(PackFormulaAnalyticsCollection) {
+        return executeListPackFormulaAnalytics(&self.client.runtime, input);
+    }
+
+    pub fn getAnalyticsLastUpdated(self: AnalyticsResourceClient, input: GetAnalyticsLastUpdatedInput) !core.TypedResponse(AnalyticsLastUpdatedResponse) {
+        return executeGetAnalyticsLastUpdated(&self.client.runtime, input);
+    }
+
+};
+
+pub const AgentInstancesResourceClient = struct {
+    client: *Client,
+
+    pub fn listAgentSessionIds(self: AgentInstancesResourceClient, input: ListAgentSessionIdsInput) !core.TypedResponse(PackLogsList) {
+        return executeListAgentSessionIds(&self.client.runtime, input);
+    }
+
+    pub fn listAgentLogs(self: AgentInstancesResourceClient, input: ListAgentLogsInput) !core.TypedResponse(PackLogsList) {
+        return executeListAgentLogs(&self.client.runtime, input);
+    }
+
+    pub fn getAgentPackLogDetails(self: AgentInstancesResourceClient, input: GetAgentPackLogDetailsInput) !core.TypedResponse(GetAgentPackLogDetailsOutput) {
+        return executeGetAgentPackLogDetails(&self.client.runtime, input);
+    }
+
+};
+
+pub const MutationStatusResourceClient = struct {
+    client: *Client,
+
+    pub fn read(self: MutationStatusResourceClient, input: GetMutationStatusInput) !core.TypedResponse(MutationStatus) {
+        return executeGetMutationStatus(&self.client.runtime, input);
+    }
+
+};
+
+pub const CustomDocDomainProvidersResourceClient = struct {
+    client: *Client,
+
+    pub fn read(self: CustomDocDomainProvidersResourceClient, input: GetCustomDocDomainProviderInput) !core.TypedResponse(CustomDocDomainProviderResponse) {
+        return executeGetCustomDocDomainProvider(&self.client.runtime, input);
+    }
+
+};
+
+fn buildWhoami(allocator: Allocator, base_url: []const u8, _: WhoamiInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/whoami");
+    return .{
+        .operation = "Whoami",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeWhoami(runtime: *core.ClientCore, input: WhoamiInput) !core.TypedResponse(User) {
+    const request = try buildWhoami(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(User, runtime.allocator, response);
+}
+
+fn buildResolveBrowserLink(allocator: Allocator, base_url: []const u8, input: ResolveBrowserLinkInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/resolveBrowserLink");
+    try url.queryString("url", input.url);
+    if (input.degradeGracefully) |value| {
+        try url.queryBool("degradeGracefully", value);
+    }
+    return .{
+        .operation = "ResolveBrowserLink",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeResolveBrowserLink(runtime: *core.ClientCore, input: ResolveBrowserLinkInput) !core.TypedResponse(ApiLink) {
+    const request = try buildResolveBrowserLink(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(ApiLink, runtime.allocator, response);
+}
+
+fn buildListCategories(allocator: Allocator, base_url: []const u8, _: ListCategoriesInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -795,31 +5546,18 @@ pub fn buildListCategories(allocator: Allocator, base_url: []const u8, _: void) 
     };
 }
 
-pub fn buildListDocs(allocator: Allocator, base_url: []const u8, input: ListDocsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs");
-    try url.queryOptionalBool("isOwner", input.isOwner);
-    try url.queryOptionalBool("isPublished", input.isPublished);
-    try url.queryOptionalString("query", input.query);
-    try url.queryOptionalString("sourceDoc", input.sourceDoc);
-    try url.queryOptionalBool("isStarred", input.isStarred);
-    try url.queryOptionalBool("inGallery", input.inGallery);
-    try url.queryOptionalString("workspaceId", input.workspaceId);
-    try url.queryOptionalString("folderId", input.folderId);
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    return .{
-        .operation = "ListDocs",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
+fn executeListCategories(runtime: *core.ClientCore, input: ListCategoriesInput) !core.TypedResponse(DocCategoryList) {
+    const request = try buildListCategories(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DocCategoryList, runtime.allocator, response);
 }
 
-pub fn buildCreateDoc(allocator: Allocator, base_url: []const u8, input: CreateDocInput) !core.Request {
+fn buildCreateDoc(allocator: Allocator, base_url: []const u8, input: CreateDocInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -828,12 +5566,23 @@ pub fn buildCreateDoc(allocator: Allocator, base_url: []const u8, input: CreateD
         .operation = "CreateDoc",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 201,
     };
 }
 
-pub fn buildGetDoc(allocator: Allocator, base_url: []const u8, input: GetDocInput) !core.Request {
+fn executeCreateDoc(runtime: *core.ClientCore, input: CreateDocInput) !core.TypedResponse(Doc) {
+    const request = try buildCreateDoc(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Doc, runtime.allocator, response);
+}
+
+fn buildGetDoc(allocator: Allocator, base_url: []const u8, input: GetDocInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -848,7 +5597,44 @@ pub fn buildGetDoc(allocator: Allocator, base_url: []const u8, input: GetDocInpu
     };
 }
 
-pub fn buildDeleteDoc(allocator: Allocator, base_url: []const u8, input: DeleteDocInput) !core.Request {
+fn executeGetDoc(runtime: *core.ClientCore, input: GetDocInput) !core.TypedResponse(Doc) {
+    const request = try buildGetDoc(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Doc, runtime.allocator, response);
+}
+
+fn buildUpdateDoc(allocator: Allocator, base_url: []const u8, input: UpdateDocInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    return .{
+        .operation = "UpdateDoc",
+        .method = .PATCH,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeUpdateDoc(runtime: *core.ClientCore, input: UpdateDocInput) !core.TypedResponse(DocUpdateResponse) {
+    const request = try buildUpdateDoc(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DocUpdateResponse, runtime.allocator, response);
+}
+
+fn buildDeleteDoc(allocator: Allocator, base_url: []const u8, input: DeleteDocInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -863,22 +5649,73 @@ pub fn buildDeleteDoc(allocator: Allocator, base_url: []const u8, input: DeleteD
     };
 }
 
-pub fn buildUpdateDoc(allocator: Allocator, base_url: []const u8, input: UpdateDocInput) !core.Request {
+fn executeDeleteDoc(runtime: *core.ClientCore, input: DeleteDocInput) !core.TypedResponse(DocDelete) {
+    const request = try buildDeleteDoc(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DocDelete, runtime.allocator, response);
+}
+
+fn buildListDocs(allocator: Allocator, base_url: []const u8, input: ListDocsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
+    try url.pathLiteral("/docs");
+    if (input.isOwner) |value| {
+        try url.queryBool("isOwner", value);
+    }
+    if (input.isPublished) |value| {
+        try url.queryBool("isPublished", value);
+    }
+    if (input.query) |value| {
+        try url.queryString("query", value);
+    }
+    if (input.sourceDoc) |value| {
+        try url.queryString("sourceDoc", value);
+    }
+    if (input.isStarred) |value| {
+        try url.queryBool("isStarred", value);
+    }
+    if (input.inGallery) |value| {
+        try url.queryBool("inGallery", value);
+    }
+    if (input.workspaceId) |value| {
+        try url.queryString("workspaceId", value);
+    }
+    if (input.folderId) |value| {
+        try url.queryString("folderId", value);
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
     return .{
-        .operation = "UpdateDoc",
-        .method = .PATCH,
+        .operation = "ListDocs",
+        .method = .GET,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = null,
         .expected_status = 200,
     };
 }
 
-pub fn buildGetSharingMetadata(allocator: Allocator, base_url: []const u8, input: GetSharingMetadataInput) !core.Request {
+fn executeListDocs(runtime: *core.ClientCore, input: ListDocsInput) !core.TypedResponse(DocList) {
+    const request = try buildListDocs(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DocList, runtime.allocator, response);
+}
+
+fn buildGetSharingMetadata(allocator: Allocator, base_url: []const u8, input: GetSharingMetadataInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -894,15 +5731,30 @@ pub fn buildGetSharingMetadata(allocator: Allocator, base_url: []const u8, input
     };
 }
 
-pub fn buildGetPermissions(allocator: Allocator, base_url: []const u8, input: GetPermissionsInput) !core.Request {
+fn executeGetSharingMetadata(runtime: *core.ClientCore, input: GetSharingMetadataInput) !core.TypedResponse(SharingMetadata) {
+    const request = try buildGetSharingMetadata(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(SharingMetadata, runtime.allocator, response);
+}
+
+fn buildGetPermissions(allocator: Allocator, base_url: []const u8, input: GetPermissionsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/docs/");
     try url.pathString(input.docId);
     try url.pathLiteral("/acl/permissions");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
     return .{
         .operation = "GetPermissions",
         .method = .GET,
@@ -912,7 +5764,18 @@ pub fn buildGetPermissions(allocator: Allocator, base_url: []const u8, input: Ge
     };
 }
 
-pub fn buildAddPermission(allocator: Allocator, base_url: []const u8, input: AddPermissionInput) !core.Request {
+fn executeGetPermissions(runtime: *core.ClientCore, input: GetPermissionsInput) !core.TypedResponse(Acl) {
+    const request = try buildGetPermissions(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Acl, runtime.allocator, response);
+}
+
+fn buildAddPermission(allocator: Allocator, base_url: []const u8, input: AddPermissionInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -923,12 +5786,23 @@ pub fn buildAddPermission(allocator: Allocator, base_url: []const u8, input: Add
         .operation = "AddPermission",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildDeletePermission(allocator: Allocator, base_url: []const u8, input: DeletePermissionInput) !core.Request {
+fn executeAddPermission(runtime: *core.ClientCore, input: AddPermissionInput) !core.TypedResponse(AddPermissionResponse) {
+    const request = try buildAddPermission(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(AddPermissionResponse, runtime.allocator, response);
+}
+
+fn buildDeletePermission(allocator: Allocator, base_url: []const u8, input: DeletePermissionInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -945,14 +5819,27 @@ pub fn buildDeletePermission(allocator: Allocator, base_url: []const u8, input: 
     };
 }
 
-pub fn buildSearchPrincipals(allocator: Allocator, base_url: []const u8, input: SearchPrincipalsInput) !core.Request {
+fn executeDeletePermission(runtime: *core.ClientCore, input: DeletePermissionInput) !core.TypedResponse(DeletePermissionResponse) {
+    const request = try buildDeletePermission(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DeletePermissionResponse, runtime.allocator, response);
+}
+
+fn buildSearchPrincipals(allocator: Allocator, base_url: []const u8, input: SearchPrincipalsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/docs/");
     try url.pathString(input.docId);
     try url.pathLiteral("/acl/principals/search");
-    try url.queryOptionalString("query", input.query);
+    if (input.query) |value| {
+        try url.queryString("query", value);
+    }
     return .{
         .operation = "SearchPrincipals",
         .method = .GET,
@@ -962,7 +5849,18 @@ pub fn buildSearchPrincipals(allocator: Allocator, base_url: []const u8, input: 
     };
 }
 
-pub fn buildGetAclSettings(allocator: Allocator, base_url: []const u8, input: GetAclSettingsInput) !core.Request {
+fn executeSearchPrincipals(runtime: *core.ClientCore, input: SearchPrincipalsInput) !core.TypedResponse(SearchPrincipalsResponse) {
+    const request = try buildSearchPrincipals(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(SearchPrincipalsResponse, runtime.allocator, response);
+}
+
+fn buildGetAclSettings(allocator: Allocator, base_url: []const u8, input: GetAclSettingsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -978,7 +5876,18 @@ pub fn buildGetAclSettings(allocator: Allocator, base_url: []const u8, input: Ge
     };
 }
 
-pub fn buildUpdateAclSettings(allocator: Allocator, base_url: []const u8, input: UpdateAclSettingsInput) !core.Request {
+fn executeGetAclSettings(runtime: *core.ClientCore, input: GetAclSettingsInput) !core.TypedResponse(AclSettings) {
+    const request = try buildGetAclSettings(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(AclSettings, runtime.allocator, response);
+}
+
+fn buildUpdateAclSettings(allocator: Allocator, base_url: []const u8, input: UpdateAclSettingsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -989,12 +5898,23 @@ pub fn buildUpdateAclSettings(allocator: Allocator, base_url: []const u8, input:
         .operation = "UpdateAclSettings",
         .method = .PATCH,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildPublishDoc(allocator: Allocator, base_url: []const u8, input: PublishDocInput) !core.Request {
+fn executeUpdateAclSettings(runtime: *core.ClientCore, input: UpdateAclSettingsInput) !core.TypedResponse(AclSettings) {
+    const request = try buildUpdateAclSettings(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(AclSettings, runtime.allocator, response);
+}
+
+fn buildPublishDoc(allocator: Allocator, base_url: []const u8, input: PublishDocInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1005,12 +5925,23 @@ pub fn buildPublishDoc(allocator: Allocator, base_url: []const u8, input: Publis
         .operation = "PublishDoc",
         .method = .PUT,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 202,
     };
 }
 
-pub fn buildUnpublishDoc(allocator: Allocator, base_url: []const u8, input: UnpublishDocInput) !core.Request {
+fn executePublishDoc(runtime: *core.ClientCore, input: PublishDocInput) !core.TypedResponse(PublishResponse) {
+    const request = try buildPublishDoc(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PublishResponse, runtime.allocator, response);
+}
+
+fn buildUnpublishDoc(allocator: Allocator, base_url: []const u8, input: UnpublishDocInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1026,25 +5957,18 @@ pub fn buildUnpublishDoc(allocator: Allocator, base_url: []const u8, input: Unpu
     };
 }
 
-pub fn buildListPages(allocator: Allocator, base_url: []const u8, input: ListPagesInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/pages");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    return .{
-        .operation = "ListPages",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
+fn executeUnpublishDoc(runtime: *core.ClientCore, input: UnpublishDocInput) !core.TypedResponse(UnpublishResponse) {
+    const request = try buildUnpublishDoc(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(UnpublishResponse, runtime.allocator, response);
 }
 
-pub fn buildCreatePage(allocator: Allocator, base_url: []const u8, input: CreatePageInput) !core.Request {
+fn buildCreatePage(allocator: Allocator, base_url: []const u8, input: CreatePageInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1055,12 +5979,23 @@ pub fn buildCreatePage(allocator: Allocator, base_url: []const u8, input: Create
         .operation = "CreatePage",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 202,
     };
 }
 
-pub fn buildGetPage(allocator: Allocator, base_url: []const u8, input: GetPageInput) !core.Request {
+fn executeCreatePage(runtime: *core.ClientCore, input: CreatePageInput) !core.TypedResponse(PageCreateResponse) {
+    const request = try buildCreatePage(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PageCreateResponse, runtime.allocator, response);
+}
+
+fn buildGetPage(allocator: Allocator, base_url: []const u8, input: GetPageInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1077,7 +6012,18 @@ pub fn buildGetPage(allocator: Allocator, base_url: []const u8, input: GetPageIn
     };
 }
 
-pub fn buildUpdatePage(allocator: Allocator, base_url: []const u8, input: UpdatePageInput) !core.Request {
+fn executeGetPage(runtime: *core.ClientCore, input: GetPageInput) !core.TypedResponse(Page) {
+    const request = try buildGetPage(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Page, runtime.allocator, response);
+}
+
+fn buildUpdatePage(allocator: Allocator, base_url: []const u8, input: UpdatePageInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1089,12 +6035,23 @@ pub fn buildUpdatePage(allocator: Allocator, base_url: []const u8, input: Update
         .operation = "UpdatePage",
         .method = .PUT,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 202,
     };
 }
 
-pub fn buildDeletePage(allocator: Allocator, base_url: []const u8, input: DeletePageInput) !core.Request {
+fn executeUpdatePage(runtime: *core.ClientCore, input: UpdatePageInput) !core.TypedResponse(PageUpdateResponse) {
+    const request = try buildUpdatePage(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PageUpdateResponse, runtime.allocator, response);
+}
+
+fn buildDeletePage(allocator: Allocator, base_url: []const u8, input: DeletePageInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1111,7 +6068,51 @@ pub fn buildDeletePage(allocator: Allocator, base_url: []const u8, input: Delete
     };
 }
 
-pub fn buildListPageContent(allocator: Allocator, base_url: []const u8, input: ListPageContentInput) !core.Request {
+fn executeDeletePage(runtime: *core.ClientCore, input: DeletePageInput) !core.TypedResponse(PageDeleteResponse) {
+    const request = try buildDeletePage(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PageDeleteResponse, runtime.allocator, response);
+}
+
+fn buildListPages(allocator: Allocator, base_url: []const u8, input: ListPagesInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/pages");
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    return .{
+        .operation = "ListPages",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPages(runtime: *core.ClientCore, input: ListPagesInput) !core.TypedResponse(PageList) {
+    const request = try buildListPages(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PageList, runtime.allocator, response);
+}
+
+fn buildListPageContent(allocator: Allocator, base_url: []const u8, input: ListPageContentInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1120,9 +6121,15 @@ pub fn buildListPageContent(allocator: Allocator, base_url: []const u8, input: L
     try url.pathLiteral("/pages/");
     try url.pathString(input.pageIdOrName);
     try url.pathLiteral("/content");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("contentFormat", input.contentFormat);
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.contentFormat) |value| {
+        try url.queryString("contentFormat", @tagName(value));
+    }
     return .{
         .operation = "ListPageContent",
         .method = .GET,
@@ -1132,7 +6139,18 @@ pub fn buildListPageContent(allocator: Allocator, base_url: []const u8, input: L
     };
 }
 
-pub fn buildDeletePageContent(allocator: Allocator, base_url: []const u8, input: DeletePageContentInput) !core.Request {
+fn executeListPageContent(runtime: *core.ClientCore, input: ListPageContentInput) !core.TypedResponse(PageContentList) {
+    const request = try buildListPageContent(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PageContentList, runtime.allocator, response);
+}
+
+fn buildDeletePageContent(allocator: Allocator, base_url: []const u8, input: DeletePageContentInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1145,12 +6163,23 @@ pub fn buildDeletePageContent(allocator: Allocator, base_url: []const u8, input:
         .operation = "DeletePageContent",
         .method = .DELETE,
         .url = try url.finish(),
-        .body = (input.payload orelse null),
+        .body = if (input.payload) |value| try core.jsonEncode(allocator, value) else null,
         .expected_status = 202,
     };
 }
 
-pub fn buildBeginPageContentExport(allocator: Allocator, base_url: []const u8, input: BeginPageContentExportInput) !core.Request {
+fn executeDeletePageContent(runtime: *core.ClientCore, input: DeletePageContentInput) !core.TypedResponse(PageContentDeleteResponse) {
+    const request = try buildDeletePageContent(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PageContentDeleteResponse, runtime.allocator, response);
+}
+
+fn buildBeginPageContentExport(allocator: Allocator, base_url: []const u8, input: BeginPageContentExportInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1163,12 +6192,23 @@ pub fn buildBeginPageContentExport(allocator: Allocator, base_url: []const u8, i
         .operation = "BeginPageContentExport",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 202,
     };
 }
 
-pub fn buildGetPageContentExportStatus(allocator: Allocator, base_url: []const u8, input: GetPageContentExportStatusInput) !core.Request {
+fn executeBeginPageContentExport(runtime: *core.ClientCore, input: BeginPageContentExportInput) !core.TypedResponse(BeginPageContentExportResponse) {
+    const request = try buildBeginPageContentExport(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(BeginPageContentExportResponse, runtime.allocator, response);
+}
+
+fn buildGetPageContentExportStatus(allocator: Allocator, base_url: []const u8, input: GetPageContentExportStatusInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1187,19 +6227,27 @@ pub fn buildGetPageContentExportStatus(allocator: Allocator, base_url: []const u
     };
 }
 
-pub fn buildListTables(allocator: Allocator, base_url: []const u8, input: ListTablesInput) !core.Request {
+fn executeGetPageContentExportStatus(runtime: *core.ClientCore, input: GetPageContentExportStatusInput) !core.TypedResponse(PageContentExportStatusResponse) {
+    const request = try buildGetPageContentExportStatus(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PageContentExportStatusResponse, runtime.allocator, response);
+}
+
+fn buildGetFormula(allocator: Allocator, base_url: []const u8, input: GetFormulaInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/docs/");
     try url.pathString(input.docId);
-    try url.pathLiteral("/tables");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("sortBy", input.sortBy);
-    try url.queryOptionalStringList("tableTypes", input.tableTypes);
+    try url.pathLiteral("/formulas/");
+    try url.pathString(input.formulaIdOrName);
     return .{
-        .operation = "ListTables",
+        .operation = "GetFormula",
         .method = .GET,
         .url = try url.finish(),
         .body = null,
@@ -1207,7 +6255,256 @@ pub fn buildListTables(allocator: Allocator, base_url: []const u8, input: ListTa
     };
 }
 
-pub fn buildGetTable(allocator: Allocator, base_url: []const u8, input: GetTableInput) !core.Request {
+fn executeGetFormula(runtime: *core.ClientCore, input: GetFormulaInput) !core.TypedResponse(Formula) {
+    const request = try buildGetFormula(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Formula, runtime.allocator, response);
+}
+
+fn buildListFormulas(allocator: Allocator, base_url: []const u8, input: ListFormulasInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/formulas");
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.sortBy) |value| {
+        try url.queryString("sortBy", @tagName(value));
+    }
+    return .{
+        .operation = "ListFormulas",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListFormulas(runtime: *core.ClientCore, input: ListFormulasInput) !core.TypedResponse(FormulaList) {
+    const request = try buildListFormulas(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(FormulaList, runtime.allocator, response);
+}
+
+fn buildGetControl(allocator: Allocator, base_url: []const u8, input: GetControlInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/controls/");
+    try url.pathString(input.controlIdOrName);
+    return .{
+        .operation = "GetControl",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeGetControl(runtime: *core.ClientCore, input: GetControlInput) !core.TypedResponse(Control) {
+    const request = try buildGetControl(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Control, runtime.allocator, response);
+}
+
+fn buildListControls(allocator: Allocator, base_url: []const u8, input: ListControlsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/controls");
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.sortBy) |value| {
+        try url.queryString("sortBy", @tagName(value));
+    }
+    return .{
+        .operation = "ListControls",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListControls(runtime: *core.ClientCore, input: ListControlsInput) !core.TypedResponse(ControlList) {
+    const request = try buildListControls(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(ControlList, runtime.allocator, response);
+}
+
+fn buildAddCustomDocDomain(allocator: Allocator, base_url: []const u8, input: AddCustomDocDomainInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/domains");
+    return .{
+        .operation = "AddCustomDocDomain",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 202,
+    };
+}
+
+fn executeAddCustomDocDomain(runtime: *core.ClientCore, input: AddCustomDocDomainInput) !core.TypedResponse(AddCustomDocDomainResponse) {
+    const request = try buildAddCustomDocDomain(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(AddCustomDocDomainResponse, runtime.allocator, response);
+}
+
+fn buildUpdateCustomDocDomain(allocator: Allocator, base_url: []const u8, input: UpdateCustomDocDomainInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/domains/");
+    try url.pathString(input.customDocDomain);
+    return .{
+        .operation = "UpdateCustomDocDomain",
+        .method = .PATCH,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeUpdateCustomDocDomain(runtime: *core.ClientCore, input: UpdateCustomDocDomainInput) !core.TypedResponse(UpdateCustomDocDomainResponse) {
+    const request = try buildUpdateCustomDocDomain(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(UpdateCustomDocDomainResponse, runtime.allocator, response);
+}
+
+fn buildDeleteCustomDocDomain(allocator: Allocator, base_url: []const u8, input: DeleteCustomDocDomainInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/domains/");
+    try url.pathString(input.customDocDomain);
+    return .{
+        .operation = "DeleteCustomDocDomain",
+        .method = .DELETE,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeDeleteCustomDocDomain(runtime: *core.ClientCore, input: DeleteCustomDocDomainInput) !core.TypedResponse(DeleteCustomDocDomainResponse) {
+    const request = try buildDeleteCustomDocDomain(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DeleteCustomDocDomainResponse, runtime.allocator, response);
+}
+
+fn buildListCustomDocDomains(allocator: Allocator, base_url: []const u8, input: ListCustomDocDomainsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/domains");
+    return .{
+        .operation = "ListCustomDocDomains",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListCustomDocDomains(runtime: *core.ClientCore, input: ListCustomDocDomainsInput) !core.TypedResponse(CustomDocDomainList) {
+    const request = try buildListCustomDocDomains(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(CustomDocDomainList, runtime.allocator, response);
+}
+
+fn buildTriggerWebhookAutomation(allocator: Allocator, base_url: []const u8, input: TriggerWebhookAutomationInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/hooks/automation/");
+    try url.pathString(input.ruleId);
+    return .{
+        .operation = "TriggerWebhookAutomation",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = if (input.payload) |value| try core.jsonEncode(allocator, value) else null,
+        .expected_status = 202,
+    };
+}
+
+fn executeTriggerWebhookAutomation(runtime: *core.ClientCore, input: TriggerWebhookAutomationInput) !core.TypedResponse(WebhookTriggerResponse) {
+    const request = try buildTriggerWebhookAutomation(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(WebhookTriggerResponse, runtime.allocator, response);
+}
+
+fn buildGetTable(allocator: Allocator, base_url: []const u8, input: GetTableInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1215,7 +6512,9 @@ pub fn buildGetTable(allocator: Allocator, base_url: []const u8, input: GetTable
     try url.pathString(input.docId);
     try url.pathLiteral("/tables/");
     try url.pathString(input.tableIdOrName);
-    try url.queryOptionalBool("useUpdatedTableLayouts", input.useUpdatedTableLayouts);
+    if (input.useUpdatedTableLayouts) |value| {
+        try url.queryBool("useUpdatedTableLayouts", value);
+    }
     return .{
         .operation = "GetTable",
         .method = .GET,
@@ -1225,7 +6524,89 @@ pub fn buildGetTable(allocator: Allocator, base_url: []const u8, input: GetTable
     };
 }
 
-pub fn buildListColumns(allocator: Allocator, base_url: []const u8, input: ListColumnsInput) !core.Request {
+fn executeGetTable(runtime: *core.ClientCore, input: GetTableInput) !core.TypedResponse(Table) {
+    const request = try buildGetTable(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Table, runtime.allocator, response);
+}
+
+fn buildListTables(allocator: Allocator, base_url: []const u8, input: ListTablesInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/tables");
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.sortBy) |value| {
+        try url.queryString("sortBy", @tagName(value));
+    }
+    if (input.tableTypes) |values| {
+        for (values) |value| {
+            try url.queryString("tableTypes", @tagName(value));
+        }
+    }
+    return .{
+        .operation = "ListTables",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListTables(runtime: *core.ClientCore, input: ListTablesInput) !core.TypedResponse(TableList) {
+    const request = try buildListTables(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(TableList, runtime.allocator, response);
+}
+
+fn buildGetColumn(allocator: Allocator, base_url: []const u8, input: GetColumnInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/tables/");
+    try url.pathString(input.tableIdOrName);
+    try url.pathLiteral("/columns/");
+    try url.pathString(input.columnIdOrName);
+    return .{
+        .operation = "GetColumn",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeGetColumn(runtime: *core.ClientCore, input: GetColumnInput) !core.TypedResponse(ColumnDetail) {
+    const request = try buildGetColumn(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(ColumnDetail, runtime.allocator, response);
+}
+
+fn buildListColumns(allocator: Allocator, base_url: []const u8, input: ListColumnsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1234,9 +6615,15 @@ pub fn buildListColumns(allocator: Allocator, base_url: []const u8, input: ListC
     try url.pathLiteral("/tables/");
     try url.pathString(input.tableIdOrName);
     try url.pathLiteral("/columns");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalBool("visibleOnly", input.visibleOnly);
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.visibleOnly) |value| {
+        try url.queryBool("visibleOnly", value);
+    }
     return .{
         .operation = "ListColumns",
         .method = .GET,
@@ -1246,70 +6633,18 @@ pub fn buildListColumns(allocator: Allocator, base_url: []const u8, input: ListC
     };
 }
 
-pub fn buildListRows(allocator: Allocator, base_url: []const u8, input: ListRowsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/tables/");
-    try url.pathString(input.tableIdOrName);
-    try url.pathLiteral("/rows");
-    try url.queryOptionalString("query", input.query);
-    try url.queryOptionalString("sortBy", input.sortBy);
-    try url.queryOptionalBool("useColumnNames", input.useColumnNames);
-    try url.queryOptionalString("valueFormat", input.valueFormat);
-    try url.queryOptionalBool("visibleOnly", input.visibleOnly);
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("syncToken", input.syncToken);
-    return .{
-        .operation = "ListRows",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
+fn executeListColumns(runtime: *core.ClientCore, input: ListColumnsInput) !core.TypedResponse(ColumnList) {
+    const request = try buildListColumns(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(ColumnList, runtime.allocator, response);
 }
 
-pub fn buildUpsertRows(allocator: Allocator, base_url: []const u8, input: UpsertRowsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/tables/");
-    try url.pathString(input.tableIdOrName);
-    try url.pathLiteral("/rows");
-    try url.queryOptionalBool("disableParsing", input.disableParsing);
-    return .{
-        .operation = "UpsertRows",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 202,
-    };
-}
-
-pub fn buildDeleteRows(allocator: Allocator, base_url: []const u8, input: DeleteRowsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/tables/");
-    try url.pathString(input.tableIdOrName);
-    try url.pathLiteral("/rows");
-    return .{
-        .operation = "DeleteRows",
-        .method = .DELETE,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 202,
-    };
-}
-
-pub fn buildGetRow(allocator: Allocator, base_url: []const u8, input: GetRowInput) !core.Request {
+fn buildGetRow(allocator: Allocator, base_url: []const u8, input: GetRowInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1319,8 +6654,12 @@ pub fn buildGetRow(allocator: Allocator, base_url: []const u8, input: GetRowInpu
     try url.pathString(input.tableIdOrName);
     try url.pathLiteral("/rows/");
     try url.pathString(input.rowIdOrName);
-    try url.queryOptionalBool("useColumnNames", input.useColumnNames);
-    try url.queryOptionalString("valueFormat", input.valueFormat);
+    if (input.useColumnNames) |value| {
+        try url.queryBool("useColumnNames", value);
+    }
+    if (input.valueFormat) |value| {
+        try url.queryString("valueFormat", @tagName(value));
+    }
     return .{
         .operation = "GetRow",
         .method = .GET,
@@ -1330,7 +6669,18 @@ pub fn buildGetRow(allocator: Allocator, base_url: []const u8, input: GetRowInpu
     };
 }
 
-pub fn buildUpdateRow(allocator: Allocator, base_url: []const u8, input: UpdateRowInput) !core.Request {
+fn executeGetRow(runtime: *core.ClientCore, input: GetRowInput) !core.TypedResponse(RowDetail) {
+    const request = try buildGetRow(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(RowDetail, runtime.allocator, response);
+}
+
+fn buildUpdateRow(allocator: Allocator, base_url: []const u8, input: UpdateRowInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1340,17 +6690,30 @@ pub fn buildUpdateRow(allocator: Allocator, base_url: []const u8, input: UpdateR
     try url.pathString(input.tableIdOrName);
     try url.pathLiteral("/rows/");
     try url.pathString(input.rowIdOrName);
-    try url.queryOptionalBool("disableParsing", input.disableParsing);
+    if (input.disableParsing) |value| {
+        try url.queryBool("disableParsing", value);
+    }
     return .{
         .operation = "UpdateRow",
         .method = .PUT,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 202,
     };
 }
 
-pub fn buildDeleteRow(allocator: Allocator, base_url: []const u8, input: DeleteRowInput) !core.Request {
+fn executeUpdateRow(runtime: *core.ClientCore, input: UpdateRowInput) !core.TypedResponse(RowUpdateResponse) {
+    const request = try buildUpdateRow(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(RowUpdateResponse, runtime.allocator, response);
+}
+
+fn buildDeleteRow(allocator: Allocator, base_url: []const u8, input: DeleteRowInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1369,7 +6732,71 @@ pub fn buildDeleteRow(allocator: Allocator, base_url: []const u8, input: DeleteR
     };
 }
 
-pub fn buildPushButton(allocator: Allocator, base_url: []const u8, input: PushButtonInput) !core.Request {
+fn executeDeleteRow(runtime: *core.ClientCore, input: DeleteRowInput) !core.TypedResponse(RowDeleteResponse) {
+    const request = try buildDeleteRow(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(RowDeleteResponse, runtime.allocator, response);
+}
+
+fn buildListRows(allocator: Allocator, base_url: []const u8, input: ListRowsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/tables/");
+    try url.pathString(input.tableIdOrName);
+    try url.pathLiteral("/rows");
+    if (input.query) |value| {
+        try url.queryString("query", value);
+    }
+    if (input.sortBy) |value| {
+        try url.queryString("sortBy", @tagName(value));
+    }
+    if (input.useColumnNames) |value| {
+        try url.queryBool("useColumnNames", value);
+    }
+    if (input.valueFormat) |value| {
+        try url.queryString("valueFormat", @tagName(value));
+    }
+    if (input.visibleOnly) |value| {
+        try url.queryBool("visibleOnly", value);
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.syncToken) |value| {
+        try url.queryString("syncToken", value);
+    }
+    return .{
+        .operation = "ListRows",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListRows(runtime: *core.ClientCore, input: ListRowsInput) !core.TypedResponse(RowList) {
+    const request = try buildListRows(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(RowList, runtime.allocator, response);
+}
+
+fn buildPushButton(allocator: Allocator, base_url: []const u8, input: PushButtonInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1390,7 +6817,18 @@ pub fn buildPushButton(allocator: Allocator, base_url: []const u8, input: PushBu
     };
 }
 
-pub fn buildGetColumn(allocator: Allocator, base_url: []const u8, input: GetColumnInput) !core.Request {
+fn executePushButton(runtime: *core.ClientCore, input: PushButtonInput) !core.TypedResponse(PushButtonResponse) {
+    const request = try buildPushButton(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PushButtonResponse, runtime.allocator, response);
+}
+
+fn buildUpsertRows(allocator: Allocator, base_url: []const u8, input: UpsertRowsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1398,189 +6836,60 @@ pub fn buildGetColumn(allocator: Allocator, base_url: []const u8, input: GetColu
     try url.pathString(input.docId);
     try url.pathLiteral("/tables/");
     try url.pathString(input.tableIdOrName);
-    try url.pathLiteral("/columns/");
-    try url.pathString(input.columnIdOrName);
+    try url.pathLiteral("/rows");
+    if (input.disableParsing) |value| {
+        try url.queryBool("disableParsing", value);
+    }
     return .{
-        .operation = "GetColumn",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListFormulas(allocator: Allocator, base_url: []const u8, input: ListFormulasInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/formulas");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("sortBy", input.sortBy);
-    return .{
-        .operation = "ListFormulas",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildGetFormula(allocator: Allocator, base_url: []const u8, input: GetFormulaInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/formulas/");
-    try url.pathString(input.formulaIdOrName);
-    return .{
-        .operation = "GetFormula",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListControls(allocator: Allocator, base_url: []const u8, input: ListControlsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/controls");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("sortBy", input.sortBy);
-    return .{
-        .operation = "ListControls",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildGetControl(allocator: Allocator, base_url: []const u8, input: GetControlInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/controls/");
-    try url.pathString(input.controlIdOrName);
-    return .{
-        .operation = "GetControl",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListCustomDocDomains(allocator: Allocator, base_url: []const u8, input: ListCustomDocDomainsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/domains");
-    return .{
-        .operation = "ListCustomDocDomains",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildAddCustomDocDomain(allocator: Allocator, base_url: []const u8, input: AddCustomDocDomainInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/domains");
-    return .{
-        .operation = "AddCustomDocDomain",
+        .operation = "UpsertRows",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 202,
     };
 }
 
-pub fn buildDeleteCustomDocDomain(allocator: Allocator, base_url: []const u8, input: DeleteCustomDocDomainInput) !core.Request {
+fn executeUpsertRows(runtime: *core.ClientCore, input: UpsertRowsInput) !core.TypedResponse(RowsUpsertResponse) {
+    const request = try buildUpsertRows(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(RowsUpsertResponse, runtime.allocator, response);
+}
+
+fn buildDeleteRows(allocator: Allocator, base_url: []const u8, input: DeleteRowsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/docs/");
     try url.pathString(input.docId);
-    try url.pathLiteral("/domains/");
-    try url.pathString(input.customDocDomain);
+    try url.pathLiteral("/tables/");
+    try url.pathString(input.tableIdOrName);
+    try url.pathLiteral("/rows");
     return .{
-        .operation = "DeleteCustomDocDomain",
+        .operation = "DeleteRows",
         .method = .DELETE,
         .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 202,
     };
 }
 
-pub fn buildUpdateCustomDocDomain(allocator: Allocator, base_url: []const u8, input: UpdateCustomDocDomainInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/domains/");
-    try url.pathString(input.customDocDomain);
-    return .{
-        .operation = "UpdateCustomDocDomain",
-        .method = .PATCH,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
+fn executeDeleteRows(runtime: *core.ClientCore, input: DeleteRowsInput) !core.TypedResponse(RowsDeleteResponse) {
+    const request = try buildDeleteRows(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(RowsDeleteResponse, runtime.allocator, response);
 }
 
-pub fn buildGetCustomDocDomainProvider(allocator: Allocator, base_url: []const u8, input: GetCustomDocDomainProviderInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/domains/provider/");
-    try url.pathString(input.customDocDomain);
-    return .{
-        .operation = "GetCustomDocDomainProvider",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListFolders(allocator: Allocator, base_url: []const u8, input: ListFoldersInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/folders");
-    try url.queryOptionalString("workspaceId", input.workspaceId);
-    try url.queryOptionalBool("isStarred", input.isStarred);
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    return .{
-        .operation = "ListFolders",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildCreateFolder(allocator: Allocator, base_url: []const u8, input: CreateFolderInput) !core.Request {
+fn buildCreateFolder(allocator: Allocator, base_url: []const u8, input: CreateFolderInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1589,12 +6898,23 @@ pub fn buildCreateFolder(allocator: Allocator, base_url: []const u8, input: Crea
         .operation = "CreateFolder",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 201,
     };
 }
 
-pub fn buildGetFolder(allocator: Allocator, base_url: []const u8, input: GetFolderInput) !core.Request {
+fn executeCreateFolder(runtime: *core.ClientCore, input: CreateFolderInput) !core.TypedResponse(Folder) {
+    const request = try buildCreateFolder(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Folder, runtime.allocator, response);
+}
+
+fn buildGetFolder(allocator: Allocator, base_url: []const u8, input: GetFolderInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1609,7 +6929,18 @@ pub fn buildGetFolder(allocator: Allocator, base_url: []const u8, input: GetFold
     };
 }
 
-pub fn buildUpdateFolder(allocator: Allocator, base_url: []const u8, input: UpdateFolderInput) !core.Request {
+fn executeGetFolder(runtime: *core.ClientCore, input: GetFolderInput) !core.TypedResponse(Folder) {
+    const request = try buildGetFolder(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Folder, runtime.allocator, response);
+}
+
+fn buildUpdateFolder(allocator: Allocator, base_url: []const u8, input: UpdateFolderInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1619,12 +6950,23 @@ pub fn buildUpdateFolder(allocator: Allocator, base_url: []const u8, input: Upda
         .operation = "UpdateFolder",
         .method = .PATCH,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildDeleteFolder(allocator: Allocator, base_url: []const u8, input: DeleteFolderInput) !core.Request {
+fn executeUpdateFolder(runtime: *core.ClientCore, input: UpdateFolderInput) !core.TypedResponse(Folder) {
+    const request = try buildUpdateFolder(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Folder, runtime.allocator, response);
+}
+
+fn buildDeleteFolder(allocator: Allocator, base_url: []const u8, input: DeleteFolderInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1639,13 +6981,36 @@ pub fn buildDeleteFolder(allocator: Allocator, base_url: []const u8, input: Dele
     };
 }
 
-pub fn buildWhoami(allocator: Allocator, base_url: []const u8, _: void) !core.Request {
+fn executeDeleteFolder(runtime: *core.ClientCore, input: DeleteFolderInput) !core.TypedResponse(DeleteFolderResponse) {
+    const request = try buildDeleteFolder(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DeleteFolderResponse, runtime.allocator, response);
+}
+
+fn buildListFolders(allocator: Allocator, base_url: []const u8, input: ListFoldersInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
-    try url.pathLiteral("/whoami");
+    try url.pathLiteral("/folders");
+    if (input.workspaceId) |value| {
+        try url.queryString("workspaceId", value);
+    }
+    if (input.isStarred) |value| {
+        try url.queryBool("isStarred", value);
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
     return .{
-        .operation = "Whoami",
+        .operation = "ListFolders",
         .method = .GET,
         .url = try url.finish(),
         .body = null,
@@ -1653,275 +7018,18 @@ pub fn buildWhoami(allocator: Allocator, base_url: []const u8, _: void) !core.Re
     };
 }
 
-pub fn buildResolveBrowserLink(allocator: Allocator, base_url: []const u8, input: ResolveBrowserLinkInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/resolveBrowserLink");
-    try url.queryString("url", input.url);
-    try url.queryOptionalBool("degradeGracefully", input.degradeGracefully);
-    return .{
-        .operation = "ResolveBrowserLink",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
+fn executeListFolders(runtime: *core.ClientCore, input: ListFoldersInput) !core.TypedResponse(FolderList) {
+    const request = try buildListFolders(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(FolderList, runtime.allocator, response);
 }
 
-pub fn buildGetMutationStatus(allocator: Allocator, base_url: []const u8, input: GetMutationStatusInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/mutationStatus/");
-    try url.pathString(input.requestId);
-    return .{
-        .operation = "GetMutationStatus",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildTriggerWebhookAutomation(allocator: Allocator, base_url: []const u8, input: TriggerWebhookAutomationInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/hooks/automation/");
-    try url.pathString(input.ruleId);
-    return .{
-        .operation = "TriggerWebhookAutomation",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = (input.payload orelse null),
-        .expected_status = 202,
-    };
-}
-
-pub fn buildListDocAnalytics(allocator: Allocator, base_url: []const u8, input: ListDocAnalyticsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/analytics/docs");
-    try url.queryOptionalStringList("docIds", input.docIds);
-    try url.queryOptionalString("workspaceId", input.workspaceId);
-    try url.queryOptionalString("query", input.query);
-    try url.queryOptionalBool("isPublished", input.isPublished);
-    try url.queryOptionalString("sinceDate", input.sinceDate);
-    try url.queryOptionalString("untilDate", input.untilDate);
-    try url.queryOptionalString("scale", input.scale);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("orderBy", input.orderBy);
-    try url.queryOptionalString("direction", input.direction);
-    try url.queryOptionalInt("limit", input.limit);
-    return .{
-        .operation = "ListDocAnalytics",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPageAnalytics(allocator: Allocator, base_url: []const u8, input: ListPageAnalyticsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/analytics/docs/");
-    try url.pathString(input.docId);
-    try url.pathLiteral("/pages");
-    try url.queryOptionalString("sinceDate", input.sinceDate);
-    try url.queryOptionalString("untilDate", input.untilDate);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalInt("limit", input.limit);
-    return .{
-        .operation = "ListPageAnalytics",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListDocAnalyticsSummary(allocator: Allocator, base_url: []const u8, input: ListDocAnalyticsSummaryInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/analytics/docs/summary");
-    try url.queryOptionalBool("isPublished", input.isPublished);
-    try url.queryOptionalString("sinceDate", input.sinceDate);
-    try url.queryOptionalString("untilDate", input.untilDate);
-    try url.queryOptionalString("workspaceId", input.workspaceId);
-    return .{
-        .operation = "ListDocAnalyticsSummary",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPackAnalytics(allocator: Allocator, base_url: []const u8, input: ListPackAnalyticsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/analytics/packs");
-    try url.queryOptionalIntList("packIds", input.packIds);
-    try url.queryOptionalString("workspaceId", input.workspaceId);
-    try url.queryOptionalString("query", input.query);
-    try url.queryOptionalString("sinceDate", input.sinceDate);
-    try url.queryOptionalString("untilDate", input.untilDate);
-    try url.queryOptionalString("scale", input.scale);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("orderBy", input.orderBy);
-    try url.queryOptionalString("direction", input.direction);
-    try url.queryOptionalBool("isPublished", input.isPublished);
-    try url.queryOptionalInt("limit", input.limit);
-    return .{
-        .operation = "ListPackAnalytics",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPackAnalyticsSummary(allocator: Allocator, base_url: []const u8, input: ListPackAnalyticsSummaryInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/analytics/packs/summary");
-    try url.queryOptionalIntList("packIds", input.packIds);
-    try url.queryOptionalString("workspaceId", input.workspaceId);
-    try url.queryOptionalBool("isPublished", input.isPublished);
-    try url.queryOptionalString("sinceDate", input.sinceDate);
-    try url.queryOptionalString("untilDate", input.untilDate);
-    return .{
-        .operation = "ListPackAnalyticsSummary",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPackFormulaAnalytics(allocator: Allocator, base_url: []const u8, input: ListPackFormulaAnalyticsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/analytics/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/formulas");
-    try url.queryOptionalStringList("packFormulaNames", input.packFormulaNames);
-    try url.queryOptionalStringList("packFormulaTypes", input.packFormulaTypes);
-    try url.queryOptionalString("sinceDate", input.sinceDate);
-    try url.queryOptionalString("untilDate", input.untilDate);
-    try url.queryOptionalString("scale", input.scale);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("orderBy", input.orderBy);
-    try url.queryOptionalString("direction", input.direction);
-    try url.queryOptionalInt("limit", input.limit);
-    return .{
-        .operation = "ListPackFormulaAnalytics",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildGetAnalyticsLastUpdated(allocator: Allocator, base_url: []const u8, _: void) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/analytics/updated");
-    return .{
-        .operation = "GetAnalyticsLastUpdated",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListWorkspaceMembers(allocator: Allocator, base_url: []const u8, input: ListWorkspaceMembersInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/workspaces/");
-    try url.pathString(input.workspaceId);
-    try url.pathLiteral("/users");
-    try url.queryOptionalStringList("includedRoles", input.includedRoles);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    return .{
-        .operation = "ListWorkspaceMembers",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildChangeUserRole(allocator: Allocator, base_url: []const u8, input: ChangeUserRoleInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/workspaces/");
-    try url.pathString(input.workspaceId);
-    try url.pathLiteral("/users/role");
-    return .{
-        .operation = "ChangeUserRole",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListWorkspaceRoleActivity(allocator: Allocator, base_url: []const u8, input: ListWorkspaceRoleActivityInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/workspaces/");
-    try url.pathString(input.workspaceId);
-    try url.pathLiteral("/roles");
-    return .{
-        .operation = "ListWorkspaceRoleActivity",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPacks(allocator: Allocator, base_url: []const u8, input: ListPacksInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs");
-    try url.queryOptionalString("accessType", input.accessType);
-    try url.queryOptionalStringList("accessTypes", input.accessTypes);
-    try url.queryOptionalString("sortBy", input.sortBy);
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("direction", input.direction);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("onlyWorkspaceId", input.onlyWorkspaceId);
-    try url.queryOptionalStringList("parentWorkspaceIds", input.parentWorkspaceIds);
-    try url.queryOptionalBool("excludePublicPacks", input.excludePublicPacks);
-    try url.queryOptionalString("packEntrypoint", input.packEntrypoint);
-    return .{
-        .operation = "ListPacks",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildCreatePack(allocator: Allocator, base_url: []const u8, input: CreatePackInput) !core.Request {
+fn buildCreatePack(allocator: Allocator, base_url: []const u8, input: CreatePackInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -1930,17 +7038,28 @@ pub fn buildCreatePack(allocator: Allocator, base_url: []const u8, input: Create
         .operation = "CreatePack",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildGetPack(allocator: Allocator, base_url: []const u8, input: GetPackInput) !core.Request {
+fn executeCreatePack(runtime: *core.ClientCore, input: CreatePackInput) !core.TypedResponse(CreatePackResponse) {
+    const request = try buildCreatePack(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(CreatePackResponse, runtime.allocator, response);
+}
+
+fn buildGetPack(allocator: Allocator, base_url: []const u8, input: GetPackInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     return .{
         .operation = "GetPack",
         .method = .GET,
@@ -1950,27 +7069,49 @@ pub fn buildGetPack(allocator: Allocator, base_url: []const u8, input: GetPackIn
     };
 }
 
-pub fn buildUpdatePack(allocator: Allocator, base_url: []const u8, input: UpdatePackInput) !core.Request {
+fn executeGetPack(runtime: *core.ClientCore, input: GetPackInput) !core.TypedResponse(Pack) {
+    const request = try buildGetPack(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Pack, runtime.allocator, response);
+}
+
+fn buildUpdatePack(allocator: Allocator, base_url: []const u8, input: UpdatePackInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     return .{
         .operation = "UpdatePack",
         .method = .PATCH,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildDeletePack(allocator: Allocator, base_url: []const u8, input: DeletePackInput) !core.Request {
+fn executeUpdatePack(runtime: *core.ClientCore, input: UpdatePackInput) !core.TypedResponse(Pack) {
+    const request = try buildUpdatePack(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(Pack, runtime.allocator, response);
+}
+
+fn buildDeletePack(allocator: Allocator, base_url: []const u8, input: DeletePackInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     return .{
         .operation = "DeletePack",
         .method = .DELETE,
@@ -1980,12 +7121,82 @@ pub fn buildDeletePack(allocator: Allocator, base_url: []const u8, input: Delete
     };
 }
 
-pub fn buildGetPackConfigurationSchema(allocator: Allocator, base_url: []const u8, input: GetPackConfigurationSchemaInput) !core.Request {
+fn executeDeletePack(runtime: *core.ClientCore, input: DeletePackInput) !core.TypedResponse(DeletePackResponse) {
+    const request = try buildDeletePack(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DeletePackResponse, runtime.allocator, response);
+}
+
+fn buildListPacks(allocator: Allocator, base_url: []const u8, input: ListPacksInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs");
+    if (input.accessType) |value| {
+        try url.queryString("accessType", @tagName(value));
+    }
+    if (input.accessTypes) |values| {
+        for (values) |value| {
+            try url.queryString("accessTypes", @tagName(value));
+        }
+    }
+    if (input.sortBy) |value| {
+        try url.queryString("sortBy", @tagName(value));
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.direction) |value| {
+        try url.queryString("direction", @tagName(value));
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.onlyWorkspaceId) |value| {
+        try url.queryString("onlyWorkspaceId", value);
+    }
+    if (input.parentWorkspaceIds) |values| {
+        for (values) |value| {
+            try url.queryString("parentWorkspaceIds", value);
+        }
+    }
+    if (input.excludePublicPacks) |value| {
+        try url.queryBool("excludePublicPacks", value);
+    }
+    if (input.packEntrypoint) |value| {
+        try url.queryString("packEntrypoint", @tagName(value));
+    }
+    return .{
+        .operation = "ListPacks",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPacks(runtime: *core.ClientCore, input: ListPacksInput) !core.TypedResponse(PackSummaryList) {
+    const request = try buildListPacks(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackSummaryList, runtime.allocator, response);
+}
+
+fn buildGetPackConfigurationSchema(allocator: Allocator, base_url: []const u8, input: GetPackConfigurationSchemaInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/configurations/schema");
     return .{
         .operation = "GetPackConfigurationSchema",
@@ -1996,46 +7207,50 @@ pub fn buildGetPackConfigurationSchema(allocator: Allocator, base_url: []const u
     };
 }
 
-pub fn buildListPackVersions(allocator: Allocator, base_url: []const u8, input: ListPackVersionsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/versions");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    return .{
-        .operation = "ListPackVersions",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
+fn executeGetPackConfigurationSchema(runtime: *core.ClientCore, input: GetPackConfigurationSchemaInput) !core.TypedResponse(GetPackConfigurationJsonSchemaResponse) {
+    const request = try buildGetPackConfigurationSchema(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(GetPackConfigurationJsonSchemaResponse, runtime.allocator, response);
 }
 
-pub fn buildGetNextPackVersion(allocator: Allocator, base_url: []const u8, input: GetNextPackVersionInput) !core.Request {
+fn buildGetNextPackVersion(allocator: Allocator, base_url: []const u8, input: GetNextPackVersionInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/nextVersion");
     return .{
         .operation = "GetNextPackVersion",
         .method = .POST,
         .url = try url.finish(),
-        .body = (input.payload orelse null),
+        .body = if (input.payload) |value| try core.jsonEncode(allocator, value) else null,
         .expected_status = 200,
     };
 }
 
-pub fn buildGetPackVersionDiffs(allocator: Allocator, base_url: []const u8, input: GetPackVersionDiffsInput) !core.Request {
+fn executeGetNextPackVersion(runtime: *core.ClientCore, input: GetNextPackVersionInput) !core.TypedResponse(NextPackVersionInfo) {
+    const request = try buildGetNextPackVersion(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(NextPackVersionInfo, runtime.allocator, response);
+}
+
+fn buildGetPackVersionDiffs(allocator: Allocator, base_url: []const u8, input: GetPackVersionDiffsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/versions/");
     try url.pathString(input.basePackVersion);
     try url.pathLiteral("/diff/");
@@ -2049,30 +7264,23 @@ pub fn buildGetPackVersionDiffs(allocator: Allocator, base_url: []const u8, inpu
     };
 }
 
-pub fn buildRegisterPackVersion(allocator: Allocator, base_url: []const u8, input: RegisterPackVersionInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/versions/");
-    try url.pathString(input.packVersion);
-    try url.pathLiteral("/register");
-    return .{
-        .operation = "RegisterPackVersion",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
+fn executeGetPackVersionDiffs(runtime: *core.ClientCore, input: GetPackVersionDiffsInput) !core.TypedResponse(PackVersionDiffs) {
+    const request = try buildGetPackVersionDiffs(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackVersionDiffs, runtime.allocator, response);
 }
 
-pub fn buildPackVersionUploadComplete(allocator: Allocator, base_url: []const u8, input: PackVersionUploadCompleteInput) !core.Request {
+fn buildPackVersionUploadComplete(allocator: Allocator, base_url: []const u8, input: PackVersionUploadCompleteInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/versions/");
     try url.pathString(input.packVersion);
     try url.pathLiteral("/uploadComplete");
@@ -2080,119 +7288,28 @@ pub fn buildPackVersionUploadComplete(allocator: Allocator, base_url: []const u8
         .operation = "PackVersionUploadComplete",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildCreatePackRelease(allocator: Allocator, base_url: []const u8, input: CreatePackReleaseInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/releases");
-    return .{
-        .operation = "CreatePackRelease",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
+fn executePackVersionUploadComplete(runtime: *core.ClientCore, input: PackVersionUploadCompleteInput) !core.TypedResponse(CreatePackVersionResponse) {
+    const request = try buildPackVersionUploadComplete(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(CreatePackVersionResponse, runtime.allocator, response);
 }
 
-pub fn buildListPackReleases(allocator: Allocator, base_url: []const u8, input: ListPackReleasesInput) !core.Request {
+fn buildGetPackListingDraft(allocator: Allocator, base_url: []const u8, input: GetPackListingDraftInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/releases");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    return .{
-        .operation = "ListPackReleases",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildUpdatePackRelease(allocator: Allocator, base_url: []const u8, input: UpdatePackReleaseInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/releases/");
-    try url.pathInt(input.packReleaseId);
-    return .{
-        .operation = "UpdatePackRelease",
-        .method = .PUT,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPackReviews(allocator: Allocator, base_url: []const u8, input: ListPackReviewsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/reviews");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("status", input.status);
-    return .{
-        .operation = "ListPackReviews",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildCreatePackReview(allocator: Allocator, base_url: []const u8, input: CreatePackReviewInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/reviews");
-    return .{
-        .operation = "CreatePackReview",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildCancelPackReview(allocator: Allocator, base_url: []const u8, input: CancelPackReviewInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/reviews/pending/cancel");
-    return .{
-        .operation = "CancelPackReview",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildGetPackListingDraft(allocator: Allocator, base_url: []const u8, input: GetPackListingDraftInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/listingDraft");
     return .{
         .operation = "GetPackListingDraft",
@@ -2203,28 +7320,50 @@ pub fn buildGetPackListingDraft(allocator: Allocator, base_url: []const u8, inpu
     };
 }
 
-pub fn buildUpsertPackListingDraft(allocator: Allocator, base_url: []const u8, input: UpsertPackListingDraftInput) !core.Request {
+fn executeGetPackListingDraft(runtime: *core.ClientCore, input: GetPackListingDraftInput) !core.TypedResponse(GetPackListingDraftResponse) {
+    const request = try buildGetPackListingDraft(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(GetPackListingDraftResponse, runtime.allocator, response);
+}
+
+fn buildUpsertPackListingDraft(allocator: Allocator, base_url: []const u8, input: UpsertPackListingDraftInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/listingDraft");
     return .{
         .operation = "UpsertPackListingDraft",
         .method = .PUT,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildDeletePackListingDraft(allocator: Allocator, base_url: []const u8, input: DeletePackListingDraftInput) !core.Request {
+fn executeUpsertPackListingDraft(runtime: *core.ClientCore, input: UpsertPackListingDraftInput) !core.TypedResponse(UpsertPackListingDraftResponse) {
+    const request = try buildUpsertPackListingDraft(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(UpsertPackListingDraftResponse, runtime.allocator, response);
+}
+
+fn buildDeletePackListingDraft(allocator: Allocator, base_url: []const u8, input: DeletePackListingDraftInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/listingDraft");
     return .{
         .operation = "DeletePackListingDraft",
@@ -2235,28 +7374,50 @@ pub fn buildDeletePackListingDraft(allocator: Allocator, base_url: []const u8, i
     };
 }
 
-pub fn buildSetPackOauthConfig(allocator: Allocator, base_url: []const u8, input: SetPackOauthConfigInput) !core.Request {
+fn executeDeletePackListingDraft(runtime: *core.ClientCore, input: DeletePackListingDraftInput) !core.TypedResponse(DeletePackListingDraftResponse) {
+    const request = try buildDeletePackListingDraft(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DeletePackListingDraftResponse, runtime.allocator, response);
+}
+
+fn buildSetPackOauthConfig(allocator: Allocator, base_url: []const u8, input: SetPackOauthConfigInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/oauthConfig");
     return .{
         .operation = "SetPackOauthConfig",
         .method = .PUT,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildGetPackOauthConfig(allocator: Allocator, base_url: []const u8, input: GetPackOauthConfigInput) !core.Request {
+fn executeSetPackOauthConfig(runtime: *core.ClientCore, input: SetPackOauthConfigInput) !core.TypedResponse(PackOauthConfigMetadata) {
+    const request = try buildSetPackOauthConfig(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackOauthConfigMetadata, runtime.allocator, response);
+}
+
+fn buildGetPackOauthConfig(allocator: Allocator, base_url: []const u8, input: GetPackOauthConfigInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/oauthConfig");
     return .{
         .operation = "GetPackOauthConfig",
@@ -2267,44 +7428,77 @@ pub fn buildGetPackOauthConfig(allocator: Allocator, base_url: []const u8, input
     };
 }
 
-pub fn buildSetPackSystemConnection(allocator: Allocator, base_url: []const u8, input: SetPackSystemConnectionInput) !core.Request {
+fn executeGetPackOauthConfig(runtime: *core.ClientCore, input: GetPackOauthConfigInput) !core.TypedResponse(PackOauthConfigMetadata) {
+    const request = try buildGetPackOauthConfig(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackOauthConfigMetadata, runtime.allocator, response);
+}
+
+fn buildSetPackSystemConnection(allocator: Allocator, base_url: []const u8, input: SetPackSystemConnectionInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/systemConnection");
     return .{
         .operation = "SetPackSystemConnection",
         .method = .PUT,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildPatchPackSystemConnection(allocator: Allocator, base_url: []const u8, input: PatchPackSystemConnectionInput) !core.Request {
+fn executeSetPackSystemConnection(runtime: *core.ClientCore, input: SetPackSystemConnectionInput) !core.TypedResponse(SetPackSystemConnectionOutput) {
+    const request = try buildSetPackSystemConnection(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(SetPackSystemConnectionOutput, runtime.allocator, response);
+}
+
+fn buildPatchPackSystemConnection(allocator: Allocator, base_url: []const u8, input: PatchPackSystemConnectionInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/systemConnection");
     return .{
         .operation = "PatchPackSystemConnection",
         .method = .PATCH,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildGetPackSystemConnection(allocator: Allocator, base_url: []const u8, input: GetPackSystemConnectionInput) !core.Request {
+fn executePatchPackSystemConnection(runtime: *core.ClientCore, input: PatchPackSystemConnectionInput) !core.TypedResponse(PatchPackSystemConnectionOutput) {
+    const request = try buildPatchPackSystemConnection(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PatchPackSystemConnectionOutput, runtime.allocator, response);
+}
+
+fn buildGetPackSystemConnection(allocator: Allocator, base_url: []const u8, input: GetPackSystemConnectionInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/systemConnection");
     return .{
         .operation = "GetPackSystemConnection",
@@ -2315,311 +7509,81 @@ pub fn buildGetPackSystemConnection(allocator: Allocator, base_url: []const u8, 
     };
 }
 
-pub fn buildGetPackPermissions(allocator: Allocator, base_url: []const u8, input: GetPackPermissionsInput) !core.Request {
+fn executeGetPackSystemConnection(runtime: *core.ClientCore, input: GetPackSystemConnectionInput) !core.TypedResponse(GetPackSystemConnectionOutput) {
+    const request = try buildGetPackSystemConnection(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(GetPackSystemConnectionOutput, runtime.allocator, response);
+}
+
+fn buildUploadPackAsset(allocator: Allocator, base_url: []const u8, input: UploadPackAssetInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/permissions");
-    return .{
-        .operation = "GetPackPermissions",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildAddPackPermission(allocator: Allocator, base_url: []const u8, input: AddPackPermissionInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/permissions");
-    return .{
-        .operation = "AddPackPermission",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildDeleteUserPackPermission(allocator: Allocator, base_url: []const u8, input: DeleteUserPackPermissionInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/permissions");
-    return .{
-        .operation = "DeleteUserPackPermission",
-        .method = .DELETE,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildDeletePackPermission(allocator: Allocator, base_url: []const u8, input: DeletePackPermissionInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/permissions/");
-    try url.pathString(input.permissionId);
-    return .{
-        .operation = "DeletePackPermission",
-        .method = .DELETE,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListUserPackInvitations(allocator: Allocator, base_url: []const u8, input: ListUserPackInvitationsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/invitations");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    return .{
-        .operation = "ListUserPackInvitations",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPackInvitations(allocator: Allocator, base_url: []const u8, input: ListPackInvitationsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/invitations");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    return .{
-        .operation = "ListPackInvitations",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildCreatePackInvitation(allocator: Allocator, base_url: []const u8, input: CreatePackInvitationInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/invitations");
-    return .{
-        .operation = "CreatePackInvitation",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildUpdatePackInvitation(allocator: Allocator, base_url: []const u8, input: UpdatePackInvitationInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/invitations/");
-    try url.pathString(input.invitationId);
-    return .{
-        .operation = "UpdatePackInvitation",
-        .method = .PUT,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildDeletePackInvitation(allocator: Allocator, base_url: []const u8, input: DeletePackInvitationInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/invitations/");
-    try url.pathString(input.invitationId);
-    return .{
-        .operation = "DeletePackInvitation",
-        .method = .DELETE,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildReplyToPackInvitation(allocator: Allocator, base_url: []const u8, input: ReplyToPackInvitationInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/invitations/");
-    try url.pathString(input.invitationId);
-    try url.pathLiteral("/reply");
-    return .{
-        .operation = "ReplyToPackInvitation",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPackMakers(allocator: Allocator, base_url: []const u8, input: ListPackMakersInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/makers");
-    return .{
-        .operation = "ListPackMakers",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildAddPackMaker(allocator: Allocator, base_url: []const u8, input: AddPackMakerInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/maker");
-    return .{
-        .operation = "AddPackMaker",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildDeletePackMaker(allocator: Allocator, base_url: []const u8, input: DeletePackMakerInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/maker/");
-    try url.pathString(input.loginId);
-    return .{
-        .operation = "DeletePackMaker",
-        .method = .DELETE,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPackCategories(allocator: Allocator, base_url: []const u8, input: ListPackCategoriesInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/categories");
-    return .{
-        .operation = "ListPackCategories",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildAddPackCategory(allocator: Allocator, base_url: []const u8, input: AddPackCategoryInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/category");
-    return .{
-        .operation = "AddPackCategory",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildDeletePackCategory(allocator: Allocator, base_url: []const u8, input: DeletePackCategoryInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/category/");
-    try url.pathString(input.categoryName);
-    return .{
-        .operation = "DeletePackCategory",
-        .method = .DELETE,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildUploadPackAsset(allocator: Allocator, base_url: []const u8, input: UploadPackAssetInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/uploadAsset");
     return .{
         .operation = "UploadPackAsset",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildUploadPackSourceCode(allocator: Allocator, base_url: []const u8, input: UploadPackSourceCodeInput) !core.Request {
+fn executeUploadPackAsset(runtime: *core.ClientCore, input: UploadPackAssetInput) !core.TypedResponse(PackAssetUploadInfo) {
+    const request = try buildUploadPackAsset(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackAssetUploadInfo, runtime.allocator, response);
+}
+
+fn buildUploadPackSourceCode(allocator: Allocator, base_url: []const u8, input: UploadPackSourceCodeInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/uploadSourceCode");
     return .{
         .operation = "UploadPackSourceCode",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildPackAssetUploadComplete(allocator: Allocator, base_url: []const u8, input: PackAssetUploadCompleteInput) !core.Request {
+fn executeUploadPackSourceCode(runtime: *core.ClientCore, input: UploadPackSourceCodeInput) !core.TypedResponse(PackSourceCodeUploadInfo) {
+    const request = try buildUploadPackSourceCode(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackSourceCodeUploadInfo, runtime.allocator, response);
+}
+
+fn buildPackAssetUploadComplete(allocator: Allocator, base_url: []const u8, input: PackAssetUploadCompleteInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/assets/");
     try url.pathString(input.packAssetId);
     try url.pathLiteral("/assetType/");
-    try url.pathString(input.packAssetType);
+    try url.pathString(@tagName(input.packAssetType));
     try url.pathLiteral("/uploadComplete");
     return .{
         .operation = "PackAssetUploadComplete",
@@ -2630,108 +7594,54 @@ pub fn buildPackAssetUploadComplete(allocator: Allocator, base_url: []const u8, 
     };
 }
 
-pub fn buildPackSourceCodeUploadComplete(allocator: Allocator, base_url: []const u8, input: PackSourceCodeUploadCompleteInput) !core.Request {
+fn executePackAssetUploadComplete(runtime: *core.ClientCore, input: PackAssetUploadCompleteInput) !core.TypedResponse(PackAssetUploadCompleteResponse) {
+    const request = try buildPackAssetUploadComplete(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackAssetUploadCompleteResponse, runtime.allocator, response);
+}
+
+fn buildListPackLogs(allocator: Allocator, base_url: []const u8, input: ListPackLogsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/versions/");
-    try url.pathString(input.packVersion);
-    try url.pathLiteral("/sourceCode/uploadComplete");
-    return .{
-        .operation = "PackSourceCodeUploadComplete",
-        .method = .POST,
-        .url = try url.finish(),
-        .body = input.payload,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildGetPackSourceCode(allocator: Allocator, base_url: []const u8, input: GetPackSourceCodeInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/versions/");
-    try url.pathString(input.packVersion);
-    try url.pathLiteral("/sourceCode");
-    return .{
-        .operation = "GetPackSourceCode",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPackListings(allocator: Allocator, base_url: []const u8, input: ListPackListingsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/listings");
-    try url.queryOptionalStringList("packAccessTypes", input.packAccessTypes);
-    try url.queryOptionalIntList("packIds", input.packIds);
-    try url.queryOptionalString("onlyWorkspaceId", input.onlyWorkspaceId);
-    try url.queryOptionalStringList("parentWorkspaceIds", input.parentWorkspaceIds);
-    try url.queryOptionalBool("excludePublicPacks", input.excludePublicPacks);
-    try url.queryOptionalString("packEntrypoint", input.packEntrypoint);
-    try url.queryOptionalBool("certifiedAgentsOnly", input.certifiedAgentsOnly);
-    try url.queryOptionalStringList("packCategories", input.packCategories);
-    try url.queryOptionalString("sortBy", input.sortBy);
-    try url.queryOptionalString("orderBy", input.orderBy);
-    try url.queryOptionalString("direction", input.direction);
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("installContext", input.installContext);
-    return .{
-        .operation = "ListPackListings",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildGetPackListing(allocator: Allocator, base_url: []const u8, input: GetPackListingInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
-    try url.pathLiteral("/listing");
-    try url.queryOptionalString("workspaceId", input.workspaceId);
-    try url.queryOptionalString("docId", input.docId);
-    try url.queryOptionalString("ingestionId", input.ingestionId);
-    try url.queryOptionalString("installContext", input.installContext);
-    try url.queryOptionalString("releaseChannel", input.releaseChannel);
-    return .{
-        .operation = "GetPackListing",
-        .method = .GET,
-        .url = try url.finish(),
-        .body = null,
-        .expected_status = 200,
-    };
-}
-
-pub fn buildListPackLogs(allocator: Allocator, base_url: []const u8, input: ListPackLogsInput) !core.Request {
-    var url = core.UrlBuilder.init(allocator);
-    errdefer url.deinit();
-    try url.base(base_url);
-    try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/docs/");
     try url.pathString(input.docId);
     try url.pathLiteral("/logs");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalStringList("logTypes", input.logTypes);
-    try url.queryOptionalString("beforeTimestamp", input.beforeTimestamp);
-    try url.queryOptionalString("afterTimestamp", input.afterTimestamp);
-    try url.queryOptionalString("order", input.order);
-    try url.queryOptionalString("q", input.q);
-    try url.queryOptionalStringList("requestIds", input.requestIds);
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.logTypes) |values| {
+        for (values) |value| {
+            try url.queryString("logTypes", @tagName(value));
+        }
+    }
+    if (input.beforeTimestamp) |value| {
+        try url.queryString("beforeTimestamp", value);
+    }
+    if (input.afterTimestamp) |value| {
+        try url.queryString("afterTimestamp", value);
+    }
+    if (input.order) |value| {
+        try url.queryString("order", @tagName(value));
+    }
+    if (input.q) |value| {
+        try url.queryString("q", value);
+    }
+    if (input.requestIds) |values| {
+        for (values) |value| {
+            try url.queryString("requestIds", value);
+        }
+    }
     return .{
         .operation = "ListPackLogs",
         .method = .GET,
@@ -2741,28 +7651,65 @@ pub fn buildListPackLogs(allocator: Allocator, base_url: []const u8, input: List
     };
 }
 
-pub fn buildListIngestionLogs(allocator: Allocator, base_url: []const u8, input: ListIngestionLogsInput) !core.Request {
+fn executeListPackLogs(runtime: *core.ClientCore, input: ListPackLogsInput) !core.TypedResponse(PackLogsList) {
+    const request = try buildListPackLogs(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackLogsList, runtime.allocator, response);
+}
+
+fn buildListIngestionLogs(allocator: Allocator, base_url: []const u8, input: ListIngestionLogsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/tenantId/");
     try url.pathString(input.tenantId);
     try url.pathLiteral("/rootIngestionId/");
     try url.pathString(input.rootIngestionId);
     try url.pathLiteral("/logs");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalStringList("logTypes", input.logTypes);
-    try url.queryOptionalString("ingestionExecutionId", input.ingestionExecutionId);
-    try url.queryOptionalString("beforeTimestamp", input.beforeTimestamp);
-    try url.queryOptionalString("afterTimestamp", input.afterTimestamp);
-    try url.queryOptionalString("ingestionStatus", input.ingestionStatus);
-    try url.queryOptionalBool("onlyExecutionCompletions", input.onlyExecutionCompletions);
-    try url.queryOptionalString("order", input.order);
-    try url.queryOptionalString("q", input.q);
-    try url.queryOptionalStringList("requestIds", input.requestIds);
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.logTypes) |values| {
+        for (values) |value| {
+            try url.queryString("logTypes", @tagName(value));
+        }
+    }
+    if (input.ingestionExecutionId) |value| {
+        try url.queryString("ingestionExecutionId", value);
+    }
+    if (input.beforeTimestamp) |value| {
+        try url.queryString("beforeTimestamp", value);
+    }
+    if (input.afterTimestamp) |value| {
+        try url.queryString("afterTimestamp", value);
+    }
+    if (input.ingestionStatus) |value| {
+        try url.queryString("ingestionStatus", @tagName(value));
+    }
+    if (input.onlyExecutionCompletions) |value| {
+        try url.queryBool("onlyExecutionCompletions", value);
+    }
+    if (input.order) |value| {
+        try url.queryString("order", @tagName(value));
+    }
+    if (input.q) |value| {
+        try url.queryString("q", value);
+    }
+    if (input.requestIds) |values| {
+        for (values) |value| {
+            try url.queryString("requestIds", value);
+        }
+    }
     return .{
         .operation = "ListIngestionLogs",
         .method = .GET,
@@ -2772,21 +7719,44 @@ pub fn buildListIngestionLogs(allocator: Allocator, base_url: []const u8, input:
     };
 }
 
-pub fn buildListGroupedPackLogs(allocator: Allocator, base_url: []const u8, input: ListGroupedPackLogsInput) !core.Request {
+fn executeListIngestionLogs(runtime: *core.ClientCore, input: ListIngestionLogsInput) !core.TypedResponse(PackLogsList) {
+    const request = try buildListIngestionLogs(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackLogsList, runtime.allocator, response);
+}
+
+fn buildListGroupedPackLogs(allocator: Allocator, base_url: []const u8, input: ListGroupedPackLogsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/docs/");
     try url.pathString(input.docId);
     try url.pathLiteral("/groupedLogs");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("beforeTimestamp", input.beforeTimestamp);
-    try url.queryOptionalString("afterTimestamp", input.afterTimestamp);
-    try url.queryOptionalString("order", input.order);
-    try url.queryOptionalString("q", input.q);
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.beforeTimestamp) |value| {
+        try url.queryString("beforeTimestamp", value);
+    }
+    if (input.afterTimestamp) |value| {
+        try url.queryString("afterTimestamp", value);
+    }
+    if (input.order) |value| {
+        try url.queryString("order", @tagName(value));
+    }
+    if (input.q) |value| {
+        try url.queryString("q", value);
+    }
     return .{
         .operation = "ListGroupedPackLogs",
         .method = .GET,
@@ -2796,24 +7766,49 @@ pub fn buildListGroupedPackLogs(allocator: Allocator, base_url: []const u8, inpu
     };
 }
 
-pub fn buildListGroupedIngestionLogs(allocator: Allocator, base_url: []const u8, input: ListGroupedIngestionLogsInput) !core.Request {
+fn executeListGroupedPackLogs(runtime: *core.ClientCore, input: ListGroupedPackLogsInput) !core.TypedResponse(GroupedPackLogsList) {
+    const request = try buildListGroupedPackLogs(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(GroupedPackLogsList, runtime.allocator, response);
+}
+
+fn buildListGroupedIngestionLogs(allocator: Allocator, base_url: []const u8, input: ListGroupedIngestionLogsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/tenantId/");
     try url.pathString(input.tenantId);
     try url.pathLiteral("/rootIngestionId/");
     try url.pathString(input.rootIngestionId);
     try url.pathLiteral("/groupedLogs");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("ingestionExecutionId", input.ingestionExecutionId);
-    try url.queryOptionalString("beforeTimestamp", input.beforeTimestamp);
-    try url.queryOptionalString("afterTimestamp", input.afterTimestamp);
-    try url.queryOptionalString("order", input.order);
-    try url.queryOptionalString("q", input.q);
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.ingestionExecutionId) |value| {
+        try url.queryString("ingestionExecutionId", value);
+    }
+    if (input.beforeTimestamp) |value| {
+        try url.queryString("beforeTimestamp", value);
+    }
+    if (input.afterTimestamp) |value| {
+        try url.queryString("afterTimestamp", value);
+    }
+    if (input.order) |value| {
+        try url.queryString("order", @tagName(value));
+    }
+    if (input.q) |value| {
+        try url.queryString("q", value);
+    }
     return .{
         .operation = "ListGroupedIngestionLogs",
         .method = .GET,
@@ -2823,25 +7818,52 @@ pub fn buildListGroupedIngestionLogs(allocator: Allocator, base_url: []const u8,
     };
 }
 
-pub fn buildListIngestionBatchExecutions(allocator: Allocator, base_url: []const u8, input: ListIngestionBatchExecutionsInput) !core.Request {
+fn executeListGroupedIngestionLogs(runtime: *core.ClientCore, input: ListGroupedIngestionLogsInput) !core.TypedResponse(GroupedPackLogsList) {
+    const request = try buildListGroupedIngestionLogs(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(GroupedPackLogsList, runtime.allocator, response);
+}
+
+fn buildListIngestionBatchExecutions(allocator: Allocator, base_url: []const u8, input: ListIngestionBatchExecutionsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/tenantId/");
     try url.pathString(input.tenantId);
     try url.pathLiteral("/rootIngestionId/");
     try url.pathString(input.rootIngestionId);
     try url.pathLiteral("/ingestionBatchExecutions");
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("datasource", input.datasource);
-    try url.queryOptionalString("executionType", input.executionType);
-    try url.queryOptionalBool("includeDeletedIngestions", input.includeDeletedIngestions);
-    try url.queryOptionalString("ingestionExecutionId", input.ingestionExecutionId);
-    try url.queryOptionalString("ingestionId", input.ingestionId);
-    try url.queryOptionalString("ingestionStatus", input.ingestionStatus);
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.datasource) |value| {
+        try url.queryString("datasource", value);
+    }
+    if (input.executionType) |value| {
+        try url.queryString("executionType", @tagName(value));
+    }
+    if (input.includeDeletedIngestions) |value| {
+        try url.queryBool("includeDeletedIngestions", value);
+    }
+    if (input.ingestionExecutionId) |value| {
+        try url.queryString("ingestionExecutionId", value);
+    }
+    if (input.ingestionId) |value| {
+        try url.queryString("ingestionId", value);
+    }
+    if (input.ingestionStatus) |value| {
+        try url.queryString("ingestionStatus", @tagName(value));
+    }
     return .{
         .operation = "ListIngestionBatchExecutions",
         .method = .GET,
@@ -2851,12 +7873,23 @@ pub fn buildListIngestionBatchExecutions(allocator: Allocator, base_url: []const
     };
 }
 
-pub fn buildListIngestionParentItems(allocator: Allocator, base_url: []const u8, input: ListIngestionParentItemsInput) !core.Request {
+fn executeListIngestionBatchExecutions(runtime: *core.ClientCore, input: ListIngestionBatchExecutionsInput) !core.TypedResponse(IngestionBatchExecutionsList) {
+    const request = try buildListIngestionBatchExecutions(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(IngestionBatchExecutionsList, runtime.allocator, response);
+}
+
+fn buildListIngestionParentItems(allocator: Allocator, base_url: []const u8, input: ListIngestionParentItemsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/tenantId/");
     try url.pathString(input.tenantId);
     try url.pathLiteral("/rootIngestionId/");
@@ -2864,10 +7897,16 @@ pub fn buildListIngestionParentItems(allocator: Allocator, base_url: []const u8,
     try url.pathLiteral("/ingestionBatchExecutions/");
     try url.pathString(input.ingestionExecutionId);
     try url.pathLiteral("/parentItems");
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalInt("limit", input.limit);
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
     try url.queryString("ingestionId", input.ingestionId);
-    try url.queryOptionalString("ingestionStatus", input.ingestionStatus);
+    if (input.ingestionStatus) |value| {
+        try url.queryString("ingestionStatus", @tagName(value));
+    }
     return .{
         .operation = "ListIngestionParentItems",
         .method = .GET,
@@ -2877,12 +7916,23 @@ pub fn buildListIngestionParentItems(allocator: Allocator, base_url: []const u8,
     };
 }
 
-pub fn buildGetPackLogDetails(allocator: Allocator, base_url: []const u8, input: GetPackLogDetailsInput) !core.Request {
+fn executeListIngestionParentItems(runtime: *core.ClientCore, input: ListIngestionParentItemsInput) !core.TypedResponse(IngestionParentItemsList) {
+    const request = try buildListIngestionParentItems(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(IngestionParentItemsList, runtime.allocator, response);
+}
+
+fn buildGetPackLogDetails(allocator: Allocator, base_url: []const u8, input: GetPackLogDetailsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/tenantId/");
     try url.pathString(input.tenantId);
     try url.pathLiteral("/rootIngestionId/");
@@ -2899,12 +7949,23 @@ pub fn buildGetPackLogDetails(allocator: Allocator, base_url: []const u8, input:
     };
 }
 
-pub fn buildListPackFeaturedDocs(allocator: Allocator, base_url: []const u8, input: ListPackFeaturedDocsInput) !core.Request {
+fn executeGetPackLogDetails(runtime: *core.ClientCore, input: GetPackLogDetailsInput) !core.TypedResponse(GetPackLogDetailsOutput) {
+    const request = try buildGetPackLogDetails(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(GetPackLogDetailsOutput, runtime.allocator, response);
+}
+
+fn buildListPackFeaturedDocs(allocator: Allocator, base_url: []const u8, input: ListPackFeaturedDocsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/featuredDocs");
     return .{
         .operation = "ListPackFeaturedDocs",
@@ -2915,23 +7976,996 @@ pub fn buildListPackFeaturedDocs(allocator: Allocator, base_url: []const u8, inp
     };
 }
 
-pub fn buildUpdatePackFeaturedDocs(allocator: Allocator, base_url: []const u8, input: UpdatePackFeaturedDocsInput) !core.Request {
+fn executeListPackFeaturedDocs(runtime: *core.ClientCore, input: ListPackFeaturedDocsInput) !core.TypedResponse(PackFeaturedDocsResponse) {
+    const request = try buildListPackFeaturedDocs(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackFeaturedDocsResponse, runtime.allocator, response);
+}
+
+fn buildUpdatePackFeaturedDocs(allocator: Allocator, base_url: []const u8, input: UpdatePackFeaturedDocsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
     try url.pathLiteral("/packs/");
-    try url.pathInt(input.packId);
+    try url.pathString(input.packId);
     try url.pathLiteral("/featuredDocs");
     return .{
         .operation = "UpdatePackFeaturedDocs",
         .method = .PUT,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildAddGoLink(allocator: Allocator, base_url: []const u8, input: AddGoLinkInput) !core.Request {
+fn executeUpdatePackFeaturedDocs(runtime: *core.ClientCore, input: UpdatePackFeaturedDocsInput) !core.TypedResponse(UpdatePackFeaturedDocsResponse) {
+    const request = try buildUpdatePackFeaturedDocs(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(UpdatePackFeaturedDocsResponse, runtime.allocator, response);
+}
+
+fn buildListPackVersions(allocator: Allocator, base_url: []const u8, input: ListPackVersionsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/versions");
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    return .{
+        .operation = "ListPackVersions",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPackVersions(runtime: *core.ClientCore, input: ListPackVersionsInput) !core.TypedResponse(PackVersionList) {
+    const request = try buildListPackVersions(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackVersionList, runtime.allocator, response);
+}
+
+fn buildRegisterPackVersion(allocator: Allocator, base_url: []const u8, input: RegisterPackVersionInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/versions/");
+    try url.pathString(input.packVersion);
+    try url.pathLiteral("/register");
+    return .{
+        .operation = "RegisterPackVersion",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeRegisterPackVersion(runtime: *core.ClientCore, input: RegisterPackVersionInput) !core.TypedResponse(PackVersionUploadInfo) {
+    const request = try buildRegisterPackVersion(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackVersionUploadInfo, runtime.allocator, response);
+}
+
+fn buildPackSourceCodeUploadComplete(allocator: Allocator, base_url: []const u8, input: PackSourceCodeUploadCompleteInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/versions/");
+    try url.pathString(input.packVersion);
+    try url.pathLiteral("/sourceCode/uploadComplete");
+    return .{
+        .operation = "PackSourceCodeUploadComplete",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executePackSourceCodeUploadComplete(runtime: *core.ClientCore, input: PackSourceCodeUploadCompleteInput) !core.TypedResponse(PackSourceCodeUploadCompleteResponse) {
+    const request = try buildPackSourceCodeUploadComplete(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackSourceCodeUploadCompleteResponse, runtime.allocator, response);
+}
+
+fn buildGetPackSourceCode(allocator: Allocator, base_url: []const u8, input: GetPackSourceCodeInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/versions/");
+    try url.pathString(input.packVersion);
+    try url.pathLiteral("/sourceCode");
+    return .{
+        .operation = "GetPackSourceCode",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeGetPackSourceCode(runtime: *core.ClientCore, input: GetPackSourceCodeInput) !core.TypedResponse(PackSourceCodeInfo) {
+    const request = try buildGetPackSourceCode(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackSourceCodeInfo, runtime.allocator, response);
+}
+
+fn buildCreatePackRelease(allocator: Allocator, base_url: []const u8, input: CreatePackReleaseInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/releases");
+    return .{
+        .operation = "CreatePackRelease",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeCreatePackRelease(runtime: *core.ClientCore, input: CreatePackReleaseInput) !core.TypedResponse(PackRelease) {
+    const request = try buildCreatePackRelease(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackRelease, runtime.allocator, response);
+}
+
+fn buildUpdatePackRelease(allocator: Allocator, base_url: []const u8, input: UpdatePackReleaseInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/releases/");
+    try url.pathString(input.packReleaseId);
+    return .{
+        .operation = "UpdatePackRelease",
+        .method = .PUT,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeUpdatePackRelease(runtime: *core.ClientCore, input: UpdatePackReleaseInput) !core.TypedResponse(PackRelease) {
+    const request = try buildUpdatePackRelease(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackRelease, runtime.allocator, response);
+}
+
+fn buildListPackReleases(allocator: Allocator, base_url: []const u8, input: ListPackReleasesInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/releases");
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    return .{
+        .operation = "ListPackReleases",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPackReleases(runtime: *core.ClientCore, input: ListPackReleasesInput) !core.TypedResponse(PackReleaseList) {
+    const request = try buildListPackReleases(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackReleaseList, runtime.allocator, response);
+}
+
+fn buildCreatePackReview(allocator: Allocator, base_url: []const u8, input: CreatePackReviewInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/reviews");
+    return .{
+        .operation = "CreatePackReview",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeCreatePackReview(runtime: *core.ClientCore, input: CreatePackReviewInput) !core.TypedResponse(CreatePackReviewResponse) {
+    const request = try buildCreatePackReview(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(CreatePackReviewResponse, runtime.allocator, response);
+}
+
+fn buildListPackReviews(allocator: Allocator, base_url: []const u8, input: ListPackReviewsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/reviews");
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.status) |value| {
+        try url.queryString("status", @tagName(value));
+    }
+    return .{
+        .operation = "ListPackReviews",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPackReviews(runtime: *core.ClientCore, input: ListPackReviewsInput) !core.TypedResponse(ListPackReviewsResponse) {
+    const request = try buildListPackReviews(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(ListPackReviewsResponse, runtime.allocator, response);
+}
+
+fn buildCancelPackReview(allocator: Allocator, base_url: []const u8, input: CancelPackReviewInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/reviews/pending/cancel");
+    return .{
+        .operation = "CancelPackReview",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeCancelPackReview(runtime: *core.ClientCore, input: CancelPackReviewInput) !core.TypedResponse(CancelPackReviewResponse) {
+    const request = try buildCancelPackReview(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(CancelPackReviewResponse, runtime.allocator, response);
+}
+
+fn buildAddPackPermission(allocator: Allocator, base_url: []const u8, input: AddPackPermissionInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/permissions");
+    return .{
+        .operation = "AddPackPermission",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeAddPackPermission(runtime: *core.ClientCore, input: AddPackPermissionInput) !core.TypedResponse(AddPackPermissionResponse) {
+    const request = try buildAddPackPermission(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(AddPackPermissionResponse, runtime.allocator, response);
+}
+
+fn buildDeletePackPermission(allocator: Allocator, base_url: []const u8, input: DeletePackPermissionInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/permissions/");
+    try url.pathString(input.permissionId);
+    return .{
+        .operation = "DeletePackPermission",
+        .method = .DELETE,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeDeletePackPermission(runtime: *core.ClientCore, input: DeletePackPermissionInput) !core.TypedResponse(DeletePackPermissionResponse) {
+    const request = try buildDeletePackPermission(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DeletePackPermissionResponse, runtime.allocator, response);
+}
+
+fn buildGetPackPermissions(allocator: Allocator, base_url: []const u8, input: GetPackPermissionsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/permissions");
+    return .{
+        .operation = "GetPackPermissions",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeGetPackPermissions(runtime: *core.ClientCore, input: GetPackPermissionsInput) !core.TypedResponse(PackPermissionList) {
+    const request = try buildGetPackPermissions(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackPermissionList, runtime.allocator, response);
+}
+
+fn buildDeleteUserPackPermission(allocator: Allocator, base_url: []const u8, input: DeleteUserPackPermissionInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/permissions");
+    return .{
+        .operation = "DeleteUserPackPermission",
+        .method = .DELETE,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeDeleteUserPackPermission(runtime: *core.ClientCore, input: DeleteUserPackPermissionInput) !core.TypedResponse(DeleteUserPackPermissionsResponse) {
+    const request = try buildDeleteUserPackPermission(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DeleteUserPackPermissionsResponse, runtime.allocator, response);
+}
+
+fn buildCreatePackInvitation(allocator: Allocator, base_url: []const u8, input: CreatePackInvitationInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/invitations");
+    return .{
+        .operation = "CreatePackInvitation",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeCreatePackInvitation(runtime: *core.ClientCore, input: CreatePackInvitationInput) !core.TypedResponse(CreatePackInvitationResponse) {
+    const request = try buildCreatePackInvitation(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(CreatePackInvitationResponse, runtime.allocator, response);
+}
+
+fn buildUpdatePackInvitation(allocator: Allocator, base_url: []const u8, input: UpdatePackInvitationInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/invitations/");
+    try url.pathString(input.invitationId);
+    return .{
+        .operation = "UpdatePackInvitation",
+        .method = .PUT,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeUpdatePackInvitation(runtime: *core.ClientCore, input: UpdatePackInvitationInput) !core.TypedResponse(UpdatePackInvitationResponse) {
+    const request = try buildUpdatePackInvitation(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(UpdatePackInvitationResponse, runtime.allocator, response);
+}
+
+fn buildDeletePackInvitation(allocator: Allocator, base_url: []const u8, input: DeletePackInvitationInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/invitations/");
+    try url.pathString(input.invitationId);
+    return .{
+        .operation = "DeletePackInvitation",
+        .method = .DELETE,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeDeletePackInvitation(runtime: *core.ClientCore, input: DeletePackInvitationInput) !core.TypedResponse(DeletePackInvitationResponse) {
+    const request = try buildDeletePackInvitation(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DeletePackInvitationResponse, runtime.allocator, response);
+}
+
+fn buildListPackInvitations(allocator: Allocator, base_url: []const u8, input: ListPackInvitationsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/invitations");
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    return .{
+        .operation = "ListPackInvitations",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPackInvitations(runtime: *core.ClientCore, input: ListPackInvitationsInput) !core.TypedResponse(PackInvitationList) {
+    const request = try buildListPackInvitations(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackInvitationList, runtime.allocator, response);
+}
+
+fn buildAddPackMaker(allocator: Allocator, base_url: []const u8, input: AddPackMakerInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/maker");
+    return .{
+        .operation = "AddPackMaker",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeAddPackMaker(runtime: *core.ClientCore, input: AddPackMakerInput) !core.TypedResponse(AddPackMakerResponse) {
+    const request = try buildAddPackMaker(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(AddPackMakerResponse, runtime.allocator, response);
+}
+
+fn buildDeletePackMaker(allocator: Allocator, base_url: []const u8, input: DeletePackMakerInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/maker/");
+    try url.pathString(input.loginId);
+    return .{
+        .operation = "DeletePackMaker",
+        .method = .DELETE,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeDeletePackMaker(runtime: *core.ClientCore, input: DeletePackMakerInput) !core.TypedResponse(DeletePackMakerResponse) {
+    const request = try buildDeletePackMaker(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DeletePackMakerResponse, runtime.allocator, response);
+}
+
+fn buildListPackMakers(allocator: Allocator, base_url: []const u8, input: ListPackMakersInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/makers");
+    return .{
+        .operation = "ListPackMakers",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPackMakers(runtime: *core.ClientCore, input: ListPackMakersInput) !core.TypedResponse(ListPackMakersResponse) {
+    const request = try buildListPackMakers(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(ListPackMakersResponse, runtime.allocator, response);
+}
+
+fn buildAddPackCategory(allocator: Allocator, base_url: []const u8, input: AddPackCategoryInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/category");
+    return .{
+        .operation = "AddPackCategory",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeAddPackCategory(runtime: *core.ClientCore, input: AddPackCategoryInput) !core.TypedResponse(AddPackCategoryResponse) {
+    const request = try buildAddPackCategory(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(AddPackCategoryResponse, runtime.allocator, response);
+}
+
+fn buildDeletePackCategory(allocator: Allocator, base_url: []const u8, input: DeletePackCategoryInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/category/");
+    try url.pathString(input.categoryName);
+    return .{
+        .operation = "DeletePackCategory",
+        .method = .DELETE,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeDeletePackCategory(runtime: *core.ClientCore, input: DeletePackCategoryInput) !core.TypedResponse(DeletePackCategoryResponse) {
+    const request = try buildDeletePackCategory(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DeletePackCategoryResponse, runtime.allocator, response);
+}
+
+fn buildListPackCategories(allocator: Allocator, base_url: []const u8, input: ListPackCategoriesInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/categories");
+    return .{
+        .operation = "ListPackCategories",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPackCategories(runtime: *core.ClientCore, input: ListPackCategoriesInput) !core.TypedResponse(ListPackCategoriesResponse) {
+    const request = try buildListPackCategories(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(ListPackCategoriesResponse, runtime.allocator, response);
+}
+
+fn buildGetPackListing(allocator: Allocator, base_url: []const u8, input: GetPackListingInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/listing");
+    if (input.workspaceId) |value| {
+        try url.queryString("workspaceId", value);
+    }
+    if (input.docId) |value| {
+        try url.queryString("docId", value);
+    }
+    if (input.ingestionId) |value| {
+        try url.queryString("ingestionId", value);
+    }
+    if (input.installContext) |value| {
+        try url.queryString("installContext", @tagName(value));
+    }
+    if (input.releaseChannel) |value| {
+        try url.queryString("releaseChannel", @tagName(value));
+    }
+    return .{
+        .operation = "GetPackListing",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeGetPackListing(runtime: *core.ClientCore, input: GetPackListingInput) !core.TypedResponse(PackListingDetail) {
+    const request = try buildGetPackListing(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackListingDetail, runtime.allocator, response);
+}
+
+fn buildListPackListings(allocator: Allocator, base_url: []const u8, input: ListPackListingsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/listings");
+    if (input.packAccessTypes) |values| {
+        for (values) |value| {
+            try url.queryString("packAccessTypes", @tagName(value));
+        }
+    }
+    if (input.packIds) |values| {
+        for (values) |value| {
+            try url.queryInt("packIds", value);
+        }
+    }
+    if (input.onlyWorkspaceId) |value| {
+        try url.queryString("onlyWorkspaceId", value);
+    }
+    if (input.parentWorkspaceIds) |values| {
+        for (values) |value| {
+            try url.queryString("parentWorkspaceIds", value);
+        }
+    }
+    if (input.excludePublicPacks) |value| {
+        try url.queryBool("excludePublicPacks", value);
+    }
+    if (input.packEntrypoint) |value| {
+        try url.queryString("packEntrypoint", @tagName(value));
+    }
+    if (input.certifiedAgentsOnly) |value| {
+        try url.queryBool("certifiedAgentsOnly", value);
+    }
+    if (input.packCategories) |values| {
+        for (values) |value| {
+            try url.queryString("packCategories", @tagName(value));
+        }
+    }
+    if (input.sortBy) |value| {
+        try url.queryString("sortBy", @tagName(value));
+    }
+    if (input.orderBy) |value| {
+        try url.queryString("orderBy", @tagName(value));
+    }
+    if (input.direction) |value| {
+        try url.queryString("direction", @tagName(value));
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.installContext) |value| {
+        try url.queryString("installContext", @tagName(value));
+    }
+    return .{
+        .operation = "ListPackListings",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPackListings(runtime: *core.ClientCore, input: ListPackListingsInput) !core.TypedResponse(PackListingList) {
+    const request = try buildListPackListings(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackListingList, runtime.allocator, response);
+}
+
+fn buildListUserPackInvitations(allocator: Allocator, base_url: []const u8, input: ListUserPackInvitationsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/invitations");
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    return .{
+        .operation = "ListUserPackInvitations",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListUserPackInvitations(runtime: *core.ClientCore, input: ListUserPackInvitationsInput) !core.TypedResponse(PackInvitationWithPackList) {
+    const request = try buildListUserPackInvitations(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackInvitationWithPackList, runtime.allocator, response);
+}
+
+fn buildReplyToPackInvitation(allocator: Allocator, base_url: []const u8, input: ReplyToPackInvitationInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/packs/invitations/");
+    try url.pathString(input.invitationId);
+    try url.pathLiteral("/reply");
+    return .{
+        .operation = "ReplyToPackInvitation",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeReplyToPackInvitation(runtime: *core.ClientCore, input: ReplyToPackInvitationInput) !core.TypedResponse(HandlePackInvitationResponse) {
+    const request = try buildReplyToPackInvitation(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(HandlePackInvitationResponse, runtime.allocator, response);
+}
+
+fn buildListWorkspaceMembers(allocator: Allocator, base_url: []const u8, input: ListWorkspaceMembersInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/workspaces/");
+    try url.pathString(input.workspaceId);
+    try url.pathLiteral("/users");
+    if (input.includedRoles) |values| {
+        for (values) |value| {
+            try url.queryString("includedRoles", @tagName(value));
+        }
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    return .{
+        .operation = "ListWorkspaceMembers",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListWorkspaceMembers(runtime: *core.ClientCore, input: ListWorkspaceMembersInput) !core.TypedResponse(WorkspaceMembersList) {
+    const request = try buildListWorkspaceMembers(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(WorkspaceMembersList, runtime.allocator, response);
+}
+
+fn buildChangeUserRole(allocator: Allocator, base_url: []const u8, input: ChangeUserRoleInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/workspaces/");
+    try url.pathString(input.workspaceId);
+    try url.pathLiteral("/users/role");
+    return .{
+        .operation = "ChangeUserRole",
+        .method = .POST,
+        .url = try url.finish(),
+        .body = try core.jsonEncode(allocator, input.payload),
+        .expected_status = 200,
+    };
+}
+
+fn executeChangeUserRole(runtime: *core.ClientCore, input: ChangeUserRoleInput) !core.TypedResponse(ChangeRoleResponse) {
+    const request = try buildChangeUserRole(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(ChangeRoleResponse, runtime.allocator, response);
+}
+
+fn buildListWorkspaceRoleActivity(allocator: Allocator, base_url: []const u8, input: ListWorkspaceRoleActivityInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/workspaces/");
+    try url.pathString(input.workspaceId);
+    try url.pathLiteral("/roles");
+    return .{
+        .operation = "ListWorkspaceRoleActivity",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListWorkspaceRoleActivity(runtime: *core.ClientCore, input: ListWorkspaceRoleActivityInput) !core.TypedResponse(GetWorkspaceRoleActivity) {
+    const request = try buildListWorkspaceRoleActivity(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(GetWorkspaceRoleActivity, runtime.allocator, response);
+}
+
+fn buildAddGoLink(allocator: Allocator, base_url: []const u8, input: AddGoLinkInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -2942,12 +8976,344 @@ pub fn buildAddGoLink(allocator: Allocator, base_url: []const u8, input: AddGoLi
         .operation = "AddGoLink",
         .method = .POST,
         .url = try url.finish(),
-        .body = input.payload,
+        .body = try core.jsonEncode(allocator, input.payload),
         .expected_status = 200,
     };
 }
 
-pub fn buildListAgentSessionIds(allocator: Allocator, base_url: []const u8, input: ListAgentSessionIdsInput) !core.Request {
+fn executeAddGoLink(runtime: *core.ClientCore, input: AddGoLinkInput) !core.TypedResponse(AddGoLinkResponse) {
+    const request = try buildAddGoLink(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(AddGoLinkResponse, runtime.allocator, response);
+}
+
+fn buildListDocAnalytics(allocator: Allocator, base_url: []const u8, input: ListDocAnalyticsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/analytics/docs");
+    if (input.docIds) |values| {
+        for (values) |value| {
+            try url.queryString("docIds", value);
+        }
+    }
+    if (input.workspaceId) |value| {
+        try url.queryString("workspaceId", value);
+    }
+    if (input.query) |value| {
+        try url.queryString("query", value);
+    }
+    if (input.isPublished) |value| {
+        try url.queryBool("isPublished", value);
+    }
+    if (input.sinceDate) |value| {
+        try url.queryString("sinceDate", value);
+    }
+    if (input.untilDate) |value| {
+        try url.queryString("untilDate", value);
+    }
+    if (input.scale) |value| {
+        try url.queryString("scale", @tagName(value));
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.orderBy) |value| {
+        try url.queryString("orderBy", @tagName(value));
+    }
+    if (input.direction) |value| {
+        try url.queryString("direction", @tagName(value));
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    return .{
+        .operation = "ListDocAnalytics",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListDocAnalytics(runtime: *core.ClientCore, input: ListDocAnalyticsInput) !core.TypedResponse(DocAnalyticsCollection) {
+    const request = try buildListDocAnalytics(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DocAnalyticsCollection, runtime.allocator, response);
+}
+
+fn buildListPageAnalytics(allocator: Allocator, base_url: []const u8, input: ListPageAnalyticsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/analytics/docs/");
+    try url.pathString(input.docId);
+    try url.pathLiteral("/pages");
+    if (input.sinceDate) |value| {
+        try url.queryString("sinceDate", value);
+    }
+    if (input.untilDate) |value| {
+        try url.queryString("untilDate", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    return .{
+        .operation = "ListPageAnalytics",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPageAnalytics(runtime: *core.ClientCore, input: ListPageAnalyticsInput) !core.TypedResponse(PageAnalyticsCollection) {
+    const request = try buildListPageAnalytics(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PageAnalyticsCollection, runtime.allocator, response);
+}
+
+fn buildListDocAnalyticsSummary(allocator: Allocator, base_url: []const u8, input: ListDocAnalyticsSummaryInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/analytics/docs/summary");
+    if (input.isPublished) |value| {
+        try url.queryBool("isPublished", value);
+    }
+    if (input.sinceDate) |value| {
+        try url.queryString("sinceDate", value);
+    }
+    if (input.untilDate) |value| {
+        try url.queryString("untilDate", value);
+    }
+    if (input.workspaceId) |value| {
+        try url.queryString("workspaceId", value);
+    }
+    return .{
+        .operation = "ListDocAnalyticsSummary",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListDocAnalyticsSummary(runtime: *core.ClientCore, input: ListDocAnalyticsSummaryInput) !core.TypedResponse(DocAnalyticsSummary) {
+    const request = try buildListDocAnalyticsSummary(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(DocAnalyticsSummary, runtime.allocator, response);
+}
+
+fn buildListPackAnalytics(allocator: Allocator, base_url: []const u8, input: ListPackAnalyticsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/analytics/packs");
+    if (input.packIds) |values| {
+        for (values) |value| {
+            try url.queryInt("packIds", value);
+        }
+    }
+    if (input.workspaceId) |value| {
+        try url.queryString("workspaceId", value);
+    }
+    if (input.query) |value| {
+        try url.queryString("query", value);
+    }
+    if (input.sinceDate) |value| {
+        try url.queryString("sinceDate", value);
+    }
+    if (input.untilDate) |value| {
+        try url.queryString("untilDate", value);
+    }
+    if (input.scale) |value| {
+        try url.queryString("scale", @tagName(value));
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.orderBy) |value| {
+        try url.queryString("orderBy", @tagName(value));
+    }
+    if (input.direction) |value| {
+        try url.queryString("direction", @tagName(value));
+    }
+    if (input.isPublished) |value| {
+        try url.queryBool("isPublished", value);
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    return .{
+        .operation = "ListPackAnalytics",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPackAnalytics(runtime: *core.ClientCore, input: ListPackAnalyticsInput) !core.TypedResponse(PackAnalyticsCollection) {
+    const request = try buildListPackAnalytics(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackAnalyticsCollection, runtime.allocator, response);
+}
+
+fn buildListPackAnalyticsSummary(allocator: Allocator, base_url: []const u8, input: ListPackAnalyticsSummaryInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/analytics/packs/summary");
+    if (input.packIds) |values| {
+        for (values) |value| {
+            try url.queryInt("packIds", value);
+        }
+    }
+    if (input.workspaceId) |value| {
+        try url.queryString("workspaceId", value);
+    }
+    if (input.isPublished) |value| {
+        try url.queryBool("isPublished", value);
+    }
+    if (input.sinceDate) |value| {
+        try url.queryString("sinceDate", value);
+    }
+    if (input.untilDate) |value| {
+        try url.queryString("untilDate", value);
+    }
+    return .{
+        .operation = "ListPackAnalyticsSummary",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPackAnalyticsSummary(runtime: *core.ClientCore, input: ListPackAnalyticsSummaryInput) !core.TypedResponse(PackAnalyticsSummary) {
+    const request = try buildListPackAnalyticsSummary(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackAnalyticsSummary, runtime.allocator, response);
+}
+
+fn buildListPackFormulaAnalytics(allocator: Allocator, base_url: []const u8, input: ListPackFormulaAnalyticsInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/analytics/packs/");
+    try url.pathString(input.packId);
+    try url.pathLiteral("/formulas");
+    if (input.packFormulaNames) |values| {
+        for (values) |value| {
+            try url.queryString("packFormulaNames", value);
+        }
+    }
+    if (input.packFormulaTypes) |values| {
+        for (values) |value| {
+            try url.queryString("packFormulaTypes", @tagName(value));
+        }
+    }
+    if (input.sinceDate) |value| {
+        try url.queryString("sinceDate", value);
+    }
+    if (input.untilDate) |value| {
+        try url.queryString("untilDate", value);
+    }
+    if (input.scale) |value| {
+        try url.queryString("scale", @tagName(value));
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.orderBy) |value| {
+        try url.queryString("orderBy", @tagName(value));
+    }
+    if (input.direction) |value| {
+        try url.queryString("direction", @tagName(value));
+    }
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    return .{
+        .operation = "ListPackFormulaAnalytics",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeListPackFormulaAnalytics(runtime: *core.ClientCore, input: ListPackFormulaAnalyticsInput) !core.TypedResponse(PackFormulaAnalyticsCollection) {
+    const request = try buildListPackFormulaAnalytics(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackFormulaAnalyticsCollection, runtime.allocator, response);
+}
+
+fn buildGetAnalyticsLastUpdated(allocator: Allocator, base_url: []const u8, _: GetAnalyticsLastUpdatedInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/analytics/updated");
+    return .{
+        .operation = "GetAnalyticsLastUpdated",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeGetAnalyticsLastUpdated(runtime: *core.ClientCore, input: GetAnalyticsLastUpdatedInput) !core.TypedResponse(AnalyticsLastUpdatedResponse) {
+    const request = try buildGetAnalyticsLastUpdated(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(AnalyticsLastUpdatedResponse, runtime.allocator, response);
+}
+
+fn buildListAgentSessionIds(allocator: Allocator, base_url: []const u8, input: ListAgentSessionIdsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -2956,15 +9322,37 @@ pub fn buildListAgentSessionIds(allocator: Allocator, base_url: []const u8, inpu
     try url.pathLiteral("/agentInstances/");
     try url.pathString(input.agentInstanceId);
     try url.pathLiteral("/agentSessionIds");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalString("agentSessionId", input.agentSessionId);
-    try url.queryOptionalStringList("logTypes", input.logTypes);
-    try url.queryOptionalString("beforeTimestamp", input.beforeTimestamp);
-    try url.queryOptionalString("afterTimestamp", input.afterTimestamp);
-    try url.queryOptionalString("order", input.order);
-    try url.queryOptionalString("q", input.q);
-    try url.queryOptionalStringList("requestIds", input.requestIds);
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.agentSessionId) |value| {
+        try url.queryString("agentSessionId", value);
+    }
+    if (input.logTypes) |values| {
+        for (values) |value| {
+            try url.queryString("logTypes", @tagName(value));
+        }
+    }
+    if (input.beforeTimestamp) |value| {
+        try url.queryString("beforeTimestamp", value);
+    }
+    if (input.afterTimestamp) |value| {
+        try url.queryString("afterTimestamp", value);
+    }
+    if (input.order) |value| {
+        try url.queryString("order", @tagName(value));
+    }
+    if (input.q) |value| {
+        try url.queryString("q", value);
+    }
+    if (input.requestIds) |values| {
+        for (values) |value| {
+            try url.queryString("requestIds", value);
+        }
+    }
     return .{
         .operation = "ListAgentSessionIds",
         .method = .GET,
@@ -2974,7 +9362,18 @@ pub fn buildListAgentSessionIds(allocator: Allocator, base_url: []const u8, inpu
     };
 }
 
-pub fn buildListAgentLogs(allocator: Allocator, base_url: []const u8, input: ListAgentLogsInput) !core.Request {
+fn executeListAgentSessionIds(runtime: *core.ClientCore, input: ListAgentSessionIdsInput) !core.TypedResponse(PackLogsList) {
+    const request = try buildListAgentSessionIds(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackLogsList, runtime.allocator, response);
+}
+
+fn buildListAgentLogs(allocator: Allocator, base_url: []const u8, input: ListAgentLogsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -2983,15 +9382,37 @@ pub fn buildListAgentLogs(allocator: Allocator, base_url: []const u8, input: Lis
     try url.pathLiteral("/agentInstances/");
     try url.pathString(input.agentInstanceId);
     try url.pathLiteral("/logs");
-    try url.queryOptionalInt("limit", input.limit);
-    try url.queryOptionalString("pageToken", input.pageToken);
-    try url.queryOptionalStringList("logTypes", input.logTypes);
-    try url.queryOptionalString("agentSessionId", input.agentSessionId);
-    try url.queryOptionalString("beforeTimestamp", input.beforeTimestamp);
-    try url.queryOptionalString("afterTimestamp", input.afterTimestamp);
-    try url.queryOptionalString("order", input.order);
-    try url.queryOptionalString("q", input.q);
-    try url.queryOptionalStringList("requestIds", input.requestIds);
+    if (input.limit) |value| {
+        try url.queryInt("limit", value);
+    }
+    if (input.pageToken) |value| {
+        try url.queryString("pageToken", value);
+    }
+    if (input.logTypes) |values| {
+        for (values) |value| {
+            try url.queryString("logTypes", @tagName(value));
+        }
+    }
+    if (input.agentSessionId) |value| {
+        try url.queryString("agentSessionId", value);
+    }
+    if (input.beforeTimestamp) |value| {
+        try url.queryString("beforeTimestamp", value);
+    }
+    if (input.afterTimestamp) |value| {
+        try url.queryString("afterTimestamp", value);
+    }
+    if (input.order) |value| {
+        try url.queryString("order", @tagName(value));
+    }
+    if (input.q) |value| {
+        try url.queryString("q", value);
+    }
+    if (input.requestIds) |values| {
+        for (values) |value| {
+            try url.queryString("requestIds", value);
+        }
+    }
     return .{
         .operation = "ListAgentLogs",
         .method = .GET,
@@ -3001,7 +9422,18 @@ pub fn buildListAgentLogs(allocator: Allocator, base_url: []const u8, input: Lis
     };
 }
 
-pub fn buildGetAgentPackLogDetails(allocator: Allocator, base_url: []const u8, input: GetAgentPackLogDetailsInput) !core.Request {
+fn executeListAgentLogs(runtime: *core.ClientCore, input: ListAgentLogsInput) !core.TypedResponse(PackLogsList) {
+    const request = try buildListAgentLogs(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(PackLogsList, runtime.allocator, response);
+}
+
+fn buildGetAgentPackLogDetails(allocator: Allocator, base_url: []const u8, input: GetAgentPackLogDetailsInput) !core.Request {
     var url = core.UrlBuilder.init(allocator);
     errdefer url.deinit();
     try url.base(base_url);
@@ -3021,6 +9453,101 @@ pub fn buildGetAgentPackLogDetails(allocator: Allocator, base_url: []const u8, i
     };
 }
 
+fn executeGetAgentPackLogDetails(runtime: *core.ClientCore, input: GetAgentPackLogDetailsInput) !core.TypedResponse(GetAgentPackLogDetailsOutput) {
+    const request = try buildGetAgentPackLogDetails(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(GetAgentPackLogDetailsOutput, runtime.allocator, response);
+}
+
+fn buildGetMutationStatus(allocator: Allocator, base_url: []const u8, input: GetMutationStatusInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/mutationStatus/");
+    try url.pathString(input.requestId);
+    return .{
+        .operation = "GetMutationStatus",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeGetMutationStatus(runtime: *core.ClientCore, input: GetMutationStatusInput) !core.TypedResponse(MutationStatus) {
+    const request = try buildGetMutationStatus(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(MutationStatus, runtime.allocator, response);
+}
+
+fn buildGetCustomDocDomainProvider(allocator: Allocator, base_url: []const u8, input: GetCustomDocDomainProviderInput) !core.Request {
+    var url = core.UrlBuilder.init(allocator);
+    errdefer url.deinit();
+    try url.base(base_url);
+    try url.pathLiteral("/domains/provider/");
+    try url.pathString(input.customDocDomain);
+    return .{
+        .operation = "GetCustomDocDomainProvider",
+        .method = .GET,
+        .url = try url.finish(),
+        .body = null,
+        .expected_status = 200,
+    };
+}
+
+fn executeGetCustomDocDomainProvider(runtime: *core.ClientCore, input: GetCustomDocDomainProviderInput) !core.TypedResponse(CustomDocDomainProviderResponse) {
+    const request = try buildGetCustomDocDomainProvider(runtime.allocator, runtime.base_url, input);
+    defer request.deinit(runtime.allocator);
+    const response = try runtime.sendRequest(request);
+    if (@intFromEnum(response.status) != request.expected_status) {
+        response.deinit(runtime.allocator);
+        return error.UnexpectedStatus;
+    }
+    return core.decodeResponse(CustomDocDomainProviderResponse, runtime.allocator, response);
+}
+
 test "generated operation count tracks Smithy service" {
     try std.testing.expectEqual(@as(usize, 124), operation_count);
+}
+
+test "all generated declarations compile" {
+    std.testing.refAllDecls(@This());
+    std.testing.refAllDecls(Client);
+    std.testing.refAllDecls(CategoriesResourceClient);
+    std.testing.refAllDecls(DocsResourceClient);
+    std.testing.refAllDecls(PagesResourceClient);
+    std.testing.refAllDecls(FormulasResourceClient);
+    std.testing.refAllDecls(ControlsResourceClient);
+    std.testing.refAllDecls(CustomDocDomainsResourceClient);
+    std.testing.refAllDecls(AutomationsResourceClient);
+    std.testing.refAllDecls(TablesResourceClient);
+    std.testing.refAllDecls(ColumnsResourceClient);
+    std.testing.refAllDecls(RowsResourceClient);
+    std.testing.refAllDecls(FoldersResourceClient);
+    std.testing.refAllDecls(PacksResourceClient);
+    std.testing.refAllDecls(PackVersionsResourceClient);
+    std.testing.refAllDecls(PackReleasesResourceClient);
+    std.testing.refAllDecls(PackReviewsResourceClient);
+    std.testing.refAllDecls(PackPermissionsResourceClient);
+    std.testing.refAllDecls(PackInvitationsResourceClient);
+    std.testing.refAllDecls(PackMakersResourceClient);
+    std.testing.refAllDecls(PackCategoriesResourceClient);
+    std.testing.refAllDecls(MarketplacePackListingsResourceClient);
+    std.testing.refAllDecls(UserPackInvitationsResourceClient);
+    std.testing.refAllDecls(WorkspacesResourceClient);
+    std.testing.refAllDecls(OrganizationsResourceClient);
+    std.testing.refAllDecls(AnalyticsResourceClient);
+    std.testing.refAllDecls(AgentInstancesResourceClient);
+    std.testing.refAllDecls(MutationStatusResourceClient);
+    std.testing.refAllDecls(CustomDocDomainProvidersResourceClient);
 }

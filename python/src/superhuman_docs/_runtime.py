@@ -2,16 +2,22 @@ from __future__ import annotations
 
 import json
 import os
+import types
 from collections.abc import Callable, Iterable, Mapping
-from dataclasses import dataclass
-from typing import Any, Optional, Tuple
+from dataclasses import dataclass, fields, is_dataclass
+from enum import Enum
+from typing import Any, Optional, Protocol, Tuple, Union, get_args, get_origin, get_type_hints
 from urllib.error import HTTPError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
 
 DEFAULT_BASE_URL = "https://coda.io/apis/v1"
-Transport = Callable[["PreparedRequest", float], "Response"]
+class RequestTransport(Protocol):
+    def send_request(self, request: "PreparedRequest", timeout: float) -> "Response": ...
+
+
+Transport = Union[RequestTransport, Callable[["PreparedRequest", float], "Response"]]
 
 
 @dataclass(frozen=True)
@@ -96,13 +102,19 @@ class BaseClient:
         self.headers = dict(headers or {})
         self.transport = transport
 
-    def _request(self, operation: Operation, params: Mapping[str, Any]) -> Any:
+    def _request(self, operation: Operation, params: Mapping[str, Any], output_type: Any = None) -> Any:
         prepared = self._prepare_request(operation, params)
-        if self.transport is not None:
-            response = self.transport(prepared, self.timeout)
-        else:
-            response = self._send(prepared)
-        return self._decode_response(response)
+        response = self.send_request(prepared)
+        return self._decode_response(response, output_type)
+
+    def send_request(self, prepared: PreparedRequest) -> Response:
+        """Single customizable transport boundary used by every operation."""
+        if self.transport is None:
+            return self._send(prepared)
+        sender = getattr(self.transport, "send_request", None)
+        if sender is not None:
+            return sender(prepared, self.timeout)
+        return self.transport(prepared, self.timeout)
 
     def _prepare_request(self, operation: Operation, params: Mapping[str, Any]) -> PreparedRequest:
         unknown = sorted(name for name in params if name not in operation.members)
@@ -148,7 +160,7 @@ class BaseClient:
             headers["Authorization"] = f"Bearer {self.token}"
 
         if operation.payload is not None and params.get(operation.payload) is not None:
-            body = json.dumps(params[operation.payload], separators=(",", ":")).encode("utf-8")
+            body = json.dumps(_serialize(params[operation.payload]), separators=(",", ":")).encode("utf-8")
             headers["Content-Type"] = "application/json"
 
         return PreparedRequest(operation.method, url, headers, body)
@@ -174,12 +186,12 @@ class BaseClient:
                 body=error.read(),
             )
 
-    def _decode_response(self, response: Response) -> Any:
+    def _decode_response(self, response: Response, output_type: Any = None) -> Any:
         decoded = _decode_body(response.body)
         if response.status_code >= 400:
             message = _error_message(decoded, response.status_code)
             raise ApiError(response.status_code, message, response=decoded, headers=response.headers)
-        return decoded
+        return _deserialize(output_type, decoded) if output_type is not None else decoded
 
 
 def _as_query_values(value: Any) -> Iterable[str]:
@@ -191,6 +203,8 @@ def _as_query_values(value: Any) -> Iterable[str]:
 
 
 def _query_scalar(value: Any) -> str:
+    if isinstance(value, Enum):
+        return str(value.value)
     if isinstance(value, bool):
         return "true" if value else "false"
     return str(value)
@@ -204,6 +218,64 @@ def _decode_body(body: bytes) -> Any:
         return json.loads(text)
     except json.JSONDecodeError:
         return text
+
+
+def _serialize(value: Any) -> Any:
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
+    if isinstance(value, Enum):
+        return value.value
+    if is_dataclass(value):
+        result = {}
+        for model_field in fields(value):
+            item = getattr(value, model_field.name)
+            if item is not None:
+                result[model_field.metadata.get("json_name", model_field.name)] = _serialize(item)
+        return result
+    if isinstance(value, Mapping):
+        return {str(key): _serialize(item) for key, item in value.items()}
+    if isinstance(value, Iterable) and not isinstance(value, (str, bytes, bytearray)):
+        return [_serialize(item) for item in value]
+    return value
+
+
+def _deserialize(target: Any, value: Any) -> Any:
+    if target is None or target is Any or value is None:
+        return value
+    if hasattr(target, "__supertype__"):
+        return target(_deserialize(target.__supertype__, value))
+    origin = get_origin(target)
+    args = get_args(target)
+    if origin in (Union, types.UnionType):
+        for option in args:
+            if option is type(None):
+                continue
+            try:
+                return _deserialize(option, value)
+            except (TypeError, ValueError):
+                continue
+        return value
+    if origin is list:
+        item_type = args[0] if args else Any
+        return [_deserialize(item_type, item) for item in value]
+    if origin is dict:
+        key_type, item_type = args if len(args) == 2 else (Any, Any)
+        return {_deserialize(key_type, key): _deserialize(item_type, item) for key, item in value.items()}
+    if isinstance(target, type) and issubclass(target, Enum):
+        return target(value)
+    if isinstance(target, type) and is_dataclass(target):
+        if not isinstance(value, Mapping):
+            raise TypeError(f"Expected object for {target.__name__}")
+        hints = get_type_hints(target)
+        kwargs = {}
+        for model_field in fields(target):
+            json_name = model_field.metadata.get("json_name", model_field.name)
+            if json_name in value:
+                kwargs[model_field.name] = _deserialize(hints.get(model_field.name, Any), value[json_name])
+        return target(**kwargs)
+    if target in (str, int, float, bool, bytes):
+        return target(value)
+    return value
 
 
 def _error_message(decoded: Any, status_code: int) -> str:

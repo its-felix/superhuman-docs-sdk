@@ -5,10 +5,10 @@ package superhumandocs
 type AccessType string
 
 const (
-	AccessTypeREADONLY AccessType = "readonly"
-	AccessTypeWRITE    AccessType = "write"
-	AccessTypeCOMMENT  AccessType = "comment"
-	AccessTypeNONE     AccessType = "none"
+	AccessTypeReadonly AccessType = "readonly"
+	AccessTypeWrite    AccessType = "write"
+	AccessTypeComment  AccessType = "comment"
+	AccessTypeNone     AccessType = "none"
 )
 
 func (v AccessType) String() string { return string(v) }
@@ -16,9 +16,9 @@ func (v AccessType) String() string { return string(v) }
 type AccessTypeNotNone string
 
 const (
-	AccessTypeNotNoneREADONLY AccessTypeNotNone = "readonly"
-	AccessTypeNotNoneWRITE    AccessTypeNotNone = "write"
-	AccessTypeNotNoneCOMMENT  AccessTypeNotNone = "comment"
+	AccessTypeNotNoneReadonly AccessTypeNotNone = "readonly"
+	AccessTypeNotNoneWrite    AccessTypeNotNone = "write"
+	AccessTypeNotNoneComment  AccessTypeNotNone = "comment"
 )
 
 func (v AccessTypeNotNone) String() string { return string(v) }
@@ -67,7 +67,7 @@ type AddGoLinkResponse struct {
 }
 
 type AddPackCategoryInput struct {
-	PackId  int                    `json:"packId"`
+	PackId  PackId                 `json:"packId"`
 	Payload AddPackCategoryPayload `json:"payload"`
 }
 
@@ -79,7 +79,7 @@ type AddPackCategoryResponse struct {
 }
 
 type AddPackMakerInput struct {
-	PackId  int                 `json:"packId"`
+	PackId  PackId              `json:"packId"`
 	Payload AddPackMakerPayload `json:"payload"`
 }
 
@@ -91,7 +91,7 @@ type AddPackMakerResponse struct {
 }
 
 type AddPackPermissionInput struct {
-	PackId  int                      `json:"packId"`
+	PackId  PackId                   `json:"packId"`
 	Payload AddPackPermissionPayload `json:"payload"`
 }
 
@@ -125,7 +125,7 @@ type AddedAnyonePrincipal struct {
 type AddedAnyonePrincipalType string
 
 const (
-	AddedAnyonePrincipalTypeANYONE AddedAnyonePrincipalType = "anyone"
+	AddedAnyonePrincipalTypeAnyone AddedAnyonePrincipalType = "anyone"
 )
 
 func (v AddedAnyonePrincipalType) String() string { return string(v) }
@@ -138,7 +138,7 @@ type AddedDomainPrincipal struct {
 type AddedDomainPrincipalType string
 
 const (
-	AddedDomainPrincipalTypeDOMAIN AddedDomainPrincipalType = "domain"
+	AddedDomainPrincipalTypeDomain AddedDomainPrincipalType = "domain"
 )
 
 func (v AddedDomainPrincipalType) String() string { return string(v) }
@@ -151,7 +151,7 @@ type AddedEmailPrincipal struct {
 type AddedEmailPrincipalType string
 
 const (
-	AddedEmailPrincipalTypeEMAIL AddedEmailPrincipalType = "email"
+	AddedEmailPrincipalTypeEmail AddedEmailPrincipalType = "email"
 )
 
 func (v AddedEmailPrincipalType) String() string { return string(v) }
@@ -164,7 +164,7 @@ type AddedGroupPrincipal struct {
 type AddedGroupPrincipalType string
 
 const (
-	AddedGroupPrincipalTypeGROUP AddedGroupPrincipalType = "group"
+	AddedGroupPrincipalTypeGroup AddedGroupPrincipalType = "group"
 )
 
 func (v AddedGroupPrincipalType) String() string { return string(v) }
@@ -185,7 +185,7 @@ type AddedWorkspacePrincipal struct {
 type AddedWorkspacePrincipalType string
 
 const (
-	AddedWorkspacePrincipalTypeWORKSPACE AddedWorkspacePrincipalType = "workspace"
+	AddedWorkspacePrincipalTypeWorkspace AddedWorkspacePrincipalType = "workspace"
 )
 
 func (v AddedWorkspacePrincipalType) String() string { return string(v) }
@@ -199,8 +199,8 @@ type AnalyticsLastUpdatedResponse struct {
 type AnalyticsScale string
 
 const (
-	AnalyticsScaleDAILY      AnalyticsScale = "daily"
-	AnalyticsScaleCUMULATIVE AnalyticsScale = "cumulative"
+	AnalyticsScaleDaily      AnalyticsScale = "daily"
+	AnalyticsScaleCumulative AnalyticsScale = "cumulative"
 )
 
 func (v AnalyticsScale) String() string { return string(v) }
@@ -212,7 +212,7 @@ type AnyonePrincipal struct {
 type AnyonePrincipalType string
 
 const (
-	AnyonePrincipalTypeANYONE AnyonePrincipalType = "anyone"
+	AnyonePrincipalTypeAnyone AnyonePrincipalType = "anyone"
 )
 
 func (v AnyonePrincipalType) String() string { return string(v) }
@@ -234,7 +234,7 @@ type ApiLinkResolvedResource struct {
 type ApiLinkType string
 
 const (
-	ApiLinkTypeAPILINK ApiLinkType = "apiLink"
+	ApiLinkTypeApiLink ApiLinkType = "apiLink"
 )
 
 func (v ApiLinkType) String() string { return string(v) }
@@ -276,7 +276,7 @@ type BeginPageContentExportResponse struct {
 
 type BundledPackPlan struct {
 	PackPlanId string                 `json:"packPlanId"`
-	PackId     float64                `json:"packId"`
+	PackId     PackId                 `json:"packId"`
 	Pricing    BundledPackPlanPricing `json:"pricing"`
 	CreatedAt  string                 `json:"createdAt"`
 }
@@ -289,7 +289,7 @@ type BundledPackPlanPricing struct {
 type BundledPackPlanPricingType string
 
 const (
-	BundledPackPlanPricingTypeBUNDLEDWITHTIER BundledPackPlanPricingType = "BundledWithTier"
+	BundledPackPlanPricingTypeBundledWithTier BundledPackPlanPricingType = "BundledWithTier"
 )
 
 func (v BundledPackPlanPricingType) String() string { return string(v) }
@@ -303,7 +303,7 @@ type ButtonColumnFormat struct {
 }
 
 type CancelPackReviewInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type CancelPackReviewResponse struct {
@@ -342,8 +342,8 @@ type CheckboxColumnFormat struct {
 type CheckboxDisplayType string
 
 const (
-	CheckboxDisplayTypeTOGGLE CheckboxDisplayType = "toggle"
-	CheckboxDisplayTypeCHECK  CheckboxDisplayType = "check"
+	CheckboxDisplayTypeToggle CheckboxDisplayType = "toggle"
+	CheckboxDisplayTypeCheck  CheckboxDisplayType = "check"
 )
 
 func (v CheckboxDisplayType) String() string { return string(v) }
@@ -376,7 +376,7 @@ type ColumnDetail struct {
 type ColumnDetailType string
 
 const (
-	ColumnDetailTypeCOLUMN ColumnDetailType = "column"
+	ColumnDetailTypeColumn ColumnDetailType = "column"
 )
 
 func (v ColumnDetailType) String() string { return string(v) }
@@ -403,30 +403,30 @@ type ColumnFormat struct {
 type ColumnFormatType string
 
 const (
-	ColumnFormatTypeTEXT           ColumnFormatType = "text"
-	ColumnFormatTypePERSON         ColumnFormatType = "person"
-	ColumnFormatTypeLOOKUP         ColumnFormatType = "lookup"
-	ColumnFormatTypeNUMBER         ColumnFormatType = "number"
-	ColumnFormatTypePERCENT        ColumnFormatType = "percent"
-	ColumnFormatTypeCURRENCY       ColumnFormatType = "currency"
-	ColumnFormatTypeDATE           ColumnFormatType = "date"
-	ColumnFormatTypeDATETIME       ColumnFormatType = "dateTime"
-	ColumnFormatTypeTIME           ColumnFormatType = "time"
-	ColumnFormatTypeDURATION       ColumnFormatType = "duration"
-	ColumnFormatTypeEMAIL          ColumnFormatType = "email"
-	ColumnFormatTypeLINK           ColumnFormatType = "link"
-	ColumnFormatTypeSLIDER         ColumnFormatType = "slider"
-	ColumnFormatTypeSCALE          ColumnFormatType = "scale"
-	ColumnFormatTypeIMAGE          ColumnFormatType = "image"
-	ColumnFormatTypeIMAGEREFERENCE ColumnFormatType = "imageReference"
-	ColumnFormatTypeATTACHMENTS    ColumnFormatType = "attachments"
-	ColumnFormatTypeBUTTON         ColumnFormatType = "button"
-	ColumnFormatTypeCHECKBOX       ColumnFormatType = "checkbox"
-	ColumnFormatTypeSELECT         ColumnFormatType = "select"
-	ColumnFormatTypePACKOBJECT     ColumnFormatType = "packObject"
-	ColumnFormatTypeREACTION       ColumnFormatType = "reaction"
-	ColumnFormatTypeCANVAS         ColumnFormatType = "canvas"
-	ColumnFormatTypeOTHER          ColumnFormatType = "other"
+	ColumnFormatTypeText           ColumnFormatType = "text"
+	ColumnFormatTypePerson         ColumnFormatType = "person"
+	ColumnFormatTypeLookup         ColumnFormatType = "lookup"
+	ColumnFormatTypeNumber         ColumnFormatType = "number"
+	ColumnFormatTypePercent        ColumnFormatType = "percent"
+	ColumnFormatTypeCurrency       ColumnFormatType = "currency"
+	ColumnFormatTypeDate           ColumnFormatType = "date"
+	ColumnFormatTypeDateTime       ColumnFormatType = "dateTime"
+	ColumnFormatTypeTime           ColumnFormatType = "time"
+	ColumnFormatTypeDuration       ColumnFormatType = "duration"
+	ColumnFormatTypeEmail          ColumnFormatType = "email"
+	ColumnFormatTypeLink           ColumnFormatType = "link"
+	ColumnFormatTypeSlider         ColumnFormatType = "slider"
+	ColumnFormatTypeScale          ColumnFormatType = "scale"
+	ColumnFormatTypeImage          ColumnFormatType = "image"
+	ColumnFormatTypeImageReference ColumnFormatType = "imageReference"
+	ColumnFormatTypeAttachments    ColumnFormatType = "attachments"
+	ColumnFormatTypeButton         ColumnFormatType = "button"
+	ColumnFormatTypeCheckbox       ColumnFormatType = "checkbox"
+	ColumnFormatTypeSelect         ColumnFormatType = "select"
+	ColumnFormatTypePackObject     ColumnFormatType = "packObject"
+	ColumnFormatTypeReaction       ColumnFormatType = "reaction"
+	ColumnFormatTypeCanvas         ColumnFormatType = "canvas"
+	ColumnFormatTypeOther          ColumnFormatType = "other"
 )
 
 func (v ColumnFormatType) String() string { return string(v) }
@@ -449,7 +449,7 @@ type ColumnReference struct {
 type ColumnReferenceType string
 
 const (
-	ColumnReferenceTypeCOLUMN ColumnReferenceType = "column"
+	ColumnReferenceTypeColumn ColumnReferenceType = "column"
 )
 
 func (v ColumnReferenceType) String() string { return string(v) }
@@ -457,7 +457,7 @@ func (v ColumnReferenceType) String() string { return string(v) }
 type ColumnType string
 
 const (
-	ColumnTypeCOLUMN ColumnType = "column"
+	ColumnTypeColumn ColumnType = "column"
 )
 
 func (v ColumnType) String() string { return string(v) }
@@ -492,7 +492,7 @@ type ControlReference struct {
 type ControlReferenceType string
 
 const (
-	ControlReferenceTypeCONTROL ControlReferenceType = "control"
+	ControlReferenceTypeControl ControlReferenceType = "control"
 )
 
 func (v ControlReferenceType) String() string { return string(v) }
@@ -500,7 +500,7 @@ func (v ControlReferenceType) String() string { return string(v) }
 type ControlResourceType string
 
 const (
-	ControlResourceTypeCONTROL ControlResourceType = "control"
+	ControlResourceTypeControl ControlResourceType = "control"
 )
 
 func (v ControlResourceType) String() string { return string(v) }
@@ -508,20 +508,20 @@ func (v ControlResourceType) String() string { return string(v) }
 type ControlType string
 
 const (
-	ControlTypeAIBLOCK         ControlType = "aiBlock"
-	ControlTypeBUTTON          ControlType = "button"
-	ControlTypeCHECKBOX        ControlType = "checkbox"
-	ControlTypeDATEPICKER      ControlType = "datePicker"
-	ControlTypeDATERANGEPICKER ControlType = "dateRangePicker"
-	ControlTypeDATETIMEPICKER  ControlType = "dateTimePicker"
-	ControlTypeLOOKUP          ControlType = "lookup"
-	ControlTypeMULTISELECT     ControlType = "multiselect"
-	ControlTypeSELECT          ControlType = "select"
-	ControlTypeSCALE           ControlType = "scale"
-	ControlTypeSLIDER          ControlType = "slider"
-	ControlTypeREACTION        ControlType = "reaction"
-	ControlTypeTEXTBOX         ControlType = "textbox"
-	ControlTypeTIMEPICKER      ControlType = "timePicker"
+	ControlTypeAiBlock         ControlType = "aiBlock"
+	ControlTypeButton          ControlType = "button"
+	ControlTypeCheckbox        ControlType = "checkbox"
+	ControlTypeDatePicker      ControlType = "datePicker"
+	ControlTypeDateRangePicker ControlType = "dateRangePicker"
+	ControlTypeDateTimePicker  ControlType = "dateTimePicker"
+	ControlTypeLookup          ControlType = "lookup"
+	ControlTypeMultiselect     ControlType = "multiselect"
+	ControlTypeSelect          ControlType = "select"
+	ControlTypeScale           ControlType = "scale"
+	ControlTypeSlider          ControlType = "slider"
+	ControlTypeReaction        ControlType = "reaction"
+	ControlTypeTextbox         ControlType = "textbox"
+	ControlTypeTimePicker      ControlType = "timePicker"
 )
 
 func (v ControlType) String() string { return string(v) }
@@ -545,7 +545,7 @@ type CreatePackInput struct {
 }
 
 type CreatePackInvitationInput struct {
-	PackId  int                         `json:"packId"`
+	PackId  PackId                      `json:"packId"`
 	Payload CreatePackInvitationPayload `json:"payload"`
 }
 
@@ -566,7 +566,7 @@ type CreatePackPayload struct {
 }
 
 type CreatePackReleaseInput struct {
-	PackId  int                      `json:"packId"`
+	PackId  PackId                   `json:"packId"`
 	Payload CreatePackReleasePayload `json:"payload"`
 }
 
@@ -576,11 +576,11 @@ type CreatePackReleasePayload struct {
 }
 
 type CreatePackResponse struct {
-	PackId float64 `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type CreatePackReviewInput struct {
-	PackId  int                     `json:"packId"`
+	PackId  PackId                  `json:"packId"`
 	Payload CreatePackReviewPayload `json:"payload"`
 }
 
@@ -626,9 +626,9 @@ type CurrencyColumnFormat struct {
 type CurrencyFormatType string
 
 const (
-	CurrencyFormatTypeCURRENCY   CurrencyFormatType = "currency"
-	CurrencyFormatTypeACCOUNTING CurrencyFormatType = "accounting"
-	CurrencyFormatTypeFINANCIAL  CurrencyFormatType = "financial"
+	CurrencyFormatTypeCurrency   CurrencyFormatType = "currency"
+	CurrencyFormatTypeAccounting CurrencyFormatType = "accounting"
+	CurrencyFormatTypeFinancial  CurrencyFormatType = "financial"
 )
 
 func (v CurrencyFormatType) String() string { return string(v) }
@@ -644,7 +644,7 @@ type CurrencyValue struct {
 type CurrencyValueType string
 
 const (
-	CurrencyValueTypeMONETARYAMOUNT CurrencyValueType = "MonetaryAmount"
+	CurrencyValueTypeMonetaryAmount CurrencyValueType = "MonetaryAmount"
 )
 
 func (v CurrencyValueType) String() string { return string(v) }
@@ -669,12 +669,12 @@ type CustomDocDomainListCustomDocDomains []CustomDocDomain
 type CustomDocDomainProvider string
 
 const (
-	CustomDocDomainProviderGODADDY          CustomDocDomainProvider = "GoDaddy"
-	CustomDocDomainProviderNAMECHEAP        CustomDocDomainProvider = "Namecheap"
-	CustomDocDomainProviderHOVERTUCOWS      CustomDocDomainProvider = "Hover (Tucows)"
-	CustomDocDomainProviderNETWORKSOLUTIONS CustomDocDomainProvider = "Network Solutions"
-	CustomDocDomainProviderGOOGLEDOMAINS    CustomDocDomainProvider = "Google Domains"
-	CustomDocDomainProviderOTHER            CustomDocDomainProvider = "Other"
+	CustomDocDomainProviderGoDaddy          CustomDocDomainProvider = "GoDaddy"
+	CustomDocDomainProviderNamecheap        CustomDocDomainProvider = "Namecheap"
+	CustomDocDomainProviderHoverTucows      CustomDocDomainProvider = "Hover (Tucows)"
+	CustomDocDomainProviderNetworkSolutions CustomDocDomainProvider = "Network Solutions"
+	CustomDocDomainProviderGoogleDomains    CustomDocDomainProvider = "Google Domains"
+	CustomDocDomainProviderOther            CustomDocDomainProvider = "Other"
 )
 
 func (v CustomDocDomainProvider) String() string { return string(v) }
@@ -686,9 +686,9 @@ type CustomDocDomainProviderResponse struct {
 type CustomDocDomainSetupStatus string
 
 const (
-	CustomDocDomainSetupStatusPENDING   CustomDocDomainSetupStatus = "pending"
-	CustomDocDomainSetupStatusSUCCEEDED CustomDocDomainSetupStatus = "succeeded"
-	CustomDocDomainSetupStatusFAILED    CustomDocDomainSetupStatus = "failed"
+	CustomDocDomainSetupStatusPending   CustomDocDomainSetupStatus = "pending"
+	CustomDocDomainSetupStatusSucceeded CustomDocDomainSetupStatus = "succeeded"
+	CustomDocDomainSetupStatusFailed    CustomDocDomainSetupStatus = "failed"
 )
 
 func (v CustomDocDomainSetupStatus) String() string { return string(v) }
@@ -696,8 +696,8 @@ func (v CustomDocDomainSetupStatus) String() string { return string(v) }
 type CustomDomainConnectedStatus string
 
 const (
-	CustomDomainConnectedStatusCONNECTED    CustomDomainConnectedStatus = "connected"
-	CustomDomainConnectedStatusNOTCONNECTED CustomDomainConnectedStatus = "notConnected"
+	CustomDomainConnectedStatusConnected    CustomDomainConnectedStatus = "connected"
+	CustomDomainConnectedStatusNotConnected CustomDomainConnectedStatus = "notConnected"
 )
 
 func (v CustomDomainConnectedStatus) String() string { return string(v) }
@@ -735,7 +735,7 @@ type DeleteFolderResponse struct {
 }
 
 type DeletePackCategoryInput struct {
-	PackId       int    `json:"packId"`
+	PackId       PackId `json:"packId"`
 	CategoryName string `json:"categoryName"`
 }
 
@@ -743,11 +743,11 @@ type DeletePackCategoryResponse struct {
 }
 
 type DeletePackInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type DeletePackInvitationInput struct {
-	PackId       int    `json:"packId"`
+	PackId       PackId `json:"packId"`
 	InvitationId string `json:"invitationId"`
 }
 
@@ -755,14 +755,14 @@ type DeletePackInvitationResponse struct {
 }
 
 type DeletePackListingDraftInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type DeletePackListingDraftResponse struct {
 }
 
 type DeletePackMakerInput struct {
-	PackId  int    `json:"packId"`
+	PackId  PackId `json:"packId"`
 	LoginId string `json:"loginId"`
 }
 
@@ -770,7 +770,7 @@ type DeletePackMakerResponse struct {
 }
 
 type DeletePackPermissionInput struct {
-	PackId       int    `json:"packId"`
+	PackId       PackId `json:"packId"`
 	PermissionId string `json:"permissionId"`
 }
 
@@ -812,7 +812,7 @@ type DeleteRowsInput struct {
 }
 
 type DeleteUserPackPermissionInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type DeleteUserPackPermissionsResponse struct {
@@ -861,7 +861,7 @@ type DocAnalyticsDetails struct {
 type DocAnalyticsDetailsType string
 
 const (
-	DocAnalyticsDetailsTypeDOC DocAnalyticsDetailsType = "doc"
+	DocAnalyticsDetailsTypeDoc DocAnalyticsDetailsType = "doc"
 )
 
 func (v DocAnalyticsDetailsType) String() string { return string(v) }
@@ -893,24 +893,24 @@ type DocAnalyticsMetrics struct {
 type DocAnalyticsOrderBy string
 
 const (
-	DocAnalyticsOrderByDATE               DocAnalyticsOrderBy = "date"
-	DocAnalyticsOrderByDOCID              DocAnalyticsOrderBy = "docId"
-	DocAnalyticsOrderByTITLE              DocAnalyticsOrderBy = "title"
-	DocAnalyticsOrderByCREATEDAT          DocAnalyticsOrderBy = "createdAt"
-	DocAnalyticsOrderByPUBLISHEDAT        DocAnalyticsOrderBy = "publishedAt"
-	DocAnalyticsOrderByLIKES              DocAnalyticsOrderBy = "likes"
-	DocAnalyticsOrderByCOPIES             DocAnalyticsOrderBy = "copies"
-	DocAnalyticsOrderByVIEWS              DocAnalyticsOrderBy = "views"
-	DocAnalyticsOrderBySESSIONSDESKTOP    DocAnalyticsOrderBy = "sessionsDesktop"
-	DocAnalyticsOrderBySESSIONSMOBILE     DocAnalyticsOrderBy = "sessionsMobile"
-	DocAnalyticsOrderBySESSIONSOTHER      DocAnalyticsOrderBy = "sessionsOther"
-	DocAnalyticsOrderByTOTALSESSIONS      DocAnalyticsOrderBy = "totalSessions"
-	DocAnalyticsOrderByAICREDITSCHAT      DocAnalyticsOrderBy = "aiCreditsChat"
-	DocAnalyticsOrderByAICREDITSBLOCK     DocAnalyticsOrderBy = "aiCreditsBlock"
-	DocAnalyticsOrderByAICREDITSCOLUMN    DocAnalyticsOrderBy = "aiCreditsColumn"
-	DocAnalyticsOrderByAICREDITSASSISTANT DocAnalyticsOrderBy = "aiCreditsAssistant"
-	DocAnalyticsOrderByAICREDITSREVIEWER  DocAnalyticsOrderBy = "aiCreditsReviewer"
-	DocAnalyticsOrderByAICREDITS          DocAnalyticsOrderBy = "aiCredits"
+	DocAnalyticsOrderByDate               DocAnalyticsOrderBy = "date"
+	DocAnalyticsOrderByDocId              DocAnalyticsOrderBy = "docId"
+	DocAnalyticsOrderByTitle              DocAnalyticsOrderBy = "title"
+	DocAnalyticsOrderByCreatedAt          DocAnalyticsOrderBy = "createdAt"
+	DocAnalyticsOrderByPublishedAt        DocAnalyticsOrderBy = "publishedAt"
+	DocAnalyticsOrderByLikes              DocAnalyticsOrderBy = "likes"
+	DocAnalyticsOrderByCopies             DocAnalyticsOrderBy = "copies"
+	DocAnalyticsOrderByViews              DocAnalyticsOrderBy = "views"
+	DocAnalyticsOrderBySessionsDesktop    DocAnalyticsOrderBy = "sessionsDesktop"
+	DocAnalyticsOrderBySessionsMobile     DocAnalyticsOrderBy = "sessionsMobile"
+	DocAnalyticsOrderBySessionsOther      DocAnalyticsOrderBy = "sessionsOther"
+	DocAnalyticsOrderByTotalSessions      DocAnalyticsOrderBy = "totalSessions"
+	DocAnalyticsOrderByAiCreditsChat      DocAnalyticsOrderBy = "aiCreditsChat"
+	DocAnalyticsOrderByAiCreditsBlock     DocAnalyticsOrderBy = "aiCreditsBlock"
+	DocAnalyticsOrderByAiCreditsColumn    DocAnalyticsOrderBy = "aiCreditsColumn"
+	DocAnalyticsOrderByAiCreditsAssistant DocAnalyticsOrderBy = "aiCreditsAssistant"
+	DocAnalyticsOrderByAiCreditsReviewer  DocAnalyticsOrderBy = "aiCreditsReviewer"
+	DocAnalyticsOrderByAiCredits          DocAnalyticsOrderBy = "aiCredits"
 )
 
 func (v DocAnalyticsOrderBy) String() string { return string(v) }
@@ -962,9 +962,9 @@ type DocPublishCategoryNames []string
 type DocPublishMode string
 
 const (
-	DocPublishModeVIEW DocPublishMode = "view"
-	DocPublishModePLAY DocPublishMode = "play"
-	DocPublishModeEDIT DocPublishMode = "edit"
+	DocPublishModeView DocPublishMode = "view"
+	DocPublishModePlay DocPublishMode = "play"
+	DocPublishModeEdit DocPublishMode = "edit"
 )
 
 func (v DocPublishMode) String() string { return string(v) }
@@ -991,7 +991,7 @@ type DocReference struct {
 type DocReferenceType string
 
 const (
-	DocReferenceTypeDOC DocReferenceType = "doc"
+	DocReferenceTypeDoc DocReferenceType = "doc"
 )
 
 func (v DocReferenceType) String() string { return string(v) }
@@ -1006,7 +1006,7 @@ type DocSize struct {
 type DocType string
 
 const (
-	DocTypeDOC DocType = "doc"
+	DocTypeDoc DocType = "doc"
 )
 
 func (v DocType) String() string { return string(v) }
@@ -1031,7 +1031,7 @@ type DomainPrincipal struct {
 type DomainPrincipalType string
 
 const (
-	DomainPrincipalTypeDOMAIN DomainPrincipalType = "domain"
+	DomainPrincipalTypeDomain DomainPrincipalType = "domain"
 )
 
 func (v DomainPrincipalType) String() string { return string(v) }
@@ -1046,10 +1046,10 @@ type DurationColumnFormat struct {
 type DurationUnit string
 
 const (
-	DurationUnitDAYS    DurationUnit = "days"
-	DurationUnitHOURS   DurationUnit = "hours"
-	DurationUnitMINUTES DurationUnit = "minutes"
-	DurationUnitSECONDS DurationUnit = "seconds"
+	DurationUnitDays    DurationUnit = "days"
+	DurationUnitHours   DurationUnit = "hours"
+	DurationUnitMinutes DurationUnit = "minutes"
+	DurationUnitSeconds DurationUnit = "seconds"
 )
 
 func (v DurationUnit) String() string { return string(v) }
@@ -1064,9 +1064,9 @@ type EmailColumnFormat struct {
 type EmailDisplayType string
 
 const (
-	EmailDisplayTypeICONANDEMAIL EmailDisplayType = "iconAndEmail"
-	EmailDisplayTypeICONONLY     EmailDisplayType = "iconOnly"
-	EmailDisplayTypeEMAILONLY    EmailDisplayType = "emailOnly"
+	EmailDisplayTypeIconAndEmail EmailDisplayType = "iconAndEmail"
+	EmailDisplayTypeIconOnly     EmailDisplayType = "iconOnly"
+	EmailDisplayTypeEmailOnly    EmailDisplayType = "emailOnly"
 )
 
 func (v EmailDisplayType) String() string { return string(v) }
@@ -1079,7 +1079,7 @@ type EmailPrincipal struct {
 type EmailPrincipalType string
 
 const (
-	EmailPrincipalTypeEMAIL EmailPrincipalType = "email"
+	EmailPrincipalTypeEmail EmailPrincipalType = "email"
 )
 
 func (v EmailPrincipalType) String() string { return string(v) }
@@ -1087,10 +1087,10 @@ func (v EmailPrincipalType) String() string { return string(v) }
 type FeatureSet string
 
 const (
-	FeatureSetBASIC      FeatureSet = "Basic"
-	FeatureSetPRO        FeatureSet = "Pro"
-	FeatureSetTEAM       FeatureSet = "Team"
-	FeatureSetENTERPRISE FeatureSet = "Enterprise"
+	FeatureSetBasic      FeatureSet = "Basic"
+	FeatureSetPro        FeatureSet = "Pro"
+	FeatureSetTeam       FeatureSet = "Team"
+	FeatureSetEnterprise FeatureSet = "Enterprise"
 )
 
 func (v FeatureSet) String() string { return string(v) }
@@ -1098,8 +1098,8 @@ func (v FeatureSet) String() string { return string(v) }
 type FeaturedDocStatus string
 
 const (
-	FeaturedDocStatusDOCINACCESSIBLEORDOESNOTEXIST FeaturedDocStatus = "docInaccessibleOrDoesNotExist"
-	FeaturedDocStatusINVALIDPUBLISHEDDOCURL        FeaturedDocStatus = "invalidPublishedDocUrl"
+	FeaturedDocStatusDocInaccessibleOrDoesNotExist FeaturedDocStatus = "docInaccessibleOrDoesNotExist"
+	FeaturedDocStatusInvalidPublishedDocUrl        FeaturedDocStatus = "invalidPublishedDocUrl"
 )
 
 func (v FeaturedDocStatus) String() string { return string(v) }
@@ -1135,7 +1135,7 @@ type FolderReference struct {
 type FolderReferenceType string
 
 const (
-	FolderReferenceTypeFOLDER FolderReferenceType = "folder"
+	FolderReferenceTypeFolder FolderReferenceType = "folder"
 )
 
 func (v FolderReferenceType) String() string { return string(v) }
@@ -1143,7 +1143,7 @@ func (v FolderReferenceType) String() string { return string(v) }
 type FolderType string
 
 const (
-	FolderTypeFOLDER FolderType = "folder"
+	FolderTypeFolder FolderType = "folder"
 )
 
 func (v FolderType) String() string { return string(v) }
@@ -1191,7 +1191,7 @@ type FormulaReference struct {
 type FormulaReferenceType string
 
 const (
-	FormulaReferenceTypeFORMULA FormulaReferenceType = "formula"
+	FormulaReferenceTypeFormula FormulaReferenceType = "formula"
 )
 
 func (v FormulaReferenceType) String() string { return string(v) }
@@ -1199,7 +1199,7 @@ func (v FormulaReferenceType) String() string { return string(v) }
 type FormulaType string
 
 const (
-	FormulaTypeFORMULA FormulaType = "formula"
+	FormulaTypeFormula FormulaType = "formula"
 )
 
 func (v FormulaType) String() string { return string(v) }
@@ -1211,7 +1211,7 @@ type FreePackPlanPricing struct {
 type FreePackPlanPricingType string
 
 const (
-	FreePackPlanPricingTypeFREE FreePackPlanPricingType = "Free"
+	FreePackPlanPricingTypeFree FreePackPlanPricingType = "Free"
 )
 
 func (v FreePackPlanPricingType) String() string { return string(v) }
@@ -1229,6 +1229,9 @@ type GetAgentPackLogDetailsInput struct {
 
 type GetAgentPackLogDetailsOutput struct {
 	Body *PackLogDetails `json:"body,omitempty"`
+}
+
+type GetAnalyticsLastUpdatedInput struct {
 }
 
 type GetColumnInput struct {
@@ -1264,7 +1267,7 @@ type GetMutationStatusInput struct {
 }
 
 type GetNextPackVersionInput struct {
-	PackId  int                        `json:"packId"`
+	PackId  PackId                     `json:"packId"`
 	Payload *GetNextPackVersionPayload `json:"payload,omitempty"`
 }
 
@@ -1277,15 +1280,15 @@ type GetPackConfigurationJsonSchemaResponse struct {
 }
 
 type GetPackConfigurationSchemaInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type GetPackInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type GetPackListingDraftInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type GetPackListingDraftResponse struct {
@@ -1294,7 +1297,7 @@ type GetPackListingDraftResponse struct {
 }
 
 type GetPackListingInput struct {
-	PackId         int                            `json:"packId"`
+	PackId         PackId                         `json:"packId"`
 	WorkspaceId    *string                        `json:"workspaceId,omitempty"`
 	DocId          *string                        `json:"docId,omitempty"`
 	IngestionId    *string                        `json:"ingestionId,omitempty"`
@@ -1303,7 +1306,7 @@ type GetPackListingInput struct {
 }
 
 type GetPackLogDetailsInput struct {
-	PackId          int    `json:"packId"`
+	PackId          PackId `json:"packId"`
 	TenantId        string `json:"tenantId"`
 	RootIngestionId string `json:"rootIngestionId"`
 	LogId           string `json:"logId"`
@@ -1315,20 +1318,20 @@ type GetPackLogDetailsOutput struct {
 }
 
 type GetPackOauthConfigInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type GetPackPermissionsInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type GetPackSourceCodeInput struct {
-	PackId      int    `json:"packId"`
+	PackId      PackId `json:"packId"`
 	PackVersion string `json:"packVersion"`
 }
 
 type GetPackSystemConnectionInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type GetPackSystemConnectionOutput struct {
@@ -1336,7 +1339,7 @@ type GetPackSystemConnectionOutput struct {
 }
 
 type GetPackVersionDiffsInput struct {
-	PackId            int    `json:"packId"`
+	PackId            PackId `json:"packId"`
 	BasePackVersion   string `json:"basePackVersion"`
 	TargetPackVersion string `json:"targetPackVersion"`
 }
@@ -1397,7 +1400,7 @@ type GroupPrincipal struct {
 type GroupPrincipalType string
 
 const (
-	GroupPrincipalTypeGROUP GroupPrincipalType = "group"
+	GroupPrincipalTypeGroup GroupPrincipalType = "group"
 )
 
 func (v GroupPrincipalType) String() string { return string(v) }
@@ -1413,7 +1416,7 @@ type GroupedPackAuthLogRelatedLogs []PackLog
 type GroupedPackAuthLogType string
 
 const (
-	GroupedPackAuthLogTypeAUTH GroupedPackAuthLogType = "auth"
+	GroupedPackAuthLogTypeAuth GroupedPackAuthLogType = "auth"
 )
 
 func (v GroupedPackAuthLogType) String() string { return string(v) }
@@ -1429,7 +1432,7 @@ type GroupedPackInvocationLogRelatedLogs []PackLog
 type GroupedPackInvocationLogType string
 
 const (
-	GroupedPackInvocationLogTypeINVOCATION GroupedPackInvocationLogType = "invocation"
+	GroupedPackInvocationLogTypeInvocation GroupedPackInvocationLogType = "invocation"
 )
 
 func (v GroupedPackInvocationLogType) String() string { return string(v) }
@@ -1465,26 +1468,26 @@ type Icon struct {
 type IconSet string
 
 const (
-	IconSetSTAR      IconSet = "star"
-	IconSetCIRCLE    IconSet = "circle"
-	IconSetFIRE      IconSet = "fire"
-	IconSetBUG       IconSet = "bug"
-	IconSetDIAMOND   IconSet = "diamond"
-	IconSetBELL      IconSet = "bell"
-	IconSetTHUMBSUP  IconSet = "thumbsup"
-	IconSetHEART     IconSet = "heart"
-	IconSetCHILI     IconSet = "chili"
-	IconSetSMILEY    IconSet = "smiley"
-	IconSetLIGHTNING IconSet = "lightning"
-	IconSetCURRENCY  IconSet = "currency"
-	IconSetCOFFEE    IconSet = "coffee"
-	IconSetPERSON    IconSet = "person"
-	IconSetBATTERY   IconSet = "battery"
-	IconSetCOCKTAIL  IconSet = "cocktail"
-	IconSetCLOUD     IconSet = "cloud"
-	IconSetSUN       IconSet = "sun"
-	IconSetCHECKMARK IconSet = "checkmark"
-	IconSetLIGHTBULB IconSet = "lightbulb"
+	IconSetStar      IconSet = "star"
+	IconSetCircle    IconSet = "circle"
+	IconSetFire      IconSet = "fire"
+	IconSetBug       IconSet = "bug"
+	IconSetDiamond   IconSet = "diamond"
+	IconSetBell      IconSet = "bell"
+	IconSetThumbsup  IconSet = "thumbsup"
+	IconSetHeart     IconSet = "heart"
+	IconSetChili     IconSet = "chili"
+	IconSetSmiley    IconSet = "smiley"
+	IconSetLightning IconSet = "lightning"
+	IconSetCurrency  IconSet = "currency"
+	IconSetCoffee    IconSet = "coffee"
+	IconSetPerson    IconSet = "person"
+	IconSetBattery   IconSet = "battery"
+	IconSetCocktail  IconSet = "cocktail"
+	IconSetCloud     IconSet = "cloud"
+	IconSetSun       IconSet = "sun"
+	IconSetCheckmark IconSet = "checkmark"
+	IconSetLightbulb IconSet = "lightbulb"
 )
 
 func (v IconSet) String() string { return string(v) }
@@ -1513,8 +1516,8 @@ type ImageReferenceColumnFormat struct {
 type ImageShapeStyle string
 
 const (
-	ImageShapeStyleAUTO   ImageShapeStyle = "auto"
-	ImageShapeStyleCIRCLE ImageShapeStyle = "circle"
+	ImageShapeStyleAuto   ImageShapeStyle = "auto"
+	ImageShapeStyleCircle ImageShapeStyle = "circle"
 )
 
 func (v ImageShapeStyle) String() string { return string(v) }
@@ -1522,9 +1525,9 @@ func (v ImageShapeStyle) String() string { return string(v) }
 type ImageStatus string
 
 const (
-	ImageStatusLIVE    ImageStatus = "live"
-	ImageStatusDELETED ImageStatus = "deleted"
-	ImageStatusFAILED  ImageStatus = "failed"
+	ImageStatusLive    ImageStatus = "live"
+	ImageStatusDeleted ImageStatus = "deleted"
+	ImageStatusFailed  ImageStatus = "failed"
 )
 
 func (v ImageStatus) String() string { return string(v) }
@@ -1543,7 +1546,7 @@ type ImageUrlValue struct {
 type ImageUrlValueType string
 
 const (
-	ImageUrlValueTypeIMAGEOBJECT ImageUrlValueType = "ImageObject"
+	ImageUrlValueTypeImageObject ImageUrlValueType = "ImageObject"
 )
 
 func (v ImageUrlValueType) String() string { return string(v) }
@@ -1582,9 +1585,9 @@ type IngestionBatchExecutionsListItems []IngestionBatchExecution
 type IngestionChildExecutionType string
 
 const (
-	IngestionChildExecutionTypeFULL        IngestionChildExecutionType = "FULL"
-	IngestionChildExecutionTypeINCREMENTAL IngestionChildExecutionType = "INCREMENTAL"
-	IngestionChildExecutionTypePATCH       IngestionChildExecutionType = "PATCH"
+	IngestionChildExecutionTypeFull        IngestionChildExecutionType = "FULL"
+	IngestionChildExecutionTypeIncremental IngestionChildExecutionType = "INCREMENTAL"
+	IngestionChildExecutionTypePatch       IngestionChildExecutionType = "PATCH"
 )
 
 func (v IngestionChildExecutionType) String() string { return string(v) }
@@ -1628,8 +1631,8 @@ type IngestionExecutionContext struct {
 type IngestionExecutionType string
 
 const (
-	IngestionExecutionTypeFULL        IngestionExecutionType = "FULL"
-	IngestionExecutionTypeINCREMENTAL IngestionExecutionType = "INCREMENTAL"
+	IngestionExecutionTypeFull        IngestionExecutionType = "FULL"
+	IngestionExecutionTypeIncremental IngestionExecutionType = "INCREMENTAL"
 )
 
 func (v IngestionExecutionType) String() string { return string(v) }
@@ -1652,8 +1655,8 @@ type IngestionLimitSettingsTableSettings map[string]IngestionTableSetting
 type IngestionPackReleaseChannel string
 
 const (
-	IngestionPackReleaseChannelLIVE   IngestionPackReleaseChannel = "LIVE"
-	IngestionPackReleaseChannelLATEST IngestionPackReleaseChannel = "LATEST"
+	IngestionPackReleaseChannelLive   IngestionPackReleaseChannel = "LIVE"
+	IngestionPackReleaseChannelLatest IngestionPackReleaseChannel = "LATEST"
 )
 
 func (v IngestionPackReleaseChannel) String() string { return string(v) }
@@ -1683,12 +1686,12 @@ type IngestionParentItemsListItems []IngestionParentItem
 type IngestionStatus string
 
 const (
-	IngestionStatusQUEUED     IngestionStatus = "QUEUED"
-	IngestionStatusSTARTED    IngestionStatus = "STARTED"
-	IngestionStatusCANCELLED  IngestionStatus = "CANCELLED"
-	IngestionStatusUPFORRETRY IngestionStatus = "UP_FOR_RETRY"
-	IngestionStatusCOMPLETED  IngestionStatus = "COMPLETED"
-	IngestionStatusFAILED     IngestionStatus = "FAILED"
+	IngestionStatusQueued     IngestionStatus = "QUEUED"
+	IngestionStatusStarted    IngestionStatus = "STARTED"
+	IngestionStatusCancelled  IngestionStatus = "CANCELLED"
+	IngestionStatusUpForRetry IngestionStatus = "UP_FOR_RETRY"
+	IngestionStatusCompleted  IngestionStatus = "COMPLETED"
+	IngestionStatusFailed     IngestionStatus = "FAILED"
 )
 
 func (v IngestionStatus) String() string { return string(v) }
@@ -1709,7 +1712,7 @@ type InternalAccessPrincipal struct {
 type InternalAccessPrincipalType string
 
 const (
-	InternalAccessPrincipalTypeINTERNALACCESS InternalAccessPrincipalType = "internalAccess"
+	InternalAccessPrincipalTypeInternalAccess InternalAccessPrincipalType = "internalAccess"
 )
 
 func (v InternalAccessPrincipalType) String() string { return string(v) }
@@ -1717,21 +1720,21 @@ func (v InternalAccessPrincipalType) String() string { return string(v) }
 type Layout string
 
 const (
-	LayoutDEFAULT      Layout = "default"
-	LayoutAREACHART    Layout = "areaChart"
-	LayoutBARCHART     Layout = "barChart"
-	LayoutBUBBLECHART  Layout = "bubbleChart"
-	LayoutCALENDAR     Layout = "calendar"
-	LayoutCARD         Layout = "card"
-	LayoutDETAIL       Layout = "detail"
-	LayoutFORM         Layout = "form"
-	LayoutGANTTCHART   Layout = "ganttChart"
-	LayoutLINECHART    Layout = "lineChart"
-	LayoutMASTERDETAIL Layout = "masterDetail"
-	LayoutPIECHART     Layout = "pieChart"
-	LayoutSCATTERCHART Layout = "scatterChart"
-	LayoutSLIDE        Layout = "slide"
-	LayoutWORDCLOUD    Layout = "wordCloud"
+	LayoutDefault      Layout = "default"
+	LayoutAreaChart    Layout = "areaChart"
+	LayoutBarChart     Layout = "barChart"
+	LayoutBubbleChart  Layout = "bubbleChart"
+	LayoutCalendar     Layout = "calendar"
+	LayoutCard         Layout = "card"
+	LayoutDetail       Layout = "detail"
+	LayoutForm         Layout = "form"
+	LayoutGanttChart   Layout = "ganttChart"
+	LayoutLineChart    Layout = "lineChart"
+	LayoutMasterDetail Layout = "masterDetail"
+	LayoutPieChart     Layout = "pieChart"
+	LayoutScatterChart Layout = "scatterChart"
+	LayoutSlide        Layout = "slide"
+	LayoutWordCloud    Layout = "wordCloud"
 )
 
 func (v Layout) String() string { return string(v) }
@@ -1746,11 +1749,11 @@ type LinkColumnFormat struct {
 type LinkDisplayType string
 
 const (
-	LinkDisplayTypeICONONLY LinkDisplayType = "iconOnly"
+	LinkDisplayTypeIconOnly LinkDisplayType = "iconOnly"
 	LinkDisplayTypeURL      LinkDisplayType = "url"
-	LinkDisplayTypeTITLE    LinkDisplayType = "title"
-	LinkDisplayTypeCARD     LinkDisplayType = "card"
-	LinkDisplayTypeEMBED    LinkDisplayType = "embed"
+	LinkDisplayTypeTitle    LinkDisplayType = "title"
+	LinkDisplayTypeCard     LinkDisplayType = "card"
+	LinkDisplayTypeEmbed    LinkDisplayType = "embed"
 )
 
 func (v LinkDisplayType) String() string { return string(v) }
@@ -1764,11 +1767,11 @@ type LinkedDataObject struct {
 type LinkedDataType string
 
 const (
-	LinkedDataTypeIMAGEOBJECT     LinkedDataType = "ImageObject"
-	LinkedDataTypeMONETARYAMOUNT  LinkedDataType = "MonetaryAmount"
-	LinkedDataTypePERSON          LinkedDataType = "Person"
-	LinkedDataTypeWEBPAGE         LinkedDataType = "WebPage"
-	LinkedDataTypeSTRUCTUREDVALUE LinkedDataType = "StructuredValue"
+	LinkedDataTypeImageObject     LinkedDataType = "ImageObject"
+	LinkedDataTypeMonetaryAmount  LinkedDataType = "MonetaryAmount"
+	LinkedDataTypePerson          LinkedDataType = "Person"
+	LinkedDataTypeWebPage         LinkedDataType = "WebPage"
+	LinkedDataTypeStructuredValue LinkedDataType = "StructuredValue"
 )
 
 func (v LinkedDataType) String() string { return string(v) }
@@ -1792,8 +1795,8 @@ type ListAgentLogsLogTypes []PackLogType
 type ListAgentLogsOrder string
 
 const (
-	ListAgentLogsOrderASC  ListAgentLogsOrder = "asc"
-	ListAgentLogsOrderDESC ListAgentLogsOrder = "desc"
+	ListAgentLogsOrderAsc  ListAgentLogsOrder = "asc"
+	ListAgentLogsOrderDesc ListAgentLogsOrder = "desc"
 )
 
 func (v ListAgentLogsOrder) String() string { return string(v) }
@@ -1819,13 +1822,16 @@ type ListAgentSessionIdsLogTypes []PackLogType
 type ListAgentSessionIdsOrder string
 
 const (
-	ListAgentSessionIdsOrderASC  ListAgentSessionIdsOrder = "asc"
-	ListAgentSessionIdsOrderDESC ListAgentSessionIdsOrder = "desc"
+	ListAgentSessionIdsOrderAsc  ListAgentSessionIdsOrder = "asc"
+	ListAgentSessionIdsOrderDesc ListAgentSessionIdsOrder = "desc"
 )
 
 func (v ListAgentSessionIdsOrder) String() string { return string(v) }
 
 type ListAgentSessionIdsRequestIds []string
+
+type ListCategoriesInput struct {
+}
 
 type ListColumnsInput struct {
 	DocId         string  `json:"docId"`
@@ -1897,7 +1903,7 @@ type ListFormulasInput struct {
 }
 
 type ListGroupedIngestionLogsInput struct {
-	PackId               int                            `json:"packId"`
+	PackId               PackId                         `json:"packId"`
 	Limit                *int                           `json:"limit,omitempty"`
 	PageToken            *string                        `json:"pageToken,omitempty"`
 	TenantId             string                         `json:"tenantId"`
@@ -1912,14 +1918,14 @@ type ListGroupedIngestionLogsInput struct {
 type ListGroupedIngestionLogsOrder string
 
 const (
-	ListGroupedIngestionLogsOrderASC  ListGroupedIngestionLogsOrder = "asc"
-	ListGroupedIngestionLogsOrderDESC ListGroupedIngestionLogsOrder = "desc"
+	ListGroupedIngestionLogsOrderAsc  ListGroupedIngestionLogsOrder = "asc"
+	ListGroupedIngestionLogsOrderDesc ListGroupedIngestionLogsOrder = "desc"
 )
 
 func (v ListGroupedIngestionLogsOrder) String() string { return string(v) }
 
 type ListGroupedPackLogsInput struct {
-	PackId          int                       `json:"packId"`
+	PackId          PackId                    `json:"packId"`
 	Limit           *int                      `json:"limit,omitempty"`
 	PageToken       *string                   `json:"pageToken,omitempty"`
 	DocId           string                    `json:"docId"`
@@ -1932,14 +1938,14 @@ type ListGroupedPackLogsInput struct {
 type ListGroupedPackLogsOrder string
 
 const (
-	ListGroupedPackLogsOrderASC  ListGroupedPackLogsOrder = "asc"
-	ListGroupedPackLogsOrderDESC ListGroupedPackLogsOrder = "desc"
+	ListGroupedPackLogsOrderAsc  ListGroupedPackLogsOrder = "asc"
+	ListGroupedPackLogsOrderDesc ListGroupedPackLogsOrder = "desc"
 )
 
 func (v ListGroupedPackLogsOrder) String() string { return string(v) }
 
 type ListIngestionBatchExecutionsInput struct {
-	PackId                   int                     `json:"packId"`
+	PackId                   PackId                  `json:"packId"`
 	TenantId                 string                  `json:"tenantId"`
 	RootIngestionId          string                  `json:"rootIngestionId"`
 	PageToken                *string                 `json:"pageToken,omitempty"`
@@ -1953,7 +1959,7 @@ type ListIngestionBatchExecutionsInput struct {
 }
 
 type ListIngestionLogsInput struct {
-	PackId                   int                     `json:"packId"`
+	PackId                   PackId                  `json:"packId"`
 	Limit                    *int                    `json:"limit,omitempty"`
 	PageToken                *string                 `json:"pageToken,omitempty"`
 	TenantId                 string                  `json:"tenantId"`
@@ -1974,8 +1980,8 @@ type ListIngestionLogsLogTypes []PackLogType
 type ListIngestionLogsOrder string
 
 const (
-	ListIngestionLogsOrderASC  ListIngestionLogsOrder = "asc"
-	ListIngestionLogsOrderDESC ListIngestionLogsOrder = "desc"
+	ListIngestionLogsOrderAsc  ListIngestionLogsOrder = "asc"
+	ListIngestionLogsOrderDesc ListIngestionLogsOrder = "desc"
 )
 
 func (v ListIngestionLogsOrder) String() string { return string(v) }
@@ -1983,7 +1989,7 @@ func (v ListIngestionLogsOrder) String() string { return string(v) }
 type ListIngestionLogsRequestIds []string
 
 type ListIngestionParentItemsInput struct {
-	PackId               int              `json:"packId"`
+	PackId               PackId           `json:"packId"`
 	TenantId             string           `json:"tenantId"`
 	RootIngestionId      string           `json:"rootIngestionId"`
 	PageToken            *string          `json:"pageToken,omitempty"`
@@ -2020,7 +2026,7 @@ type ListPackAnalyticsSummaryInput struct {
 type ListPackAnalyticsSummaryPackIds []int
 
 type ListPackCategoriesInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type ListPackCategoriesResponse struct {
@@ -2030,13 +2036,13 @@ type ListPackCategoriesResponse struct {
 type ListPackCategoriesResponseCategories []PublishingCategory
 
 type ListPackFeaturedDocsInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type ListPackFormulaAnalyticsInput struct {
 	PackFormulaNames []string                     `json:"packFormulaNames,omitempty"`
 	PackFormulaTypes []PackFormulaType            `json:"packFormulaTypes,omitempty"`
-	PackId           int                          `json:"packId"`
+	PackId           PackId                       `json:"packId"`
 	SinceDate        *string                      `json:"sinceDate,omitempty"`
 	UntilDate        *string                      `json:"untilDate,omitempty"`
 	Scale            *AnalyticsScale              `json:"scale,omitempty"`
@@ -2051,7 +2057,7 @@ type ListPackFormulaAnalyticsPackFormulaNames []string
 type ListPackFormulaAnalyticsPackFormulaTypes []PackFormulaType
 
 type ListPackInvitationsInput struct {
-	PackId    int     `json:"packId"`
+	PackId    PackId  `json:"packId"`
 	Limit     *int    `json:"limit,omitempty"`
 	PageToken *string `json:"pageToken,omitempty"`
 }
@@ -2080,7 +2086,7 @@ type ListPackListingsPackIds []int
 type ListPackListingsParentWorkspaceIds []string
 
 type ListPackLogsInput struct {
-	PackId          int                `json:"packId"`
+	PackId          PackId             `json:"packId"`
 	Limit           *int               `json:"limit,omitempty"`
 	PageToken       *string            `json:"pageToken,omitempty"`
 	DocId           string             `json:"docId"`
@@ -2097,8 +2103,8 @@ type ListPackLogsLogTypes []PackLogType
 type ListPackLogsOrder string
 
 const (
-	ListPackLogsOrderASC  ListPackLogsOrder = "asc"
-	ListPackLogsOrderDESC ListPackLogsOrder = "desc"
+	ListPackLogsOrderAsc  ListPackLogsOrder = "asc"
+	ListPackLogsOrderDesc ListPackLogsOrder = "desc"
 )
 
 func (v ListPackLogsOrder) String() string { return string(v) }
@@ -2106,7 +2112,7 @@ func (v ListPackLogsOrder) String() string { return string(v) }
 type ListPackLogsRequestIds []string
 
 type ListPackMakersInput struct {
-	PackId int `json:"packId"`
+	PackId PackId `json:"packId"`
 }
 
 type ListPackMakersResponse struct {
@@ -2116,13 +2122,13 @@ type ListPackMakersResponse struct {
 type ListPackMakersResponseMakers []Maker
 
 type ListPackReleasesInput struct {
-	PackId    int     `json:"packId"`
+	PackId    PackId  `json:"packId"`
 	Limit     *int    `json:"limit,omitempty"`
 	PageToken *string `json:"pageToken,omitempty"`
 }
 
 type ListPackReviewsInput struct {
-	PackId    int               `json:"packId"`
+	PackId    PackId            `json:"packId"`
 	Limit     *int              `json:"limit,omitempty"`
 	PageToken *string           `json:"pageToken,omitempty"`
 	Status    *PackReviewStatus `json:"status,omitempty"`
@@ -2137,7 +2143,7 @@ type ListPackReviewsResponse struct {
 type ListPackReviewsResponseItems []PackReview
 
 type ListPackVersionsInput struct {
-	PackId    int     `json:"packId"`
+	PackId    PackId  `json:"packId"`
 	Limit     *int    `json:"limit,omitempty"`
 	PageToken *string `json:"pageToken,omitempty"`
 }
@@ -2170,7 +2176,7 @@ type ListPageAnalyticsInput struct {
 type ListPageContentContentFormat string
 
 const (
-	ListPageContentContentFormatPLAINTEXT ListPageContentContentFormat = "plainText"
+	ListPageContentContentFormatPlainText ListPageContentContentFormat = "plainText"
 )
 
 func (v ListPageContentContentFormat) String() string { return string(v) }
@@ -2232,12 +2238,12 @@ type ListWorkspaceRoleActivityInput struct {
 type LogLevel string
 
 const (
-	LogLevelERROR   LogLevel = "error"
-	LogLevelWARN    LogLevel = "warn"
-	LogLevelINFO    LogLevel = "info"
-	LogLevelDEBUG   LogLevel = "debug"
-	LogLevelTRACE   LogLevel = "trace"
-	LogLevelUNKNOWN LogLevel = "unknown"
+	LogLevelError   LogLevel = "error"
+	LogLevelWarn    LogLevel = "warn"
+	LogLevelInfo    LogLevel = "info"
+	LogLevelDebug   LogLevel = "debug"
+	LogLevelTrace   LogLevel = "trace"
+	LogLevelUnknown LogLevel = "unknown"
 )
 
 func (v LogLevel) String() string { return string(v) }
@@ -2270,7 +2276,7 @@ type MonthlyDocMakerPackPlanPricing struct {
 type MonthlyDocMakerPackPlanPricingType string
 
 const (
-	MonthlyDocMakerPackPlanPricingTypeMONTHLYDOCMAKER MonthlyDocMakerPackPlanPricingType = "MonthlyDocMaker"
+	MonthlyDocMakerPackPlanPricingTypeMonthlyDocMaker MonthlyDocMakerPackPlanPricingType = "MonthlyDocMaker"
 )
 
 func (v MonthlyDocMakerPackPlanPricingType) String() string { return string(v) }
@@ -2320,7 +2326,7 @@ type NumericColumnFormat struct {
 }
 
 type Pack struct {
-	ID                     float64                           `json:"id"`
+	ID                     PackId                            `json:"id"`
 	LogoUrl                *string                           `json:"logoUrl,omitempty"`
 	CoverUrl               *string                           `json:"coverUrl,omitempty"`
 	ExampleImages          []PackImageFile                   `json:"exampleImages,omitempty"`
@@ -2349,11 +2355,11 @@ type Pack struct {
 type PackAccessType string
 
 const (
-	PackAccessTypeNONE  PackAccessType = "none"
-	PackAccessTypeVIEW  PackAccessType = "view"
-	PackAccessTypeTEST  PackAccessType = "test"
-	PackAccessTypeEDIT  PackAccessType = "edit"
-	PackAccessTypeADMIN PackAccessType = "admin"
+	PackAccessTypeNone  PackAccessType = "none"
+	PackAccessTypeView  PackAccessType = "view"
+	PackAccessTypeTest  PackAccessType = "test"
+	PackAccessTypeEdit  PackAccessType = "edit"
+	PackAccessTypeAdmin PackAccessType = "admin"
 )
 
 func (v PackAccessType) String() string { return string(v) }
@@ -2384,7 +2390,7 @@ type PackAgentRuntimeLogDetails struct {
 type PackAgentRuntimeLogDetailsType string
 
 const (
-	PackAgentRuntimeLogDetailsTypeAGENTRUNTIME PackAgentRuntimeLogDetailsType = "agentRuntime"
+	PackAgentRuntimeLogDetailsTypeAgentRuntime PackAgentRuntimeLogDetailsType = "agentRuntime"
 )
 
 func (v PackAgentRuntimeLogDetailsType) String() string { return string(v) }
@@ -2392,7 +2398,7 @@ func (v PackAgentRuntimeLogDetailsType) String() string { return string(v) }
 type PackAgentRuntimeLogType string
 
 const (
-	PackAgentRuntimeLogTypeAGENTRUNTIME PackAgentRuntimeLogType = "agentRuntime"
+	PackAgentRuntimeLogTypeAgentRuntime PackAgentRuntimeLogType = "agentRuntime"
 )
 
 func (v PackAgentRuntimeLogType) String() string { return string(v) }
@@ -2451,29 +2457,29 @@ type PackAnalyticsMetrics struct {
 type PackAnalyticsOrderBy string
 
 const (
-	PackAnalyticsOrderByDATE                              PackAnalyticsOrderBy = "date"
-	PackAnalyticsOrderByPACKID                            PackAnalyticsOrderBy = "packId"
-	PackAnalyticsOrderByNAME                              PackAnalyticsOrderBy = "name"
-	PackAnalyticsOrderByCREATEDAT                         PackAnalyticsOrderBy = "createdAt"
-	PackAnalyticsOrderByDOCINSTALLS                       PackAnalyticsOrderBy = "docInstalls"
-	PackAnalyticsOrderByWORKSPACEINSTALLS                 PackAnalyticsOrderBy = "workspaceInstalls"
-	PackAnalyticsOrderByNUMFORMULAINVOCATIONS             PackAnalyticsOrderBy = "numFormulaInvocations"
-	PackAnalyticsOrderByNUMACTIONINVOCATIONS              PackAnalyticsOrderBy = "numActionInvocations"
-	PackAnalyticsOrderByNUMSYNCINVOCATIONS                PackAnalyticsOrderBy = "numSyncInvocations"
-	PackAnalyticsOrderByNUMMETADATAINVOCATIONS            PackAnalyticsOrderBy = "numMetadataInvocations"
-	PackAnalyticsOrderByDOCSACTIVELYUSING                 PackAnalyticsOrderBy = "docsActivelyUsing"
-	PackAnalyticsOrderByDOCSACTIVELYUSING7DAY             PackAnalyticsOrderBy = "docsActivelyUsing7Day"
-	PackAnalyticsOrderByDOCSACTIVELYUSING30DAY            PackAnalyticsOrderBy = "docsActivelyUsing30Day"
-	PackAnalyticsOrderByDOCSACTIVELYUSING90DAY            PackAnalyticsOrderBy = "docsActivelyUsing90Day"
-	PackAnalyticsOrderByDOCSACTIVELYUSINGALLTIME          PackAnalyticsOrderBy = "docsActivelyUsingAllTime"
-	PackAnalyticsOrderByWORKSPACESACTIVELYUSING           PackAnalyticsOrderBy = "workspacesActivelyUsing"
-	PackAnalyticsOrderByWORKSPACESACTIVELYUSING7DAY       PackAnalyticsOrderBy = "workspacesActivelyUsing7Day"
-	PackAnalyticsOrderByWORKSPACESACTIVELYUSING30DAY      PackAnalyticsOrderBy = "workspacesActivelyUsing30Day"
-	PackAnalyticsOrderByWORKSPACESACTIVELYUSING90DAY      PackAnalyticsOrderBy = "workspacesActivelyUsing90Day"
-	PackAnalyticsOrderByWORKSPACESACTIVELYUSINGALLTIME    PackAnalyticsOrderBy = "workspacesActivelyUsingAllTime"
-	PackAnalyticsOrderByWORKSPACESWITHACTIVESUBSCRIPTIONS PackAnalyticsOrderBy = "workspacesWithActiveSubscriptions"
-	PackAnalyticsOrderByWORKSPACESWITHSUCCESSFULTRIALS    PackAnalyticsOrderBy = "workspacesWithSuccessfulTrials"
-	PackAnalyticsOrderByREVENUEUSD                        PackAnalyticsOrderBy = "revenueUsd"
+	PackAnalyticsOrderByDate                              PackAnalyticsOrderBy = "date"
+	PackAnalyticsOrderByPackId                            PackAnalyticsOrderBy = "packId"
+	PackAnalyticsOrderByName                              PackAnalyticsOrderBy = "name"
+	PackAnalyticsOrderByCreatedAt                         PackAnalyticsOrderBy = "createdAt"
+	PackAnalyticsOrderByDocInstalls                       PackAnalyticsOrderBy = "docInstalls"
+	PackAnalyticsOrderByWorkspaceInstalls                 PackAnalyticsOrderBy = "workspaceInstalls"
+	PackAnalyticsOrderByNumFormulaInvocations             PackAnalyticsOrderBy = "numFormulaInvocations"
+	PackAnalyticsOrderByNumActionInvocations              PackAnalyticsOrderBy = "numActionInvocations"
+	PackAnalyticsOrderByNumSyncInvocations                PackAnalyticsOrderBy = "numSyncInvocations"
+	PackAnalyticsOrderByNumMetadataInvocations            PackAnalyticsOrderBy = "numMetadataInvocations"
+	PackAnalyticsOrderByDocsActivelyUsing                 PackAnalyticsOrderBy = "docsActivelyUsing"
+	PackAnalyticsOrderByDocsActivelyUsing7Day             PackAnalyticsOrderBy = "docsActivelyUsing7Day"
+	PackAnalyticsOrderByDocsActivelyUsing30Day            PackAnalyticsOrderBy = "docsActivelyUsing30Day"
+	PackAnalyticsOrderByDocsActivelyUsing90Day            PackAnalyticsOrderBy = "docsActivelyUsing90Day"
+	PackAnalyticsOrderByDocsActivelyUsingAllTime          PackAnalyticsOrderBy = "docsActivelyUsingAllTime"
+	PackAnalyticsOrderByWorkspacesActivelyUsing           PackAnalyticsOrderBy = "workspacesActivelyUsing"
+	PackAnalyticsOrderByWorkspacesActivelyUsing7Day       PackAnalyticsOrderBy = "workspacesActivelyUsing7Day"
+	PackAnalyticsOrderByWorkspacesActivelyUsing30Day      PackAnalyticsOrderBy = "workspacesActivelyUsing30Day"
+	PackAnalyticsOrderByWorkspacesActivelyUsing90Day      PackAnalyticsOrderBy = "workspacesActivelyUsing90Day"
+	PackAnalyticsOrderByWorkspacesActivelyUsingAllTime    PackAnalyticsOrderBy = "workspacesActivelyUsingAllTime"
+	PackAnalyticsOrderByWorkspacesWithActiveSubscriptions PackAnalyticsOrderBy = "workspacesWithActiveSubscriptions"
+	PackAnalyticsOrderByWorkspacesWithSuccessfulTrials    PackAnalyticsOrderBy = "workspacesWithSuccessfulTrials"
+	PackAnalyticsOrderByRevenueUsd                        PackAnalyticsOrderBy = "revenueUsd"
 )
 
 func (v PackAnalyticsOrderBy) String() string { return string(v) }
@@ -2487,16 +2493,16 @@ type PackAnalyticsSummary struct {
 type PackAssetType string
 
 const (
-	PackAssetTypeLOGO         PackAssetType = "logo"
-	PackAssetTypeCOVER        PackAssetType = "cover"
-	PackAssetTypeEXAMPLEIMAGE PackAssetType = "exampleImage"
-	PackAssetTypeAGENTIMAGE   PackAssetType = "agentImage"
+	PackAssetTypeLogo         PackAssetType = "logo"
+	PackAssetTypeCover        PackAssetType = "cover"
+	PackAssetTypeExampleImage PackAssetType = "exampleImage"
+	PackAssetTypeAgentImage   PackAssetType = "agentImage"
 )
 
 func (v PackAssetType) String() string { return string(v) }
 
 type PackAssetUploadCompleteInput struct {
-	PackId        int           `json:"packId"`
+	PackId        PackId        `json:"packId"`
 	PackAssetId   string        `json:"packAssetId"`
 	PackAssetType PackAssetType `json:"packAssetType"`
 }
@@ -2529,7 +2535,7 @@ type PackAuthLog struct {
 type PackAuthLogType string
 
 const (
-	PackAuthLogTypeAUTH PackAuthLogType = "auth"
+	PackAuthLogTypeAuth PackAuthLogType = "auth"
 )
 
 func (v PackAuthLogType) String() string { return string(v) }
@@ -2539,9 +2545,9 @@ type PackCategories []PublishingCategory
 type PackCategoryType string
 
 const (
-	PackCategoryTypeCONNECTOR   PackCategoryType = "connector"
-	PackCategoryTypeAGENT       PackCategoryType = "agent"
-	PackCategoryTypeCUSTOMAGENT PackCategoryType = "customAgent"
+	PackCategoryTypeConnector   PackCategoryType = "connector"
+	PackCategoryTypeAgent       PackCategoryType = "agent"
+	PackCategoryTypeCustomAgent PackCategoryType = "customAgent"
 )
 
 func (v PackCategoryType) String() string { return string(v) }
@@ -2564,7 +2570,7 @@ type PackConnectionAwsAccessKeyCredentials struct {
 type PackConnectionAwsAccessKeyCredentialsType string
 
 const (
-	PackConnectionAwsAccessKeyCredentialsTypeAWSACCESSKEY PackConnectionAwsAccessKeyCredentialsType = "awsAccessKey"
+	PackConnectionAwsAccessKeyCredentialsTypeAwsAccessKey PackConnectionAwsAccessKeyCredentialsType = "awsAccessKey"
 )
 
 func (v PackConnectionAwsAccessKeyCredentialsType) String() string { return string(v) }
@@ -2579,7 +2585,7 @@ type PackConnectionAwsAccessKeyMetadata struct {
 type PackConnectionAwsAccessKeyMetadataType string
 
 const (
-	PackConnectionAwsAccessKeyMetadataTypeAWSACCESSKEY PackConnectionAwsAccessKeyMetadataType = "awsAccessKey"
+	PackConnectionAwsAccessKeyMetadataTypeAwsAccessKey PackConnectionAwsAccessKeyMetadataType = "awsAccessKey"
 )
 
 func (v PackConnectionAwsAccessKeyMetadataType) String() string { return string(v) }
@@ -2593,7 +2599,7 @@ type PackConnectionAwsAccessKeyPatch struct {
 type PackConnectionAwsAccessKeyPatchType string
 
 const (
-	PackConnectionAwsAccessKeyPatchTypeAWSACCESSKEY PackConnectionAwsAccessKeyPatchType = "awsAccessKey"
+	PackConnectionAwsAccessKeyPatchTypeAwsAccessKey PackConnectionAwsAccessKeyPatchType = "awsAccessKey"
 )
 
 func (v PackConnectionAwsAccessKeyPatchType) String() string { return string(v) }
@@ -2607,7 +2613,7 @@ type PackConnectionAwsAssumeRoleCredentials struct {
 type PackConnectionAwsAssumeRoleCredentialsType string
 
 const (
-	PackConnectionAwsAssumeRoleCredentialsTypeAWSASSUMEROLE PackConnectionAwsAssumeRoleCredentialsType = "awsAssumeRole"
+	PackConnectionAwsAssumeRoleCredentialsTypeAwsAssumeRole PackConnectionAwsAssumeRoleCredentialsType = "awsAssumeRole"
 )
 
 func (v PackConnectionAwsAssumeRoleCredentialsType) String() string { return string(v) }
@@ -2622,7 +2628,7 @@ type PackConnectionAwsAssumeRoleMetadata struct {
 type PackConnectionAwsAssumeRoleMetadataType string
 
 const (
-	PackConnectionAwsAssumeRoleMetadataTypeAWSASSUMEROLE PackConnectionAwsAssumeRoleMetadataType = "awsAssumeRole"
+	PackConnectionAwsAssumeRoleMetadataTypeAwsAssumeRole PackConnectionAwsAssumeRoleMetadataType = "awsAssumeRole"
 )
 
 func (v PackConnectionAwsAssumeRoleMetadataType) String() string { return string(v) }
@@ -2636,7 +2642,7 @@ type PackConnectionAwsAssumeRolePatch struct {
 type PackConnectionAwsAssumeRolePatchType string
 
 const (
-	PackConnectionAwsAssumeRolePatchTypeAWSASSUMEROLE PackConnectionAwsAssumeRolePatchType = "awsAssumeRole"
+	PackConnectionAwsAssumeRolePatchTypeAwsAssumeRole PackConnectionAwsAssumeRolePatchType = "awsAssumeRole"
 )
 
 func (v PackConnectionAwsAssumeRolePatchType) String() string { return string(v) }
@@ -2656,7 +2662,7 @@ type PackConnectionCustomCredentialsParamsMember struct {
 type PackConnectionCustomCredentialsType string
 
 const (
-	PackConnectionCustomCredentialsTypeCUSTOM PackConnectionCustomCredentialsType = "custom"
+	PackConnectionCustomCredentialsTypeCustom PackConnectionCustomCredentialsType = "custom"
 )
 
 func (v PackConnectionCustomCredentialsType) String() string { return string(v) }
@@ -2680,7 +2686,7 @@ type PackConnectionCustomMetadataPresetKeys []string
 type PackConnectionCustomMetadataType string
 
 const (
-	PackConnectionCustomMetadataTypeCUSTOM PackConnectionCustomMetadataType = "custom"
+	PackConnectionCustomMetadataTypeCustom PackConnectionCustomMetadataType = "custom"
 )
 
 func (v PackConnectionCustomMetadataType) String() string { return string(v) }
@@ -2700,7 +2706,7 @@ type PackConnectionCustomPatchParamsToPatchMember struct {
 type PackConnectionCustomPatchType string
 
 const (
-	PackConnectionCustomPatchTypeCUSTOM PackConnectionCustomPatchType = "custom"
+	PackConnectionCustomPatchTypeCustom PackConnectionCustomPatchType = "custom"
 )
 
 func (v PackConnectionCustomPatchType) String() string { return string(v) }
@@ -2713,7 +2719,7 @@ type PackConnectionGoogleServiceAccountCredentials struct {
 type PackConnectionGoogleServiceAccountCredentialsType string
 
 const (
-	PackConnectionGoogleServiceAccountCredentialsTypeGOOGLESERVICEACCOUNT PackConnectionGoogleServiceAccountCredentialsType = "googleServiceAccount"
+	PackConnectionGoogleServiceAccountCredentialsTypeGoogleServiceAccount PackConnectionGoogleServiceAccountCredentialsType = "googleServiceAccount"
 )
 
 func (v PackConnectionGoogleServiceAccountCredentialsType) String() string { return string(v) }
@@ -2726,7 +2732,7 @@ type PackConnectionGoogleServiceAccountMetadata struct {
 type PackConnectionGoogleServiceAccountMetadataType string
 
 const (
-	PackConnectionGoogleServiceAccountMetadataTypeGOOGLESERVICEACCOUNT PackConnectionGoogleServiceAccountMetadataType = "googleServiceAccount"
+	PackConnectionGoogleServiceAccountMetadataTypeGoogleServiceAccount PackConnectionGoogleServiceAccountMetadataType = "googleServiceAccount"
 )
 
 func (v PackConnectionGoogleServiceAccountMetadataType) String() string { return string(v) }
@@ -2739,7 +2745,7 @@ type PackConnectionGoogleServiceAccountPatch struct {
 type PackConnectionGoogleServiceAccountPatchType string
 
 const (
-	PackConnectionGoogleServiceAccountPatchTypeGOOGLESERVICEACCOUNT PackConnectionGoogleServiceAccountPatchType = "googleServiceAccount"
+	PackConnectionGoogleServiceAccountPatchTypeGoogleServiceAccount PackConnectionGoogleServiceAccountPatchType = "googleServiceAccount"
 )
 
 func (v PackConnectionGoogleServiceAccountPatchType) String() string { return string(v) }
@@ -2752,7 +2758,7 @@ type PackConnectionHeaderCredentials struct {
 type PackConnectionHeaderCredentialsType string
 
 const (
-	PackConnectionHeaderCredentialsTypeHEADER PackConnectionHeaderCredentialsType = "header"
+	PackConnectionHeaderCredentialsTypeHeader PackConnectionHeaderCredentialsType = "header"
 )
 
 func (v PackConnectionHeaderCredentialsType) String() string { return string(v) }
@@ -2767,7 +2773,7 @@ type PackConnectionHeaderMetadata struct {
 type PackConnectionHeaderMetadataType string
 
 const (
-	PackConnectionHeaderMetadataTypeHEADER PackConnectionHeaderMetadataType = "header"
+	PackConnectionHeaderMetadataTypeHeader PackConnectionHeaderMetadataType = "header"
 )
 
 func (v PackConnectionHeaderMetadataType) String() string { return string(v) }
@@ -2780,7 +2786,7 @@ type PackConnectionHeaderPatch struct {
 type PackConnectionHeaderPatchType string
 
 const (
-	PackConnectionHeaderPatchTypeHEADER PackConnectionHeaderPatchType = "header"
+	PackConnectionHeaderPatchTypeHeader PackConnectionHeaderPatchType = "header"
 )
 
 func (v PackConnectionHeaderPatchType) String() string { return string(v) }
@@ -2794,7 +2800,7 @@ type PackConnectionHttpBasicCredentials struct {
 type PackConnectionHttpBasicCredentialsType string
 
 const (
-	PackConnectionHttpBasicCredentialsTypeHTTPBASIC PackConnectionHttpBasicCredentialsType = "httpBasic"
+	PackConnectionHttpBasicCredentialsTypeHttpBasic PackConnectionHttpBasicCredentialsType = "httpBasic"
 )
 
 func (v PackConnectionHttpBasicCredentialsType) String() string { return string(v) }
@@ -2808,7 +2814,7 @@ type PackConnectionHttpBasicMetadata struct {
 type PackConnectionHttpBasicMetadataType string
 
 const (
-	PackConnectionHttpBasicMetadataTypeHTTPBASIC PackConnectionHttpBasicMetadataType = "httpBasic"
+	PackConnectionHttpBasicMetadataTypeHttpBasic PackConnectionHttpBasicMetadataType = "httpBasic"
 )
 
 func (v PackConnectionHttpBasicMetadataType) String() string { return string(v) }
@@ -2822,7 +2828,7 @@ type PackConnectionHttpBasicPatch struct {
 type PackConnectionHttpBasicPatchType string
 
 const (
-	PackConnectionHttpBasicPatchTypeHTTPBASIC PackConnectionHttpBasicPatchType = "httpBasic"
+	PackConnectionHttpBasicPatchTypeHttpBasic PackConnectionHttpBasicPatchType = "httpBasic"
 )
 
 func (v PackConnectionHttpBasicPatchType) String() string { return string(v) }
@@ -2842,7 +2848,7 @@ type PackConnectionMultiHeaderCredentialsTokensMember struct {
 type PackConnectionMultiHeaderCredentialsType string
 
 const (
-	PackConnectionMultiHeaderCredentialsTypeMULTIHEADER PackConnectionMultiHeaderCredentialsType = "multiHeader"
+	PackConnectionMultiHeaderCredentialsTypeMultiHeader PackConnectionMultiHeaderCredentialsType = "multiHeader"
 )
 
 func (v PackConnectionMultiHeaderCredentialsType) String() string { return string(v) }
@@ -2871,7 +2877,7 @@ type PackConnectionMultiHeaderMetadataPresetsMember struct {
 type PackConnectionMultiHeaderMetadataType string
 
 const (
-	PackConnectionMultiHeaderMetadataTypeMULTIHEADER PackConnectionMultiHeaderMetadataType = "multiHeader"
+	PackConnectionMultiHeaderMetadataTypeMultiHeader PackConnectionMultiHeaderMetadataType = "multiHeader"
 )
 
 func (v PackConnectionMultiHeaderMetadataType) String() string { return string(v) }
@@ -2891,7 +2897,7 @@ type PackConnectionMultiHeaderPatchTokensToPatchMember struct {
 type PackConnectionMultiHeaderPatchType string
 
 const (
-	PackConnectionMultiHeaderPatchTypeMULTIHEADER PackConnectionMultiHeaderPatchType = "multiHeader"
+	PackConnectionMultiHeaderPatchTypeMultiHeader PackConnectionMultiHeaderPatchType = "multiHeader"
 )
 
 func (v PackConnectionMultiHeaderPatchType) String() string { return string(v) }
@@ -2912,7 +2918,7 @@ type PackConnectionOauth2ClientCredentialsMetadata struct {
 type PackConnectionOauth2ClientCredentialsMetadataType string
 
 const (
-	PackConnectionOauth2ClientCredentialsMetadataTypeOAuth2CLIENTCREDENTIALS PackConnectionOauth2ClientCredentialsMetadataType = "oauth2ClientCredentials"
+	PackConnectionOauth2ClientCredentialsMetadataTypeOAuth2ClientCredentials PackConnectionOauth2ClientCredentialsMetadataType = "oauth2ClientCredentials"
 )
 
 func (v PackConnectionOauth2ClientCredentialsMetadataType) String() string { return string(v) }
@@ -2926,7 +2932,7 @@ type PackConnectionOauth2ClientCredentialsPatch struct {
 type PackConnectionOauth2ClientCredentialsPatchType string
 
 const (
-	PackConnectionOauth2ClientCredentialsPatchTypeOAuth2CLIENTCREDENTIALS PackConnectionOauth2ClientCredentialsPatchType = "oauth2ClientCredentials"
+	PackConnectionOauth2ClientCredentialsPatchTypeOAuth2ClientCredentials PackConnectionOauth2ClientCredentialsPatchType = "oauth2ClientCredentials"
 )
 
 func (v PackConnectionOauth2ClientCredentialsPatchType) String() string { return string(v) }
@@ -2934,7 +2940,7 @@ func (v PackConnectionOauth2ClientCredentialsPatchType) String() string { return
 type PackConnectionOauth2ClientCredentialsType string
 
 const (
-	PackConnectionOauth2ClientCredentialsTypeOAuth2CLIENTCREDENTIALS PackConnectionOauth2ClientCredentialsType = "oauth2ClientCredentials"
+	PackConnectionOauth2ClientCredentialsTypeOAuth2ClientCredentials PackConnectionOauth2ClientCredentialsType = "oauth2ClientCredentials"
 )
 
 func (v PackConnectionOauth2ClientCredentialsType) String() string { return string(v) }
@@ -2942,15 +2948,15 @@ func (v PackConnectionOauth2ClientCredentialsType) String() string { return stri
 type PackConnectionType string
 
 const (
-	PackConnectionTypeHEADER                  PackConnectionType = "header"
-	PackConnectionTypeMULTIHEADER             PackConnectionType = "multiHeader"
-	PackConnectionTypeURLPARAM                PackConnectionType = "urlParam"
-	PackConnectionTypeHTTPBASIC               PackConnectionType = "httpBasic"
-	PackConnectionTypeCUSTOM                  PackConnectionType = "custom"
-	PackConnectionTypeOAuth2CLIENTCREDENTIALS PackConnectionType = "oauth2ClientCredentials"
-	PackConnectionTypeGOOGLESERVICEACCOUNT    PackConnectionType = "googleServiceAccount"
-	PackConnectionTypeAWSASSUMEROLE           PackConnectionType = "awsAssumeRole"
-	PackConnectionTypeAWSACCESSKEY            PackConnectionType = "awsAccessKey"
+	PackConnectionTypeHeader                  PackConnectionType = "header"
+	PackConnectionTypeMultiHeader             PackConnectionType = "multiHeader"
+	PackConnectionTypeUrlParam                PackConnectionType = "urlParam"
+	PackConnectionTypeHttpBasic               PackConnectionType = "httpBasic"
+	PackConnectionTypeCustom                  PackConnectionType = "custom"
+	PackConnectionTypeOAuth2ClientCredentials PackConnectionType = "oauth2ClientCredentials"
+	PackConnectionTypeGoogleServiceAccount    PackConnectionType = "googleServiceAccount"
+	PackConnectionTypeAwsAssumeRole           PackConnectionType = "awsAssumeRole"
+	PackConnectionTypeAwsAccessKey            PackConnectionType = "awsAccessKey"
 )
 
 func (v PackConnectionType) String() string { return string(v) }
@@ -2970,7 +2976,7 @@ type PackConnectionUrlParamCredentialsParamsMember struct {
 type PackConnectionUrlParamCredentialsType string
 
 const (
-	PackConnectionUrlParamCredentialsTypeURLPARAM PackConnectionUrlParamCredentialsType = "urlParam"
+	PackConnectionUrlParamCredentialsTypeUrlParam PackConnectionUrlParamCredentialsType = "urlParam"
 )
 
 func (v PackConnectionUrlParamCredentialsType) String() string { return string(v) }
@@ -2994,7 +3000,7 @@ type PackConnectionUrlParamMetadataPresetKeys []string
 type PackConnectionUrlParamMetadataType string
 
 const (
-	PackConnectionUrlParamMetadataTypeURLPARAM PackConnectionUrlParamMetadataType = "urlParam"
+	PackConnectionUrlParamMetadataTypeUrlParam PackConnectionUrlParamMetadataType = "urlParam"
 )
 
 func (v PackConnectionUrlParamMetadataType) String() string { return string(v) }
@@ -3014,7 +3020,7 @@ type PackConnectionUrlParamPatchParamsToPatchMember struct {
 type PackConnectionUrlParamPatchType string
 
 const (
-	PackConnectionUrlParamPatchTypeURLPARAM PackConnectionUrlParamPatchType = "urlParam"
+	PackConnectionUrlParamPatchTypeUrlParam PackConnectionUrlParamPatchType = "urlParam"
 )
 
 func (v PackConnectionUrlParamPatchType) String() string { return string(v) }
@@ -3029,7 +3035,7 @@ type PackCustomLog struct {
 type PackCustomLogType string
 
 const (
-	PackCustomLogTypeCUSTOM PackCustomLogType = "custom"
+	PackCustomLogTypeCustom PackCustomLogType = "custom"
 )
 
 func (v PackCustomLogType) String() string { return string(v) }
@@ -3037,12 +3043,12 @@ func (v PackCustomLogType) String() string { return string(v) }
 type PackDiscoverability string
 
 const (
-	PackDiscoverabilityPUBLIC               PackDiscoverability = "public"
-	PackDiscoverabilityNOMOSORGANIZATION    PackDiscoverability = "nomosOrganization"
-	PackDiscoverabilityGROUP                PackDiscoverability = "group"
-	PackDiscoverabilityGRAMMARLYINSTITUTION PackDiscoverability = "grammarlyInstitution"
-	PackDiscoverabilityWORKSPACE            PackDiscoverability = "workspace"
-	PackDiscoverabilityPRIVATE              PackDiscoverability = "private"
+	PackDiscoverabilityPublic               PackDiscoverability = "public"
+	PackDiscoverabilityNomosOrganization    PackDiscoverability = "nomosOrganization"
+	PackDiscoverabilityGroup                PackDiscoverability = "group"
+	PackDiscoverabilityGrammarlyInstitution PackDiscoverability = "grammarlyInstitution"
+	PackDiscoverabilityWorkspace            PackDiscoverability = "workspace"
+	PackDiscoverabilityPrivate              PackDiscoverability = "private"
 )
 
 func (v PackDiscoverability) String() string { return string(v) }
@@ -3050,8 +3056,8 @@ func (v PackDiscoverability) String() string { return string(v) }
 type PackEntrypoint string
 
 const (
-	PackEntrypointGO   PackEntrypoint = "go"
-	PackEntrypointDOCS PackEntrypoint = "docs"
+	PackEntrypointGo   PackEntrypoint = "go"
+	PackEntrypointDocs PackEntrypoint = "docs"
 )
 
 func (v PackEntrypoint) String() string { return string(v) }
@@ -3097,7 +3103,7 @@ type PackFetcherLogDetails struct {
 type PackFetcherLogDetailsType string
 
 const (
-	PackFetcherLogDetailsTypeFETCHER PackFetcherLogDetailsType = "fetcher"
+	PackFetcherLogDetailsTypeFetcher PackFetcherLogDetailsType = "fetcher"
 )
 
 func (v PackFetcherLogDetailsType) String() string { return string(v) }
@@ -3105,12 +3111,12 @@ func (v PackFetcherLogDetailsType) String() string { return string(v) }
 type PackFetcherLogMethod string
 
 const (
-	PackFetcherLogMethodGET    PackFetcherLogMethod = "GET"
-	PackFetcherLogMethodPOST   PackFetcherLogMethod = "POST"
-	PackFetcherLogMethodPUT    PackFetcherLogMethod = "PUT"
-	PackFetcherLogMethodDELETE PackFetcherLogMethod = "DELETE"
-	PackFetcherLogMethodPATCH  PackFetcherLogMethod = "PATCH"
-	PackFetcherLogMethodHEAD   PackFetcherLogMethod = "HEAD"
+	PackFetcherLogMethodGet    PackFetcherLogMethod = "GET"
+	PackFetcherLogMethodPost   PackFetcherLogMethod = "POST"
+	PackFetcherLogMethodPut    PackFetcherLogMethod = "PUT"
+	PackFetcherLogMethodDelete PackFetcherLogMethod = "DELETE"
+	PackFetcherLogMethodPatch  PackFetcherLogMethod = "PATCH"
+	PackFetcherLogMethodHead   PackFetcherLogMethod = "HEAD"
 )
 
 func (v PackFetcherLogMethod) String() string { return string(v) }
@@ -3118,7 +3124,7 @@ func (v PackFetcherLogMethod) String() string { return string(v) }
 type PackFetcherLogType string
 
 const (
-	PackFetcherLogTypeFETCHER PackFetcherLogType = "fetcher"
+	PackFetcherLogTypeFetcher PackFetcherLogType = "fetcher"
 )
 
 func (v PackFetcherLogType) String() string { return string(v) }
@@ -3168,23 +3174,23 @@ type PackFormulaAnalyticsMetrics struct {
 type PackFormulaAnalyticsOrderBy string
 
 const (
-	PackFormulaAnalyticsOrderByDATE                           PackFormulaAnalyticsOrderBy = "date"
-	PackFormulaAnalyticsOrderByFORMULANAME                    PackFormulaAnalyticsOrderBy = "formulaName"
-	PackFormulaAnalyticsOrderByFORMULATYPE                    PackFormulaAnalyticsOrderBy = "formulaType"
-	PackFormulaAnalyticsOrderByFORMULAINVOCATIONS             PackFormulaAnalyticsOrderBy = "formulaInvocations"
-	PackFormulaAnalyticsOrderByMEDIANLATENCYMS                PackFormulaAnalyticsOrderBy = "medianLatencyMs"
-	PackFormulaAnalyticsOrderByMEDIANRESPONSESIZEBYTES        PackFormulaAnalyticsOrderBy = "medianResponseSizeBytes"
-	PackFormulaAnalyticsOrderByERRORS                         PackFormulaAnalyticsOrderBy = "errors"
-	PackFormulaAnalyticsOrderByDOCSACTIVELYUSING              PackFormulaAnalyticsOrderBy = "docsActivelyUsing"
-	PackFormulaAnalyticsOrderByDOCSACTIVELYUSING7DAY          PackFormulaAnalyticsOrderBy = "docsActivelyUsing7Day"
-	PackFormulaAnalyticsOrderByDOCSACTIVELYUSING30DAY         PackFormulaAnalyticsOrderBy = "docsActivelyUsing30Day"
-	PackFormulaAnalyticsOrderByDOCSACTIVELYUSING90DAY         PackFormulaAnalyticsOrderBy = "docsActivelyUsing90Day"
-	PackFormulaAnalyticsOrderByDOCSACTIVELYUSINGALLTIME       PackFormulaAnalyticsOrderBy = "docsActivelyUsingAllTime"
-	PackFormulaAnalyticsOrderByWORKSPACESACTIVELYUSING        PackFormulaAnalyticsOrderBy = "workspacesActivelyUsing"
-	PackFormulaAnalyticsOrderByWORKSPACESACTIVELYUSING7DAY    PackFormulaAnalyticsOrderBy = "workspacesActivelyUsing7Day"
-	PackFormulaAnalyticsOrderByWORKSPACESACTIVELYUSING30DAY   PackFormulaAnalyticsOrderBy = "workspacesActivelyUsing30Day"
-	PackFormulaAnalyticsOrderByWORKSPACESACTIVELYUSING90DAY   PackFormulaAnalyticsOrderBy = "workspacesActivelyUsing90Day"
-	PackFormulaAnalyticsOrderByWORKSPACESACTIVELYUSINGALLTIME PackFormulaAnalyticsOrderBy = "workspacesActivelyUsingAllTime"
+	PackFormulaAnalyticsOrderByDate                           PackFormulaAnalyticsOrderBy = "date"
+	PackFormulaAnalyticsOrderByFormulaName                    PackFormulaAnalyticsOrderBy = "formulaName"
+	PackFormulaAnalyticsOrderByFormulaType                    PackFormulaAnalyticsOrderBy = "formulaType"
+	PackFormulaAnalyticsOrderByFormulaInvocations             PackFormulaAnalyticsOrderBy = "formulaInvocations"
+	PackFormulaAnalyticsOrderByMedianLatencyMs                PackFormulaAnalyticsOrderBy = "medianLatencyMs"
+	PackFormulaAnalyticsOrderByMedianResponseSizeBytes        PackFormulaAnalyticsOrderBy = "medianResponseSizeBytes"
+	PackFormulaAnalyticsOrderByErrors                         PackFormulaAnalyticsOrderBy = "errors"
+	PackFormulaAnalyticsOrderByDocsActivelyUsing              PackFormulaAnalyticsOrderBy = "docsActivelyUsing"
+	PackFormulaAnalyticsOrderByDocsActivelyUsing7Day          PackFormulaAnalyticsOrderBy = "docsActivelyUsing7Day"
+	PackFormulaAnalyticsOrderByDocsActivelyUsing30Day         PackFormulaAnalyticsOrderBy = "docsActivelyUsing30Day"
+	PackFormulaAnalyticsOrderByDocsActivelyUsing90Day         PackFormulaAnalyticsOrderBy = "docsActivelyUsing90Day"
+	PackFormulaAnalyticsOrderByDocsActivelyUsingAllTime       PackFormulaAnalyticsOrderBy = "docsActivelyUsingAllTime"
+	PackFormulaAnalyticsOrderByWorkspacesActivelyUsing        PackFormulaAnalyticsOrderBy = "workspacesActivelyUsing"
+	PackFormulaAnalyticsOrderByWorkspacesActivelyUsing7Day    PackFormulaAnalyticsOrderBy = "workspacesActivelyUsing7Day"
+	PackFormulaAnalyticsOrderByWorkspacesActivelyUsing30Day   PackFormulaAnalyticsOrderBy = "workspacesActivelyUsing30Day"
+	PackFormulaAnalyticsOrderByWorkspacesActivelyUsing90Day   PackFormulaAnalyticsOrderBy = "workspacesActivelyUsing90Day"
+	PackFormulaAnalyticsOrderByWorkspacesActivelyUsingAllTime PackFormulaAnalyticsOrderBy = "workspacesActivelyUsingAllTime"
 )
 
 func (v PackFormulaAnalyticsOrderBy) String() string { return string(v) }
@@ -3197,10 +3203,10 @@ type PackFormulaIdentifier struct {
 type PackFormulaType string
 
 const (
-	PackFormulaTypeACTION   PackFormulaType = "action"
-	PackFormulaTypeFORMULA  PackFormulaType = "formula"
-	PackFormulaTypeSYNC     PackFormulaType = "sync"
-	PackFormulaTypeMETADATA PackFormulaType = "metadata"
+	PackFormulaTypeAction   PackFormulaType = "action"
+	PackFormulaTypeFormula  PackFormulaType = "formula"
+	PackFormulaTypeSync     PackFormulaType = "sync"
+	PackFormulaTypeMetadata PackFormulaType = "metadata"
 )
 
 func (v PackFormulaType) String() string { return string(v) }
@@ -3212,7 +3218,7 @@ type PackGlobalPrincipal struct {
 type PackGlobalPrincipalType string
 
 const (
-	PackGlobalPrincipalTypeWORLDWIDE PackGlobalPrincipalType = "worldwide"
+	PackGlobalPrincipalTypeWorldwide PackGlobalPrincipalType = "worldwide"
 )
 
 func (v PackGlobalPrincipalType) String() string { return string(v) }
@@ -3225,7 +3231,7 @@ type PackGrammarlyInstitutionPrincipal struct {
 type PackGrammarlyInstitutionPrincipalType string
 
 const (
-	PackGrammarlyInstitutionPrincipalTypeGRAMMARLYINSTITUTION PackGrammarlyInstitutionPrincipalType = "grammarlyInstitution"
+	PackGrammarlyInstitutionPrincipalTypeGrammarlyInstitution PackGrammarlyInstitutionPrincipalType = "grammarlyInstitution"
 )
 
 func (v PackGrammarlyInstitutionPrincipalType) String() string { return string(v) }
@@ -3239,10 +3245,12 @@ type PackGroupPrincipal struct {
 type PackGroupPrincipalType string
 
 const (
-	PackGroupPrincipalTypeGROUP PackGroupPrincipalType = "group"
+	PackGroupPrincipalTypeGroup PackGroupPrincipalType = "group"
 )
 
 func (v PackGroupPrincipalType) String() string { return string(v) }
+
+type PackId string
 
 type PackImageFile struct {
 	Filename string  `json:"filename"`
@@ -3262,7 +3270,7 @@ type PackIngestionDebugLog struct {
 type PackIngestionDebugLogType string
 
 const (
-	PackIngestionDebugLogTypeINGESTIONDEBUG PackIngestionDebugLogType = "ingestionDebug"
+	PackIngestionDebugLogTypeIngestionDebug PackIngestionDebugLogType = "ingestionDebug"
 )
 
 func (v PackIngestionDebugLogType) String() string { return string(v) }
@@ -3277,7 +3285,7 @@ type PackIngestionLifecycleLog struct {
 type PackIngestionLifecycleLogType string
 
 const (
-	PackIngestionLifecycleLogTypeINGESTIONLIFECYCLE PackIngestionLifecycleLogType = "ingestionLifecycle"
+	PackIngestionLifecycleLogTypeIngestionLifecycle PackIngestionLifecycleLogType = "ingestionLifecycle"
 )
 
 func (v PackIngestionLifecycleLogType) String() string { return string(v) }
@@ -3292,14 +3300,14 @@ type PackInternalLog struct {
 type PackInternalLogType string
 
 const (
-	PackInternalLogTypeINTERNAL PackInternalLogType = "internal"
+	PackInternalLogTypeInternal PackInternalLogType = "internal"
 )
 
 func (v PackInternalLogType) String() string { return string(v) }
 
 type PackInvitation struct {
 	InvitationId  string         `json:"invitationId"`
-	PackId        float64        `json:"packId"`
+	PackId        PackId         `json:"packId"`
 	InviteeEmail  string         `json:"inviteeEmail"`
 	InviterUserId int            `json:"inviterUserId"`
 	Access        PackAccessType `json:"access"`
@@ -3364,7 +3372,7 @@ type PackInvocationLogDetailsResult struct {
 type PackInvocationLogDetailsType string
 
 const (
-	PackInvocationLogDetailsTypeINVOCATION PackInvocationLogDetailsType = "invocation"
+	PackInvocationLogDetailsTypeInvocation PackInvocationLogDetailsType = "invocation"
 )
 
 func (v PackInvocationLogDetailsType) String() string { return string(v) }
@@ -3377,13 +3385,13 @@ type PackInvocationLogError struct {
 type PackInvocationLogType string
 
 const (
-	PackInvocationLogTypeINVOCATION PackInvocationLogType = "invocation"
+	PackInvocationLogTypeInvocation PackInvocationLogType = "invocation"
 )
 
 func (v PackInvocationLogType) String() string { return string(v) }
 
 type PackListing struct {
-	PackId                 float64                   `json:"packId"`
+	PackId                 PackId                    `json:"packId"`
 	PackVersion            string                    `json:"packVersion"`
 	ReleaseId              *float64                  `json:"releaseId,omitempty"`
 	LastReleasedAt         *string                   `json:"lastReleasedAt,omitempty"`
@@ -3433,7 +3441,7 @@ type PackListingAgentImages []PackImageFile
 type PackListingCategories []PublishingCategory
 
 type PackListingDetail struct {
-	PackId                 float64                   `json:"packId"`
+	PackId                 PackId                    `json:"packId"`
 	PackVersion            string                    `json:"packVersion"`
 	ReleaseId              *float64                  `json:"releaseId,omitempty"`
 	LastReleasedAt         *string                   `json:"lastReleasedAt,omitempty"`
@@ -3530,8 +3538,8 @@ type PackListingExampleImages []PackImageFile
 type PackListingInstallContextType string
 
 const (
-	PackListingInstallContextTypeWORKSPACE PackListingInstallContextType = "workspace"
-	PackListingInstallContextTypeDOC       PackListingInstallContextType = "doc"
+	PackListingInstallContextTypeWorkspace PackListingInstallContextType = "workspace"
+	PackListingInstallContextTypeDoc       PackListingInstallContextType = "doc"
 )
 
 func (v PackListingInstallContextType) String() string { return string(v) }
@@ -3549,11 +3557,11 @@ type PackListingMakers []MakerSummary
 type PackListingsSortBy string
 
 const (
-	PackListingsSortByPACKID                PackListingsSortBy = "packId"
-	PackListingsSortByNAME                  PackListingsSortBy = "name"
-	PackListingsSortByPACKVERSION           PackListingsSortBy = "packVersion"
-	PackListingsSortByPACKVERSIONMODIFIEDAT PackListingsSortBy = "packVersionModifiedAt"
-	PackListingsSortByAGENTDIRECTORYSORT    PackListingsSortBy = "agentDirectorySort"
+	PackListingsSortByPackId                PackListingsSortBy = "packId"
+	PackListingsSortByName                  PackListingsSortBy = "name"
+	PackListingsSortByPackVersion           PackListingsSortBy = "packVersion"
+	PackListingsSortByPackVersionModifiedAt PackListingsSortBy = "packVersionModifiedAt"
+	PackListingsSortByAgentDirectorySort    PackListingsSortBy = "agentDirectorySort"
 )
 
 func (v PackListingsSortBy) String() string { return string(v) }
@@ -3617,23 +3625,23 @@ type PackLogDetails struct {
 type PackLogRequestType string
 
 const (
-	PackLogRequestTypeUNKNOWN                                      PackLogRequestType = "unknown"
-	PackLogRequestTypeCONNECTIONNAMEMETADATAREQUEST                PackLogRequestType = "connectionNameMetadataRequest"
-	PackLogRequestTypePARAMETERAUTOCOMPLETEMETADATAREQUEST         PackLogRequestType = "parameterAutocompleteMetadataRequest"
-	PackLogRequestTypePOSTAUTHSETUPMETADATAREQUEST                 PackLogRequestType = "postAuthSetupMetadataRequest"
-	PackLogRequestTypePROPERTYOPTIONSMETADATAREQUEST               PackLogRequestType = "propertyOptionsMetadataRequest"
-	PackLogRequestTypeGETSYNCTABLESCHEMAMETADATAREQUEST            PackLogRequestType = "getSyncTableSchemaMetadataRequest"
-	PackLogRequestTypeGETDYNAMICSYNCTABLENAMEMETADATAREQUEST       PackLogRequestType = "getDynamicSyncTableNameMetadataRequest"
-	PackLogRequestTypeLISTSYNCTABLEDYNAMICURLSMETADATAREQUEST      PackLogRequestType = "listSyncTableDynamicUrlsMetadataRequest"
-	PackLogRequestTypeSEARCHSYNCTABLEDYNAMICURLSMETADATAREQUEST    PackLogRequestType = "searchSyncTableDynamicUrlsMetadataRequest"
-	PackLogRequestTypeGETDYNAMICSYNCTABLEDISPLAYURLMETADATAREQUEST PackLogRequestType = "getDynamicSyncTableDisplayUrlMetadataRequest"
-	PackLogRequestTypeGETIDENTIFIERSFORCONNECTIONREQUEST           PackLogRequestType = "getIdentifiersForConnectionRequest"
-	PackLogRequestTypeINVOKEFORMULAREQUEST                         PackLogRequestType = "invokeFormulaRequest"
-	PackLogRequestTypeINVOKESYNCFORMULAREQUEST                     PackLogRequestType = "invokeSyncFormulaRequest"
-	PackLogRequestTypeINVOKESYNCUPDATEFORMULAREQUEST               PackLogRequestType = "invokeSyncUpdateFormulaRequest"
-	PackLogRequestTypeINVOKEEXECUTEGETPERMISSIONSREQUEST           PackLogRequestType = "invokeExecuteGetPermissionsRequest"
-	PackLogRequestTypeVALIDATEPARAMETERSMETADATAREQUEST            PackLogRequestType = "validateParametersMetadataRequest"
-	PackLogRequestTypeMCP                                          PackLogRequestType = "mcp"
+	PackLogRequestTypeUnknown                                      PackLogRequestType = "unknown"
+	PackLogRequestTypeConnectionNameMetadataRequest                PackLogRequestType = "connectionNameMetadataRequest"
+	PackLogRequestTypeParameterAutocompleteMetadataRequest         PackLogRequestType = "parameterAutocompleteMetadataRequest"
+	PackLogRequestTypePostAuthSetupMetadataRequest                 PackLogRequestType = "postAuthSetupMetadataRequest"
+	PackLogRequestTypePropertyOptionsMetadataRequest               PackLogRequestType = "propertyOptionsMetadataRequest"
+	PackLogRequestTypeGetSyncTableSchemaMetadataRequest            PackLogRequestType = "getSyncTableSchemaMetadataRequest"
+	PackLogRequestTypeGetDynamicSyncTableNameMetadataRequest       PackLogRequestType = "getDynamicSyncTableNameMetadataRequest"
+	PackLogRequestTypeListSyncTableDynamicUrlsMetadataRequest      PackLogRequestType = "listSyncTableDynamicUrlsMetadataRequest"
+	PackLogRequestTypeSearchSyncTableDynamicUrlsMetadataRequest    PackLogRequestType = "searchSyncTableDynamicUrlsMetadataRequest"
+	PackLogRequestTypeGetDynamicSyncTableDisplayUrlMetadataRequest PackLogRequestType = "getDynamicSyncTableDisplayUrlMetadataRequest"
+	PackLogRequestTypeGetIdentifiersForConnectionRequest           PackLogRequestType = "getIdentifiersForConnectionRequest"
+	PackLogRequestTypeInvokeFormulaRequest                         PackLogRequestType = "invokeFormulaRequest"
+	PackLogRequestTypeInvokeSyncFormulaRequest                     PackLogRequestType = "invokeSyncFormulaRequest"
+	PackLogRequestTypeInvokeSyncUpdateFormulaRequest               PackLogRequestType = "invokeSyncUpdateFormulaRequest"
+	PackLogRequestTypeInvokeExecuteGetPermissionsRequest           PackLogRequestType = "invokeExecuteGetPermissionsRequest"
+	PackLogRequestTypeValidateParametersMetadataRequest            PackLogRequestType = "validateParametersMetadataRequest"
+	PackLogRequestTypeMcp                                          PackLogRequestType = "mcp"
 )
 
 func (v PackLogRequestType) String() string { return string(v) }
@@ -3641,15 +3649,15 @@ func (v PackLogRequestType) String() string { return string(v) }
 type PackLogType string
 
 const (
-	PackLogTypeCUSTOM             PackLogType = "custom"
-	PackLogTypeFETCHER            PackLogType = "fetcher"
-	PackLogTypeINVOCATION         PackLogType = "invocation"
-	PackLogTypeINTERNAL           PackLogType = "internal"
-	PackLogTypeAUTH               PackLogType = "auth"
-	PackLogTypeINGESTIONLIFECYCLE PackLogType = "ingestionLifecycle"
-	PackLogTypeINGESTIONDEBUG     PackLogType = "ingestionDebug"
-	PackLogTypeAGENTRUNTIME       PackLogType = "agentRuntime"
-	PackLogTypeMCP                PackLogType = "mcp"
+	PackLogTypeCustom             PackLogType = "custom"
+	PackLogTypeFetcher            PackLogType = "fetcher"
+	PackLogTypeInvocation         PackLogType = "invocation"
+	PackLogTypeInternal           PackLogType = "internal"
+	PackLogTypeAuth               PackLogType = "auth"
+	PackLogTypeIngestionLifecycle PackLogType = "ingestionLifecycle"
+	PackLogTypeIngestionDebug     PackLogType = "ingestionDebug"
+	PackLogTypeAgentRuntime       PackLogType = "agentRuntime"
+	PackLogTypeMcp                PackLogType = "mcp"
 )
 
 func (v PackLogType) String() string { return string(v) }
@@ -3677,7 +3685,7 @@ type PackMcpLogError struct {
 type PackMcpLogType string
 
 const (
-	PackMcpLogTypeMCP PackMcpLogType = "mcp"
+	PackMcpLogTypeMcp PackMcpLogType = "mcp"
 )
 
 func (v PackMcpLogType) String() string { return string(v) }
@@ -3690,7 +3698,7 @@ type PackNomosOrganizationPrincipal struct {
 type PackNomosOrganizationPrincipalType string
 
 const (
-	PackNomosOrganizationPrincipalTypeNOMOSORGANIZATION PackNomosOrganizationPrincipalType = "nomosOrganization"
+	PackNomosOrganizationPrincipalTypeNomosOrganization PackNomosOrganizationPrincipalType = "nomosOrganization"
 )
 
 func (v PackNomosOrganizationPrincipalType) String() string { return string(v) }
@@ -3698,9 +3706,9 @@ func (v PackNomosOrganizationPrincipalType) String() string { return string(v) }
 type PackOAuth2ClientCredentialsLocation string
 
 const (
-	PackOAuth2ClientCredentialsLocationAUTOMATIC PackOAuth2ClientCredentialsLocation = "automatic"
-	PackOAuth2ClientCredentialsLocationBODY      PackOAuth2ClientCredentialsLocation = "body"
-	PackOAuth2ClientCredentialsLocationHEADER    PackOAuth2ClientCredentialsLocation = "header"
+	PackOAuth2ClientCredentialsLocationAutomatic PackOAuth2ClientCredentialsLocation = "automatic"
+	PackOAuth2ClientCredentialsLocationBody      PackOAuth2ClientCredentialsLocation = "body"
+	PackOAuth2ClientCredentialsLocationHeader    PackOAuth2ClientCredentialsLocation = "header"
 )
 
 func (v PackOAuth2ClientCredentialsLocation) String() string { return string(v) }
@@ -3766,7 +3774,7 @@ type PackPermissionListPermissionUsers []UserSummary
 type PackPlanCurrency string
 
 const (
-	PackPlanCurrencyUSD PackPlanCurrency = "USD"
+	PackPlanCurrencyUsd PackPlanCurrency = "USD"
 )
 
 func (v PackPlanCurrency) String() string { return string(v) }
@@ -3774,9 +3782,9 @@ func (v PackPlanCurrency) String() string { return string(v) }
 type PackPlanPricingType string
 
 const (
-	PackPlanPricingTypeFREE            PackPlanPricingType = "Free"
-	PackPlanPricingTypeMONTHLYDOCMAKER PackPlanPricingType = "MonthlyDocMaker"
-	PackPlanPricingTypeBUNDLEDWITHTIER PackPlanPricingType = "BundledWithTier"
+	PackPlanPricingTypeFree            PackPlanPricingType = "Free"
+	PackPlanPricingTypeMonthlyDocMaker PackPlanPricingType = "MonthlyDocMaker"
+	PackPlanPricingTypeBundledWithTier PackPlanPricingType = "BundledWithTier"
 )
 
 func (v PackPlanPricingType) String() string { return string(v) }
@@ -3793,12 +3801,12 @@ type PackPrincipal struct {
 type PackPrincipalType string
 
 const (
-	PackPrincipalTypeUSER                 PackPrincipalType = "user"
-	PackPrincipalTypeWORKSPACE            PackPrincipalType = "workspace"
-	PackPrincipalTypeWORLDWIDE            PackPrincipalType = "worldwide"
-	PackPrincipalTypeNOMOSORGANIZATION    PackPrincipalType = "nomosOrganization"
-	PackPrincipalTypeGROUP                PackPrincipalType = "group"
-	PackPrincipalTypeGRAMMARLYINSTITUTION PackPrincipalType = "grammarlyInstitution"
+	PackPrincipalTypeUser                 PackPrincipalType = "user"
+	PackPrincipalTypeWorkspace            PackPrincipalType = "workspace"
+	PackPrincipalTypeWorldwide            PackPrincipalType = "worldwide"
+	PackPrincipalTypeNomosOrganization    PackPrincipalType = "nomosOrganization"
+	PackPrincipalTypeGroup                PackPrincipalType = "group"
+	PackPrincipalTypeGrammarlyInstitution PackPrincipalType = "grammarlyInstitution"
 )
 
 func (v PackPrincipalType) String() string { return string(v) }
@@ -3809,7 +3817,7 @@ type PackRateLimit struct {
 }
 
 type PackRelease struct {
-	PackId       float64 `json:"packId"`
+	PackId       PackId  `json:"packId"`
 	ReleaseNotes string  `json:"releaseNotes"`
 	CreatedAt    string  `json:"createdAt"`
 	ReleaseId    float64 `json:"releaseId"`
@@ -3827,7 +3835,7 @@ type PackReleaseListItems []PackRelease
 
 type PackReview struct {
 	PackReviewId          string                           `json:"packReviewId"`
-	PackId                int                              `json:"packId"`
+	PackId                PackId                           `json:"packId"`
 	PackVersion           *string                          `json:"packVersion,omitempty"`
 	IncludesListingReview *bool                            `json:"includesListingReview,omitempty"`
 	PackReviewStatus      PackReviewStatus                 `json:"packReviewStatus"`
@@ -3852,11 +3860,11 @@ type PackReviewAdditionalInformationPrivacyPersonalInfoCategories []string
 type PackReviewStatus string
 
 const (
-	PackReviewStatusPENDING    PackReviewStatus = "pending"
-	PackReviewStatusAPPROVED   PackReviewStatus = "approved"
-	PackReviewStatusDENIED     PackReviewStatus = "denied"
-	PackReviewStatusCANCELED   PackReviewStatus = "canceled"
-	PackReviewStatusSUPERSEDED PackReviewStatus = "superseded"
+	PackReviewStatusPending    PackReviewStatus = "pending"
+	PackReviewStatusApproved   PackReviewStatus = "approved"
+	PackReviewStatusDenied     PackReviewStatus = "denied"
+	PackReviewStatusCanceled   PackReviewStatus = "canceled"
+	PackReviewStatusSuperseded PackReviewStatus = "superseded"
 )
 
 func (v PackReviewStatus) String() string { return string(v) }
@@ -3864,8 +3872,8 @@ func (v PackReviewStatus) String() string { return string(v) }
 type PackSource string
 
 const (
-	PackSourceWEB PackSource = "web"
-	PackSourceCLI PackSource = "cli"
+	PackSourceWeb PackSource = "web"
+	PackSourceCli PackSource = "cli"
 )
 
 func (v PackSource) String() string { return string(v) }
@@ -3882,7 +3890,7 @@ type PackSourceCodeInfo struct {
 type PackSourceCodeInfoFiles []PackSourceCode
 
 type PackSourceCodeUploadCompleteInput struct {
-	PackId      int                                 `json:"packId"`
+	PackId      PackId                              `json:"packId"`
 	PackVersion string                              `json:"packVersion"`
 	Payload     PackSourceCodeUploadCompletePayload `json:"payload"`
 }
@@ -3907,8 +3915,8 @@ type PackSourceCodeUploadInfoHeaders map[string]string
 type PackSourceCodeVisibility string
 
 const (
-	PackSourceCodeVisibilityPRIVATE PackSourceCodeVisibility = "private"
-	PackSourceCodeVisibilitySHARED  PackSourceCodeVisibility = "shared"
+	PackSourceCodeVisibilityPrivate PackSourceCodeVisibility = "private"
+	PackSourceCodeVisibilityShared  PackSourceCodeVisibility = "shared"
 )
 
 func (v PackSourceCodeVisibility) String() string { return string(v) }
@@ -4001,13 +4009,13 @@ type PackUserPrincipal struct {
 type PackUserPrincipalType string
 
 const (
-	PackUserPrincipalTypeUSER PackUserPrincipalType = "user"
+	PackUserPrincipalTypeUser PackUserPrincipalType = "user"
 )
 
 func (v PackUserPrincipalType) String() string { return string(v) }
 
 type PackVersion struct {
-	PackId              float64     `json:"packId"`
+	PackId              PackId      `json:"packId"`
 	BuildNotes          string      `json:"buildNotes"`
 	CreatedAt           string      `json:"createdAt"`
 	CreationUserLoginId string      `json:"creationUserLoginId"`
@@ -4043,7 +4051,7 @@ type PackVersionListCreationUsers []UserSummary
 type PackVersionListItems []PackVersion
 
 type PackVersionUploadCompleteInput struct {
-	PackId      int                      `json:"packId"`
+	PackId      PackId                   `json:"packId"`
 	PackVersion string                   `json:"packVersion"`
 	Payload     CreatePackVersionRequest `json:"payload"`
 }
@@ -4063,7 +4071,7 @@ type PackWorkspacePrincipal struct {
 type PackWorkspacePrincipalType string
 
 const (
-	PackWorkspacePrincipalTypeWORKSPACE PackWorkspacePrincipalType = "workspace"
+	PackWorkspacePrincipalTypeWorkspace PackWorkspacePrincipalType = "workspace"
 )
 
 func (v PackWorkspacePrincipalType) String() string { return string(v) }
@@ -4071,9 +4079,9 @@ func (v PackWorkspacePrincipalType) String() string { return string(v) }
 type PacksSortBy string
 
 const (
-	PacksSortByTITLE     PacksSortBy = "title"
-	PacksSortByCREATEDAT PacksSortBy = "createdAt"
-	PacksSortByUPDATEDAT PacksSortBy = "updatedAt"
+	PacksSortByTitle     PacksSortBy = "title"
+	PacksSortByCreatedAt PacksSortBy = "createdAt"
+	PacksSortByUpdatedAt PacksSortBy = "updatedAt"
 )
 
 func (v PacksSortBy) String() string { return string(v) }
@@ -4153,9 +4161,9 @@ type PageContentDeleteResponse struct {
 type PageContentExportStatus string
 
 const (
-	PageContentExportStatusINPROGRESS PageContentExportStatus = "inProgress"
-	PageContentExportStatusFAILED     PageContentExportStatus = "failed"
-	PageContentExportStatusCOMPLETE   PageContentExportStatus = "complete"
+	PageContentExportStatusInProgress PageContentExportStatus = "inProgress"
+	PageContentExportStatusFailed     PageContentExportStatus = "failed"
+	PageContentExportStatusComplete   PageContentExportStatus = "complete"
 )
 
 func (v PageContentExportStatus) String() string { return string(v) }
@@ -4171,8 +4179,8 @@ type PageContentExportStatusResponse struct {
 type PageContentFormat string
 
 const (
-	PageContentFormatHTML     PageContentFormat = "html"
-	PageContentFormatMARKDOWN PageContentFormat = "markdown"
+	PageContentFormatHtml     PageContentFormat = "html"
+	PageContentFormatMarkdown PageContentFormat = "markdown"
 )
 
 func (v PageContentFormat) String() string { return string(v) }
@@ -4180,9 +4188,9 @@ func (v PageContentFormat) String() string { return string(v) }
 type PageContentInsertionMode string
 
 const (
-	PageContentInsertionModeAPPEND  PageContentInsertionMode = "append"
-	PageContentInsertionModePREPEND PageContentInsertionMode = "prepend"
-	PageContentInsertionModeREPLACE PageContentInsertionMode = "replace"
+	PageContentInsertionModeAppend  PageContentInsertionMode = "append"
+	PageContentInsertionModePrepend PageContentInsertionMode = "prepend"
+	PageContentInsertionModeReplace PageContentInsertionMode = "replace"
 )
 
 func (v PageContentInsertionMode) String() string { return string(v) }
@@ -4203,7 +4211,7 @@ type PageContentItemContent struct {
 type PageContentItemContentFormat string
 
 const (
-	PageContentItemContentFormatPLAINTEXT PageContentItemContentFormat = "plainText"
+	PageContentItemContentFormatPlainText PageContentItemContentFormat = "plainText"
 )
 
 func (v PageContentItemContentFormat) String() string { return string(v) }
@@ -4211,7 +4219,7 @@ func (v PageContentItemContentFormat) String() string { return string(v) }
 type PageContentItemType string
 
 const (
-	PageContentItemTypeLINE PageContentItemType = "line"
+	PageContentItemTypeLine PageContentItemType = "line"
 )
 
 func (v PageContentItemType) String() string { return string(v) }
@@ -4228,8 +4236,8 @@ type PageContentListItems []PageContentItem
 type PageContentOutputFormat string
 
 const (
-	PageContentOutputFormatHTML     PageContentOutputFormat = "html"
-	PageContentOutputFormatMARKDOWN PageContentOutputFormat = "markdown"
+	PageContentOutputFormatHtml     PageContentOutputFormat = "html"
+	PageContentOutputFormatMarkdown PageContentOutputFormat = "markdown"
 )
 
 func (v PageContentOutputFormat) String() string { return string(v) }
@@ -4263,7 +4271,7 @@ type PageCreateContentVariant1 struct {
 type PageCreateContentVariant1Type string
 
 const (
-	PageCreateContentVariant1TypeCANVAS PageCreateContentVariant1Type = "canvas"
+	PageCreateContentVariant1TypeCanvas PageCreateContentVariant1Type = "canvas"
 )
 
 func (v PageCreateContentVariant1Type) String() string { return string(v) }
@@ -4277,7 +4285,7 @@ type PageCreateContentVariant2 struct {
 type PageCreateContentVariant2Type string
 
 const (
-	PageCreateContentVariant2TypeEMBED PageCreateContentVariant2Type = "embed"
+	PageCreateContentVariant2TypeEmbed PageCreateContentVariant2Type = "embed"
 )
 
 func (v PageCreateContentVariant2Type) String() string { return string(v) }
@@ -4298,7 +4306,7 @@ type PageCreateContentVariant3Variant1 struct {
 type PageCreateContentVariant3Variant1Mode string
 
 const (
-	PageCreateContentVariant3Variant1ModePAGE PageCreateContentVariant3Variant1Mode = "page"
+	PageCreateContentVariant3Variant1ModePage PageCreateContentVariant3Variant1Mode = "page"
 )
 
 func (v PageCreateContentVariant3Variant1Mode) String() string { return string(v) }
@@ -4306,7 +4314,7 @@ func (v PageCreateContentVariant3Variant1Mode) String() string { return string(v
 type PageCreateContentVariant3Variant1Type string
 
 const (
-	PageCreateContentVariant3Variant1TypeSYNCPAGE PageCreateContentVariant3Variant1Type = "syncPage"
+	PageCreateContentVariant3Variant1TypeSyncPage PageCreateContentVariant3Variant1Type = "syncPage"
 )
 
 func (v PageCreateContentVariant3Variant1Type) String() string { return string(v) }
@@ -4320,7 +4328,7 @@ type PageCreateContentVariant3Variant2 struct {
 type PageCreateContentVariant3Variant2Mode string
 
 const (
-	PageCreateContentVariant3Variant2ModeDOCUMENT PageCreateContentVariant3Variant2Mode = "document"
+	PageCreateContentVariant3Variant2ModeDocument PageCreateContentVariant3Variant2Mode = "document"
 )
 
 func (v PageCreateContentVariant3Variant2Mode) String() string { return string(v) }
@@ -4328,7 +4336,7 @@ func (v PageCreateContentVariant3Variant2Mode) String() string { return string(v
 type PageCreateContentVariant3Variant2Type string
 
 const (
-	PageCreateContentVariant3Variant2TypeSYNCPAGE PageCreateContentVariant3Variant2Type = "syncPage"
+	PageCreateContentVariant3Variant2TypeSyncPage PageCreateContentVariant3Variant2Type = "syncPage"
 )
 
 func (v PageCreateContentVariant3Variant2Type) String() string { return string(v) }
@@ -4346,8 +4354,8 @@ type PageDeleteResponse struct {
 type PageEmbedRenderMethod string
 
 const (
-	PageEmbedRenderMethodCOMPATIBILITY PageEmbedRenderMethod = "compatibility"
-	PageEmbedRenderMethodSTANDARD      PageEmbedRenderMethod = "standard"
+	PageEmbedRenderMethodCompatibility PageEmbedRenderMethod = "compatibility"
+	PageEmbedRenderMethodStandard      PageEmbedRenderMethod = "standard"
 )
 
 func (v PageEmbedRenderMethod) String() string { return string(v) }
@@ -4355,17 +4363,17 @@ func (v PageEmbedRenderMethod) String() string { return string(v) }
 type PageLineStyle string
 
 const (
-	PageLineStyleBLOCKQUOTE      PageLineStyle = "blockQuote"
-	PageLineStyleBULLETEDLIST    PageLineStyle = "bulletedList"
-	PageLineStyleCHECKBOXLIST    PageLineStyle = "checkboxList"
-	PageLineStyleCODE            PageLineStyle = "code"
-	PageLineStyleCOLLAPSIBLELIST PageLineStyle = "collapsibleList"
+	PageLineStyleBlockQuote      PageLineStyle = "blockQuote"
+	PageLineStyleBulletedList    PageLineStyle = "bulletedList"
+	PageLineStyleCheckboxList    PageLineStyle = "checkboxList"
+	PageLineStyleCode            PageLineStyle = "code"
+	PageLineStyleCollapsibleList PageLineStyle = "collapsibleList"
 	PageLineStyleH1              PageLineStyle = "h1"
 	PageLineStyleH2              PageLineStyle = "h2"
 	PageLineStyleH3              PageLineStyle = "h3"
-	PageLineStyleNUMBEREDLIST    PageLineStyle = "numberedList"
-	PageLineStylePARAGRAPH       PageLineStyle = "paragraph"
-	PageLineStylePULLQUOTE       PageLineStyle = "pullQuote"
+	PageLineStyleNumberedList    PageLineStyle = "numberedList"
+	PageLineStyleParagraph       PageLineStyle = "paragraph"
+	PageLineStylePullQuote       PageLineStyle = "pullQuote"
 )
 
 func (v PageLineStyle) String() string { return string(v) }
@@ -4390,7 +4398,7 @@ type PageReference struct {
 type PageReferenceType string
 
 const (
-	PageReferenceTypePAGE PageReferenceType = "page"
+	PageReferenceTypePage PageReferenceType = "page"
 )
 
 func (v PageReferenceType) String() string { return string(v) }
@@ -4398,7 +4406,7 @@ func (v PageReferenceType) String() string { return string(v) }
 type PageResourceType string
 
 const (
-	PageResourceTypePAGE PageResourceType = "page"
+	PageResourceTypePage PageResourceType = "page"
 )
 
 func (v PageResourceType) String() string { return string(v) }
@@ -4406,9 +4414,9 @@ func (v PageResourceType) String() string { return string(v) }
 type PageType string
 
 const (
-	PageTypeCANVAS   PageType = "canvas"
-	PageTypeEMBED    PageType = "embed"
-	PageTypeSYNCPAGE PageType = "syncPage"
+	PageTypeCanvas   PageType = "canvas"
+	PageTypeEmbed    PageType = "embed"
+	PageTypeSyncPage PageType = "syncPage"
 )
 
 func (v PageType) String() string { return string(v) }
@@ -4430,9 +4438,9 @@ type PageUpdateResponse struct {
 type PaidFeatureSet string
 
 const (
-	PaidFeatureSetPRO        PaidFeatureSet = "Pro"
-	PaidFeatureSetTEAM       PaidFeatureSet = "Team"
-	PaidFeatureSetENTERPRISE PaidFeatureSet = "Enterprise"
+	PaidFeatureSetPro        PaidFeatureSet = "Pro"
+	PaidFeatureSetTeam       PaidFeatureSet = "Team"
+	PaidFeatureSetEnterprise PaidFeatureSet = "Enterprise"
 )
 
 func (v PaidFeatureSet) String() string { return string(v) }
@@ -4445,7 +4453,7 @@ type ParameterSetting struct {
 type ParameterSettingAllowed []string
 
 type PatchPackSystemConnectionInput struct {
-	PackId  int                              `json:"packId"`
+	PackId  PackId                           `json:"packId"`
 	Payload PatchPackSystemConnectionPayload `json:"payload"`
 }
 
@@ -4482,7 +4490,7 @@ type PersonValue struct {
 type PersonValueType string
 
 const (
-	PersonValueTypePERSON PersonValueType = "Person"
+	PersonValueTypePerson PersonValueType = "Person"
 )
 
 func (v PersonValueType) String() string { return string(v) }
@@ -4499,12 +4507,12 @@ type Principal struct {
 type PrincipalType string
 
 const (
-	PrincipalTypeEMAIL          PrincipalType = "email"
-	PrincipalTypeGROUP          PrincipalType = "group"
-	PrincipalTypeDOMAIN         PrincipalType = "domain"
-	PrincipalTypeWORKSPACE      PrincipalType = "workspace"
-	PrincipalTypeANYONE         PrincipalType = "anyone"
-	PrincipalTypeINTERNALACCESS PrincipalType = "internalAccess"
+	PrincipalTypeEmail          PrincipalType = "email"
+	PrincipalTypeGroup          PrincipalType = "group"
+	PrincipalTypeDomain         PrincipalType = "domain"
+	PrincipalTypeWorkspace      PrincipalType = "workspace"
+	PrincipalTypeAnyone         PrincipalType = "anyone"
+	PrincipalTypeInternalAccess PrincipalType = "internalAccess"
 )
 
 func (v PrincipalType) String() string { return string(v) }
@@ -4544,7 +4552,7 @@ type ReferenceColumnFormat struct {
 }
 
 type RegisterPackVersionInput struct {
-	PackId      int                        `json:"packId"`
+	PackId      PackId                     `json:"packId"`
 	PackVersion string                     `json:"packVersion"`
 	Payload     RegisterPackVersionPayload `json:"payload"`
 }
@@ -4619,7 +4627,7 @@ type RowDetail struct {
 type RowDetailType string
 
 const (
-	RowDetailTypeROW RowDetailType = "row"
+	RowDetailTypeRow RowDetailType = "row"
 )
 
 func (v RowDetailType) String() string { return string(v) }
@@ -4645,7 +4653,7 @@ type RowListItems []Row
 type RowType string
 
 const (
-	RowTypeROW RowType = "row"
+	RowTypeRow RowType = "row"
 )
 
 func (v RowType) String() string { return string(v) }
@@ -4673,7 +4681,7 @@ type RowValue struct {
 type RowValueAdditionalType string
 
 const (
-	RowValueAdditionalTypeROW RowValueAdditionalType = "row"
+	RowValueAdditionalTypeRow RowValueAdditionalType = "row"
 )
 
 func (v RowValueAdditionalType) String() string { return string(v) }
@@ -4681,7 +4689,7 @@ func (v RowValueAdditionalType) String() string { return string(v) }
 type RowValueType string
 
 const (
-	RowValueTypeSTRUCTUREDVALUE RowValueType = "StructuredValue"
+	RowValueTypeStructuredValue RowValueType = "StructuredValue"
 )
 
 func (v RowValueType) String() string { return string(v) }
@@ -4704,9 +4712,9 @@ type RowsDeleteRowIds []string
 type RowsSortBy string
 
 const (
-	RowsSortByCREATEDAT RowsSortBy = "createdAt"
-	RowsSortByNATURAL   RowsSortBy = "natural"
-	RowsSortByUPDATEDAT RowsSortBy = "updatedAt"
+	RowsSortByCreatedAt RowsSortBy = "createdAt"
+	RowsSortByNatural   RowsSortBy = "natural"
+	RowsSortByUpdatedAt RowsSortBy = "updatedAt"
 )
 
 func (v RowsSortBy) String() string { return string(v) }
@@ -4769,7 +4777,7 @@ type SelectOption struct {
 }
 
 type SetPackOauthConfigInput struct {
-	PackId  int                       `json:"packId"`
+	PackId  PackId                    `json:"packId"`
 	Payload SetPackOauthConfigPayload `json:"payload"`
 }
 
@@ -4780,7 +4788,7 @@ type SetPackOauthConfigPayload struct {
 }
 
 type SetPackSystemConnectionInput struct {
-	PackId  int                            `json:"packId"`
+	PackId  PackId                         `json:"packId"`
 	Payload SetPackSystemConnectionPayload `json:"payload"`
 }
 
@@ -4817,8 +4825,8 @@ type SliderColumnFormat struct {
 type SliderDisplayType string
 
 const (
-	SliderDisplayTypeSLIDER   SliderDisplayType = "slider"
-	SliderDisplayTypePROGRESS SliderDisplayType = "progress"
+	SliderDisplayTypeSlider   SliderDisplayType = "slider"
+	SliderDisplayTypeProgress SliderDisplayType = "progress"
 )
 
 func (v SliderDisplayType) String() string { return string(v) }
@@ -4831,7 +4839,7 @@ type Sort struct {
 type SortBy string
 
 const (
-	SortByNAME SortBy = "name"
+	SortByName SortBy = "name"
 )
 
 func (v SortBy) String() string { return string(v) }
@@ -4839,15 +4847,15 @@ func (v SortBy) String() string { return string(v) }
 type SortDirection string
 
 const (
-	SortDirectionASCENDING  SortDirection = "ascending"
-	SortDirectionDESCENDING SortDirection = "descending"
+	SortDirectionAscending  SortDirection = "ascending"
+	SortDirectionDescending SortDirection = "descending"
 )
 
 func (v SortDirection) String() string { return string(v) }
 
 type StandardPackPlan struct {
 	PackPlanId string                  `json:"packPlanId"`
-	PackId     float64                 `json:"packId"`
+	PackId     PackId                  `json:"packId"`
 	Pricing    StandardPackPlanPricing `json:"pricing"`
 	CreatedAt  string                  `json:"createdAt"`
 }
@@ -4860,8 +4868,8 @@ type StandardPackPlanPricing struct {
 type SyncPageType string
 
 const (
-	SyncPageTypePAGE     SyncPageType = "page"
-	SyncPageTypeDOCUMENT SyncPageType = "document"
+	SyncPageTypePage     SyncPageType = "page"
+	SyncPageTypeDocument SyncPageType = "document"
 )
 
 func (v SyncPageType) String() string { return string(v) }
@@ -4906,7 +4914,7 @@ type TableReference struct {
 type TableReferenceType string
 
 const (
-	TableReferenceTypeTABLE TableReferenceType = "table"
+	TableReferenceTypeTable TableReferenceType = "table"
 )
 
 func (v TableReferenceType) String() string { return string(v) }
@@ -4914,7 +4922,7 @@ func (v TableReferenceType) String() string { return string(v) }
 type TableResourceType string
 
 const (
-	TableResourceTypeTABLE TableResourceType = "table"
+	TableResourceTypeTable TableResourceType = "table"
 )
 
 func (v TableResourceType) String() string { return string(v) }
@@ -4924,8 +4932,8 @@ type TableSorts []Sort
 type TableType string
 
 const (
-	TableTypeTABLE TableType = "table"
-	TableTypeVIEW  TableType = "view"
+	TableTypeTable TableType = "table"
+	TableTypeView  TableType = "view"
 )
 
 func (v TableType) String() string { return string(v) }
@@ -4951,57 +4959,57 @@ type TriggerWebhookAutomationInput struct {
 type TypeValue string
 
 const (
-	TypeValueACLMETADATA               TypeValue = "aclMetadata"
-	TypeValueACLPERMISSIONS            TypeValue = "aclPermissions"
-	TypeValueACLSETTINGS               TypeValue = "aclSettings"
-	TypeValueAGENTPACKLOG              TypeValue = "agentPackLog"
-	TypeValueANALYTICSLASTUPDATED      TypeValue = "analyticsLastUpdated"
-	TypeValueAPILINK                   TypeValue = "apiLink"
-	TypeValueAUTOMATION                TypeValue = "automation"
-	TypeValueCOLUMN                    TypeValue = "column"
-	TypeValueCONTROL                   TypeValue = "control"
-	TypeValueDOC                       TypeValue = "doc"
-	TypeValueCUSTOMDOCDOMAIN           TypeValue = "customDocDomain"
-	TypeValueCUSTOMDOCDOMAINPROVIDER   TypeValue = "customDocDomainProvider"
-	TypeValueDOCANALYTICS              TypeValue = "docAnalytics"
-	TypeValueDOCANALYTICSSUMMARY       TypeValue = "docAnalyticsSummary"
-	TypeValueDOCANALYTICSV2            TypeValue = "docAnalyticsV2"
-	TypeValueFOLDER                    TypeValue = "folder"
-	TypeValueFORMULA                   TypeValue = "formula"
-	TypeValueGOLINK                    TypeValue = "goLink"
-	TypeValueINGESTIONBATCHEXECUTION   TypeValue = "ingestionBatchExecution"
-	TypeValueINGESTIONEXECUTION        TypeValue = "ingestionExecution"
-	TypeValueINGESTIONEXECUTIONATTEMPT TypeValue = "ingestionExecutionAttempt"
-	TypeValueINGESTIONPACKLOG          TypeValue = "ingestionPackLog"
-	TypeValueINGESTIONPARENTITEM       TypeValue = "ingestionParentItem"
-	TypeValueMUTATIONSTATUS            TypeValue = "mutationStatus"
-	TypeValuePACK                      TypeValue = "pack"
-	TypeValuePACKACLPERMISSIONS        TypeValue = "packAclPermissions"
-	TypeValuePACKANALYTICS             TypeValue = "packAnalytics"
-	TypeValuePACKANALYTICSSUMMARY      TypeValue = "packAnalyticsSummary"
-	TypeValuePACKASSET                 TypeValue = "packAsset"
-	TypeValuePACKCATEGORY              TypeValue = "packCategory"
-	TypeValuePACKCONFIGURATIONSCHEMA   TypeValue = "packConfigurationSchema"
-	TypeValuePACKFEATUREDDOCS          TypeValue = "packFeaturedDocs"
-	TypeValuePACKFORMULAANALYTICS      TypeValue = "packFormulaAnalytics"
-	TypeValuePACKINVITATION            TypeValue = "packInvitation"
-	TypeValuePACKLISTINGDRAFT          TypeValue = "packListingDraft"
-	TypeValuePACKLOG                   TypeValue = "packLog"
-	TypeValuePACKMAKER                 TypeValue = "packMaker"
-	TypeValuePACKOAuthCONFIG           TypeValue = "packOauthConfig"
-	TypeValuePACKRELEASE               TypeValue = "packRelease"
-	TypeValuePACKREVIEW                TypeValue = "packReview"
-	TypeValuePACKSOURCECODE            TypeValue = "packSourceCode"
-	TypeValuePACKSYSTEMCONNECTION      TypeValue = "packSystemConnection"
-	TypeValuePACKVERSION               TypeValue = "packVersion"
-	TypeValuePAGE                      TypeValue = "page"
-	TypeValuePAGECONTENTEXPORT         TypeValue = "pageContentExport"
-	TypeValuePAGECONTENTEXPORTSTATUS   TypeValue = "pageContentExportStatus"
-	TypeValuePRINCIPAL                 TypeValue = "principal"
-	TypeValueROW                       TypeValue = "row"
-	TypeValueTABLE                     TypeValue = "table"
-	TypeValueUSER                      TypeValue = "user"
-	TypeValueWORKSPACE                 TypeValue = "workspace"
+	TypeValueAclMetadata               TypeValue = "aclMetadata"
+	TypeValueAclPermissions            TypeValue = "aclPermissions"
+	TypeValueAclSettings               TypeValue = "aclSettings"
+	TypeValueAgentPackLog              TypeValue = "agentPackLog"
+	TypeValueAnalyticsLastUpdated      TypeValue = "analyticsLastUpdated"
+	TypeValueApiLink                   TypeValue = "apiLink"
+	TypeValueAutomation                TypeValue = "automation"
+	TypeValueColumn                    TypeValue = "column"
+	TypeValueControl                   TypeValue = "control"
+	TypeValueDoc                       TypeValue = "doc"
+	TypeValueCustomDocDomain           TypeValue = "customDocDomain"
+	TypeValueCustomDocDomainProvider   TypeValue = "customDocDomainProvider"
+	TypeValueDocAnalytics              TypeValue = "docAnalytics"
+	TypeValueDocAnalyticsSummary       TypeValue = "docAnalyticsSummary"
+	TypeValueDocAnalyticsV2            TypeValue = "docAnalyticsV2"
+	TypeValueFolder                    TypeValue = "folder"
+	TypeValueFormula                   TypeValue = "formula"
+	TypeValueGoLink                    TypeValue = "goLink"
+	TypeValueIngestionBatchExecution   TypeValue = "ingestionBatchExecution"
+	TypeValueIngestionExecution        TypeValue = "ingestionExecution"
+	TypeValueIngestionExecutionAttempt TypeValue = "ingestionExecutionAttempt"
+	TypeValueIngestionPackLog          TypeValue = "ingestionPackLog"
+	TypeValueIngestionParentItem       TypeValue = "ingestionParentItem"
+	TypeValueMutationStatus            TypeValue = "mutationStatus"
+	TypeValuePack                      TypeValue = "pack"
+	TypeValuePackAclPermissions        TypeValue = "packAclPermissions"
+	TypeValuePackAnalytics             TypeValue = "packAnalytics"
+	TypeValuePackAnalyticsSummary      TypeValue = "packAnalyticsSummary"
+	TypeValuePackAsset                 TypeValue = "packAsset"
+	TypeValuePackCategory              TypeValue = "packCategory"
+	TypeValuePackConfigurationSchema   TypeValue = "packConfigurationSchema"
+	TypeValuePackFeaturedDocs          TypeValue = "packFeaturedDocs"
+	TypeValuePackFormulaAnalytics      TypeValue = "packFormulaAnalytics"
+	TypeValuePackInvitation            TypeValue = "packInvitation"
+	TypeValuePackListingDraft          TypeValue = "packListingDraft"
+	TypeValuePackLog                   TypeValue = "packLog"
+	TypeValuePackMaker                 TypeValue = "packMaker"
+	TypeValuePackOauthConfig           TypeValue = "packOauthConfig"
+	TypeValuePackRelease               TypeValue = "packRelease"
+	TypeValuePackReview                TypeValue = "packReview"
+	TypeValuePackSourceCode            TypeValue = "packSourceCode"
+	TypeValuePackSystemConnection      TypeValue = "packSystemConnection"
+	TypeValuePackVersion               TypeValue = "packVersion"
+	TypeValuePage                      TypeValue = "page"
+	TypeValuePageContentExport         TypeValue = "pageContentExport"
+	TypeValuePageContentExportStatus   TypeValue = "pageContentExportStatus"
+	TypeValuePrincipal                 TypeValue = "principal"
+	TypeValueRow                       TypeValue = "row"
+	TypeValueTable                     TypeValue = "table"
+	TypeValueUser                      TypeValue = "user"
+	TypeValueWorkspace                 TypeValue = "workspace"
 )
 
 func (v TypeValue) String() string { return string(v) }
@@ -5064,7 +5072,7 @@ type UpdateFolderPayload struct {
 }
 
 type UpdatePackFeaturedDocsInput struct {
-	PackId  int                           `json:"packId"`
+	PackId  PackId                        `json:"packId"`
 	Payload UpdatePackFeaturedDocsPayload `json:"payload"`
 }
 
@@ -5078,12 +5086,12 @@ type UpdatePackFeaturedDocsResponse struct {
 }
 
 type UpdatePackInput struct {
-	PackId  int               `json:"packId"`
+	PackId  PackId            `json:"packId"`
 	Payload UpdatePackPayload `json:"payload"`
 }
 
 type UpdatePackInvitationInput struct {
-	PackId       int                         `json:"packId"`
+	PackId       PackId                      `json:"packId"`
 	InvitationId string                      `json:"invitationId"`
 	Payload      UpdatePackInvitationPayload `json:"payload"`
 }
@@ -5143,8 +5151,8 @@ type UpdatePackPayloadPerConnectionRateLimit struct {
 }
 
 type UpdatePackReleaseInput struct {
-	PackId        int                      `json:"packId"`
-	PackReleaseId int                      `json:"packReleaseId"`
+	PackId        PackId                   `json:"packId"`
+	PackReleaseId string                   `json:"packReleaseId"`
 	Payload       UpdatePackReleasePayload `json:"payload"`
 }
 
@@ -5167,7 +5175,7 @@ type UpdateRowInput struct {
 }
 
 type UploadPackAssetInput struct {
-	PackId  int                    `json:"packId"`
+	PackId  PackId                 `json:"packId"`
 	Payload UploadPackAssetPayload `json:"payload"`
 }
 
@@ -5179,7 +5187,7 @@ type UploadPackAssetPayload struct {
 }
 
 type UploadPackSourceCodeInput struct {
-	PackId  int                         `json:"packId"`
+	PackId  PackId                      `json:"packId"`
 	Payload UploadPackSourceCodePayload `json:"payload"`
 }
 
@@ -5190,7 +5198,7 @@ type UploadPackSourceCodePayload struct {
 }
 
 type UpsertPackListingDraftInput struct {
-	PackId  int                           `json:"packId"`
+	PackId  PackId                        `json:"packId"`
 	Payload UpsertPackListingDraftPayload `json:"payload"`
 }
 
@@ -5200,7 +5208,7 @@ type UpsertPackListingDraftPayload struct {
 
 type UpsertPackListingDraftResponse struct {
 	PackListingDraftId string               `json:"packListingDraftId"`
-	PackId             float64              `json:"packId"`
+	PackId             PackId               `json:"packId"`
 	ListingData        PackListingDraftData `json:"listingData"`
 }
 
@@ -5222,7 +5230,7 @@ type UrlValue struct {
 type UrlValueType string
 
 const (
-	UrlValueTypeWEBPAGE UrlValueType = "WebPage"
+	UrlValueTypeWebPage UrlValueType = "WebPage"
 )
 
 func (v UrlValueType) String() string { return string(v) }
@@ -5248,7 +5256,7 @@ type UserSummary struct {
 type UserSummaryType string
 
 const (
-	UserSummaryTypeUSER UserSummaryType = "user"
+	UserSummaryTypeUser UserSummaryType = "user"
 )
 
 func (v UserSummaryType) String() string { return string(v) }
@@ -5256,7 +5264,7 @@ func (v UserSummaryType) String() string { return string(v) }
 type UserType string
 
 const (
-	UserTypeUSER UserType = "user"
+	UserTypeUser UserType = "user"
 )
 
 func (v UserType) String() string { return string(v) }
@@ -5274,9 +5282,9 @@ type Value struct {
 type ValueFormat string
 
 const (
-	ValueFormatSIMPLE           ValueFormat = "simple"
-	ValueFormatSIMPLEWITHARRAYS ValueFormat = "simpleWithArrays"
-	ValueFormatRICH             ValueFormat = "rich"
+	ValueFormatSimple           ValueFormat = "simple"
+	ValueFormatSimpleWithArrays ValueFormat = "simpleWithArrays"
+	ValueFormatRich             ValueFormat = "rich"
 )
 
 func (v ValueFormat) String() string { return string(v) }
@@ -5295,6 +5303,9 @@ type WebhookTriggerPayload struct {
 
 type WebhookTriggerResponse struct {
 	RequestId string `json:"requestId"`
+}
+
+type WhoamiInput struct {
 }
 
 type Workspace struct {
@@ -5322,7 +5333,7 @@ type WorkspacePrincipal struct {
 type WorkspacePrincipalType string
 
 const (
-	WorkspacePrincipalTypeWORKSPACE WorkspacePrincipalType = "workspace"
+	WorkspacePrincipalTypeWorkspace WorkspacePrincipalType = "workspace"
 )
 
 func (v WorkspacePrincipalType) String() string { return string(v) }
@@ -5338,7 +5349,7 @@ type WorkspaceReference struct {
 type WorkspaceReferenceType string
 
 const (
-	WorkspaceReferenceTypeWORKSPACE WorkspaceReferenceType = "workspace"
+	WorkspaceReferenceTypeWorkspace WorkspaceReferenceType = "workspace"
 )
 
 func (v WorkspaceReferenceType) String() string { return string(v) }
@@ -5356,7 +5367,7 @@ type WorkspaceRoleActivity struct {
 type WorkspaceType string
 
 const (
-	WorkspaceTypeWORKSPACE WorkspaceType = "workspace"
+	WorkspaceTypeWorkspace WorkspaceType = "workspace"
 )
 
 func (v WorkspaceType) String() string { return string(v) }
@@ -5380,9 +5391,9 @@ type WorkspaceUser struct {
 type WorkspaceUserRole string
 
 const (
-	WorkspaceUserRoleADMIN    WorkspaceUserRole = "Admin"
-	WorkspaceUserRoleDOCMAKER WorkspaceUserRole = "DocMaker"
-	WorkspaceUserRoleEDITOR   WorkspaceUserRole = "Editor"
+	WorkspaceUserRoleAdmin    WorkspaceUserRole = "Admin"
+	WorkspaceUserRoleDocMaker WorkspaceUserRole = "DocMaker"
+	WorkspaceUserRoleEditor   WorkspaceUserRole = "Editor"
 )
 
 func (v WorkspaceUserRole) String() string { return string(v) }

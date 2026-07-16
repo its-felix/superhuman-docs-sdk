@@ -6,6 +6,7 @@ use smithy.api#documentation
 use smithy.api#http
 use smithy.api#httpLabel
 use smithy.api#httpQuery
+use smithy.api#input
 use smithy.api#readonly
 use smithy.api#required
 
@@ -85,11 +86,15 @@ operation ListPackFormulaAnalytics {
 @readonly
 @http(method: "GET", uri: "/analytics/updated", code: 200)
 operation GetAnalyticsLastUpdated {
+    input: GetAnalyticsLastUpdatedInput
     output: AnalyticsLastUpdatedResponse
     errors: [
         TooManyRequestsError
     ]
 }
+
+@input
+structure GetAnalyticsLastUpdatedInput {}
 
 list ListDocAnalyticsDocIds {
     member: String
@@ -213,7 +218,7 @@ structure ListPackFormulaAnalyticsInput {
 
     @httpLabel
     @required
-    packId: Integer
+    packId: PackId
 
     @httpQuery("sinceDate")
     sinceDate: String

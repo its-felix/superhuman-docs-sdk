@@ -6,28 +6,67 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from superhuman_docs import SuperhumanDocsClient
+from superhuman_docs._models import (
+    DeletePageContentInput,
+    DocUpdate,
+    ListRowsInput,
+    PageContentDeleteResponse,
+    RowList,
+    UpdateDocInput,
+    ValueFormat,
+)
 from superhuman_docs._runtime import Response
 
 
 class ClientTests(unittest.TestCase):
+    def test_legacy_dynamic_request_api_is_not_exposed(self):
+        client = SuperhumanDocsClient(token="token")
+
+        self.assertFalse(hasattr(client, "request"))
+        self.assertFalse(hasattr(client, "rows"))
+
+    def test_transport_object_uses_send_request_boundary(self):
+        class Transport:
+            def __init__(self):
+                self.calls = []
+
+            def send_request(self, request, timeout):
+                self.calls.append((request, timeout))
+                return Response(200, {}, b'{"items":[]}')
+
+        transport = Transport()
+        client = SuperhumanDocsClient(
+            token="token",
+            base_url="https://example.test/api",
+            timeout=7.5,
+            transport=transport,
+        )
+
+        result = client.tables().rows().list(ListRowsInput(doc_id="doc1", table_id_or_name="grid1"))
+
+        self.assertIsInstance(result, RowList)
+        self.assertEqual(len(transport.calls), 1)
+        self.assertEqual(transport.calls[0][1], 7.5)
+
     def test_get_request_encodes_labels_and_query(self):
         captured = []
 
         def transport(request, timeout):
             captured.append((request, timeout))
-            return Response(200, {"content-type": "application/json"}, b'{"ok":true}')
+            return Response(200, {"content-type": "application/json"}, b'{"items":[]}')
 
         client = SuperhumanDocsClient(token="token", base_url="https://example.test/api", transport=transport)
 
-        result = client.list_rows(
+        result = client.tables().rows().list(ListRowsInput(
             doc_id="doc/1",
             table_id_or_name="Table A",
             use_column_names=True,
-            value_format="simple",
+            value_format=ValueFormat.SIMPLE,
             limit=5,
-        )
+        ))
 
-        self.assertEqual(result, {"ok": True})
+        self.assertIsInstance(result, RowList)
+        self.assertEqual(result.items, [])
         request, timeout = captured[0]
         self.assertEqual(timeout, 30.0)
         self.assertEqual(request.method, "GET")
@@ -43,15 +82,14 @@ class ClientTests(unittest.TestCase):
 
         def transport(request, timeout):
             captured.append(request)
-            return Response(201, {}, b'{"id":"doc1"}')
+            return Response(200, {}, b'{}')
 
         client = SuperhumanDocsClient(token="token", base_url="https://example.test/api", transport=transport)
-        result = client.create_doc(payload={"title": "Roadmap"})
+        result = client.docs().update(UpdateDocInput(doc_id="doc1", payload=DocUpdate(title="Roadmap")))
 
-        self.assertEqual(result, {"id": "doc1"})
         request = captured[0]
-        self.assertEqual(request.method, "POST")
-        self.assertEqual(request.url, "https://example.test/api/docs")
+        self.assertEqual(request.method, "PATCH")
+        self.assertEqual(request.url, "https://example.test/api/docs/doc1")
         self.assertEqual(request.headers["Content-Type"], "application/json")
         self.assertEqual(json.loads(request.body.decode("utf-8")), {"title": "Roadmap"})
 
@@ -60,12 +98,15 @@ class ClientTests(unittest.TestCase):
 
         def transport(request, timeout):
             captured.append(request)
-            return Response(202, {}, b'{"requestId":"req1"}')
+            return Response(202, {}, b'{"requestId":"req1","id":"page1"}')
 
         client = SuperhumanDocsClient(token="token", base_url="https://example.test/api", transport=transport)
-        result = client.delete_page_content(doc_id="doc1", page_id_or_name="page1")
+        result = client.docs().pages().delete_page_content(
+            DeletePageContentInput(doc_id="doc1", page_id_or_name="page1")
+        )
 
-        self.assertEqual(result, {"requestId": "req1"})
+        self.assertIsInstance(result, PageContentDeleteResponse)
+        self.assertEqual(result.request_id, "req1")
         request = captured[0]
         self.assertEqual(request.method, "DELETE")
         self.assertEqual(request.url, "https://example.test/api/docs/doc1/pages/page1/content")

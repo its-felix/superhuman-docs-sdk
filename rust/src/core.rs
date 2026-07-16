@@ -1,4 +1,7 @@
 use std::fmt;
+use std::sync::Arc;
+
+use serde::de::DeserializeOwned;
 
 pub const DEFAULT_BASE_URL: &str = "https://coda.io/apis/v1";
 
@@ -30,7 +33,7 @@ pub struct Request {
     pub operation: &'static str,
     pub method: Method,
     pub url: String,
-    pub body: Option<String>,
+    pub body: Option<Vec<u8>>,
     pub expected_status: u16,
 }
 
@@ -43,17 +46,191 @@ pub struct Response {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Error {
     EmptyBaseUrl,
+    MissingTransport,
+    Transport(String),
+    Serialize(String),
+    Deserialize {
+        operation: &'static str,
+        message: String,
+    },
+    UnexpectedStatus {
+        operation: &'static str,
+        expected: u16,
+        actual: u16,
+        body: String,
+    },
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Error::EmptyBaseUrl => f.write_str("base URL must not be empty"),
+            Error::MissingTransport => f.write_str(
+                "no HTTP transport configured; construct ClientOptions with a Transport implementation",
+            ),
+            Error::Transport(message) => write!(f, "transport error: {message}"),
+            Error::Serialize(message) => write!(f, "failed to serialize request body: {message}"),
+            Error::Deserialize { operation, message } => {
+                write!(f, "failed to deserialize {operation} response: {message}")
+            }
+            Error::UnexpectedStatus {
+                operation,
+                expected,
+                actual,
+                body,
+            } => write!(
+                f,
+                "{operation} returned HTTP {actual}, expected {expected}: {body}"
+            ),
         }
     }
 }
 
 impl std::error::Error for Error {}
+
+impl Error {
+    pub fn transport(error: impl fmt::Display) -> Self {
+        Self::Transport(error.to_string())
+    }
+
+    pub(crate) fn serialize(error: impl fmt::Display) -> Self {
+        Self::Serialize(error.to_string())
+    }
+}
+
+/// Sends a fully encoded SDK request and returns the raw HTTP response.
+///
+/// Authentication, connection pooling, retries, and timeout policy intentionally
+/// live in the transport so applications can use their preferred HTTP stack.
+pub trait Transport: Send + Sync {
+    fn send_request(&self, request: Request) -> Result<Response, Error>;
+}
+
+impl<F> Transport for F
+where
+    F: Fn(Request) -> Result<Response, Error> + Send + Sync,
+{
+    fn send_request(&self, request: Request) -> Result<Response, Error> {
+        self(request)
+    }
+}
+
+#[derive(Default)]
+struct MissingTransport;
+
+impl Transport for MissingTransport {
+    fn send_request(&self, _request: Request) -> Result<Response, Error> {
+        Err(Error::MissingTransport)
+    }
+}
+
+#[derive(Clone)]
+pub struct ClientOptions {
+    pub base_url: String,
+    transport: Arc<dyn Transport>,
+}
+
+impl ClientOptions {
+    pub fn new(transport: impl Transport + 'static) -> Self {
+        Self {
+            base_url: DEFAULT_BASE_URL.to_string(),
+            transport: Arc::new(transport),
+        }
+    }
+
+    pub fn with_base_url(mut self, base_url: impl Into<String>) -> Self {
+        self.base_url = base_url.into();
+        self
+    }
+
+    pub fn with_transport(mut self, transport: impl Transport + 'static) -> Self {
+        self.transport = Arc::new(transport);
+        self
+    }
+
+    pub fn with_shared_transport(mut self, transport: Arc<dyn Transport>) -> Self {
+        self.transport = transport;
+        self
+    }
+}
+
+impl Default for ClientOptions {
+    fn default() -> Self {
+        Self {
+            base_url: DEFAULT_BASE_URL.to_string(),
+            transport: Arc::new(MissingTransport),
+        }
+    }
+}
+
+#[derive(Clone)]
+pub struct Client {
+    base_url: String,
+    transport: Arc<dyn Transport>,
+}
+
+impl Client {
+    pub fn new(options: ClientOptions) -> Result<Self, Error> {
+        let base_url = UrlBuilder::new(&options.base_url)?.finish();
+        Ok(Self {
+            base_url,
+            transport: options.transport,
+        })
+    }
+
+    pub fn with_transport(transport: impl Transport + 'static) -> Self {
+        Self::new(ClientOptions::new(transport)).expect("the default base URL is valid")
+    }
+
+    pub fn base_url(&self) -> &str {
+        &self.base_url
+    }
+
+    /// The single dispatch seam used by every generated operation method.
+    pub fn send_request(&self, request: Request) -> Result<Response, Error> {
+        self.transport.send_request(request)
+    }
+
+    pub(crate) fn execute<T: DeserializeOwned>(&self, request: Request) -> Result<T, Error> {
+        let (operation, body) = self.receive(request)?;
+        let body: &[u8] = if body.is_empty() { b"{}" } else { &body };
+        serde_json::from_slice(body).map_err(|error| Error::Deserialize {
+            operation,
+            message: error.to_string(),
+        })
+    }
+
+    pub(crate) fn execute_optional<T: DeserializeOwned>(
+        &self,
+        request: Request,
+    ) -> Result<Option<T>, Error> {
+        let (operation, body) = self.receive(request)?;
+        if body.is_empty() {
+            return Ok(None);
+        }
+        serde_json::from_slice(&body)
+            .map(Some)
+            .map_err(|error| Error::Deserialize {
+                operation,
+                message: error.to_string(),
+            })
+    }
+
+    fn receive(&self, request: Request) -> Result<(&'static str, Vec<u8>), Error> {
+        let operation = request.operation;
+        let expected = request.expected_status;
+        let response = self.send_request(request)?;
+        if response.status != expected {
+            return Err(Error::UnexpectedStatus {
+                operation,
+                expected,
+                actual: response.status,
+                body: String::from_utf8_lossy(&response.body).into_owned(),
+            });
+        }
+        Ok((operation, response.body))
+    }
+}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct UrlBuilder {

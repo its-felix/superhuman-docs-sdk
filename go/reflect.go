@@ -7,6 +7,20 @@ import (
 	"strconv"
 )
 
+func isNilValue(value any) bool {
+	if value == nil {
+		return true
+	}
+
+	rv := reflect.ValueOf(value)
+	switch rv.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Pointer, reflect.Slice:
+		return rv.IsNil()
+	default:
+		return false
+	}
+}
+
 func addQueryReflect(values url.Values, name string, value any) {
 	rv := reflect.ValueOf(value)
 	if !rv.IsValid() {

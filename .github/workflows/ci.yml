@@ -13,7 +13,7 @@ env:
 
 jobs:
   verify:
-    name: Verify generated SDKs
+    name: Verify generated artifacts
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -63,8 +63,8 @@ jobs:
       - name: Validate Smithy model
         run: smithy validate smithy/model
 
-      - name: Regenerate and test SDKs
+      - name: Regenerate artifacts and test SDKs
         run: ./build.sh
 
-      - name: Check generated sources are committed
-        run: git diff --exit-code -- go python rust zig build.zig build.zig.zon
+      - name: Check generated artifacts are committed
+        run: git diff --exit-code -- docs go python rust zig build.zig build.zig.zon

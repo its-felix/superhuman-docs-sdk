@@ -8,778 +8,302 @@ import (
 	"net/url"
 )
 
-func (c *Client) AddCustomDocDomain(ctx context.Context, input *AddCustomDocDomainInput) (*AddCustomDocDomainResponse, error) {
+type CategoriesResourceClient struct {
+	client *Client
+}
+
+type DocsResourceClient struct {
+	client *Client
+}
+
+type PagesResourceClient struct {
+	client *Client
+}
+
+type FormulasResourceClient struct {
+	client *Client
+}
+
+type ControlsResourceClient struct {
+	client *Client
+}
+
+type CustomDocDomainsResourceClient struct {
+	client *Client
+}
+
+type AutomationsResourceClient struct {
+	client *Client
+}
+
+type TablesResourceClient struct {
+	client *Client
+}
+
+type ColumnsResourceClient struct {
+	client *Client
+}
+
+type RowsResourceClient struct {
+	client *Client
+}
+
+type FoldersResourceClient struct {
+	client *Client
+}
+
+type PacksResourceClient struct {
+	client *Client
+}
+
+type PackVersionsResourceClient struct {
+	client *Client
+}
+
+type PackReleasesResourceClient struct {
+	client *Client
+}
+
+type PackReviewsResourceClient struct {
+	client *Client
+}
+
+type PackPermissionsResourceClient struct {
+	client *Client
+}
+
+type PackInvitationsResourceClient struct {
+	client *Client
+}
+
+type PackMakersResourceClient struct {
+	client *Client
+}
+
+type PackCategoriesResourceClient struct {
+	client *Client
+}
+
+type MarketplacePackListingsResourceClient struct {
+	client *Client
+}
+
+type UserPackInvitationsResourceClient struct {
+	client *Client
+}
+
+type WorkspacesResourceClient struct {
+	client *Client
+}
+
+type OrganizationsResourceClient struct {
+	client *Client
+}
+
+type AnalyticsResourceClient struct {
+	client *Client
+}
+
+type AgentInstancesResourceClient struct {
+	client *Client
+}
+
+type MutationStatusResourceClient struct {
+	client *Client
+}
+
+type CustomDocDomainProvidersResourceClient struct {
+	client *Client
+}
+
+func (c *Client) Categories() *CategoriesResourceClient {
+	return &CategoriesResourceClient{client: c}
+}
+
+func (c *Client) Docs() *DocsResourceClient {
+	return &DocsResourceClient{client: c}
+}
+
+func (c *Client) Tables() *TablesResourceClient {
+	return &TablesResourceClient{client: c}
+}
+
+func (c *Client) Folders() *FoldersResourceClient {
+	return &FoldersResourceClient{client: c}
+}
+
+func (c *Client) Packs() *PacksResourceClient {
+	return &PacksResourceClient{client: c}
+}
+
+func (c *Client) MarketplacePackListings() *MarketplacePackListingsResourceClient {
+	return &MarketplacePackListingsResourceClient{client: c}
+}
+
+func (c *Client) UserPackInvitations() *UserPackInvitationsResourceClient {
+	return &UserPackInvitationsResourceClient{client: c}
+}
+
+func (c *Client) Workspaces() *WorkspacesResourceClient {
+	return &WorkspacesResourceClient{client: c}
+}
+
+func (c *Client) Organizations() *OrganizationsResourceClient {
+	return &OrganizationsResourceClient{client: c}
+}
+
+func (c *Client) Analytics() *AnalyticsResourceClient {
+	return &AnalyticsResourceClient{client: c}
+}
+
+func (c *Client) AgentInstances() *AgentInstancesResourceClient {
+	return &AgentInstancesResourceClient{client: c}
+}
+
+func (c *Client) MutationStatus() *MutationStatusResourceClient {
+	return &MutationStatusResourceClient{client: c}
+}
+
+func (c *Client) CustomDocDomainProviders() *CustomDocDomainProvidersResourceClient {
+	return &CustomDocDomainProvidersResourceClient{client: c}
+}
+
+func (r *DocsResourceClient) Pages() *PagesResourceClient {
+	return &PagesResourceClient{client: r.client}
+}
+
+func (r *DocsResourceClient) Formulas() *FormulasResourceClient {
+	return &FormulasResourceClient{client: r.client}
+}
+
+func (r *DocsResourceClient) Controls() *ControlsResourceClient {
+	return &ControlsResourceClient{client: r.client}
+}
+
+func (r *DocsResourceClient) CustomDocDomains() *CustomDocDomainsResourceClient {
+	return &CustomDocDomainsResourceClient{client: r.client}
+}
+
+func (r *DocsResourceClient) Automations() *AutomationsResourceClient {
+	return &AutomationsResourceClient{client: r.client}
+}
+
+func (r *TablesResourceClient) Columns() *ColumnsResourceClient {
+	return &ColumnsResourceClient{client: r.client}
+}
+
+func (r *TablesResourceClient) Rows() *RowsResourceClient {
+	return &RowsResourceClient{client: r.client}
+}
+
+func (r *PacksResourceClient) PackVersions() *PackVersionsResourceClient {
+	return &PackVersionsResourceClient{client: r.client}
+}
+
+func (r *PacksResourceClient) PackReleases() *PackReleasesResourceClient {
+	return &PackReleasesResourceClient{client: r.client}
+}
+
+func (r *PacksResourceClient) PackReviews() *PackReviewsResourceClient {
+	return &PackReviewsResourceClient{client: r.client}
+}
+
+func (r *PacksResourceClient) PackPermissions() *PackPermissionsResourceClient {
+	return &PackPermissionsResourceClient{client: r.client}
+}
+
+func (r *PacksResourceClient) PackInvitations() *PackInvitationsResourceClient {
+	return &PackInvitationsResourceClient{client: r.client}
+}
+
+func (r *PacksResourceClient) PackMakers() *PackMakersResourceClient {
+	return &PackMakersResourceClient{client: r.client}
+}
+
+func (r *PacksResourceClient) PackCategories() *PackCategoriesResourceClient {
+	return &PackCategoriesResourceClient{client: r.client}
+}
+
+func (c *Client) Whoami(ctx context.Context, input *WhoamiInput) (*User, error) {
 	if input == nil {
-		input = &AddCustomDocDomainInput{}
+		input = &WhoamiInput{}
 	}
-	path := "/docs/" + pathEscape(input.DocId) + "/domains"
+	path := "/whoami"
 	query := url.Values{}
-	var out AddCustomDocDomainResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	var out User
+	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) AddGoLink(ctx context.Context, input *AddGoLinkInput) (*AddGoLinkResponse, error) {
+func (c *Client) ResolveBrowserLink(ctx context.Context, input *ResolveBrowserLinkInput) (*ApiLink, error) {
 	if input == nil {
-		input = &AddGoLinkInput{}
+		input = &ResolveBrowserLinkInput{}
 	}
-	path := "/organizations/" + pathEscape(input.OrganizationId) + "/goLinks"
+	path := "/resolveBrowserLink"
 	query := url.Values{}
-	var out AddGoLinkResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	addQueryValue(query, "url", input.URL)
+	addQueryValue(query, "degradeGracefully", input.DegradeGracefully)
+	var out ApiLink
+	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) AddPackCategory(ctx context.Context, input *AddPackCategoryInput) (*AddPackCategoryResponse, error) {
+func (r *CategoriesResourceClient) List(ctx context.Context, input *ListCategoriesInput) (*DocCategoryList, error) {
 	if input == nil {
-		input = &AddPackCategoryInput{}
+		input = &ListCategoriesInput{}
 	}
-	path := "/packs/" + pathEscape(input.PackId) + "/category"
+	path := "/categories"
 	query := url.Values{}
-	var out AddPackCategoryResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	var out DocCategoryList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) AddPackMaker(ctx context.Context, input *AddPackMakerInput) (*AddPackMakerResponse, error) {
-	if input == nil {
-		input = &AddPackMakerInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/maker"
-	query := url.Values{}
-	var out AddPackMakerResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) AddPackPermission(ctx context.Context, input *AddPackPermissionInput) (*AddPackPermissionResponse, error) {
-	if input == nil {
-		input = &AddPackPermissionInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/permissions"
-	query := url.Values{}
-	var out AddPackPermissionResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) AddPermission(ctx context.Context, input *AddPermissionInput) (*AddPermissionResponse, error) {
-	if input == nil {
-		input = &AddPermissionInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/acl/permissions"
-	query := url.Values{}
-	var out AddPermissionResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) BeginPageContentExport(ctx context.Context, input *BeginPageContentExportInput) (*BeginPageContentExportResponse, error) {
-	if input == nil {
-		input = &BeginPageContentExportInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName) + "/export"
-	query := url.Values{}
-	var out BeginPageContentExportResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) CancelPackReview(ctx context.Context, input *CancelPackReviewInput) (*CancelPackReviewResponse, error) {
-	if input == nil {
-		input = &CancelPackReviewInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/reviews/pending/cancel"
-	query := url.Values{}
-	var out CancelPackReviewResponse
-	err := c.do(ctx, http.MethodPost, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ChangeUserRole(ctx context.Context, input *ChangeUserRoleInput) (*ChangeRoleResponse, error) {
-	if input == nil {
-		input = &ChangeUserRoleInput{}
-	}
-	path := "/workspaces/" + pathEscape(input.WorkspaceId) + "/users/role"
-	query := url.Values{}
-	var out ChangeRoleResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) CreateDoc(ctx context.Context, input *CreateDocInput) (*Doc, error) {
+func (r *DocsResourceClient) Create(ctx context.Context, input *CreateDocInput) (*Doc, error) {
 	if input == nil {
 		input = &CreateDocInput{}
 	}
 	path := "/docs"
 	query := url.Values{}
 	var out Doc
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
 	return &out, err
 }
 
-func (c *Client) CreateFolder(ctx context.Context, input *CreateFolderInput) (*Folder, error) {
-	if input == nil {
-		input = &CreateFolderInput{}
-	}
-	path := "/folders"
-	query := url.Values{}
-	var out Folder
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) CreatePack(ctx context.Context, input *CreatePackInput) (*CreatePackResponse, error) {
-	if input == nil {
-		input = &CreatePackInput{}
-	}
-	path := "/packs"
-	query := url.Values{}
-	var out CreatePackResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) CreatePackInvitation(ctx context.Context, input *CreatePackInvitationInput) (*CreatePackInvitationResponse, error) {
-	if input == nil {
-		input = &CreatePackInvitationInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/invitations"
-	query := url.Values{}
-	var out CreatePackInvitationResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) CreatePackRelease(ctx context.Context, input *CreatePackReleaseInput) (*PackRelease, error) {
-	if input == nil {
-		input = &CreatePackReleaseInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/releases"
-	query := url.Values{}
-	var out PackRelease
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) CreatePackReview(ctx context.Context, input *CreatePackReviewInput) (*CreatePackReviewResponse, error) {
-	if input == nil {
-		input = &CreatePackReviewInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/reviews"
-	query := url.Values{}
-	var out CreatePackReviewResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) CreatePage(ctx context.Context, input *CreatePageInput) (*PageCreateResponse, error) {
-	if input == nil {
-		input = &CreatePageInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/pages"
-	query := url.Values{}
-	var out PageCreateResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) DeleteCustomDocDomain(ctx context.Context, input *DeleteCustomDocDomainInput) (*DeleteCustomDocDomainResponse, error) {
-	if input == nil {
-		input = &DeleteCustomDocDomainInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/domains/" + pathEscape(input.CustomDocDomain)
-	query := url.Values{}
-	var out DeleteCustomDocDomainResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeleteDoc(ctx context.Context, input *DeleteDocInput) (*DocDelete, error) {
-	if input == nil {
-		input = &DeleteDocInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId)
-	query := url.Values{}
-	var out DocDelete
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeleteFolder(ctx context.Context, input *DeleteFolderInput) (*DeleteFolderResponse, error) {
-	if input == nil {
-		input = &DeleteFolderInput{}
-	}
-	path := "/folders/" + pathEscape(input.FolderId)
-	query := url.Values{}
-	var out DeleteFolderResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeletePack(ctx context.Context, input *DeletePackInput) (*DeletePackResponse, error) {
-	if input == nil {
-		input = &DeletePackInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId)
-	query := url.Values{}
-	var out DeletePackResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeletePackCategory(ctx context.Context, input *DeletePackCategoryInput) (*DeletePackCategoryResponse, error) {
-	if input == nil {
-		input = &DeletePackCategoryInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/category/" + pathEscape(input.CategoryName)
-	query := url.Values{}
-	var out DeletePackCategoryResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeletePackInvitation(ctx context.Context, input *DeletePackInvitationInput) (*DeletePackInvitationResponse, error) {
-	if input == nil {
-		input = &DeletePackInvitationInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/invitations/" + pathEscape(input.InvitationId)
-	query := url.Values{}
-	var out DeletePackInvitationResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeletePackListingDraft(ctx context.Context, input *DeletePackListingDraftInput) (*DeletePackListingDraftResponse, error) {
-	if input == nil {
-		input = &DeletePackListingDraftInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/listingDraft"
-	query := url.Values{}
-	var out DeletePackListingDraftResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeletePackMaker(ctx context.Context, input *DeletePackMakerInput) (*DeletePackMakerResponse, error) {
-	if input == nil {
-		input = &DeletePackMakerInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/maker/" + pathEscape(input.LoginId)
-	query := url.Values{}
-	var out DeletePackMakerResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeletePackPermission(ctx context.Context, input *DeletePackPermissionInput) (*DeletePackPermissionResponse, error) {
-	if input == nil {
-		input = &DeletePackPermissionInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/permissions/" + pathEscape(input.PermissionId)
-	query := url.Values{}
-	var out DeletePackPermissionResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeletePage(ctx context.Context, input *DeletePageInput) (*PageDeleteResponse, error) {
-	if input == nil {
-		input = &DeletePageInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName)
-	query := url.Values{}
-	var out PageDeleteResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeletePageContent(ctx context.Context, input *DeletePageContentInput) (*PageContentDeleteResponse, error) {
-	if input == nil {
-		input = &DeletePageContentInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName) + "/content"
-	query := url.Values{}
-	var out PageContentDeleteResponse
-	err := c.do(ctx, http.MethodDelete, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) DeletePermission(ctx context.Context, input *DeletePermissionInput) (*DeletePermissionResponse, error) {
-	if input == nil {
-		input = &DeletePermissionInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/acl/permissions/" + pathEscape(input.PermissionId)
-	query := url.Values{}
-	var out DeletePermissionResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeleteRow(ctx context.Context, input *DeleteRowInput) (*RowDeleteResponse, error) {
-	if input == nil {
-		input = &DeleteRowInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName)
-	query := url.Values{}
-	var out RowDeleteResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) DeleteRows(ctx context.Context, input *DeleteRowsInput) (*RowsDeleteResponse, error) {
-	if input == nil {
-		input = &DeleteRowsInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows"
-	query := url.Values{}
-	var out RowsDeleteResponse
-	err := c.do(ctx, http.MethodDelete, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) DeleteUserPackPermission(ctx context.Context, input *DeleteUserPackPermissionInput) (*DeleteUserPackPermissionsResponse, error) {
-	if input == nil {
-		input = &DeleteUserPackPermissionInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/permissions"
-	query := url.Values{}
-	var out DeleteUserPackPermissionsResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetAclSettings(ctx context.Context, input *GetAclSettingsInput) (*AclSettings, error) {
-	if input == nil {
-		input = &GetAclSettingsInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/acl/settings"
-	query := url.Values{}
-	var out AclSettings
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetAgentPackLogDetails(ctx context.Context, input *GetAgentPackLogDetailsInput) (*GetAgentPackLogDetailsOutput, error) {
-	if input == nil {
-		input = &GetAgentPackLogDetailsInput{}
-	}
-	path := "/go/tenants/" + pathEscape(input.TenantId) + "/agentInstances/" + pathEscape(input.AgentInstanceId) + "/logs/" + pathEscape(input.LogId)
-	query := url.Values{}
-	addQueryValue(query, "detailsKey", input.DetailsKey)
-	var out GetAgentPackLogDetailsOutput
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetAnalyticsLastUpdated(ctx context.Context) (*AnalyticsLastUpdatedResponse, error) {
-	path := "/analytics/updated"
-	query := url.Values{}
-	var out AnalyticsLastUpdatedResponse
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetColumn(ctx context.Context, input *GetColumnInput) (*ColumnDetail, error) {
-	if input == nil {
-		input = &GetColumnInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/columns/" + pathEscape(input.ColumnIdOrName)
-	query := url.Values{}
-	var out ColumnDetail
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetControl(ctx context.Context, input *GetControlInput) (*Control, error) {
-	if input == nil {
-		input = &GetControlInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/controls/" + pathEscape(input.ControlIdOrName)
-	query := url.Values{}
-	var out Control
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetCustomDocDomainProvider(ctx context.Context, input *GetCustomDocDomainProviderInput) (*CustomDocDomainProviderResponse, error) {
-	if input == nil {
-		input = &GetCustomDocDomainProviderInput{}
-	}
-	path := "/domains/provider/" + pathEscape(input.CustomDocDomain)
-	query := url.Values{}
-	var out CustomDocDomainProviderResponse
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetDoc(ctx context.Context, input *GetDocInput) (*Doc, error) {
+func (r *DocsResourceClient) Read(ctx context.Context, input *GetDocInput) (*Doc, error) {
 	if input == nil {
 		input = &GetDocInput{}
 	}
 	path := "/docs/" + pathEscape(input.DocId)
 	query := url.Values{}
 	var out Doc
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) GetFolder(ctx context.Context, input *GetFolderInput) (*Folder, error) {
+func (r *DocsResourceClient) Update(ctx context.Context, input *UpdateDocInput) (*DocUpdateResponse, error) {
 	if input == nil {
-		input = &GetFolderInput{}
+		input = &UpdateDocInput{}
 	}
-	path := "/folders/" + pathEscape(input.FolderId)
+	path := "/docs/" + pathEscape(input.DocId)
 	query := url.Values{}
-	var out Folder
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	var out DocUpdateResponse
+	err := r.client.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
 	return &out, err
 }
 
-func (c *Client) GetFormula(ctx context.Context, input *GetFormulaInput) (*Formula, error) {
+func (r *DocsResourceClient) Delete(ctx context.Context, input *DeleteDocInput) (*DocDelete, error) {
 	if input == nil {
-		input = &GetFormulaInput{}
+		input = &DeleteDocInput{}
 	}
-	path := "/docs/" + pathEscape(input.DocId) + "/formulas/" + pathEscape(input.FormulaIdOrName)
+	path := "/docs/" + pathEscape(input.DocId)
 	query := url.Values{}
-	var out Formula
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	var out DocDelete
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) GetMutationStatus(ctx context.Context, input *GetMutationStatusInput) (*MutationStatus, error) {
-	if input == nil {
-		input = &GetMutationStatusInput{}
-	}
-	path := "/mutationStatus/" + pathEscape(input.RequestId)
-	query := url.Values{}
-	var out MutationStatus
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetNextPackVersion(ctx context.Context, input *GetNextPackVersionInput) (*NextPackVersionInfo, error) {
-	if input == nil {
-		input = &GetNextPackVersionInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/nextVersion"
-	query := url.Values{}
-	var out NextPackVersionInfo
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) GetPack(ctx context.Context, input *GetPackInput) (*Pack, error) {
-	if input == nil {
-		input = &GetPackInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId)
-	query := url.Values{}
-	var out Pack
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPackConfigurationSchema(ctx context.Context, input *GetPackConfigurationSchemaInput) (*GetPackConfigurationJsonSchemaResponse, error) {
-	if input == nil {
-		input = &GetPackConfigurationSchemaInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/configurations/schema"
-	query := url.Values{}
-	var out GetPackConfigurationJsonSchemaResponse
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPackListing(ctx context.Context, input *GetPackListingInput) (*PackListingDetail, error) {
-	if input == nil {
-		input = &GetPackListingInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/listing"
-	query := url.Values{}
-	addQueryValue(query, "workspaceId", input.WorkspaceId)
-	addQueryValue(query, "docId", input.DocId)
-	addQueryValue(query, "ingestionId", input.IngestionId)
-	addQueryValue(query, "installContext", input.InstallContext)
-	addQueryValue(query, "releaseChannel", input.ReleaseChannel)
-	var out PackListingDetail
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPackListingDraft(ctx context.Context, input *GetPackListingDraftInput) (*GetPackListingDraftResponse, error) {
-	if input == nil {
-		input = &GetPackListingDraftInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/listingDraft"
-	query := url.Values{}
-	var out GetPackListingDraftResponse
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPackLogDetails(ctx context.Context, input *GetPackLogDetailsInput) (*GetPackLogDetailsOutput, error) {
-	if input == nil {
-		input = &GetPackLogDetailsInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/tenantId/" + pathEscape(input.TenantId) + "/rootIngestionId/" + pathEscape(input.RootIngestionId) + "/logs/" + pathEscape(input.LogId)
-	query := url.Values{}
-	addQueryValue(query, "detailsKey", input.DetailsKey)
-	var out GetPackLogDetailsOutput
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPackOauthConfig(ctx context.Context, input *GetPackOauthConfigInput) (*PackOauthConfigMetadata, error) {
-	if input == nil {
-		input = &GetPackOauthConfigInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/oauthConfig"
-	query := url.Values{}
-	var out PackOauthConfigMetadata
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPackPermissions(ctx context.Context, input *GetPackPermissionsInput) (*PackPermissionList, error) {
-	if input == nil {
-		input = &GetPackPermissionsInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/permissions"
-	query := url.Values{}
-	var out PackPermissionList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPackSourceCode(ctx context.Context, input *GetPackSourceCodeInput) (*PackSourceCodeInfo, error) {
-	if input == nil {
-		input = &GetPackSourceCodeInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/versions/" + pathEscape(input.PackVersion) + "/sourceCode"
-	query := url.Values{}
-	var out PackSourceCodeInfo
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPackSystemConnection(ctx context.Context, input *GetPackSystemConnectionInput) (*GetPackSystemConnectionOutput, error) {
-	if input == nil {
-		input = &GetPackSystemConnectionInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/systemConnection"
-	query := url.Values{}
-	var out GetPackSystemConnectionOutput
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPackVersionDiffs(ctx context.Context, input *GetPackVersionDiffsInput) (*PackVersionDiffs, error) {
-	if input == nil {
-		input = &GetPackVersionDiffsInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/versions/" + pathEscape(input.BasePackVersion) + "/diff/" + pathEscape(input.TargetPackVersion)
-	query := url.Values{}
-	var out PackVersionDiffs
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPage(ctx context.Context, input *GetPageInput) (*Page, error) {
-	if input == nil {
-		input = &GetPageInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName)
-	query := url.Values{}
-	var out Page
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPageContentExportStatus(ctx context.Context, input *GetPageContentExportStatusInput) (*PageContentExportStatusResponse, error) {
-	if input == nil {
-		input = &GetPageContentExportStatusInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName) + "/export/" + pathEscape(input.RequestId)
-	query := url.Values{}
-	var out PageContentExportStatusResponse
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetPermissions(ctx context.Context, input *GetPermissionsInput) (*ACL, error) {
-	if input == nil {
-		input = &GetPermissionsInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/acl/permissions"
-	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
-	var out ACL
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetRow(ctx context.Context, input *GetRowInput) (*RowDetail, error) {
-	if input == nil {
-		input = &GetRowInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName)
-	query := url.Values{}
-	addQueryValue(query, "useColumnNames", input.UseColumnNames)
-	addQueryValue(query, "valueFormat", input.ValueFormat)
-	var out RowDetail
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetSharingMetadata(ctx context.Context, input *GetSharingMetadataInput) (*SharingMetadata, error) {
-	if input == nil {
-		input = &GetSharingMetadataInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/acl/metadata"
-	query := url.Values{}
-	var out SharingMetadata
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) GetTable(ctx context.Context, input *GetTableInput) (*Table, error) {
-	if input == nil {
-		input = &GetTableInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName)
-	query := url.Values{}
-	addQueryValue(query, "useUpdatedTableLayouts", input.UseUpdatedTableLayouts)
-	var out Table
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListAgentLogs(ctx context.Context, input *ListAgentLogsInput) (*PackLogsList, error) {
-	if input == nil {
-		input = &ListAgentLogsInput{}
-	}
-	path := "/go/tenants/" + pathEscape(input.TenantId) + "/agentInstances/" + pathEscape(input.AgentInstanceId) + "/logs"
-	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "logTypes", input.LogTypes)
-	addQueryValue(query, "agentSessionId", input.AgentSessionId)
-	addQueryValue(query, "beforeTimestamp", input.BeforeTimestamp)
-	addQueryValue(query, "afterTimestamp", input.AfterTimestamp)
-	addQueryValue(query, "order", input.Order)
-	addQueryValue(query, "q", input.Q)
-	addQueryValue(query, "requestIds", input.RequestIds)
-	var out PackLogsList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListAgentSessionIds(ctx context.Context, input *ListAgentSessionIdsInput) (*PackLogsList, error) {
-	if input == nil {
-		input = &ListAgentSessionIdsInput{}
-	}
-	path := "/go/tenants/" + pathEscape(input.TenantId) + "/agentInstances/" + pathEscape(input.AgentInstanceId) + "/agentSessionIds"
-	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "agentSessionId", input.AgentSessionId)
-	addQueryValue(query, "logTypes", input.LogTypes)
-	addQueryValue(query, "beforeTimestamp", input.BeforeTimestamp)
-	addQueryValue(query, "afterTimestamp", input.AfterTimestamp)
-	addQueryValue(query, "order", input.Order)
-	addQueryValue(query, "q", input.Q)
-	addQueryValue(query, "requestIds", input.RequestIds)
-	var out PackLogsList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListCategories(ctx context.Context) (*DocCategoryList, error) {
-	path := "/categories"
-	query := url.Values{}
-	var out DocCategoryList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListColumns(ctx context.Context, input *ListColumnsInput) (*ColumnList, error) {
-	if input == nil {
-		input = &ListColumnsInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/columns"
-	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "visibleOnly", input.VisibleOnly)
-	var out ColumnList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListControls(ctx context.Context, input *ListControlsInput) (*ControlList, error) {
-	if input == nil {
-		input = &ListControlsInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/controls"
-	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "sortBy", input.SortBy)
-	var out ControlList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListCustomDocDomains(ctx context.Context, input *ListCustomDocDomainsInput) (*CustomDocDomainList, error) {
-	if input == nil {
-		input = &ListCustomDocDomainsInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/domains"
-	query := url.Values{}
-	var out CustomDocDomainList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListDocAnalytics(ctx context.Context, input *ListDocAnalyticsInput) (*DocAnalyticsCollection, error) {
-	if input == nil {
-		input = &ListDocAnalyticsInput{}
-	}
-	path := "/analytics/docs"
-	query := url.Values{}
-	addQueryValue(query, "docIds", input.DocIds)
-	addQueryValue(query, "workspaceId", input.WorkspaceId)
-	addQueryValue(query, "query", input.Query)
-	addQueryValue(query, "isPublished", input.IsPublished)
-	addQueryValue(query, "sinceDate", input.SinceDate)
-	addQueryValue(query, "untilDate", input.UntilDate)
-	addQueryValue(query, "scale", input.Scale)
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "orderBy", input.OrderBy)
-	addQueryValue(query, "direction", input.Direction)
-	addQueryValue(query, "limit", input.Limit)
-	var out DocAnalyticsCollection
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListDocAnalyticsSummary(ctx context.Context, input *ListDocAnalyticsSummaryInput) (*DocAnalyticsSummary, error) {
-	if input == nil {
-		input = &ListDocAnalyticsSummaryInput{}
-	}
-	path := "/analytics/docs/summary"
-	query := url.Values{}
-	addQueryValue(query, "isPublished", input.IsPublished)
-	addQueryValue(query, "sinceDate", input.SinceDate)
-	addQueryValue(query, "untilDate", input.UntilDate)
-	addQueryValue(query, "workspaceId", input.WorkspaceId)
-	var out DocAnalyticsSummary
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListDocs(ctx context.Context, input *ListDocsInput) (*DocList, error) {
+func (r *DocsResourceClient) List(ctx context.Context, input *ListDocsInput) (*DocList, error) {
 	if input == nil {
 		input = &ListDocsInput{}
 	}
@@ -796,11 +320,507 @@ func (c *Client) ListDocs(ctx context.Context, input *ListDocsInput) (*DocList, 
 	addQueryValue(query, "limit", input.Limit)
 	addQueryValue(query, "pageToken", input.PageToken)
 	var out DocList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListFolders(ctx context.Context, input *ListFoldersInput) (*FolderList, error) {
+func (r *DocsResourceClient) GetSharingMetadata(ctx context.Context, input *GetSharingMetadataInput) (*SharingMetadata, error) {
+	if input == nil {
+		input = &GetSharingMetadataInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/acl/metadata"
+	query := url.Values{}
+	var out SharingMetadata
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *DocsResourceClient) GetPermissions(ctx context.Context, input *GetPermissionsInput) (*ACL, error) {
+	if input == nil {
+		input = &GetPermissionsInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/acl/permissions"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	var out ACL
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *DocsResourceClient) AddPermission(ctx context.Context, input *AddPermissionInput) (*AddPermissionResponse, error) {
+	if input == nil {
+		input = &AddPermissionInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/acl/permissions"
+	query := url.Values{}
+	var out AddPermissionResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *DocsResourceClient) DeletePermission(ctx context.Context, input *DeletePermissionInput) (*DeletePermissionResponse, error) {
+	if input == nil {
+		input = &DeletePermissionInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/acl/permissions/" + pathEscape(input.PermissionId)
+	query := url.Values{}
+	var out DeletePermissionResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *DocsResourceClient) SearchPrincipals(ctx context.Context, input *SearchPrincipalsInput) (*SearchPrincipalsResponse, error) {
+	if input == nil {
+		input = &SearchPrincipalsInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/acl/principals/search"
+	query := url.Values{}
+	addQueryValue(query, "query", input.Query)
+	var out SearchPrincipalsResponse
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *DocsResourceClient) GetAclSettings(ctx context.Context, input *GetAclSettingsInput) (*AclSettings, error) {
+	if input == nil {
+		input = &GetAclSettingsInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/acl/settings"
+	query := url.Values{}
+	var out AclSettings
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *DocsResourceClient) UpdateAclSettings(ctx context.Context, input *UpdateAclSettingsInput) (*AclSettings, error) {
+	if input == nil {
+		input = &UpdateAclSettingsInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/acl/settings"
+	query := url.Values{}
+	var out AclSettings
+	err := r.client.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *DocsResourceClient) PublishDoc(ctx context.Context, input *PublishDocInput) (*PublishResponse, error) {
+	if input == nil {
+		input = &PublishDocInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/publish"
+	query := url.Values{}
+	var out PublishResponse
+	err := r.client.do(ctx, http.MethodPut, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *DocsResourceClient) UnpublishDoc(ctx context.Context, input *UnpublishDocInput) (*UnpublishResponse, error) {
+	if input == nil {
+		input = &UnpublishDocInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/publish"
+	query := url.Values{}
+	var out UnpublishResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PagesResourceClient) Create(ctx context.Context, input *CreatePageInput) (*PageCreateResponse, error) {
+	if input == nil {
+		input = &CreatePageInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/pages"
+	query := url.Values{}
+	var out PageCreateResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PagesResourceClient) Read(ctx context.Context, input *GetPageInput) (*Page, error) {
+	if input == nil {
+		input = &GetPageInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName)
+	query := url.Values{}
+	var out Page
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PagesResourceClient) Update(ctx context.Context, input *UpdatePageInput) (*PageUpdateResponse, error) {
+	if input == nil {
+		input = &UpdatePageInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName)
+	query := url.Values{}
+	var out PageUpdateResponse
+	err := r.client.do(ctx, http.MethodPut, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PagesResourceClient) Delete(ctx context.Context, input *DeletePageInput) (*PageDeleteResponse, error) {
+	if input == nil {
+		input = &DeletePageInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName)
+	query := url.Values{}
+	var out PageDeleteResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PagesResourceClient) List(ctx context.Context, input *ListPagesInput) (*PageList, error) {
+	if input == nil {
+		input = &ListPagesInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/pages"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	var out PageList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PagesResourceClient) ListPageContent(ctx context.Context, input *ListPageContentInput) (*PageContentList, error) {
+	if input == nil {
+		input = &ListPageContentInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName) + "/content"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "contentFormat", input.ContentFormat)
+	var out PageContentList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PagesResourceClient) DeletePageContent(ctx context.Context, input *DeletePageContentInput) (*PageContentDeleteResponse, error) {
+	if input == nil {
+		input = &DeletePageContentInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName) + "/content"
+	query := url.Values{}
+	var out PageContentDeleteResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PagesResourceClient) BeginPageContentExport(ctx context.Context, input *BeginPageContentExportInput) (*BeginPageContentExportResponse, error) {
+	if input == nil {
+		input = &BeginPageContentExportInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName) + "/export"
+	query := url.Values{}
+	var out BeginPageContentExportResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PagesResourceClient) GetPageContentExportStatus(ctx context.Context, input *GetPageContentExportStatusInput) (*PageContentExportStatusResponse, error) {
+	if input == nil {
+		input = &GetPageContentExportStatusInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName) + "/export/" + pathEscape(input.RequestId)
+	query := url.Values{}
+	var out PageContentExportStatusResponse
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *FormulasResourceClient) Read(ctx context.Context, input *GetFormulaInput) (*Formula, error) {
+	if input == nil {
+		input = &GetFormulaInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/formulas/" + pathEscape(input.FormulaIdOrName)
+	query := url.Values{}
+	var out Formula
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *FormulasResourceClient) List(ctx context.Context, input *ListFormulasInput) (*FormulaList, error) {
+	if input == nil {
+		input = &ListFormulasInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/formulas"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "sortBy", input.SortBy)
+	var out FormulaList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *ControlsResourceClient) Read(ctx context.Context, input *GetControlInput) (*Control, error) {
+	if input == nil {
+		input = &GetControlInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/controls/" + pathEscape(input.ControlIdOrName)
+	query := url.Values{}
+	var out Control
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *ControlsResourceClient) List(ctx context.Context, input *ListControlsInput) (*ControlList, error) {
+	if input == nil {
+		input = &ListControlsInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/controls"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "sortBy", input.SortBy)
+	var out ControlList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *CustomDocDomainsResourceClient) Create(ctx context.Context, input *AddCustomDocDomainInput) (*AddCustomDocDomainResponse, error) {
+	if input == nil {
+		input = &AddCustomDocDomainInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/domains"
+	query := url.Values{}
+	var out AddCustomDocDomainResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *CustomDocDomainsResourceClient) Update(ctx context.Context, input *UpdateCustomDocDomainInput) (*UpdateCustomDocDomainResponse, error) {
+	if input == nil {
+		input = &UpdateCustomDocDomainInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/domains/" + pathEscape(input.CustomDocDomain)
+	query := url.Values{}
+	var out UpdateCustomDocDomainResponse
+	err := r.client.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *CustomDocDomainsResourceClient) Delete(ctx context.Context, input *DeleteCustomDocDomainInput) (*DeleteCustomDocDomainResponse, error) {
+	if input == nil {
+		input = &DeleteCustomDocDomainInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/domains/" + pathEscape(input.CustomDocDomain)
+	query := url.Values{}
+	var out DeleteCustomDocDomainResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *CustomDocDomainsResourceClient) List(ctx context.Context, input *ListCustomDocDomainsInput) (*CustomDocDomainList, error) {
+	if input == nil {
+		input = &ListCustomDocDomainsInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/domains"
+	query := url.Values{}
+	var out CustomDocDomainList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *AutomationsResourceClient) TriggerWebhookAutomation(ctx context.Context, input *TriggerWebhookAutomationInput) (*WebhookTriggerResponse, error) {
+	if input == nil {
+		input = &TriggerWebhookAutomationInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/hooks/automation/" + pathEscape(input.RuleId)
+	query := url.Values{}
+	var out WebhookTriggerResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *TablesResourceClient) Read(ctx context.Context, input *GetTableInput) (*Table, error) {
+	if input == nil {
+		input = &GetTableInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName)
+	query := url.Values{}
+	addQueryValue(query, "useUpdatedTableLayouts", input.UseUpdatedTableLayouts)
+	var out Table
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *TablesResourceClient) List(ctx context.Context, input *ListTablesInput) (*TableList, error) {
+	if input == nil {
+		input = &ListTablesInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "sortBy", input.SortBy)
+	addQueryValue(query, "tableTypes", input.TableTypes)
+	var out TableList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *ColumnsResourceClient) Read(ctx context.Context, input *GetColumnInput) (*ColumnDetail, error) {
+	if input == nil {
+		input = &GetColumnInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/columns/" + pathEscape(input.ColumnIdOrName)
+	query := url.Values{}
+	var out ColumnDetail
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *ColumnsResourceClient) List(ctx context.Context, input *ListColumnsInput) (*ColumnList, error) {
+	if input == nil {
+		input = &ListColumnsInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/columns"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "visibleOnly", input.VisibleOnly)
+	var out ColumnList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *RowsResourceClient) Read(ctx context.Context, input *GetRowInput) (*RowDetail, error) {
+	if input == nil {
+		input = &GetRowInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName)
+	query := url.Values{}
+	addQueryValue(query, "useColumnNames", input.UseColumnNames)
+	addQueryValue(query, "valueFormat", input.ValueFormat)
+	var out RowDetail
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *RowsResourceClient) Update(ctx context.Context, input *UpdateRowInput) (*RowUpdateResponse, error) {
+	if input == nil {
+		input = &UpdateRowInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName)
+	query := url.Values{}
+	addQueryValue(query, "disableParsing", input.DisableParsing)
+	var out RowUpdateResponse
+	err := r.client.do(ctx, http.MethodPut, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *RowsResourceClient) Delete(ctx context.Context, input *DeleteRowInput) (*RowDeleteResponse, error) {
+	if input == nil {
+		input = &DeleteRowInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName)
+	query := url.Values{}
+	var out RowDeleteResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *RowsResourceClient) List(ctx context.Context, input *ListRowsInput) (*RowList, error) {
+	if input == nil {
+		input = &ListRowsInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows"
+	query := url.Values{}
+	addQueryValue(query, "query", input.Query)
+	addQueryValue(query, "sortBy", input.SortBy)
+	addQueryValue(query, "useColumnNames", input.UseColumnNames)
+	addQueryValue(query, "valueFormat", input.ValueFormat)
+	addQueryValue(query, "visibleOnly", input.VisibleOnly)
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "syncToken", input.SyncToken)
+	var out RowList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *RowsResourceClient) PushButton(ctx context.Context, input *PushButtonInput) (*PushButtonResponse, error) {
+	if input == nil {
+		input = &PushButtonInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName) + "/buttons/" + pathEscape(input.ColumnIdOrName)
+	query := url.Values{}
+	var out PushButtonResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *RowsResourceClient) UpsertRows(ctx context.Context, input *UpsertRowsInput) (*RowsUpsertResponse, error) {
+	if input == nil {
+		input = &UpsertRowsInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows"
+	query := url.Values{}
+	addQueryValue(query, "disableParsing", input.DisableParsing)
+	var out RowsUpsertResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *RowsResourceClient) DeleteRows(ctx context.Context, input *DeleteRowsInput) (*RowsDeleteResponse, error) {
+	if input == nil {
+		input = &DeleteRowsInput{}
+	}
+	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows"
+	query := url.Values{}
+	var out RowsDeleteResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *FoldersResourceClient) Create(ctx context.Context, input *CreateFolderInput) (*Folder, error) {
+	if input == nil {
+		input = &CreateFolderInput{}
+	}
+	path := "/folders"
+	query := url.Values{}
+	var out Folder
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *FoldersResourceClient) Read(ctx context.Context, input *GetFolderInput) (*Folder, error) {
+	if input == nil {
+		input = &GetFolderInput{}
+	}
+	path := "/folders/" + pathEscape(input.FolderId)
+	query := url.Values{}
+	var out Folder
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *FoldersResourceClient) Update(ctx context.Context, input *UpdateFolderInput) (*Folder, error) {
+	if input == nil {
+		input = &UpdateFolderInput{}
+	}
+	path := "/folders/" + pathEscape(input.FolderId)
+	query := url.Values{}
+	var out Folder
+	err := r.client.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *FoldersResourceClient) Delete(ctx context.Context, input *DeleteFolderInput) (*DeleteFolderResponse, error) {
+	if input == nil {
+		input = &DeleteFolderInput{}
+	}
+	path := "/folders/" + pathEscape(input.FolderId)
+	query := url.Values{}
+	var out DeleteFolderResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *FoldersResourceClient) List(ctx context.Context, input *ListFoldersInput) (*FolderList, error) {
 	if input == nil {
 		input = &ListFoldersInput{}
 	}
@@ -811,79 +831,260 @@ func (c *Client) ListFolders(ctx context.Context, input *ListFoldersInput) (*Fol
 	addQueryValue(query, "limit", input.Limit)
 	addQueryValue(query, "pageToken", input.PageToken)
 	var out FolderList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListFormulas(ctx context.Context, input *ListFormulasInput) (*FormulaList, error) {
+func (r *PacksResourceClient) Create(ctx context.Context, input *CreatePackInput) (*CreatePackResponse, error) {
 	if input == nil {
-		input = &ListFormulasInput{}
+		input = &CreatePackInput{}
 	}
-	path := "/docs/" + pathEscape(input.DocId) + "/formulas"
+	path := "/packs"
 	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
+	var out CreatePackResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) Read(ctx context.Context, input *GetPackInput) (*Pack, error) {
+	if input == nil {
+		input = &GetPackInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId)
+	query := url.Values{}
+	var out Pack
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) Update(ctx context.Context, input *UpdatePackInput) (*Pack, error) {
+	if input == nil {
+		input = &UpdatePackInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId)
+	query := url.Values{}
+	var out Pack
+	err := r.client.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) Delete(ctx context.Context, input *DeletePackInput) (*DeletePackResponse, error) {
+	if input == nil {
+		input = &DeletePackInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId)
+	query := url.Values{}
+	var out DeletePackResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) List(ctx context.Context, input *ListPacksInput) (*PackSummaryList, error) {
+	if input == nil {
+		input = &ListPacksInput{}
+	}
+	path := "/packs"
+	query := url.Values{}
+	addQueryValue(query, "accessType", input.AccessType)
+	addQueryValue(query, "accessTypes", input.AccessTypes)
 	addQueryValue(query, "sortBy", input.SortBy)
-	var out FormulaList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "direction", input.Direction)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "onlyWorkspaceId", input.OnlyWorkspaceId)
+	addQueryValue(query, "parentWorkspaceIds", input.ParentWorkspaceIds)
+	addQueryValue(query, "excludePublicPacks", input.ExcludePublicPacks)
+	addQueryValue(query, "packEntrypoint", input.PackEntrypoint)
+	var out PackSummaryList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListGroupedIngestionLogs(ctx context.Context, input *ListGroupedIngestionLogsInput) (*GroupedPackLogsList, error) {
+func (r *PacksResourceClient) GetPackConfigurationSchema(ctx context.Context, input *GetPackConfigurationSchemaInput) (*GetPackConfigurationJsonSchemaResponse, error) {
 	if input == nil {
-		input = &ListGroupedIngestionLogsInput{}
+		input = &GetPackConfigurationSchemaInput{}
 	}
-	path := "/packs/" + pathEscape(input.PackId) + "/tenantId/" + pathEscape(input.TenantId) + "/rootIngestionId/" + pathEscape(input.RootIngestionId) + "/groupedLogs"
+	path := "/packs/" + pathEscape(input.PackId) + "/configurations/schema"
+	query := url.Values{}
+	var out GetPackConfigurationJsonSchemaResponse
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) GetNextPackVersion(ctx context.Context, input *GetNextPackVersionInput) (*NextPackVersionInfo, error) {
+	if input == nil {
+		input = &GetNextPackVersionInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/nextVersion"
+	query := url.Values{}
+	var out NextPackVersionInfo
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) GetPackVersionDiffs(ctx context.Context, input *GetPackVersionDiffsInput) (*PackVersionDiffs, error) {
+	if input == nil {
+		input = &GetPackVersionDiffsInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/versions/" + pathEscape(input.BasePackVersion) + "/diff/" + pathEscape(input.TargetPackVersion)
+	query := url.Values{}
+	var out PackVersionDiffs
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) PackVersionUploadComplete(ctx context.Context, input *PackVersionUploadCompleteInput) (*CreatePackVersionResponse, error) {
+	if input == nil {
+		input = &PackVersionUploadCompleteInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/versions/" + pathEscape(input.PackVersion) + "/uploadComplete"
+	query := url.Values{}
+	var out CreatePackVersionResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) GetPackListingDraft(ctx context.Context, input *GetPackListingDraftInput) (*GetPackListingDraftResponse, error) {
+	if input == nil {
+		input = &GetPackListingDraftInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/listingDraft"
+	query := url.Values{}
+	var out GetPackListingDraftResponse
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) UpsertPackListingDraft(ctx context.Context, input *UpsertPackListingDraftInput) (*UpsertPackListingDraftResponse, error) {
+	if input == nil {
+		input = &UpsertPackListingDraftInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/listingDraft"
+	query := url.Values{}
+	var out UpsertPackListingDraftResponse
+	err := r.client.do(ctx, http.MethodPut, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) DeletePackListingDraft(ctx context.Context, input *DeletePackListingDraftInput) (*DeletePackListingDraftResponse, error) {
+	if input == nil {
+		input = &DeletePackListingDraftInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/listingDraft"
+	query := url.Values{}
+	var out DeletePackListingDraftResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) SetPackOauthConfig(ctx context.Context, input *SetPackOauthConfigInput) (*PackOauthConfigMetadata, error) {
+	if input == nil {
+		input = &SetPackOauthConfigInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/oauthConfig"
+	query := url.Values{}
+	var out PackOauthConfigMetadata
+	err := r.client.do(ctx, http.MethodPut, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) GetPackOauthConfig(ctx context.Context, input *GetPackOauthConfigInput) (*PackOauthConfigMetadata, error) {
+	if input == nil {
+		input = &GetPackOauthConfigInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/oauthConfig"
+	query := url.Values{}
+	var out PackOauthConfigMetadata
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) SetPackSystemConnection(ctx context.Context, input *SetPackSystemConnectionInput) (*SetPackSystemConnectionOutput, error) {
+	if input == nil {
+		input = &SetPackSystemConnectionInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/systemConnection"
+	query := url.Values{}
+	var out SetPackSystemConnectionOutput
+	err := r.client.do(ctx, http.MethodPut, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) PatchPackSystemConnection(ctx context.Context, input *PatchPackSystemConnectionInput) (*PatchPackSystemConnectionOutput, error) {
+	if input == nil {
+		input = &PatchPackSystemConnectionInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/systemConnection"
+	query := url.Values{}
+	var out PatchPackSystemConnectionOutput
+	err := r.client.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) GetPackSystemConnection(ctx context.Context, input *GetPackSystemConnectionInput) (*GetPackSystemConnectionOutput, error) {
+	if input == nil {
+		input = &GetPackSystemConnectionInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/systemConnection"
+	query := url.Values{}
+	var out GetPackSystemConnectionOutput
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) UploadPackAsset(ctx context.Context, input *UploadPackAssetInput) (*PackAssetUploadInfo, error) {
+	if input == nil {
+		input = &UploadPackAssetInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/uploadAsset"
+	query := url.Values{}
+	var out PackAssetUploadInfo
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) UploadPackSourceCode(ctx context.Context, input *UploadPackSourceCodeInput) (*PackSourceCodeUploadInfo, error) {
+	if input == nil {
+		input = &UploadPackSourceCodeInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/uploadSourceCode"
+	query := url.Values{}
+	var out PackSourceCodeUploadInfo
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) PackAssetUploadComplete(ctx context.Context, input *PackAssetUploadCompleteInput) (*PackAssetUploadCompleteResponse, error) {
+	if input == nil {
+		input = &PackAssetUploadCompleteInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/assets/" + pathEscape(input.PackAssetId) + "/assetType/" + pathEscape(input.PackAssetType) + "/uploadComplete"
+	query := url.Values{}
+	var out PackAssetUploadCompleteResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) ListPackLogs(ctx context.Context, input *ListPackLogsInput) (*PackLogsList, error) {
+	if input == nil {
+		input = &ListPackLogsInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/docs/" + pathEscape(input.DocId) + "/logs"
 	query := url.Values{}
 	addQueryValue(query, "limit", input.Limit)
 	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "ingestionExecutionId", input.IngestionExecutionId)
+	addQueryValue(query, "logTypes", input.LogTypes)
 	addQueryValue(query, "beforeTimestamp", input.BeforeTimestamp)
 	addQueryValue(query, "afterTimestamp", input.AfterTimestamp)
 	addQueryValue(query, "order", input.Order)
 	addQueryValue(query, "q", input.Q)
-	var out GroupedPackLogsList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	addQueryValue(query, "requestIds", input.RequestIds)
+	var out PackLogsList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListGroupedPackLogs(ctx context.Context, input *ListGroupedPackLogsInput) (*GroupedPackLogsList, error) {
-	if input == nil {
-		input = &ListGroupedPackLogsInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/docs/" + pathEscape(input.DocId) + "/groupedLogs"
-	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "beforeTimestamp", input.BeforeTimestamp)
-	addQueryValue(query, "afterTimestamp", input.AfterTimestamp)
-	addQueryValue(query, "order", input.Order)
-	addQueryValue(query, "q", input.Q)
-	var out GroupedPackLogsList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListIngestionBatchExecutions(ctx context.Context, input *ListIngestionBatchExecutionsInput) (*IngestionBatchExecutionsList, error) {
-	if input == nil {
-		input = &ListIngestionBatchExecutionsInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/tenantId/" + pathEscape(input.TenantId) + "/rootIngestionId/" + pathEscape(input.RootIngestionId) + "/ingestionBatchExecutions"
-	query := url.Values{}
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "datasource", input.Datasource)
-	addQueryValue(query, "executionType", input.ExecutionType)
-	addQueryValue(query, "includeDeletedIngestions", input.IncludeDeletedIngestions)
-	addQueryValue(query, "ingestionExecutionId", input.IngestionExecutionId)
-	addQueryValue(query, "ingestionId", input.IngestionId)
-	addQueryValue(query, "ingestionStatus", input.IngestionStatus)
-	var out IngestionBatchExecutionsList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListIngestionLogs(ctx context.Context, input *ListIngestionLogsInput) (*PackLogsList, error) {
+func (r *PacksResourceClient) ListIngestionLogs(ctx context.Context, input *ListIngestionLogsInput) (*PackLogsList, error) {
 	if input == nil {
 		input = &ListIngestionLogsInput{}
 	}
@@ -901,11 +1102,65 @@ func (c *Client) ListIngestionLogs(ctx context.Context, input *ListIngestionLogs
 	addQueryValue(query, "q", input.Q)
 	addQueryValue(query, "requestIds", input.RequestIds)
 	var out PackLogsList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListIngestionParentItems(ctx context.Context, input *ListIngestionParentItemsInput) (*IngestionParentItemsList, error) {
+func (r *PacksResourceClient) ListGroupedPackLogs(ctx context.Context, input *ListGroupedPackLogsInput) (*GroupedPackLogsList, error) {
+	if input == nil {
+		input = &ListGroupedPackLogsInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/docs/" + pathEscape(input.DocId) + "/groupedLogs"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "beforeTimestamp", input.BeforeTimestamp)
+	addQueryValue(query, "afterTimestamp", input.AfterTimestamp)
+	addQueryValue(query, "order", input.Order)
+	addQueryValue(query, "q", input.Q)
+	var out GroupedPackLogsList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) ListGroupedIngestionLogs(ctx context.Context, input *ListGroupedIngestionLogsInput) (*GroupedPackLogsList, error) {
+	if input == nil {
+		input = &ListGroupedIngestionLogsInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/tenantId/" + pathEscape(input.TenantId) + "/rootIngestionId/" + pathEscape(input.RootIngestionId) + "/groupedLogs"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "ingestionExecutionId", input.IngestionExecutionId)
+	addQueryValue(query, "beforeTimestamp", input.BeforeTimestamp)
+	addQueryValue(query, "afterTimestamp", input.AfterTimestamp)
+	addQueryValue(query, "order", input.Order)
+	addQueryValue(query, "q", input.Q)
+	var out GroupedPackLogsList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) ListIngestionBatchExecutions(ctx context.Context, input *ListIngestionBatchExecutionsInput) (*IngestionBatchExecutionsList, error) {
+	if input == nil {
+		input = &ListIngestionBatchExecutionsInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/tenantId/" + pathEscape(input.TenantId) + "/rootIngestionId/" + pathEscape(input.RootIngestionId) + "/ingestionBatchExecutions"
+	query := url.Values{}
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "datasource", input.Datasource)
+	addQueryValue(query, "executionType", input.ExecutionType)
+	addQueryValue(query, "includeDeletedIngestions", input.IncludeDeletedIngestions)
+	addQueryValue(query, "ingestionExecutionId", input.IngestionExecutionId)
+	addQueryValue(query, "ingestionId", input.IngestionId)
+	addQueryValue(query, "ingestionStatus", input.IngestionStatus)
+	var out IngestionBatchExecutionsList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PacksResourceClient) ListIngestionParentItems(ctx context.Context, input *ListIngestionParentItemsInput) (*IngestionParentItemsList, error) {
 	if input == nil {
 		input = &ListIngestionParentItemsInput{}
 	}
@@ -916,91 +1171,239 @@ func (c *Client) ListIngestionParentItems(ctx context.Context, input *ListIngest
 	addQueryValue(query, "ingestionId", input.IngestionId)
 	addQueryValue(query, "ingestionStatus", input.IngestionStatus)
 	var out IngestionParentItemsList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListPackAnalytics(ctx context.Context, input *ListPackAnalyticsInput) (*PackAnalyticsCollection, error) {
+func (r *PacksResourceClient) GetPackLogDetails(ctx context.Context, input *GetPackLogDetailsInput) (*GetPackLogDetailsOutput, error) {
 	if input == nil {
-		input = &ListPackAnalyticsInput{}
+		input = &GetPackLogDetailsInput{}
 	}
-	path := "/analytics/packs"
+	path := "/packs/" + pathEscape(input.PackId) + "/tenantId/" + pathEscape(input.TenantId) + "/rootIngestionId/" + pathEscape(input.RootIngestionId) + "/logs/" + pathEscape(input.LogId)
 	query := url.Values{}
-	addQueryValue(query, "packIds", input.PackIds)
-	addQueryValue(query, "workspaceId", input.WorkspaceId)
-	addQueryValue(query, "query", input.Query)
-	addQueryValue(query, "sinceDate", input.SinceDate)
-	addQueryValue(query, "untilDate", input.UntilDate)
-	addQueryValue(query, "scale", input.Scale)
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "orderBy", input.OrderBy)
-	addQueryValue(query, "direction", input.Direction)
-	addQueryValue(query, "isPublished", input.IsPublished)
-	addQueryValue(query, "limit", input.Limit)
-	var out PackAnalyticsCollection
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	addQueryValue(query, "detailsKey", input.DetailsKey)
+	var out GetPackLogDetailsOutput
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListPackAnalyticsSummary(ctx context.Context, input *ListPackAnalyticsSummaryInput) (*PackAnalyticsSummary, error) {
-	if input == nil {
-		input = &ListPackAnalyticsSummaryInput{}
-	}
-	path := "/analytics/packs/summary"
-	query := url.Values{}
-	addQueryValue(query, "packIds", input.PackIds)
-	addQueryValue(query, "workspaceId", input.WorkspaceId)
-	addQueryValue(query, "isPublished", input.IsPublished)
-	addQueryValue(query, "sinceDate", input.SinceDate)
-	addQueryValue(query, "untilDate", input.UntilDate)
-	var out PackAnalyticsSummary
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListPackCategories(ctx context.Context, input *ListPackCategoriesInput) (*ListPackCategoriesResponse, error) {
-	if input == nil {
-		input = &ListPackCategoriesInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/categories"
-	query := url.Values{}
-	var out ListPackCategoriesResponse
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListPackFeaturedDocs(ctx context.Context, input *ListPackFeaturedDocsInput) (*PackFeaturedDocsResponse, error) {
+func (r *PacksResourceClient) ListPackFeaturedDocs(ctx context.Context, input *ListPackFeaturedDocsInput) (*PackFeaturedDocsResponse, error) {
 	if input == nil {
 		input = &ListPackFeaturedDocsInput{}
 	}
 	path := "/packs/" + pathEscape(input.PackId) + "/featuredDocs"
 	query := url.Values{}
 	var out PackFeaturedDocsResponse
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListPackFormulaAnalytics(ctx context.Context, input *ListPackFormulaAnalyticsInput) (*PackFormulaAnalyticsCollection, error) {
+func (r *PacksResourceClient) UpdatePackFeaturedDocs(ctx context.Context, input *UpdatePackFeaturedDocsInput) (*UpdatePackFeaturedDocsResponse, error) {
 	if input == nil {
-		input = &ListPackFormulaAnalyticsInput{}
+		input = &UpdatePackFeaturedDocsInput{}
 	}
-	path := "/analytics/packs/" + pathEscape(input.PackId) + "/formulas"
+	path := "/packs/" + pathEscape(input.PackId) + "/featuredDocs"
 	query := url.Values{}
-	addQueryValue(query, "packFormulaNames", input.PackFormulaNames)
-	addQueryValue(query, "packFormulaTypes", input.PackFormulaTypes)
-	addQueryValue(query, "sinceDate", input.SinceDate)
-	addQueryValue(query, "untilDate", input.UntilDate)
-	addQueryValue(query, "scale", input.Scale)
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "orderBy", input.OrderBy)
-	addQueryValue(query, "direction", input.Direction)
-	addQueryValue(query, "limit", input.Limit)
-	var out PackFormulaAnalyticsCollection
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	var out UpdatePackFeaturedDocsResponse
+	err := r.client.do(ctx, http.MethodPut, path, query, input.Payload, &out)
 	return &out, err
 }
 
-func (c *Client) ListPackInvitations(ctx context.Context, input *ListPackInvitationsInput) (*PackInvitationList, error) {
+func (r *PackVersionsResourceClient) List(ctx context.Context, input *ListPackVersionsInput) (*PackVersionList, error) {
+	if input == nil {
+		input = &ListPackVersionsInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/versions"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	var out PackVersionList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackVersionsResourceClient) RegisterPackVersion(ctx context.Context, input *RegisterPackVersionInput) (*PackVersionUploadInfo, error) {
+	if input == nil {
+		input = &RegisterPackVersionInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/versions/" + pathEscape(input.PackVersion) + "/register"
+	query := url.Values{}
+	var out PackVersionUploadInfo
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PackVersionsResourceClient) PackSourceCodeUploadComplete(ctx context.Context, input *PackSourceCodeUploadCompleteInput) (*PackSourceCodeUploadCompleteResponse, error) {
+	if input == nil {
+		input = &PackSourceCodeUploadCompleteInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/versions/" + pathEscape(input.PackVersion) + "/sourceCode/uploadComplete"
+	query := url.Values{}
+	var out PackSourceCodeUploadCompleteResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PackVersionsResourceClient) GetPackSourceCode(ctx context.Context, input *GetPackSourceCodeInput) (*PackSourceCodeInfo, error) {
+	if input == nil {
+		input = &GetPackSourceCodeInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/versions/" + pathEscape(input.PackVersion) + "/sourceCode"
+	query := url.Values{}
+	var out PackSourceCodeInfo
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackReleasesResourceClient) Create(ctx context.Context, input *CreatePackReleaseInput) (*PackRelease, error) {
+	if input == nil {
+		input = &CreatePackReleaseInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/releases"
+	query := url.Values{}
+	var out PackRelease
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PackReleasesResourceClient) Update(ctx context.Context, input *UpdatePackReleaseInput) (*PackRelease, error) {
+	if input == nil {
+		input = &UpdatePackReleaseInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/releases/" + pathEscape(input.PackReleaseId)
+	query := url.Values{}
+	var out PackRelease
+	err := r.client.do(ctx, http.MethodPut, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PackReleasesResourceClient) List(ctx context.Context, input *ListPackReleasesInput) (*PackReleaseList, error) {
+	if input == nil {
+		input = &ListPackReleasesInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/releases"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	var out PackReleaseList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackReviewsResourceClient) Create(ctx context.Context, input *CreatePackReviewInput) (*CreatePackReviewResponse, error) {
+	if input == nil {
+		input = &CreatePackReviewInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/reviews"
+	query := url.Values{}
+	var out CreatePackReviewResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PackReviewsResourceClient) List(ctx context.Context, input *ListPackReviewsInput) (*ListPackReviewsResponse, error) {
+	if input == nil {
+		input = &ListPackReviewsInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/reviews"
+	query := url.Values{}
+	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "status", input.Status)
+	var out ListPackReviewsResponse
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackReviewsResourceClient) CancelPackReview(ctx context.Context, input *CancelPackReviewInput) (*CancelPackReviewResponse, error) {
+	if input == nil {
+		input = &CancelPackReviewInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/reviews/pending/cancel"
+	query := url.Values{}
+	var out CancelPackReviewResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackPermissionsResourceClient) Create(ctx context.Context, input *AddPackPermissionInput) (*AddPackPermissionResponse, error) {
+	if input == nil {
+		input = &AddPackPermissionInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/permissions"
+	query := url.Values{}
+	var out AddPackPermissionResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PackPermissionsResourceClient) Delete(ctx context.Context, input *DeletePackPermissionInput) (*DeletePackPermissionResponse, error) {
+	if input == nil {
+		input = &DeletePackPermissionInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/permissions/" + pathEscape(input.PermissionId)
+	query := url.Values{}
+	var out DeletePackPermissionResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackPermissionsResourceClient) List(ctx context.Context, input *GetPackPermissionsInput) (*PackPermissionList, error) {
+	if input == nil {
+		input = &GetPackPermissionsInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/permissions"
+	query := url.Values{}
+	var out PackPermissionList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackPermissionsResourceClient) DeleteUserPackPermission(ctx context.Context, input *DeleteUserPackPermissionInput) (*DeleteUserPackPermissionsResponse, error) {
+	if input == nil {
+		input = &DeleteUserPackPermissionInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/permissions"
+	query := url.Values{}
+	var out DeleteUserPackPermissionsResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackInvitationsResourceClient) Create(ctx context.Context, input *CreatePackInvitationInput) (*CreatePackInvitationResponse, error) {
+	if input == nil {
+		input = &CreatePackInvitationInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/invitations"
+	query := url.Values{}
+	var out CreatePackInvitationResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PackInvitationsResourceClient) Update(ctx context.Context, input *UpdatePackInvitationInput) (*UpdatePackInvitationResponse, error) {
+	if input == nil {
+		input = &UpdatePackInvitationInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/invitations/" + pathEscape(input.InvitationId)
+	query := url.Values{}
+	var out UpdatePackInvitationResponse
+	err := r.client.do(ctx, http.MethodPut, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PackInvitationsResourceClient) Delete(ctx context.Context, input *DeletePackInvitationInput) (*DeletePackInvitationResponse, error) {
+	if input == nil {
+		input = &DeletePackInvitationInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/invitations/" + pathEscape(input.InvitationId)
+	query := url.Values{}
+	var out DeletePackInvitationResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackInvitationsResourceClient) List(ctx context.Context, input *ListPackInvitationsInput) (*PackInvitationList, error) {
 	if input == nil {
 		input = &ListPackInvitationsInput{}
 	}
@@ -1009,11 +1412,93 @@ func (c *Client) ListPackInvitations(ctx context.Context, input *ListPackInvitat
 	addQueryValue(query, "limit", input.Limit)
 	addQueryValue(query, "pageToken", input.PageToken)
 	var out PackInvitationList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListPackListings(ctx context.Context, input *ListPackListingsInput) (*PackListingList, error) {
+func (r *PackMakersResourceClient) Create(ctx context.Context, input *AddPackMakerInput) (*AddPackMakerResponse, error) {
+	if input == nil {
+		input = &AddPackMakerInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/maker"
+	query := url.Values{}
+	var out AddPackMakerResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PackMakersResourceClient) Delete(ctx context.Context, input *DeletePackMakerInput) (*DeletePackMakerResponse, error) {
+	if input == nil {
+		input = &DeletePackMakerInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/maker/" + pathEscape(input.LoginId)
+	query := url.Values{}
+	var out DeletePackMakerResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackMakersResourceClient) List(ctx context.Context, input *ListPackMakersInput) (*ListPackMakersResponse, error) {
+	if input == nil {
+		input = &ListPackMakersInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/makers"
+	query := url.Values{}
+	var out ListPackMakersResponse
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackCategoriesResourceClient) Create(ctx context.Context, input *AddPackCategoryInput) (*AddPackCategoryResponse, error) {
+	if input == nil {
+		input = &AddPackCategoryInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/category"
+	query := url.Values{}
+	var out AddPackCategoryResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *PackCategoriesResourceClient) Delete(ctx context.Context, input *DeletePackCategoryInput) (*DeletePackCategoryResponse, error) {
+	if input == nil {
+		input = &DeletePackCategoryInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/category/" + pathEscape(input.CategoryName)
+	query := url.Values{}
+	var out DeletePackCategoryResponse
+	err := r.client.do(ctx, http.MethodDelete, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *PackCategoriesResourceClient) List(ctx context.Context, input *ListPackCategoriesInput) (*ListPackCategoriesResponse, error) {
+	if input == nil {
+		input = &ListPackCategoriesInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/categories"
+	query := url.Values{}
+	var out ListPackCategoriesResponse
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *MarketplacePackListingsResourceClient) Read(ctx context.Context, input *GetPackListingInput) (*PackListingDetail, error) {
+	if input == nil {
+		input = &GetPackListingInput{}
+	}
+	path := "/packs/" + pathEscape(input.PackId) + "/listing"
+	query := url.Values{}
+	addQueryValue(query, "workspaceId", input.WorkspaceId)
+	addQueryValue(query, "docId", input.DocId)
+	addQueryValue(query, "ingestionId", input.IngestionId)
+	addQueryValue(query, "installContext", input.InstallContext)
+	addQueryValue(query, "releaseChannel", input.ReleaseChannel)
+	var out PackListingDetail
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *MarketplacePackListingsResourceClient) List(ctx context.Context, input *ListPackListingsInput) (*PackListingList, error) {
 	if input == nil {
 		input = &ListPackListingsInput{}
 	}
@@ -1034,102 +1519,103 @@ func (c *Client) ListPackListings(ctx context.Context, input *ListPackListingsIn
 	addQueryValue(query, "pageToken", input.PageToken)
 	addQueryValue(query, "installContext", input.InstallContext)
 	var out PackListingList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListPackLogs(ctx context.Context, input *ListPackLogsInput) (*PackLogsList, error) {
+func (r *UserPackInvitationsResourceClient) List(ctx context.Context, input *ListUserPackInvitationsInput) (*PackInvitationWithPackList, error) {
 	if input == nil {
-		input = &ListPackLogsInput{}
+		input = &ListUserPackInvitationsInput{}
 	}
-	path := "/packs/" + pathEscape(input.PackId) + "/docs/" + pathEscape(input.DocId) + "/logs"
+	path := "/packs/invitations"
 	query := url.Values{}
 	addQueryValue(query, "limit", input.Limit)
 	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "logTypes", input.LogTypes)
-	addQueryValue(query, "beforeTimestamp", input.BeforeTimestamp)
-	addQueryValue(query, "afterTimestamp", input.AfterTimestamp)
-	addQueryValue(query, "order", input.Order)
-	addQueryValue(query, "q", input.Q)
-	addQueryValue(query, "requestIds", input.RequestIds)
-	var out PackLogsList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	var out PackInvitationWithPackList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListPackMakers(ctx context.Context, input *ListPackMakersInput) (*ListPackMakersResponse, error) {
+func (r *UserPackInvitationsResourceClient) ReplyToPackInvitation(ctx context.Context, input *ReplyToPackInvitationInput) (*HandlePackInvitationResponse, error) {
 	if input == nil {
-		input = &ListPackMakersInput{}
+		input = &ReplyToPackInvitationInput{}
 	}
-	path := "/packs/" + pathEscape(input.PackId) + "/makers"
+	path := "/packs/invitations/" + pathEscape(input.InvitationId) + "/reply"
 	query := url.Values{}
-	var out ListPackMakersResponse
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	var out HandlePackInvitationResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
 	return &out, err
 }
 
-func (c *Client) ListPackReleases(ctx context.Context, input *ListPackReleasesInput) (*PackReleaseList, error) {
+func (r *WorkspacesResourceClient) ListWorkspaceMembers(ctx context.Context, input *ListWorkspaceMembersInput) (*WorkspaceMembersList, error) {
 	if input == nil {
-		input = &ListPackReleasesInput{}
+		input = &ListWorkspaceMembersInput{}
 	}
-	path := "/packs/" + pathEscape(input.PackId) + "/releases"
+	path := "/workspaces/" + pathEscape(input.WorkspaceId) + "/users"
 	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "includedRoles", input.IncludedRoles)
 	addQueryValue(query, "pageToken", input.PageToken)
-	var out PackReleaseList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	var out WorkspaceMembersList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListPackReviews(ctx context.Context, input *ListPackReviewsInput) (*ListPackReviewsResponse, error) {
+func (r *WorkspacesResourceClient) ChangeUserRole(ctx context.Context, input *ChangeUserRoleInput) (*ChangeRoleResponse, error) {
 	if input == nil {
-		input = &ListPackReviewsInput{}
+		input = &ChangeUserRoleInput{}
 	}
-	path := "/packs/" + pathEscape(input.PackId) + "/reviews"
+	path := "/workspaces/" + pathEscape(input.WorkspaceId) + "/users/role"
 	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
+	var out ChangeRoleResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *WorkspacesResourceClient) ListWorkspaceRoleActivity(ctx context.Context, input *ListWorkspaceRoleActivityInput) (*GetWorkspaceRoleActivity, error) {
+	if input == nil {
+		input = &ListWorkspaceRoleActivityInput{}
+	}
+	path := "/workspaces/" + pathEscape(input.WorkspaceId) + "/roles"
+	query := url.Values{}
+	var out GetWorkspaceRoleActivity
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *OrganizationsResourceClient) AddGoLink(ctx context.Context, input *AddGoLinkInput) (*AddGoLinkResponse, error) {
+	if input == nil {
+		input = &AddGoLinkInput{}
+	}
+	path := "/organizations/" + pathEscape(input.OrganizationId) + "/goLinks"
+	query := url.Values{}
+	var out AddGoLinkResponse
+	err := r.client.do(ctx, http.MethodPost, path, query, input.Payload, &out)
+	return &out, err
+}
+
+func (r *AnalyticsResourceClient) ListDocAnalytics(ctx context.Context, input *ListDocAnalyticsInput) (*DocAnalyticsCollection, error) {
+	if input == nil {
+		input = &ListDocAnalyticsInput{}
+	}
+	path := "/analytics/docs"
+	query := url.Values{}
+	addQueryValue(query, "docIds", input.DocIds)
+	addQueryValue(query, "workspaceId", input.WorkspaceId)
+	addQueryValue(query, "query", input.Query)
+	addQueryValue(query, "isPublished", input.IsPublished)
+	addQueryValue(query, "sinceDate", input.SinceDate)
+	addQueryValue(query, "untilDate", input.UntilDate)
+	addQueryValue(query, "scale", input.Scale)
 	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "status", input.Status)
-	var out ListPackReviewsResponse
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListPackVersions(ctx context.Context, input *ListPackVersionsInput) (*PackVersionList, error) {
-	if input == nil {
-		input = &ListPackVersionsInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/versions"
-	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
-	var out PackVersionList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListPacks(ctx context.Context, input *ListPacksInput) (*PackSummaryList, error) {
-	if input == nil {
-		input = &ListPacksInput{}
-	}
-	path := "/packs"
-	query := url.Values{}
-	addQueryValue(query, "accessType", input.AccessType)
-	addQueryValue(query, "accessTypes", input.AccessTypes)
-	addQueryValue(query, "sortBy", input.SortBy)
-	addQueryValue(query, "limit", input.Limit)
+	addQueryValue(query, "orderBy", input.OrderBy)
 	addQueryValue(query, "direction", input.Direction)
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "onlyWorkspaceId", input.OnlyWorkspaceId)
-	addQueryValue(query, "parentWorkspaceIds", input.ParentWorkspaceIds)
-	addQueryValue(query, "excludePublicPacks", input.ExcludePublicPacks)
-	addQueryValue(query, "packEntrypoint", input.PackEntrypoint)
-	var out PackSummaryList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	addQueryValue(query, "limit", input.Limit)
+	var out DocAnalyticsCollection
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListPageAnalytics(ctx context.Context, input *ListPageAnalyticsInput) (*PageAnalyticsCollection, error) {
+func (r *AnalyticsResourceClient) ListPageAnalytics(ctx context.Context, input *ListPageAnalyticsInput) (*PageAnalyticsCollection, error) {
 	if input == nil {
 		input = &ListPageAnalyticsInput{}
 	}
@@ -1140,425 +1626,164 @@ func (c *Client) ListPageAnalytics(ctx context.Context, input *ListPageAnalytics
 	addQueryValue(query, "pageToken", input.PageToken)
 	addQueryValue(query, "limit", input.Limit)
 	var out PageAnalyticsCollection
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListPageContent(ctx context.Context, input *ListPageContentInput) (*PageContentList, error) {
+func (r *AnalyticsResourceClient) ListDocAnalyticsSummary(ctx context.Context, input *ListDocAnalyticsSummaryInput) (*DocAnalyticsSummary, error) {
 	if input == nil {
-		input = &ListPageContentInput{}
+		input = &ListDocAnalyticsSummaryInput{}
 	}
-	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName) + "/content"
+	path := "/analytics/docs/summary"
 	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "contentFormat", input.ContentFormat)
-	var out PageContentList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	addQueryValue(query, "isPublished", input.IsPublished)
+	addQueryValue(query, "sinceDate", input.SinceDate)
+	addQueryValue(query, "untilDate", input.UntilDate)
+	addQueryValue(query, "workspaceId", input.WorkspaceId)
+	var out DocAnalyticsSummary
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListPages(ctx context.Context, input *ListPagesInput) (*PageList, error) {
+func (r *AnalyticsResourceClient) ListPackAnalytics(ctx context.Context, input *ListPackAnalyticsInput) (*PackAnalyticsCollection, error) {
 	if input == nil {
-		input = &ListPagesInput{}
+		input = &ListPackAnalyticsInput{}
 	}
-	path := "/docs/" + pathEscape(input.DocId) + "/pages"
+	path := "/analytics/packs"
 	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
-	var out PageList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) ListRows(ctx context.Context, input *ListRowsInput) (*RowList, error) {
-	if input == nil {
-		input = &ListRowsInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows"
-	query := url.Values{}
+	addQueryValue(query, "packIds", input.PackIds)
+	addQueryValue(query, "workspaceId", input.WorkspaceId)
 	addQueryValue(query, "query", input.Query)
-	addQueryValue(query, "sortBy", input.SortBy)
-	addQueryValue(query, "useColumnNames", input.UseColumnNames)
-	addQueryValue(query, "valueFormat", input.ValueFormat)
-	addQueryValue(query, "visibleOnly", input.VisibleOnly)
+	addQueryValue(query, "sinceDate", input.SinceDate)
+	addQueryValue(query, "untilDate", input.UntilDate)
+	addQueryValue(query, "scale", input.Scale)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "orderBy", input.OrderBy)
+	addQueryValue(query, "direction", input.Direction)
+	addQueryValue(query, "isPublished", input.IsPublished)
+	addQueryValue(query, "limit", input.Limit)
+	var out PackAnalyticsCollection
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *AnalyticsResourceClient) ListPackAnalyticsSummary(ctx context.Context, input *ListPackAnalyticsSummaryInput) (*PackAnalyticsSummary, error) {
+	if input == nil {
+		input = &ListPackAnalyticsSummaryInput{}
+	}
+	path := "/analytics/packs/summary"
+	query := url.Values{}
+	addQueryValue(query, "packIds", input.PackIds)
+	addQueryValue(query, "workspaceId", input.WorkspaceId)
+	addQueryValue(query, "isPublished", input.IsPublished)
+	addQueryValue(query, "sinceDate", input.SinceDate)
+	addQueryValue(query, "untilDate", input.UntilDate)
+	var out PackAnalyticsSummary
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *AnalyticsResourceClient) ListPackFormulaAnalytics(ctx context.Context, input *ListPackFormulaAnalyticsInput) (*PackFormulaAnalyticsCollection, error) {
+	if input == nil {
+		input = &ListPackFormulaAnalyticsInput{}
+	}
+	path := "/analytics/packs/" + pathEscape(input.PackId) + "/formulas"
+	query := url.Values{}
+	addQueryValue(query, "packFormulaNames", input.PackFormulaNames)
+	addQueryValue(query, "packFormulaTypes", input.PackFormulaTypes)
+	addQueryValue(query, "sinceDate", input.SinceDate)
+	addQueryValue(query, "untilDate", input.UntilDate)
+	addQueryValue(query, "scale", input.Scale)
+	addQueryValue(query, "pageToken", input.PageToken)
+	addQueryValue(query, "orderBy", input.OrderBy)
+	addQueryValue(query, "direction", input.Direction)
+	addQueryValue(query, "limit", input.Limit)
+	var out PackFormulaAnalyticsCollection
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *AnalyticsResourceClient) GetAnalyticsLastUpdated(ctx context.Context, input *GetAnalyticsLastUpdatedInput) (*AnalyticsLastUpdatedResponse, error) {
+	if input == nil {
+		input = &GetAnalyticsLastUpdatedInput{}
+	}
+	path := "/analytics/updated"
+	query := url.Values{}
+	var out AnalyticsLastUpdatedResponse
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
+	return &out, err
+}
+
+func (r *AgentInstancesResourceClient) ListAgentSessionIds(ctx context.Context, input *ListAgentSessionIdsInput) (*PackLogsList, error) {
+	if input == nil {
+		input = &ListAgentSessionIdsInput{}
+	}
+	path := "/go/tenants/" + pathEscape(input.TenantId) + "/agentInstances/" + pathEscape(input.AgentInstanceId) + "/agentSessionIds"
+	query := url.Values{}
 	addQueryValue(query, "limit", input.Limit)
 	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "syncToken", input.SyncToken)
-	var out RowList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	addQueryValue(query, "agentSessionId", input.AgentSessionId)
+	addQueryValue(query, "logTypes", input.LogTypes)
+	addQueryValue(query, "beforeTimestamp", input.BeforeTimestamp)
+	addQueryValue(query, "afterTimestamp", input.AfterTimestamp)
+	addQueryValue(query, "order", input.Order)
+	addQueryValue(query, "q", input.Q)
+	addQueryValue(query, "requestIds", input.RequestIds)
+	var out PackLogsList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListTables(ctx context.Context, input *ListTablesInput) (*TableList, error) {
+func (r *AgentInstancesResourceClient) ListAgentLogs(ctx context.Context, input *ListAgentLogsInput) (*PackLogsList, error) {
 	if input == nil {
-		input = &ListTablesInput{}
+		input = &ListAgentLogsInput{}
 	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables"
+	path := "/go/tenants/" + pathEscape(input.TenantId) + "/agentInstances/" + pathEscape(input.AgentInstanceId) + "/logs"
 	query := url.Values{}
 	addQueryValue(query, "limit", input.Limit)
 	addQueryValue(query, "pageToken", input.PageToken)
-	addQueryValue(query, "sortBy", input.SortBy)
-	addQueryValue(query, "tableTypes", input.TableTypes)
-	var out TableList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	addQueryValue(query, "logTypes", input.LogTypes)
+	addQueryValue(query, "agentSessionId", input.AgentSessionId)
+	addQueryValue(query, "beforeTimestamp", input.BeforeTimestamp)
+	addQueryValue(query, "afterTimestamp", input.AfterTimestamp)
+	addQueryValue(query, "order", input.Order)
+	addQueryValue(query, "q", input.Q)
+	addQueryValue(query, "requestIds", input.RequestIds)
+	var out PackLogsList
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListUserPackInvitations(ctx context.Context, input *ListUserPackInvitationsInput) (*PackInvitationWithPackList, error) {
+func (r *AgentInstancesResourceClient) GetAgentPackLogDetails(ctx context.Context, input *GetAgentPackLogDetailsInput) (*GetAgentPackLogDetailsOutput, error) {
 	if input == nil {
-		input = &ListUserPackInvitationsInput{}
+		input = &GetAgentPackLogDetailsInput{}
 	}
-	path := "/packs/invitations"
+	path := "/go/tenants/" + pathEscape(input.TenantId) + "/agentInstances/" + pathEscape(input.AgentInstanceId) + "/logs/" + pathEscape(input.LogId)
 	query := url.Values{}
-	addQueryValue(query, "limit", input.Limit)
-	addQueryValue(query, "pageToken", input.PageToken)
-	var out PackInvitationWithPackList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	addQueryValue(query, "detailsKey", input.DetailsKey)
+	var out GetAgentPackLogDetailsOutput
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListWorkspaceMembers(ctx context.Context, input *ListWorkspaceMembersInput) (*WorkspaceMembersList, error) {
+func (r *MutationStatusResourceClient) Read(ctx context.Context, input *GetMutationStatusInput) (*MutationStatus, error) {
 	if input == nil {
-		input = &ListWorkspaceMembersInput{}
+		input = &GetMutationStatusInput{}
 	}
-	path := "/workspaces/" + pathEscape(input.WorkspaceId) + "/users"
+	path := "/mutationStatus/" + pathEscape(input.RequestId)
 	query := url.Values{}
-	addQueryValue(query, "includedRoles", input.IncludedRoles)
-	addQueryValue(query, "pageToken", input.PageToken)
-	var out WorkspaceMembersList
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	var out MutationStatus
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }
 
-func (c *Client) ListWorkspaceRoleActivity(ctx context.Context, input *ListWorkspaceRoleActivityInput) (*GetWorkspaceRoleActivity, error) {
+func (r *CustomDocDomainProvidersResourceClient) Read(ctx context.Context, input *GetCustomDocDomainProviderInput) (*CustomDocDomainProviderResponse, error) {
 	if input == nil {
-		input = &ListWorkspaceRoleActivityInput{}
+		input = &GetCustomDocDomainProviderInput{}
 	}
-	path := "/workspaces/" + pathEscape(input.WorkspaceId) + "/roles"
+	path := "/domains/provider/" + pathEscape(input.CustomDocDomain)
 	query := url.Values{}
-	var out GetWorkspaceRoleActivity
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) PackAssetUploadComplete(ctx context.Context, input *PackAssetUploadCompleteInput) (*PackAssetUploadCompleteResponse, error) {
-	if input == nil {
-		input = &PackAssetUploadCompleteInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/assets/" + pathEscape(input.PackAssetId) + "/assetType/" + pathEscape(input.PackAssetType) + "/uploadComplete"
-	query := url.Values{}
-	var out PackAssetUploadCompleteResponse
-	err := c.do(ctx, http.MethodPost, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) PackSourceCodeUploadComplete(ctx context.Context, input *PackSourceCodeUploadCompleteInput) (*PackSourceCodeUploadCompleteResponse, error) {
-	if input == nil {
-		input = &PackSourceCodeUploadCompleteInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/versions/" + pathEscape(input.PackVersion) + "/sourceCode/uploadComplete"
-	query := url.Values{}
-	var out PackSourceCodeUploadCompleteResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) PackVersionUploadComplete(ctx context.Context, input *PackVersionUploadCompleteInput) (*CreatePackVersionResponse, error) {
-	if input == nil {
-		input = &PackVersionUploadCompleteInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/versions/" + pathEscape(input.PackVersion) + "/uploadComplete"
-	query := url.Values{}
-	var out CreatePackVersionResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) PatchPackSystemConnection(ctx context.Context, input *PatchPackSystemConnectionInput) (*PatchPackSystemConnectionOutput, error) {
-	if input == nil {
-		input = &PatchPackSystemConnectionInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/systemConnection"
-	query := url.Values{}
-	var out PatchPackSystemConnectionOutput
-	err := c.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) PublishDoc(ctx context.Context, input *PublishDocInput) (*PublishResponse, error) {
-	if input == nil {
-		input = &PublishDocInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/publish"
-	query := url.Values{}
-	var out PublishResponse
-	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) PushButton(ctx context.Context, input *PushButtonInput) (*PushButtonResponse, error) {
-	if input == nil {
-		input = &PushButtonInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName) + "/buttons/" + pathEscape(input.ColumnIdOrName)
-	query := url.Values{}
-	var out PushButtonResponse
-	err := c.do(ctx, http.MethodPost, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) RegisterPackVersion(ctx context.Context, input *RegisterPackVersionInput) (*PackVersionUploadInfo, error) {
-	if input == nil {
-		input = &RegisterPackVersionInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/versions/" + pathEscape(input.PackVersion) + "/register"
-	query := url.Values{}
-	var out PackVersionUploadInfo
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) ReplyToPackInvitation(ctx context.Context, input *ReplyToPackInvitationInput) (*HandlePackInvitationResponse, error) {
-	if input == nil {
-		input = &ReplyToPackInvitationInput{}
-	}
-	path := "/packs/invitations/" + pathEscape(input.InvitationId) + "/reply"
-	query := url.Values{}
-	var out HandlePackInvitationResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) ResolveBrowserLink(ctx context.Context, input *ResolveBrowserLinkInput) (*ApiLink, error) {
-	if input == nil {
-		input = &ResolveBrowserLinkInput{}
-	}
-	path := "/resolveBrowserLink"
-	query := url.Values{}
-	addQueryValue(query, "url", input.URL)
-	addQueryValue(query, "degradeGracefully", input.DegradeGracefully)
-	var out ApiLink
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) SearchPrincipals(ctx context.Context, input *SearchPrincipalsInput) (*SearchPrincipalsResponse, error) {
-	if input == nil {
-		input = &SearchPrincipalsInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/acl/principals/search"
-	query := url.Values{}
-	addQueryValue(query, "query", input.Query)
-	var out SearchPrincipalsResponse
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) SetPackOauthConfig(ctx context.Context, input *SetPackOauthConfigInput) (*PackOauthConfigMetadata, error) {
-	if input == nil {
-		input = &SetPackOauthConfigInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/oauthConfig"
-	query := url.Values{}
-	var out PackOauthConfigMetadata
-	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) SetPackSystemConnection(ctx context.Context, input *SetPackSystemConnectionInput) (*SetPackSystemConnectionOutput, error) {
-	if input == nil {
-		input = &SetPackSystemConnectionInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/systemConnection"
-	query := url.Values{}
-	var out SetPackSystemConnectionOutput
-	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) TriggerWebhookAutomation(ctx context.Context, input *TriggerWebhookAutomationInput) (*WebhookTriggerResponse, error) {
-	if input == nil {
-		input = &TriggerWebhookAutomationInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/hooks/automation/" + pathEscape(input.RuleId)
-	query := url.Values{}
-	var out WebhookTriggerResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UnpublishDoc(ctx context.Context, input *UnpublishDocInput) (*UnpublishResponse, error) {
-	if input == nil {
-		input = &UnpublishDocInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/publish"
-	query := url.Values{}
-	var out UnpublishResponse
-	err := c.do(ctx, http.MethodDelete, path, query, nil, &out)
-	return &out, err
-}
-
-func (c *Client) UpdateAclSettings(ctx context.Context, input *UpdateAclSettingsInput) (*AclSettings, error) {
-	if input == nil {
-		input = &UpdateAclSettingsInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/acl/settings"
-	query := url.Values{}
-	var out AclSettings
-	err := c.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpdateCustomDocDomain(ctx context.Context, input *UpdateCustomDocDomainInput) (*UpdateCustomDocDomainResponse, error) {
-	if input == nil {
-		input = &UpdateCustomDocDomainInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/domains/" + pathEscape(input.CustomDocDomain)
-	query := url.Values{}
-	var out UpdateCustomDocDomainResponse
-	err := c.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpdateDoc(ctx context.Context, input *UpdateDocInput) (*DocUpdateResponse, error) {
-	if input == nil {
-		input = &UpdateDocInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId)
-	query := url.Values{}
-	var out DocUpdateResponse
-	err := c.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpdateFolder(ctx context.Context, input *UpdateFolderInput) (*Folder, error) {
-	if input == nil {
-		input = &UpdateFolderInput{}
-	}
-	path := "/folders/" + pathEscape(input.FolderId)
-	query := url.Values{}
-	var out Folder
-	err := c.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpdatePack(ctx context.Context, input *UpdatePackInput) (*Pack, error) {
-	if input == nil {
-		input = &UpdatePackInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId)
-	query := url.Values{}
-	var out Pack
-	err := c.do(ctx, http.MethodPatch, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpdatePackFeaturedDocs(ctx context.Context, input *UpdatePackFeaturedDocsInput) (*UpdatePackFeaturedDocsResponse, error) {
-	if input == nil {
-		input = &UpdatePackFeaturedDocsInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/featuredDocs"
-	query := url.Values{}
-	var out UpdatePackFeaturedDocsResponse
-	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpdatePackInvitation(ctx context.Context, input *UpdatePackInvitationInput) (*UpdatePackInvitationResponse, error) {
-	if input == nil {
-		input = &UpdatePackInvitationInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/invitations/" + pathEscape(input.InvitationId)
-	query := url.Values{}
-	var out UpdatePackInvitationResponse
-	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpdatePackRelease(ctx context.Context, input *UpdatePackReleaseInput) (*PackRelease, error) {
-	if input == nil {
-		input = &UpdatePackReleaseInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/releases/" + pathEscape(input.PackReleaseId)
-	query := url.Values{}
-	var out PackRelease
-	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpdatePage(ctx context.Context, input *UpdatePageInput) (*PageUpdateResponse, error) {
-	if input == nil {
-		input = &UpdatePageInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/pages/" + pathEscape(input.PageIdOrName)
-	query := url.Values{}
-	var out PageUpdateResponse
-	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpdateRow(ctx context.Context, input *UpdateRowInput) (*RowUpdateResponse, error) {
-	if input == nil {
-		input = &UpdateRowInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows/" + pathEscape(input.RowIdOrName)
-	query := url.Values{}
-	addQueryValue(query, "disableParsing", input.DisableParsing)
-	var out RowUpdateResponse
-	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UploadPackAsset(ctx context.Context, input *UploadPackAssetInput) (*PackAssetUploadInfo, error) {
-	if input == nil {
-		input = &UploadPackAssetInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/uploadAsset"
-	query := url.Values{}
-	var out PackAssetUploadInfo
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UploadPackSourceCode(ctx context.Context, input *UploadPackSourceCodeInput) (*PackSourceCodeUploadInfo, error) {
-	if input == nil {
-		input = &UploadPackSourceCodeInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/uploadSourceCode"
-	query := url.Values{}
-	var out PackSourceCodeUploadInfo
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpsertPackListingDraft(ctx context.Context, input *UpsertPackListingDraftInput) (*UpsertPackListingDraftResponse, error) {
-	if input == nil {
-		input = &UpsertPackListingDraftInput{}
-	}
-	path := "/packs/" + pathEscape(input.PackId) + "/listingDraft"
-	query := url.Values{}
-	var out UpsertPackListingDraftResponse
-	err := c.do(ctx, http.MethodPut, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) UpsertRows(ctx context.Context, input *UpsertRowsInput) (*RowsUpsertResponse, error) {
-	if input == nil {
-		input = &UpsertRowsInput{}
-	}
-	path := "/docs/" + pathEscape(input.DocId) + "/tables/" + pathEscape(input.TableIdOrName) + "/rows"
-	query := url.Values{}
-	addQueryValue(query, "disableParsing", input.DisableParsing)
-	var out RowsUpsertResponse
-	err := c.do(ctx, http.MethodPost, path, query, input.Payload, &out)
-	return &out, err
-}
-
-func (c *Client) Whoami(ctx context.Context) (*User, error) {
-	path := "/whoami"
-	query := url.Values{}
-	var out User
-	err := c.do(ctx, http.MethodGet, path, query, nil, &out)
+	var out CustomDocDomainProviderResponse
+	err := r.client.do(ctx, http.MethodGet, path, query, nil, &out)
 	return &out, err
 }

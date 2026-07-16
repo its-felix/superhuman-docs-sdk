@@ -14,8 +14,27 @@ Smithy namespace is `com.superhuman.docs.v1`.
 | --- | --- | --- |
 | Go | `github.com/its-felix/superhuman-docs-sdk/go` | The Go module is rooted at this repository so normal `vX.Y.Z` tags work. |
 | Python | `superhuman-docs` | Built by the release workflow. |
-| Rust | `superhuman-docs` | Request-builder crate under `rust`. |
+| Rust | `superhuman-docs` | Typed client and model crate under `rust`. |
 | Zig | `superhuman-docs` module | Consumed through Zig's package manager from this git repository. |
+
+## Generated API shape
+
+Each language exposes one client for the service. Direct RPC-style operations,
+currently `Whoami` and `ResolveBrowserLink`, are methods on that client. API
+operations owned by Smithy resources are grouped under resource clients, with
+stable lifecycle names such as `Create`, `Read`, `Update`, `Delete`, and `List`
+(using the language's normal naming convention). Child resources are reachable
+from their parent; for example, row listing is exposed through the equivalent
+of `client.Tables().Rows().List(options)`.
+
+Inputs and outputs are generated from the Smithy model as strict native types.
+Smithy enums are native enums in Python, Rust, and Zig, and typed string
+constants in Go. In particular, `ColumnFormatType` is generated this way in all
+four SDKs.
+
+Every operation crosses one public, customizable request-transport boundary.
+Go, Python, and Zig provide standard-library defaults; Rust accepts an injected
+transport because its standard library does not include an HTTP client.
 
 ## Install
 
@@ -59,9 +78,10 @@ superhuman-docs = { git = "https://github.com/its-felix/superhuman-docs-sdk.git"
 - `smithy/model`: shared Smithy model
 - `smithy/scripts/openapi_to_smithy.py`: OpenAPI-to-Smithy generator
 - `smithy/generator`: Maven-based Smithy-Build SDK generator plugins
+- `docs`: generated Markdown service and resource reference
 - `go`: generated Go package
 - `python`: generated Python package
-- `rust`: generated Rust request-builder crate
+- `rust`: generated Rust client and model crate
 - `zig`: generated Zig source package
 - `.github/workflows/ci.yml`: validation and generated-source freshness checks
 - `.github/workflows/release.yml`: tag-driven release publishing
@@ -75,8 +95,8 @@ After changing `smithy/model`, regenerate the SDKs:
 ```
 
 The script builds and installs the Smithy generator, runs `smithy build`, copies
-generated artifacts from `smithy/build/smithy/source/.../sdk` into the package
-directories, and runs the SDK tests for tools available on `PATH`.
+generated artifacts from `smithy/build/smithy/source/.../sdk` into `docs/` and
+the package directories, and runs the SDK tests for tools available on `PATH`.
 To generate only one target, pass `markdown`, `python`, `go`, `rust`, or `zig`:
 
 ```sh
@@ -86,7 +106,7 @@ To generate only one target, pass `markdown`, `python`, `go`, `rust`, or `zig`:
 CI uses Java 17, Maven, and the Smithy CLI for generation.
 
 ```sh
-git diff --exit-code -- go python rust zig build.zig build.zig.zon
+git diff --exit-code -- docs go python rust zig build.zig build.zig.zon
 ```
 
 The CI workflow runs the generators and fails if generated files differ from the

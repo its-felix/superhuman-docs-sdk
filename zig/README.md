@@ -2,12 +2,13 @@
 
 Zig package for the Superhuman Docs API v1 Smithy model in `../smithy/model`.
 
-The generated SDK currently provides:
+The generated SDK provides:
 
-- named input structs for every Smithy service operation
-- deterministic request builders with Smithy `@httpLabel`, `@httpQuery`, and `@httpPayload` support
-- a minimal `std.http` client that sends requests with bearer authentication
-- raw response bodies so callers can decode only the JSON shapes they use
+- native Zig structs, tagged unions, lists, maps, aliases, and enums for the full Smithy namespace
+- typed operation inputs and parsed, typed operation outputs
+- a global client for service operations and resource clients for lifecycle and resource operations
+- deterministic internal request construction from Smithy `@httpLabel`, `@httpQuery`, and `@httpPayload` bindings
+- a `std.http` default transport and an optional `Transport.send_request` callback
 
 ## Usage
 
@@ -40,29 +41,23 @@ pub fn main() !void {
     var client = try docs.Client.init(allocator, "api-token");
     defer client.deinit();
 
-    const request = try docs.operations.buildGetDoc(
-        allocator,
-        client.base_url,
-        .{ .docId = "doc-id" },
-    );
-    defer request.deinit(allocator);
+    var response = try client.docs().read(.{ .docId = "doc-id" });
+    defer response.deinit();
 
-    const response = try client.sendExpect(request);
-    defer response.deinit(allocator);
-
-    std.debug.print("{s}\n", .{response.body});
+    std.debug.print("{s}\n", .{response.value.value.name});
 }
 ```
 
-Request payloads are caller-owned JSON byte slices:
+Request payloads are strict generated model values and are JSON-encoded by the SDK:
 
 ```zig
-const request = try docs.operations.buildCreateDoc(
-    allocator,
-    client.base_url,
-    .{ .payload = "{\"title\":\"Roadmap\"}" },
-);
+var response = try client.docs().create(.{
+    .payload = .{ .title = "Roadmap" },
+});
+defer response.deinit();
 ```
+
+Set `ClientOptions.transport` to route every operation through a custom transport. The callback receives the allocator, bearer authorization value, and fully constructed `Request`; omitting it uses `std.http`.
 
 ## Regeneration
 

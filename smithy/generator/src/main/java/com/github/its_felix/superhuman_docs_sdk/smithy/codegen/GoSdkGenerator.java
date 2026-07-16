@@ -12,6 +12,6 @@ final class GoSdkGenerator implements TargetSdkGenerator {
                 GoRenderer.renderTypes(context.getModel(), service.getId().getNamespace()));
         context.getFileManifest().writeFile(
                 "sdk/go/operations_gen.go",
-                GoRenderer.renderOperations(context.getModel()));
+                GoRenderer.renderOperations(context.getModel(), service));
     }
 }

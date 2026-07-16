@@ -58,6 +58,22 @@ DOMAIN_BY_TAG = {
     "Packs": "packs",
 }
 DOMAIN_ORDER = ["docs", "pages", "tables", "rows", "packs", "analytics"]
+SERVICE_OPERATIONS = ["Whoami", "ResolveBrowserLink"]
+SERVICE_RESOURCES = [
+    "CategoryResource",
+    "DocResource",
+    "TableResource",
+    "FolderResource",
+    "PackResource",
+    "MarketplacePackListingResource",
+    "UserPackInvitationResource",
+    "WorkspaceResource",
+    "OrganizationResource",
+    "AnalyticsResource",
+    "AgentInstanceResource",
+    "MutationStatusResource",
+    "CustomDocDomainProviderResource",
+]
 RESERVED = {
     "apply",
     "bigDecimal",
@@ -377,6 +393,8 @@ class Generator:
             if member != prop:
                 lines.append(f"    @jsonName({q(prop)})")
             target = self.schema_target(prop_schema, f"{name}{pascal(prop)}")
+            if prop == "packId" or (name == "Pack" and prop == "id"):
+                target = "PackId"
             lines.append(f"    {member}: {target}")
             lines.append("")
         if lines[-1] == "":
@@ -484,6 +502,10 @@ class Generator:
             loc = parameter["in"]
             pschema = parameter.get("schema", {})
             target = self.schema_target(pschema, f"{op_name}{pascal(pname)}")
+            if pname == "packId":
+                target = "PackId"
+            elif pname == "packReleaseId":
+                target = "String"
             traits: list[str] = []
             required = bool(parameter.get("required")) or loc == "path"
             if loc == "path":
@@ -504,10 +526,9 @@ class Generator:
             add_member("payload", ["@httpPayload"], target, bool(request_body.get("required")))
             has_payload = True
 
-        input_name = ""
+        input_name = self.unique_name(f"{op_name}Input")
+        lines = [f"structure {input_name} {{"]
         if members:
-            input_name = self.unique_name(f"{op_name}Input")
-            lines = [f"structure {input_name} {{"]
             for member, traits, target, required in members:
                 for trait in traits:
                     lines.append(f"    {trait}")
@@ -518,9 +539,11 @@ class Generator:
             if lines[-1] == "":
                 lines.pop()
             lines.append("}")
-            self.shapes[input_name] = "\n".join(lines)
-            self.shape_kind[input_name] = "structure"
-            self.shape_files[input_name] = domain_file
+        else:
+            lines[-1] += "}"
+        self.shapes[input_name] = "\n".join(lines)
+        self.shape_kind[input_name] = "structure"
+        self.shape_files[input_name] = domain_file
 
         code, output_name = self.operation_response(op_name, op.get("responses", {}), domain_file)
         errors: list[str] = []
@@ -540,8 +563,7 @@ class Generator:
             lines.append('@suppress(["HttpMethodSemantics.UnexpectedPayload"])')
         lines.append(f"@http(method: {q(method.upper())}, uri: {q(uri)}, code: {code})")
         lines.append(f"operation {op_name} {{")
-        if input_name:
-            lines.append(f"    input: {input_name}")
+        lines.append(f"    input: {input_name}")
         if output_name:
             lines.append(f"    output: {output_name}")
         if error_list:
@@ -631,6 +653,10 @@ class Generator:
 
         model_dir = output_dir / "model"
         model_dir.mkdir(parents=True, exist_ok=True)
+        # Resource taxonomy is a hand-maintained Smithy overlay because OpenAPI
+        # tags do not express lifecycle bindings, properties, or child resources.
+        resource_overlay_path = model_dir / "resources.smithy"
+        resource_overlay = resource_overlay_path.read_text(encoding="utf-8") if resource_overlay_path.exists() else None
         for old_model in model_dir.glob("*.smithy"):
             old_model.unlink()
         operation_names = [name for name, _, _ in operations]
@@ -652,8 +678,14 @@ class Generator:
             '    version: "1.5.0"',
             "    operations: [",
         ]
-        service.extend(f"        {name}," for name in operation_names)
-        service.extend(["    ]", "}", ""])
+        direct_operations = SERVICE_OPERATIONS if resource_overlay else operation_names
+        service.extend(f"        {name}" for name in direct_operations)
+        service.append("    ]")
+        if resource_overlay:
+            service.append("    resources: [")
+            service.extend(f"        {name}" for name in SERVICE_RESOURCES)
+            service.append("    ]")
+        service.extend(["}", ""])
 
         domain_prelude = [
             '$version: "2"',
@@ -718,6 +750,8 @@ class Generator:
             (model_dir / f"{file_name}.smithy").write_text(
                 "\n".join(lines_by_file[file_name]), encoding="utf-8"
             )
+        if resource_overlay is not None:
+            resource_overlay_path.write_text(resource_overlay, encoding="utf-8")
 
 
 def main() -> int:

@@ -8,13 +8,146 @@ pub const Request = struct {
     operation: []const u8,
     method: std.http.Method,
     url: []u8,
-    body: ?[]const u8 = null,
+    body: ?[]u8 = null,
     expected_status: u16,
 
     pub fn deinit(self: Request, allocator: Allocator) void {
         allocator.free(self.url);
+        if (self.body) |body| allocator.free(body);
     }
 };
+
+/// A caller-supplied transport. The callback owns neither the request nor the
+/// returned response; generated client methods release both after use.
+pub const Transport = struct {
+    context: *anyopaque,
+    send_request: *const fn (
+        context: *anyopaque,
+        allocator: Allocator,
+        authorization: []const u8,
+        request: Request,
+    ) anyerror!Response,
+
+    pub fn sendRequest(
+        self: Transport,
+        allocator: Allocator,
+        authorization: []const u8,
+        request: Request,
+    ) !Response {
+        return self.send_request(self.context, allocator, authorization, request);
+    }
+};
+
+pub const ClientOptions = struct {
+    api_token: []const u8,
+    base_url: []const u8 = default_base_url,
+    io: ?std.Io = null,
+    transport: ?Transport = null,
+};
+
+/// Runtime state shared by the generated global and resource clients.
+pub const ClientCore = struct {
+    allocator: Allocator,
+    base_url: []const u8,
+    authorization: []u8,
+    transport: ?Transport,
+    http_client: std.http.Client,
+
+    pub fn init(allocator: Allocator, api_token: []const u8) !ClientCore {
+        return initWithOptions(allocator, .{ .api_token = api_token });
+    }
+
+    pub fn initWithOptions(allocator: Allocator, options: ClientOptions) !ClientCore {
+        const authorization = try std.fmt.allocPrint(allocator, "Bearer {s}", .{options.api_token});
+        errdefer allocator.free(authorization);
+
+        return .{
+            .allocator = allocator,
+            .base_url = options.base_url,
+            .authorization = authorization,
+            .transport = options.transport,
+            .http_client = .{
+                .allocator = allocator,
+                .io = options.io orelse std.Io.Threaded.global_single_threaded.io(),
+            },
+        };
+    }
+
+    pub fn deinit(self: *ClientCore) void {
+        self.http_client.deinit();
+        self.allocator.free(self.authorization);
+        self.* = undefined;
+    }
+
+    /// The single transport seam used by every generated operation.
+    pub fn sendRequest(self: *ClientCore, request: Request) !Response {
+        if (self.transport) |transport| {
+            return transport.sendRequest(self.allocator, self.authorization, request);
+        }
+        return self.sendStdHttpRequest(request);
+    }
+
+    fn sendStdHttpRequest(self: *ClientCore, request: Request) !Response {
+        var response_body: std.Io.Writer.Allocating = .init(self.allocator);
+        errdefer response_body.deinit();
+
+        const headers_without_body = [_]std.http.Header{
+            .{ .name = "Authorization", .value = self.authorization },
+            .{ .name = "Accept", .value = "application/json" },
+        };
+        const headers_with_body = [_]std.http.Header{
+            .{ .name = "Authorization", .value = self.authorization },
+            .{ .name = "Accept", .value = "application/json" },
+            .{ .name = "Content-Type", .value = "application/json" },
+        };
+        const headers = if (request.body == null) headers_without_body[0..] else headers_with_body[0..];
+
+        const result = try self.http_client.fetch(.{
+            .location = .{ .url = request.url },
+            .method = request.method,
+            .payload = request.body,
+            .response_writer = &response_body.writer,
+            .extra_headers = headers,
+        });
+
+        return .{
+            .status = result.status,
+            .body = try response_body.toOwnedSlice(),
+        };
+    }
+};
+
+pub fn TypedResponse(comptime T: type) type {
+    return struct {
+        status: std.http.Status,
+        value: std.json.Parsed(T),
+
+        pub fn deinit(self: *@This()) void {
+            self.value.deinit();
+            self.* = undefined;
+        }
+    };
+}
+
+pub fn decodeResponse(comptime T: type, allocator: Allocator, response: Response) !TypedResponse(T) {
+    defer response.deinit(allocator);
+    const parsed = try std.json.parseFromSlice(T, allocator, response.body, .{
+        .allocate = .alloc_always,
+        .ignore_unknown_fields = true,
+    });
+    return .{ .status = response.status, .value = parsed };
+}
+
+pub fn jsonEncode(allocator: Allocator, value: anytype) ![]u8 {
+    var body: std.Io.Writer.Allocating = .init(allocator);
+    errdefer body.deinit();
+    var stringify: std.json.Stringify = .{
+        .writer = &body.writer,
+        .options = .{ .emit_null_optional_fields = false },
+    };
+    try stringify.write(value);
+    return body.toOwnedSlice();
+}
 
 pub const Response = struct {
     status: std.http.Status,

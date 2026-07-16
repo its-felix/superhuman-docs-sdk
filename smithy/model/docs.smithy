@@ -8,6 +8,7 @@ use smithy.api#httpLabel
 use smithy.api#httpPayload
 use smithy.api#httpQuery
 use smithy.api#idempotent
+use smithy.api#input
 use smithy.api#readonly
 use smithy.api#required
 
@@ -15,6 +16,7 @@ use smithy.api#required
 @readonly
 @http(method: "GET", uri: "/categories", code: 200)
 operation ListCategories {
+    input: ListCategoriesInput
     output: DocCategoryList
     errors: [
         UnauthorizedError
@@ -363,12 +365,19 @@ operation DeleteFolder {
 @readonly
 @http(method: "GET", uri: "/whoami", code: 200)
 operation Whoami {
+    input: WhoamiInput
     output: User
     errors: [
         UnauthorizedError
         TooManyRequestsError
     ]
 }
+
+@input
+structure ListCategoriesInput {}
+
+@input
+structure WhoamiInput {}
 
 @documentation("Resolve browser link")
 @readonly

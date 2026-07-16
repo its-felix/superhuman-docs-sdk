@@ -79,9 +79,17 @@ else
     -Dexec.args="$repo_root/smithy ${plugins[*]}"
 fi
 
+if has_target markdown; then
+  mkdir -p "$repo_root/docs"
+  cp "$smithy_artifact_dir/superhuman-docs-markdown-codegen/sdk/markdown/service.md" \
+    "$repo_root/docs/service.md"
+fi
+
 if has_target python; then
   cp "$smithy_artifact_dir/superhuman-docs-python-codegen/sdk/python/src/superhuman_docs/_generated.py" \
     "$repo_root/python/src/superhuman_docs/_generated.py"
+  cp "$smithy_artifact_dir/superhuman-docs-python-codegen/sdk/python/src/superhuman_docs/_models.py" \
+    "$repo_root/python/src/superhuman_docs/_models.py"
 fi
 
 if has_target go; then

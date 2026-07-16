@@ -371,7 +371,7 @@ structure BundledPackPlan {
     packPlanId: String
 
     @required
-    packId: Double
+    packId: PackId
 
     @required
     pricing: BundledPackPlanPricing
@@ -870,7 +870,7 @@ structure CreatePackReleasePayload {
 structure CreatePackResponse {
     @documentation("The ID assigned to the newly-created Pack.")
     @required
-    packId: Double
+    packId: PackId
 }
 
 @documentation("Request to create a pack review")
@@ -2824,7 +2824,7 @@ structure NumericColumnFormat {
 structure Pack {
     @documentation("ID of the Pack.")
     @required
-    id: Double
+    id: PackId
 
     @documentation("The link to the logo of the Pack.")
     logoUrl: String
@@ -4375,7 +4375,7 @@ structure PackInvitation {
 
     @documentation("ID of the Pack")
     @required
-    packId: Double
+    packId: PackId
 
     @documentation("Email address of the invited user")
     @required
@@ -4537,7 +4537,7 @@ enum PackInvocationLogType {
 structure PackListing {
     @documentation("ID of the Pack.")
     @required
-    packId: Double
+    packId: PackId
 
     @documentation("The version of the Pack.")
     @required
@@ -4674,7 +4674,7 @@ list PackListingCategories {
 structure PackListingDetail {
     @documentation("ID of the Pack.")
     @required
-    packId: Double
+    packId: PackId
 
     @documentation("The version of the Pack.")
     @required
@@ -5411,7 +5411,7 @@ structure PackRateLimit {
 structure PackRelease {
     @documentation("ID of the Packs.")
     @required
-    packId: Double
+    packId: PackId
 
     @documentation("Developer notes.")
     @required
@@ -5456,7 +5456,7 @@ structure PackReview {
 
     @documentation("ID of the pack being reviewed")
     @required
-    packId: Integer
+    packId: PackId
 
     @documentation("Pack version being reviewed (for code reviews)")
     packVersion: String
@@ -5779,7 +5779,7 @@ enum PackUserPrincipalType {
 structure PackVersion {
     @documentation("ID of the Pack.")
     @required
-    packId: Double
+    packId: PackId
 
     @documentation("Developer notes.")
     @required
@@ -7116,7 +7116,7 @@ structure StandardPackPlan {
     packPlanId: String
 
     @required
-    packId: Double
+    packId: PackId
 
     @documentation("Pricing to show how workspaces can subscribe to the Pack.")
     @required
@@ -7654,7 +7654,7 @@ structure UpsertPackListingDraftResponse {
 
     @documentation("ID of the Pack")
     @required
-    packId: Double
+    packId: PackId
 
     @required
     listingData: PackListingDraftData

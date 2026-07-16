@@ -1,0 +1,164 @@
+# SuperhumanDocsApi
+
+Superhuman Docs API v1. Resource-oriented model of the public API.
+
+- Smithy ID: `com.superhuman.docs.v1#SuperhumanDocsApi`
+- Version: `1.5.0`
+- Operations: `124`
+- Direct service operations: `2`
+- Resources: `27`
+
+## Direct service operations
+- `com.superhuman.docs.v1#Whoami`
+- `com.superhuman.docs.v1#ResolveBrowserLink`
+
+## Resource hierarchy
+- `com.superhuman.docs.v1#CategoryResource`
+  - `List`: `com.superhuman.docs.v1#ListCategories`
+- `com.superhuman.docs.v1#DocResource`
+  - `Create`: `com.superhuman.docs.v1#CreateDoc`
+  - `Read`: `com.superhuman.docs.v1#GetDoc`
+  - `Update`: `com.superhuman.docs.v1#UpdateDoc`
+  - `Delete`: `com.superhuman.docs.v1#DeleteDoc`
+  - `List`: `com.superhuman.docs.v1#ListDocs`
+  - `GetSharingMetadata`: `com.superhuman.docs.v1#GetSharingMetadata`
+  - `GetPermissions`: `com.superhuman.docs.v1#GetPermissions`
+  - `AddPermission`: `com.superhuman.docs.v1#AddPermission`
+  - `DeletePermission`: `com.superhuman.docs.v1#DeletePermission`
+  - `SearchPrincipals`: `com.superhuman.docs.v1#SearchPrincipals`
+  - `GetAclSettings`: `com.superhuman.docs.v1#GetAclSettings`
+  - `UpdateAclSettings`: `com.superhuman.docs.v1#UpdateAclSettings`
+  - `PublishDoc`: `com.superhuman.docs.v1#PublishDoc`
+  - `UnpublishDoc`: `com.superhuman.docs.v1#UnpublishDoc`
+  - `com.superhuman.docs.v1#PageResource`
+    - `Create`: `com.superhuman.docs.v1#CreatePage`
+    - `Read`: `com.superhuman.docs.v1#GetPage`
+    - `Update`: `com.superhuman.docs.v1#UpdatePage`
+    - `Delete`: `com.superhuman.docs.v1#DeletePage`
+    - `List`: `com.superhuman.docs.v1#ListPages`
+    - `ListPageContent`: `com.superhuman.docs.v1#ListPageContent`
+    - `DeletePageContent`: `com.superhuman.docs.v1#DeletePageContent`
+    - `BeginPageContentExport`: `com.superhuman.docs.v1#BeginPageContentExport`
+    - `GetPageContentExportStatus`: `com.superhuman.docs.v1#GetPageContentExportStatus`
+  - `com.superhuman.docs.v1#FormulaResource`
+    - `Read`: `com.superhuman.docs.v1#GetFormula`
+    - `List`: `com.superhuman.docs.v1#ListFormulas`
+  - `com.superhuman.docs.v1#ControlResource`
+    - `Read`: `com.superhuman.docs.v1#GetControl`
+    - `List`: `com.superhuman.docs.v1#ListControls`
+  - `com.superhuman.docs.v1#CustomDocDomainResource`
+    - `Create`: `com.superhuman.docs.v1#AddCustomDocDomain`
+    - `Update`: `com.superhuman.docs.v1#UpdateCustomDocDomain`
+    - `Delete`: `com.superhuman.docs.v1#DeleteCustomDocDomain`
+    - `List`: `com.superhuman.docs.v1#ListCustomDocDomains`
+  - `com.superhuman.docs.v1#AutomationResource`
+    - `TriggerWebhookAutomation`: `com.superhuman.docs.v1#TriggerWebhookAutomation`
+- `com.superhuman.docs.v1#TableResource`
+  - `Read`: `com.superhuman.docs.v1#GetTable`
+  - `List`: `com.superhuman.docs.v1#ListTables`
+  - `com.superhuman.docs.v1#ColumnResource`
+    - `Read`: `com.superhuman.docs.v1#GetColumn`
+    - `List`: `com.superhuman.docs.v1#ListColumns`
+  - `com.superhuman.docs.v1#RowResource`
+    - `Read`: `com.superhuman.docs.v1#GetRow`
+    - `Update`: `com.superhuman.docs.v1#UpdateRow`
+    - `Delete`: `com.superhuman.docs.v1#DeleteRow`
+    - `List`: `com.superhuman.docs.v1#ListRows`
+    - `PushButton`: `com.superhuman.docs.v1#PushButton`
+    - `UpsertRows`: `com.superhuman.docs.v1#UpsertRows`
+    - `DeleteRows`: `com.superhuman.docs.v1#DeleteRows`
+- `com.superhuman.docs.v1#FolderResource`
+  - `Create`: `com.superhuman.docs.v1#CreateFolder`
+  - `Read`: `com.superhuman.docs.v1#GetFolder`
+  - `Update`: `com.superhuman.docs.v1#UpdateFolder`
+  - `Delete`: `com.superhuman.docs.v1#DeleteFolder`
+  - `List`: `com.superhuman.docs.v1#ListFolders`
+- `com.superhuman.docs.v1#PackResource`
+  - `Create`: `com.superhuman.docs.v1#CreatePack`
+  - `Read`: `com.superhuman.docs.v1#GetPack`
+  - `Update`: `com.superhuman.docs.v1#UpdatePack`
+  - `Delete`: `com.superhuman.docs.v1#DeletePack`
+  - `List`: `com.superhuman.docs.v1#ListPacks`
+  - `GetPackConfigurationSchema`: `com.superhuman.docs.v1#GetPackConfigurationSchema`
+  - `GetNextPackVersion`: `com.superhuman.docs.v1#GetNextPackVersion`
+  - `GetPackVersionDiffs`: `com.superhuman.docs.v1#GetPackVersionDiffs`
+  - `PackVersionUploadComplete`: `com.superhuman.docs.v1#PackVersionUploadComplete`
+  - `GetPackListingDraft`: `com.superhuman.docs.v1#GetPackListingDraft`
+  - `UpsertPackListingDraft`: `com.superhuman.docs.v1#UpsertPackListingDraft`
+  - `DeletePackListingDraft`: `com.superhuman.docs.v1#DeletePackListingDraft`
+  - `SetPackOauthConfig`: `com.superhuman.docs.v1#SetPackOauthConfig`
+  - `GetPackOauthConfig`: `com.superhuman.docs.v1#GetPackOauthConfig`
+  - `SetPackSystemConnection`: `com.superhuman.docs.v1#SetPackSystemConnection`
+  - `PatchPackSystemConnection`: `com.superhuman.docs.v1#PatchPackSystemConnection`
+  - `GetPackSystemConnection`: `com.superhuman.docs.v1#GetPackSystemConnection`
+  - `UploadPackAsset`: `com.superhuman.docs.v1#UploadPackAsset`
+  - `UploadPackSourceCode`: `com.superhuman.docs.v1#UploadPackSourceCode`
+  - `PackAssetUploadComplete`: `com.superhuman.docs.v1#PackAssetUploadComplete`
+  - `ListPackLogs`: `com.superhuman.docs.v1#ListPackLogs`
+  - `ListIngestionLogs`: `com.superhuman.docs.v1#ListIngestionLogs`
+  - `ListGroupedPackLogs`: `com.superhuman.docs.v1#ListGroupedPackLogs`
+  - `ListGroupedIngestionLogs`: `com.superhuman.docs.v1#ListGroupedIngestionLogs`
+  - `ListIngestionBatchExecutions`: `com.superhuman.docs.v1#ListIngestionBatchExecutions`
+  - `ListIngestionParentItems`: `com.superhuman.docs.v1#ListIngestionParentItems`
+  - `GetPackLogDetails`: `com.superhuman.docs.v1#GetPackLogDetails`
+  - `ListPackFeaturedDocs`: `com.superhuman.docs.v1#ListPackFeaturedDocs`
+  - `UpdatePackFeaturedDocs`: `com.superhuman.docs.v1#UpdatePackFeaturedDocs`
+  - `com.superhuman.docs.v1#PackVersionResource`
+    - `List`: `com.superhuman.docs.v1#ListPackVersions`
+    - `RegisterPackVersion`: `com.superhuman.docs.v1#RegisterPackVersion`
+    - `PackSourceCodeUploadComplete`: `com.superhuman.docs.v1#PackSourceCodeUploadComplete`
+    - `GetPackSourceCode`: `com.superhuman.docs.v1#GetPackSourceCode`
+  - `com.superhuman.docs.v1#PackReleaseResource`
+    - `Create`: `com.superhuman.docs.v1#CreatePackRelease`
+    - `Update`: `com.superhuman.docs.v1#UpdatePackRelease`
+    - `List`: `com.superhuman.docs.v1#ListPackReleases`
+  - `com.superhuman.docs.v1#PackReviewResource`
+    - `Create`: `com.superhuman.docs.v1#CreatePackReview`
+    - `List`: `com.superhuman.docs.v1#ListPackReviews`
+    - `CancelPackReview`: `com.superhuman.docs.v1#CancelPackReview`
+  - `com.superhuman.docs.v1#PackPermissionResource`
+    - `Create`: `com.superhuman.docs.v1#AddPackPermission`
+    - `Delete`: `com.superhuman.docs.v1#DeletePackPermission`
+    - `List`: `com.superhuman.docs.v1#GetPackPermissions`
+    - `DeleteUserPackPermission`: `com.superhuman.docs.v1#DeleteUserPackPermission`
+  - `com.superhuman.docs.v1#PackInvitationResource`
+    - `Create`: `com.superhuman.docs.v1#CreatePackInvitation`
+    - `Update`: `com.superhuman.docs.v1#UpdatePackInvitation`
+    - `Delete`: `com.superhuman.docs.v1#DeletePackInvitation`
+    - `List`: `com.superhuman.docs.v1#ListPackInvitations`
+  - `com.superhuman.docs.v1#PackMakerResource`
+    - `Create`: `com.superhuman.docs.v1#AddPackMaker`
+    - `Delete`: `com.superhuman.docs.v1#DeletePackMaker`
+    - `List`: `com.superhuman.docs.v1#ListPackMakers`
+  - `com.superhuman.docs.v1#PackCategoryResource`
+    - `Create`: `com.superhuman.docs.v1#AddPackCategory`
+    - `Delete`: `com.superhuman.docs.v1#DeletePackCategory`
+    - `List`: `com.superhuman.docs.v1#ListPackCategories`
+- `com.superhuman.docs.v1#MarketplacePackListingResource`
+  - `Read`: `com.superhuman.docs.v1#GetPackListing`
+  - `List`: `com.superhuman.docs.v1#ListPackListings`
+- `com.superhuman.docs.v1#UserPackInvitationResource`
+  - `List`: `com.superhuman.docs.v1#ListUserPackInvitations`
+  - `ReplyToPackInvitation`: `com.superhuman.docs.v1#ReplyToPackInvitation`
+- `com.superhuman.docs.v1#WorkspaceResource`
+  - `ListWorkspaceMembers`: `com.superhuman.docs.v1#ListWorkspaceMembers`
+  - `ChangeUserRole`: `com.superhuman.docs.v1#ChangeUserRole`
+  - `ListWorkspaceRoleActivity`: `com.superhuman.docs.v1#ListWorkspaceRoleActivity`
+- `com.superhuman.docs.v1#OrganizationResource`
+  - `AddGoLink`: `com.superhuman.docs.v1#AddGoLink`
+- `com.superhuman.docs.v1#AnalyticsResource`
+  - `ListDocAnalytics`: `com.superhuman.docs.v1#ListDocAnalytics`
+  - `ListPageAnalytics`: `com.superhuman.docs.v1#ListPageAnalytics`
+  - `ListDocAnalyticsSummary`: `com.superhuman.docs.v1#ListDocAnalyticsSummary`
+  - `ListPackAnalytics`: `com.superhuman.docs.v1#ListPackAnalytics`
+  - `ListPackAnalyticsSummary`: `com.superhuman.docs.v1#ListPackAnalyticsSummary`
+  - `ListPackFormulaAnalytics`: `com.superhuman.docs.v1#ListPackFormulaAnalytics`
+  - `GetAnalyticsLastUpdated`: `com.superhuman.docs.v1#GetAnalyticsLastUpdated`
+- `com.superhuman.docs.v1#AgentInstanceResource`
+  - `ListAgentSessionIds`: `com.superhuman.docs.v1#ListAgentSessionIds`
+  - `ListAgentLogs`: `com.superhuman.docs.v1#ListAgentLogs`
+  - `GetAgentPackLogDetails`: `com.superhuman.docs.v1#GetAgentPackLogDetails`
+- `com.superhuman.docs.v1#MutationStatusResource`
+  - `Read`: `com.superhuman.docs.v1#GetMutationStatus`
+- `com.superhuman.docs.v1#CustomDocDomainProviderResource`
+  - `Read`: `com.superhuman.docs.v1#GetCustomDocDomainProvider`
