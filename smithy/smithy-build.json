@@ -3,7 +3,7 @@
   "sources": ["model"],
   "maven": {
     "dependencies": [
-      "com.github.its-felix.superhuman-docs-sdk:smithy-generator:0.2.0-SNAPSHOT"
+      "com.github.its-felix.superhuman-docs-sdk:smithy-generator:0.3.0-SNAPSHOT"
     ]
   },
   "projections": {

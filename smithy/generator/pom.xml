@@ -6,7 +6,7 @@
 
     <groupId>com.github.its-felix.superhuman-docs-sdk</groupId>
     <artifactId>smithy-generator</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
     <name>Superhuman Docs Smithy Generator</name>
     <description>Smithy-Build plugins for Superhuman Docs SDK artifacts.</description>
 

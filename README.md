@@ -41,7 +41,7 @@ transport because its standard library does not include an HTTP client.
 Go:
 
 ```sh
-go get github.com/its-felix/superhuman-docs-sdk/go@v0.2.0
+go get github.com/its-felix/superhuman-docs-sdk/go@v0.3.0
 ```
 
 Python:

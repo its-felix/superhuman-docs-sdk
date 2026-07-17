@@ -1,6 +1,6 @@
 [package]
 name = "superhuman-docs"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 description = "Typed Rust SDK for the Superhuman Docs API"
 license = "MIT"

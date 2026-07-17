@@ -1,6 +1,6 @@
 .{
     .name = .superhuman_docs,
-    .version = "0.2.0",
+    .version = "0.3.0",
     .fingerprint = 0xe4f0100a1a887ea8,
     .minimum_zig_version = "0.16.0",
     .dependencies = .{},
