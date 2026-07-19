@@ -4,7 +4,7 @@ This Maven project provides Smithy-Build plugins for generating Superhuman Docs
 SDK artifacts.
 
 Maven coordinate:
-`com.github.its-felix.superhuman-docs-sdk:smithy-generator:0.3.0-SNAPSHOT`.
+`com.github.its-felix.superhuman-docs-sdk:smithy-generator:0.4.0-SNAPSHOT`.
 
 Java package:
 `com.github.its_felix.superhuman_docs_sdk.smithy.codegen`. Hyphens from the

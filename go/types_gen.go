@@ -611,8 +611,8 @@ type CreatePageInput struct {
 }
 
 type CurrencyAmount struct {
-	Variant1 *string  `json:"variant1,omitempty"`
-	Variant2 *float64 `json:"variant2,omitempty"`
+	Text   *string  `json:"text,omitempty"`
+	Number *float64 `json:"number,omitempty"`
 }
 
 type CurrencyColumnFormat struct {
@@ -2314,8 +2314,8 @@ type NotFoundError struct {
 }
 
 type NumberOrNumberFormula struct {
-	Variant1 *float64 `json:"variant1,omitempty"`
-	Variant2 *string  `json:"variant2,omitempty"`
+	Number  *float64 `json:"number,omitempty"`
+	Formula *string  `json:"formula,omitempty"`
 }
 
 type NumericColumnFormat struct {
@@ -4257,89 +4257,37 @@ type PageCreate struct {
 	PageContent  *PageCreateContent `json:"pageContent,omitempty"`
 }
 
+type PageCreateCanvasContent struct {
+	TypeValue     PageType    `json:"type"`
+	CanvasContent PageContent `json:"canvasContent"`
+}
+
 type PageCreateContent struct {
-	Variant1 *PageCreateContentVariant1 `json:"variant1,omitempty"`
-	Variant2 *PageCreateContentVariant2 `json:"variant2,omitempty"`
-	Variant3 *PageCreateContentVariant3 `json:"variant3,omitempty"`
+	Canvas       *PageCreateCanvasContent       `json:"canvas,omitempty"`
+	Embed        *PageCreateEmbedContent        `json:"embed,omitempty"`
+	PageSync     *PageCreatePageSyncContent     `json:"pageSync,omitempty"`
+	DocumentSync *PageCreateDocumentSyncContent `json:"documentSync,omitempty"`
 }
 
-type PageCreateContentVariant1 struct {
-	TypeValue     PageCreateContentVariant1Type `json:"type"`
-	CanvasContent PageContent                   `json:"canvasContent"`
+type PageCreateDocumentSyncContent struct {
+	TypeValue   PageType     `json:"type"`
+	Mode        SyncPageType `json:"mode"`
+	SourceDocId string       `json:"sourceDocId"`
 }
 
-type PageCreateContentVariant1Type string
-
-const (
-	PageCreateContentVariant1TypeCanvas PageCreateContentVariant1Type = "canvas"
-)
-
-func (v PageCreateContentVariant1Type) String() string { return string(v) }
-
-type PageCreateContentVariant2 struct {
-	TypeValue    PageCreateContentVariant2Type `json:"type"`
-	URL          string                        `json:"url"`
-	RenderMethod *PageEmbedRenderMethod        `json:"renderMethod,omitempty"`
+type PageCreateEmbedContent struct {
+	TypeValue    PageType               `json:"type"`
+	URL          string                 `json:"url"`
+	RenderMethod *PageEmbedRenderMethod `json:"renderMethod,omitempty"`
 }
 
-type PageCreateContentVariant2Type string
-
-const (
-	PageCreateContentVariant2TypeEmbed PageCreateContentVariant2Type = "embed"
-)
-
-func (v PageCreateContentVariant2Type) String() string { return string(v) }
-
-type PageCreateContentVariant3 struct {
-	Variant1 *PageCreateContentVariant3Variant1 `json:"variant1,omitempty"`
-	Variant2 *PageCreateContentVariant3Variant2 `json:"variant2,omitempty"`
+type PageCreatePageSyncContent struct {
+	TypeValue       PageType     `json:"type"`
+	Mode            SyncPageType `json:"mode"`
+	IncludeSubpages bool         `json:"includeSubpages"`
+	SourcePageId    string       `json:"sourcePageId"`
+	SourceDocId     string       `json:"sourceDocId"`
 }
-
-type PageCreateContentVariant3Variant1 struct {
-	TypeValue       PageCreateContentVariant3Variant1Type `json:"type"`
-	Mode            PageCreateContentVariant3Variant1Mode `json:"mode"`
-	IncludeSubpages bool                                  `json:"includeSubpages"`
-	SourcePageId    string                                `json:"sourcePageId"`
-	SourceDocId     string                                `json:"sourceDocId"`
-}
-
-type PageCreateContentVariant3Variant1Mode string
-
-const (
-	PageCreateContentVariant3Variant1ModePage PageCreateContentVariant3Variant1Mode = "page"
-)
-
-func (v PageCreateContentVariant3Variant1Mode) String() string { return string(v) }
-
-type PageCreateContentVariant3Variant1Type string
-
-const (
-	PageCreateContentVariant3Variant1TypeSyncPage PageCreateContentVariant3Variant1Type = "syncPage"
-)
-
-func (v PageCreateContentVariant3Variant1Type) String() string { return string(v) }
-
-type PageCreateContentVariant3Variant2 struct {
-	TypeValue   PageCreateContentVariant3Variant2Type `json:"type"`
-	Mode        PageCreateContentVariant3Variant2Mode `json:"mode"`
-	SourceDocId string                                `json:"sourceDocId"`
-}
-
-type PageCreateContentVariant3Variant2Mode string
-
-const (
-	PageCreateContentVariant3Variant2ModeDocument PageCreateContentVariant3Variant2Mode = "document"
-)
-
-func (v PageCreateContentVariant3Variant2Mode) String() string { return string(v) }
-
-type PageCreateContentVariant3Variant2Type string
-
-const (
-	PageCreateContentVariant3Variant2TypeSyncPage PageCreateContentVariant3Variant2Type = "syncPage"
-)
-
-func (v PageCreateContentVariant3Variant2Type) String() string { return string(v) }
 
 type PageCreateResponse struct {
 	RequestId string `json:"requestId"`
@@ -4580,19 +4528,15 @@ type RichSingleValue struct {
 	RowValue      *RowValue      `json:"rowValue,omitempty"`
 }
 
+type RichSingleValueList []RichSingleValue
+
+type RichSingleValueNestedList [][]RichSingleValue
+
 type RichValue struct {
-	RichSingleValue *RichSingleValue          `json:"richSingleValue,omitempty"`
-	Variant2        []RichValueVariant2Member `json:"variant2,omitempty"`
+	Single     *RichSingleValue    `json:"single,omitempty"`
+	FlatList   []RichSingleValue   `json:"flatList,omitempty"`
+	NestedList [][]RichSingleValue `json:"nestedList,omitempty"`
 }
-
-type RichValueVariant2 []RichValueVariant2Member
-
-type RichValueVariant2Member struct {
-	RichSingleValue *RichSingleValue  `json:"richSingleValue,omitempty"`
-	Variant2        []RichSingleValue `json:"variant2,omitempty"`
-}
-
-type RichValueVariant2MemberVariant2 []RichSingleValue
 
 type Row struct {
 	ID          string               `json:"id"`
@@ -4736,10 +4680,14 @@ type RowsUpsertResultAddedRowIds []string
 type RowsUpsertRows []RowEdit
 
 type ScalarValue struct {
-	Variant1 *string  `json:"variant1,omitempty"`
-	Variant2 *float64 `json:"variant2,omitempty"`
-	Variant3 *bool    `json:"variant3,omitempty"`
+	Text    *string  `json:"text,omitempty"`
+	Number  *float64 `json:"number,omitempty"`
+	Boolean *bool    `json:"boolean,omitempty"`
 }
+
+type ScalarValueList []ScalarValue
+
+type ScalarValueNestedList [][]ScalarValue
 
 type ScaleColumnFormat struct {
 	TypeValue ColumnFormatType `json:"type"`
@@ -5275,8 +5223,9 @@ type ValidationError struct {
 }
 
 type Value struct {
-	ScalarValue *ScalarValue          `json:"scalarValue,omitempty"`
-	Variant2    []ValueVariant2Member `json:"variant2,omitempty"`
+	Scalar     *ScalarValue    `json:"scalar,omitempty"`
+	FlatList   []ScalarValue   `json:"flatList,omitempty"`
+	NestedList [][]ScalarValue `json:"nestedList,omitempty"`
 }
 
 type ValueFormat string
@@ -5288,15 +5237,6 @@ const (
 )
 
 func (v ValueFormat) String() string { return string(v) }
-
-type ValueVariant2 []ValueVariant2Member
-
-type ValueVariant2Member struct {
-	ScalarValue *ScalarValue  `json:"scalarValue,omitempty"`
-	Variant2    []ScalarValue `json:"variant2,omitempty"`
-}
-
-type ValueVariant2MemberVariant2 []ScalarValue
 
 type WebhookTriggerPayload struct {
 }

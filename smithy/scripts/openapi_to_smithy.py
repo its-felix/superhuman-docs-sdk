@@ -600,6 +600,258 @@ class Generator:
             for name, text, domain_file in operations
         ]
 
+    def normalize_anonymous_unions(self) -> None:
+        """Replace anonymous OpenAPI alternatives with semantic Smithy shapes.
+
+        The public schema uses anonymous oneOf branches for several reusable value
+        families. Translating those branches literally creates VariantN members and,
+        for nested arrays, extra unions at every collection level. These curated
+        expansions preserve the documented leaf alternatives while giving callers a
+        flat, named choice for each final value shape.
+        """
+
+        def replace_group(
+            root: str,
+            generated: set[str],
+            replacements: dict[str, tuple[str, list[str]]],
+        ) -> None:
+            if root not in self.shapes:
+                return
+            for name in generated:
+                self.shapes.pop(name, None)
+                self.shape_kind.pop(name, None)
+                self.shape_files.pop(name, None)
+            for name, (kind, lines) in replacements.items():
+                self.shapes[name] = "\n".join(lines)
+                self.shape_kind[name] = kind
+                self.shape_files[name] = "common"
+
+        replace_group(
+            "CurrencyAmount",
+            {"CurrencyAmount"},
+            {
+                "CurrencyAmount": (
+                    "union",
+                    [
+                        '@documentation("A numeric monetary amount as a string or number.")',
+                        "union CurrencyAmount {",
+                        "    text: String",
+                        "    number: Double",
+                        "}",
+                    ],
+                )
+            },
+        )
+        replace_group(
+            "NumberOrNumberFormula",
+            {"NumberOrNumberFormula"},
+            {
+                "NumberOrNumberFormula": (
+                    "union",
+                    [
+                        '@documentation("A number or a string representing a formula that evaluates to a number.")',
+                        "union NumberOrNumberFormula {",
+                        "    number: Double",
+                        "    formula: String",
+                        "}",
+                    ],
+                )
+            },
+        )
+        replace_group(
+            "ScalarValue",
+            {"ScalarValue"},
+            {
+                "ScalarValue": (
+                    "union",
+                    [
+                        '@documentation("A Superhuman Docs result or entity expressed as a primitive type.")',
+                        "union ScalarValue {",
+                        "    text: String",
+                        "    number: Double",
+                        "    boolean: Boolean",
+                        "}",
+                    ],
+                )
+            },
+        )
+        replace_group(
+            "Value",
+            {
+                "Value",
+                "ValueVariant2",
+                "ValueVariant2Member",
+                "ValueVariant2MemberVariant2",
+            },
+            {
+                "Value": (
+                    "union",
+                    [
+                        '@documentation("A Superhuman Docs result or entity expressed as a primitive type, or array of primitive types.")',
+                        "union Value {",
+                        "    scalar: ScalarValue",
+                        "    flatList: ScalarValueList",
+                        "    nestedList: ScalarValueNestedList",
+                        "}",
+                    ],
+                ),
+                "ScalarValueList": (
+                    "list",
+                    ["list ScalarValueList {", "    member: ScalarValue", "}"],
+                ),
+                "ScalarValueNestedList": (
+                    "list",
+                    [
+                        "list ScalarValueNestedList {",
+                        "    member: ScalarValueList",
+                        "}",
+                    ],
+                ),
+            },
+        )
+        replace_group(
+            "RichValue",
+            {
+                "RichValue",
+                "RichValueVariant2",
+                "RichValueVariant2Member",
+                "RichValueVariant2MemberVariant2",
+            },
+            {
+                "RichValue": (
+                    "union",
+                    [
+                        '@documentation("A cell value that contains rich structured data.")',
+                        "union RichValue {",
+                        "    single: RichSingleValue",
+                        "    flatList: RichSingleValueList",
+                        "    nestedList: RichSingleValueNestedList",
+                        "}",
+                    ],
+                ),
+                "RichSingleValueList": (
+                    "list",
+                    [
+                        "list RichSingleValueList {",
+                        "    member: RichSingleValue",
+                        "}",
+                    ],
+                ),
+                "RichSingleValueNestedList": (
+                    "list",
+                    [
+                        "list RichSingleValueNestedList {",
+                        "    member: RichSingleValueList",
+                        "}",
+                    ],
+                ),
+            },
+        )
+        replace_group(
+            "PageCreateContent",
+            {
+                "PageCreateContent",
+                "PageCreateContentVariant1",
+                "PageCreateContentVariant1Type",
+                "PageCreateContentVariant2",
+                "PageCreateContentVariant2Type",
+                "PageCreateContentVariant3",
+                "PageCreateContentVariant3Variant1",
+                "PageCreateContentVariant3Variant1Mode",
+                "PageCreateContentVariant3Variant1Type",
+                "PageCreateContentVariant3Variant2",
+                "PageCreateContentVariant3Variant2Mode",
+                "PageCreateContentVariant3Variant2Type",
+            },
+            {
+                "PageCreateContent": (
+                    "union",
+                    [
+                        '@documentation("Content that can be added to a page at creation time, either text (or rich text) or a URL to create a full-page embed.")',
+                        "union PageCreateContent {",
+                        "    canvas: PageCreateCanvasContent",
+                        "    embed: PageCreateEmbedContent",
+                        "    pageSync: PageCreatePageSyncContent",
+                        "    documentSync: PageCreateDocumentSyncContent",
+                        "}",
+                    ],
+                ),
+                "PageCreateCanvasContent": (
+                    "structure",
+                    [
+                        "structure PageCreateCanvasContent {",
+                        '    @documentation("Indicates a page containing canvas content.")',
+                        "    @required",
+                        "    type: PageType",
+                        "",
+                        "    @required",
+                        "    canvasContent: PageContent",
+                        "}",
+                    ],
+                ),
+                "PageCreateEmbedContent": (
+                    "structure",
+                    [
+                        "structure PageCreateEmbedContent {",
+                        '    @documentation("Indicates a page that embeds other content.")',
+                        "    @required",
+                        "    type: PageType",
+                        "",
+                        '    @documentation("The URL of the content to embed.")',
+                        "    @required",
+                        "    url: String",
+                        "",
+                        "    renderMethod: PageEmbedRenderMethod",
+                        "}",
+                    ],
+                ),
+                "PageCreatePageSyncContent": (
+                    "structure",
+                    [
+                        "structure PageCreatePageSyncContent {",
+                        '    @documentation("Indicates a page that embeds other Superhuman Docs content.")',
+                        "    @required",
+                        "    type: PageType",
+                        "",
+                        '    @documentation("Indicates a single-page sync page.")',
+                        "    @required",
+                        "    mode: SyncPageType",
+                        "",
+                        '    @documentation("Include subpages in the sync page.")',
+                        "    @required",
+                        "    includeSubpages: Boolean",
+                        "",
+                        '    @documentation("The page id to insert as a sync page.")',
+                        "    @required",
+                        "    sourcePageId: String",
+                        "",
+                        '    @documentation("The id of the document to insert as a sync page.")',
+                        "    @required",
+                        "    sourceDocId: String",
+                        "}",
+                    ],
+                ),
+                "PageCreateDocumentSyncContent": (
+                    "structure",
+                    [
+                        "structure PageCreateDocumentSyncContent {",
+                        '    @documentation("Indicates a page that embeds other content.")',
+                        "    @required",
+                        "    type: PageType",
+                        "",
+                        '    @documentation("Indicates a full doc sync page.")',
+                        "    @required",
+                        "    mode: SyncPageType",
+                        "",
+                        '    @documentation("The id of the document to insert as a sync page.")',
+                        "    @required",
+                        "    sourceDocId: String",
+                        "}",
+                    ],
+                ),
+            },
+        )
+
     def normalize_shape_names(
         self, operations: list[tuple[str, str, str]]
     ) -> list[tuple[str, str, str]]:
@@ -648,6 +900,7 @@ class Generator:
             for method, op in path_item.items():
                 if method.lower() in HTTP_METHODS:
                     operations.append(self.build_operation(path, method, op, common_errors))
+        self.normalize_anonymous_unions()
         operations = self.normalize_doc_create_result(operations)
         operations = self.normalize_shape_names(operations)
 

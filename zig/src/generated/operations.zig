@@ -542,8 +542,8 @@ pub const CreatePageInput = struct {
 };
 
 pub const CurrencyAmount = union(enum) {
-    variant1: []const u8,
-    variant2: f64,
+    text: []const u8,
+    number: f64,
 };
 
 pub const CurrencyColumnFormat = struct {
@@ -2065,8 +2065,8 @@ pub const NotFoundError = struct {
 };
 
 pub const NumberOrNumberFormula = union(enum) {
-    variant1: f64,
-    variant2: []const u8,
+    number: f64,
+    formula: []const u8,
 };
 
 pub const NumericColumnFormat = struct {
@@ -3716,64 +3716,36 @@ pub const PageCreate = struct {
     pageContent: ?PageCreateContent = null,
 };
 
-pub const PageCreateContent = union(enum) {
-    variant1: PageCreateContentVariant1,
-    variant2: PageCreateContentVariant2,
-    variant3: PageCreateContentVariant3,
-};
-
-pub const PageCreateContentVariant1 = struct {
-    type: PageCreateContentVariant1Type,
+pub const PageCreateCanvasContent = struct {
+    type: PageType,
     canvasContent: PageContent,
 };
 
-pub const PageCreateContentVariant1Type = enum {
-    canvas,
+pub const PageCreateContent = union(enum) {
+    canvas: PageCreateCanvasContent,
+    embed: PageCreateEmbedContent,
+    pageSync: PageCreatePageSyncContent,
+    documentSync: PageCreateDocumentSyncContent,
 };
 
-pub const PageCreateContentVariant2 = struct {
-    type: PageCreateContentVariant2Type,
+pub const PageCreateDocumentSyncContent = struct {
+    type: PageType,
+    mode: SyncPageType,
+    sourceDocId: []const u8,
+};
+
+pub const PageCreateEmbedContent = struct {
+    type: PageType,
     url: []const u8,
     renderMethod: ?PageEmbedRenderMethod = null,
 };
 
-pub const PageCreateContentVariant2Type = enum {
-    embed,
-};
-
-pub const PageCreateContentVariant3 = union(enum) {
-    variant1: PageCreateContentVariant3Variant1,
-    variant2: PageCreateContentVariant3Variant2,
-};
-
-pub const PageCreateContentVariant3Variant1 = struct {
-    type: PageCreateContentVariant3Variant1Type,
-    mode: PageCreateContentVariant3Variant1Mode,
+pub const PageCreatePageSyncContent = struct {
+    type: PageType,
+    mode: SyncPageType,
     includeSubpages: bool,
     sourcePageId: []const u8,
     sourceDocId: []const u8,
-};
-
-pub const PageCreateContentVariant3Variant1Mode = enum {
-    page,
-};
-
-pub const PageCreateContentVariant3Variant1Type = enum {
-    syncPage,
-};
-
-pub const PageCreateContentVariant3Variant2 = struct {
-    type: PageCreateContentVariant3Variant2Type,
-    mode: PageCreateContentVariant3Variant2Mode,
-    sourceDocId: []const u8,
-};
-
-pub const PageCreateContentVariant3Variant2Mode = enum {
-    document,
-};
-
-pub const PageCreateContentVariant3Variant2Type = enum {
-    syncPage,
 };
 
 pub const PageCreateResponse = struct {
@@ -3983,19 +3955,15 @@ pub const RichSingleValue = union(enum) {
     rowValue: RowValue,
 };
 
+pub const RichSingleValueList = []const RichSingleValue;
+
+pub const RichSingleValueNestedList = []const RichSingleValueList;
+
 pub const RichValue = union(enum) {
-    richSingleValue: RichSingleValue,
-    variant2: RichValueVariant2,
+    single: RichSingleValue,
+    flatList: RichSingleValueList,
+    nestedList: RichSingleValueNestedList,
 };
-
-pub const RichValueVariant2 = []const RichValueVariant2Member;
-
-pub const RichValueVariant2Member = union(enum) {
-    richSingleValue: RichSingleValue,
-    variant2: RichValueVariant2MemberVariant2,
-};
-
-pub const RichValueVariant2MemberVariant2 = []const RichSingleValue;
 
 pub const Row = struct {
     id: []const u8,
@@ -4119,10 +4087,14 @@ pub const RowsUpsertResultAddedRowIds = []const []const u8;
 pub const RowsUpsertRows = []const RowEdit;
 
 pub const ScalarValue = union(enum) {
-    variant1: []const u8,
-    variant2: f64,
-    variant3: bool,
+    text: []const u8,
+    number: f64,
+    boolean: bool,
 };
+
+pub const ScalarValueList = []const ScalarValue;
+
+pub const ScalarValueNestedList = []const ScalarValueList;
 
 pub const ScaleColumnFormat = struct {
     type: ColumnFormatType,
@@ -4614,8 +4586,9 @@ pub const ValidationError = struct {
 };
 
 pub const Value = union(enum) {
-    scalarValue: ScalarValue,
-    variant2: ValueVariant2,
+    scalar: ScalarValue,
+    flatList: ScalarValueList,
+    nestedList: ScalarValueNestedList,
 };
 
 pub const ValueFormat = enum {
@@ -4623,15 +4596,6 @@ pub const ValueFormat = enum {
     simpleWithArrays,
     rich,
 };
-
-pub const ValueVariant2 = []const ValueVariant2Member;
-
-pub const ValueVariant2Member = union(enum) {
-    scalarValue: ScalarValue,
-    variant2: ValueVariant2MemberVariant2,
-};
-
-pub const ValueVariant2MemberVariant2 = []const ScalarValue;
 
 pub const WebhookTriggerPayload = struct {
 };

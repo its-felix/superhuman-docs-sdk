@@ -911,8 +911,8 @@ list CreatePackVersionResponseDeprecationWarnings {
 
 @documentation("A numeric monetary amount as a string or number.")
 union CurrencyAmount {
-    variant1: String
-    variant2: Double
+    text: String
+    number: Double
 }
 
 @documentation("Format of a currency column.")
@@ -2800,8 +2800,8 @@ string NextSyncToken
 
 @documentation("A number or a string representing a formula that evaluates to a number.")
 union NumberOrNumberFormula {
-    variant1: Double
-    variant2: String
+    number: Double
+    formula: String
 }
 
 @documentation("Format of a numeric column.")
@@ -6221,30 +6221,25 @@ structure PageCreate {
 
 @documentation("Content that can be added to a page at creation time, either text (or rich text) or a URL to create a full-page embed.")
 union PageCreateContent {
-    variant1: PageCreateContentVariant1
-    variant2: PageCreateContentVariant2
-    variant3: PageCreateContentVariant3
+    canvas: PageCreateCanvasContent
+    embed: PageCreateEmbedContent
+    pageSync: PageCreatePageSyncContent
+    documentSync: PageCreateDocumentSyncContent
 }
 
-structure PageCreateContentVariant1 {
+structure PageCreateCanvasContent {
     @documentation("Indicates a page containing canvas content.")
     @required
-    type: PageCreateContentVariant1Type
+    type: PageType
 
     @required
     canvasContent: PageContent
 }
 
-@documentation("Indicates a page containing canvas content.")
-enum PageCreateContentVariant1Type {
-    @enumValue("canvas")
-    CANVAS
-}
-
-structure PageCreateContentVariant2 {
+structure PageCreateEmbedContent {
     @documentation("Indicates a page that embeds other content.")
     @required
-    type: PageCreateContentVariant2Type
+    type: PageType
 
     @documentation("The URL of the content to embed.")
     @required
@@ -6253,25 +6248,14 @@ structure PageCreateContentVariant2 {
     renderMethod: PageEmbedRenderMethod
 }
 
-@documentation("Indicates a page that embeds other content.")
-enum PageCreateContentVariant2Type {
-    @enumValue("embed")
-    EMBED
-}
-
-union PageCreateContentVariant3 {
-    variant1: PageCreateContentVariant3Variant1
-    variant2: PageCreateContentVariant3Variant2
-}
-
-structure PageCreateContentVariant3Variant1 {
-    @documentation("Indicates a page that embeds other Coda content.")
+structure PageCreatePageSyncContent {
+    @documentation("Indicates a page that embeds other Superhuman Docs content.")
     @required
-    type: PageCreateContentVariant3Variant1Type
+    type: PageType
 
     @documentation("Indicates a single-page sync page.")
     @required
-    mode: PageCreateContentVariant3Variant1Mode
+    mode: SyncPageType
 
     @documentation("Include subpages in the sync page.")
     @required
@@ -6286,42 +6270,18 @@ structure PageCreateContentVariant3Variant1 {
     sourceDocId: String
 }
 
-@documentation("Indicates a single-page sync page.")
-enum PageCreateContentVariant3Variant1Mode {
-    @enumValue("page")
-    PAGE
-}
-
-@documentation("Indicates a page that embeds other Coda content.")
-enum PageCreateContentVariant3Variant1Type {
-    @enumValue("syncPage")
-    SYNC_PAGE
-}
-
-structure PageCreateContentVariant3Variant2 {
+structure PageCreateDocumentSyncContent {
     @documentation("Indicates a page that embeds other content.")
     @required
-    type: PageCreateContentVariant3Variant2Type
+    type: PageType
 
     @documentation("Indicates a full doc sync page.")
     @required
-    mode: PageCreateContentVariant3Variant2Mode
+    mode: SyncPageType
 
     @documentation("The id of the document to insert as a sync page.")
     @required
     sourceDocId: String
-}
-
-@documentation("Indicates a full doc sync page.")
-enum PageCreateContentVariant3Variant2Mode {
-    @enumValue("document")
-    DOCUMENT
-}
-
-@documentation("Indicates a page that embeds other content.")
-enum PageCreateContentVariant3Variant2Type {
-    @enumValue("syncPage")
-    SYNC_PAGE
 }
 
 @documentation("The result of a page creation.")
@@ -6664,21 +6624,17 @@ union RichSingleValue {
 
 @documentation("A cell value that contains rich structured data.")
 union RichValue {
-    richSingleValue: RichSingleValue
-    variant2: RichValueVariant2
+    single: RichSingleValue
+    flatList: RichSingleValueList
+    nestedList: RichSingleValueNestedList
 }
 
-list RichValueVariant2 {
-    member: RichValueVariant2Member
-}
-
-union RichValueVariant2Member {
-    richSingleValue: RichSingleValue
-    variant2: RichValueVariant2MemberVariant2
-}
-
-list RichValueVariant2MemberVariant2 {
+list RichSingleValueList {
     member: RichSingleValue
+}
+
+list RichSingleValueNestedList {
+    member: RichSingleValueList
 }
 
 @documentation("Info about a row.")
@@ -6961,11 +6917,11 @@ list RowsUpsertRows {
     member: RowEdit
 }
 
-@documentation("A Coda result or entity expressed as a primitive type.")
+@documentation("A Superhuman Docs result or entity expressed as a primitive type.")
 union ScalarValue {
-    variant1: String
-    variant2: Double
-    variant3: Boolean
+    text: String
+    number: Double
+    boolean: Boolean
 }
 
 @documentation("Format of a numeric column that renders as a scale, like star ratings.")
@@ -7761,10 +7717,11 @@ structure ValidationError {
     message: String
 }
 
-@documentation("A Coda result or entity expressed as a primitive type, or array of primitive types.")
+@documentation("A Superhuman Docs result or entity expressed as a primitive type, or array of primitive types.")
 union Value {
-    scalarValue: ScalarValue
-    variant2: ValueVariant2
+    scalar: ScalarValue
+    flatList: ScalarValueList
+    nestedList: ScalarValueNestedList
 }
 
 @documentation("The format that cell values are returned as.")
@@ -7779,17 +7736,12 @@ enum ValueFormat {
     RICH
 }
 
-list ValueVariant2 {
-    member: ValueVariant2Member
-}
-
-union ValueVariant2Member {
-    scalarValue: ScalarValue
-    variant2: ValueVariant2MemberVariant2
-}
-
-list ValueVariant2MemberVariant2 {
+list ScalarValueList {
     member: ScalarValue
+}
+
+list ScalarValueNestedList {
+    member: ScalarValueList
 }
 
 @documentation("Payload for webhook trigger")

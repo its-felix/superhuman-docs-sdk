@@ -690,24 +690,6 @@ class PageContentOutputFormat(str, Enum):
     HTML = 'html'
     MARKDOWN = 'markdown'
 
-class PageCreateContentVariant1Type(str, Enum):
-    CANVAS = 'canvas'
-
-class PageCreateContentVariant2Type(str, Enum):
-    EMBED = 'embed'
-
-class PageCreateContentVariant3Variant1Mode(str, Enum):
-    PAGE = 'page'
-
-class PageCreateContentVariant3Variant1Type(str, Enum):
-    SYNC_PAGE = 'syncPage'
-
-class PageCreateContentVariant3Variant2Mode(str, Enum):
-    DOCUMENT = 'document'
-
-class PageCreateContentVariant3Variant2Type(str, Enum):
-    SYNC_PAGE = 'syncPage'
-
 class PageEmbedRenderMethod(str, Enum):
     COMPATIBILITY = 'compatibility'
     STANDARD = 'standard'
@@ -1298,11 +1280,11 @@ class CreatePageInput:
 
 @dataclass(kw_only=True)
 class CurrencyAmount:
-    variant1: str | None = field(default=None, metadata={"json_name": 'variant1'})
-    variant2: float | None = field(default=None, metadata={"json_name": 'variant2'})
+    text: str | None = field(default=None, metadata={"json_name": 'text'})
+    number: float | None = field(default=None, metadata={"json_name": 'number'})
 
     def __post_init__(self) -> None:
-        if sum(value is not None for value in (self.variant1, self.variant2)) != 1:
+        if sum(value is not None for value in (self.text, self.number)) != 1:
             raise ValueError("Exactly one union member must be set")
 
 @dataclass(kw_only=True)
@@ -2466,11 +2448,11 @@ class NotFoundError:
 
 @dataclass(kw_only=True)
 class NumberOrNumberFormula:
-    variant1: float | None = field(default=None, metadata={"json_name": 'variant1'})
-    variant2: str | None = field(default=None, metadata={"json_name": 'variant2'})
+    number: float | None = field(default=None, metadata={"json_name": 'number'})
+    formula: str | None = field(default=None, metadata={"json_name": 'formula'})
 
     def __post_init__(self) -> None:
-        if sum(value is not None for value in (self.variant1, self.variant2)) != 1:
+        if sum(value is not None for value in (self.number, self.formula)) != 1:
             raise ValueError("Exactly one union member must be set")
 
 @dataclass(kw_only=True)
@@ -3582,47 +3564,39 @@ class PageCreate:
     page_content: PageCreateContent | None = field(default=None, metadata={"json_name": 'pageContent'})
 
 @dataclass(kw_only=True)
-class PageCreateContent:
-    variant1: PageCreateContentVariant1 | None = field(default=None, metadata={"json_name": 'variant1'})
-    variant2: PageCreateContentVariant2 | None = field(default=None, metadata={"json_name": 'variant2'})
-    variant3: PageCreateContentVariant3 | None = field(default=None, metadata={"json_name": 'variant3'})
-
-    def __post_init__(self) -> None:
-        if sum(value is not None for value in (self.variant1, self.variant2, self.variant3)) != 1:
-            raise ValueError("Exactly one union member must be set")
-
-@dataclass(kw_only=True)
-class PageCreateContentVariant1:
-    type: PageCreateContentVariant1Type = field(metadata={"json_name": 'type'})
+class PageCreateCanvasContent:
+    type: PageType = field(metadata={"json_name": 'type'})
     canvas_content: PageContent = field(metadata={"json_name": 'canvasContent'})
 
 @dataclass(kw_only=True)
-class PageCreateContentVariant2:
-    type: PageCreateContentVariant2Type = field(metadata={"json_name": 'type'})
+class PageCreateContent:
+    canvas: PageCreateCanvasContent | None = field(default=None, metadata={"json_name": 'canvas'})
+    embed: PageCreateEmbedContent | None = field(default=None, metadata={"json_name": 'embed'})
+    page_sync: PageCreatePageSyncContent | None = field(default=None, metadata={"json_name": 'pageSync'})
+    document_sync: PageCreateDocumentSyncContent | None = field(default=None, metadata={"json_name": 'documentSync'})
+
+    def __post_init__(self) -> None:
+        if sum(value is not None for value in (self.canvas, self.embed, self.page_sync, self.document_sync)) != 1:
+            raise ValueError("Exactly one union member must be set")
+
+@dataclass(kw_only=True)
+class PageCreateDocumentSyncContent:
+    type: PageType = field(metadata={"json_name": 'type'})
+    mode: SyncPageType = field(metadata={"json_name": 'mode'})
+    source_doc_id: str = field(metadata={"json_name": 'sourceDocId'})
+
+@dataclass(kw_only=True)
+class PageCreateEmbedContent:
+    type: PageType = field(metadata={"json_name": 'type'})
     url: str = field(metadata={"json_name": 'url'})
     render_method: PageEmbedRenderMethod | None = field(default=None, metadata={"json_name": 'renderMethod'})
 
 @dataclass(kw_only=True)
-class PageCreateContentVariant3:
-    variant1: PageCreateContentVariant3Variant1 | None = field(default=None, metadata={"json_name": 'variant1'})
-    variant2: PageCreateContentVariant3Variant2 | None = field(default=None, metadata={"json_name": 'variant2'})
-
-    def __post_init__(self) -> None:
-        if sum(value is not None for value in (self.variant1, self.variant2)) != 1:
-            raise ValueError("Exactly one union member must be set")
-
-@dataclass(kw_only=True)
-class PageCreateContentVariant3Variant1:
-    type: PageCreateContentVariant3Variant1Type = field(metadata={"json_name": 'type'})
-    mode: PageCreateContentVariant3Variant1Mode = field(metadata={"json_name": 'mode'})
+class PageCreatePageSyncContent:
+    type: PageType = field(metadata={"json_name": 'type'})
+    mode: SyncPageType = field(metadata={"json_name": 'mode'})
     include_subpages: bool = field(metadata={"json_name": 'includeSubpages'})
     source_page_id: str = field(metadata={"json_name": 'sourcePageId'})
-    source_doc_id: str = field(metadata={"json_name": 'sourceDocId'})
-
-@dataclass(kw_only=True)
-class PageCreateContentVariant3Variant2:
-    type: PageCreateContentVariant3Variant2Type = field(metadata={"json_name": 'type'})
-    mode: PageCreateContentVariant3Variant2Mode = field(metadata={"json_name": 'mode'})
     source_doc_id: str = field(metadata={"json_name": 'sourceDocId'})
 
 @dataclass(kw_only=True)
@@ -3790,20 +3764,12 @@ class RichSingleValue:
 
 @dataclass(kw_only=True)
 class RichValue:
-    rich_single_value: RichSingleValue | None = field(default=None, metadata={"json_name": 'richSingleValue'})
-    variant2: RichValueVariant2 | None = field(default=None, metadata={"json_name": 'variant2'})
+    single: RichSingleValue | None = field(default=None, metadata={"json_name": 'single'})
+    flat_list: RichSingleValueList | None = field(default=None, metadata={"json_name": 'flatList'})
+    nested_list: RichSingleValueNestedList | None = field(default=None, metadata={"json_name": 'nestedList'})
 
     def __post_init__(self) -> None:
-        if sum(value is not None for value in (self.rich_single_value, self.variant2)) != 1:
-            raise ValueError("Exactly one union member must be set")
-
-@dataclass(kw_only=True)
-class RichValueVariant2Member:
-    rich_single_value: RichSingleValue | None = field(default=None, metadata={"json_name": 'richSingleValue'})
-    variant2: RichValueVariant2MemberVariant2 | None = field(default=None, metadata={"json_name": 'variant2'})
-
-    def __post_init__(self) -> None:
-        if sum(value is not None for value in (self.rich_single_value, self.variant2)) != 1:
+        if sum(value is not None for value in (self.single, self.flat_list, self.nested_list)) != 1:
             raise ValueError("Exactly one union member must be set")
 
 @dataclass(kw_only=True)
@@ -3889,12 +3855,12 @@ class RowsUpsertResponse:
 
 @dataclass(kw_only=True)
 class ScalarValue:
-    variant1: str | None = field(default=None, metadata={"json_name": 'variant1'})
-    variant2: float | None = field(default=None, metadata={"json_name": 'variant2'})
-    variant3: bool | None = field(default=None, metadata={"json_name": 'variant3'})
+    text: str | None = field(default=None, metadata={"json_name": 'text'})
+    number: float | None = field(default=None, metadata={"json_name": 'number'})
+    boolean: bool | None = field(default=None, metadata={"json_name": 'boolean'})
 
     def __post_init__(self) -> None:
-        if sum(value is not None for value in (self.variant1, self.variant2, self.variant3)) != 1:
+        if sum(value is not None for value in (self.text, self.number, self.boolean)) != 1:
             raise ValueError("Exactly one union member must be set")
 
 @dataclass(kw_only=True)
@@ -4281,20 +4247,12 @@ class ValidationError:
 
 @dataclass(kw_only=True)
 class Value:
-    scalar_value: ScalarValue | None = field(default=None, metadata={"json_name": 'scalarValue'})
-    variant2: ValueVariant2 | None = field(default=None, metadata={"json_name": 'variant2'})
+    scalar: ScalarValue | None = field(default=None, metadata={"json_name": 'scalar'})
+    flat_list: ScalarValueList | None = field(default=None, metadata={"json_name": 'flatList'})
+    nested_list: ScalarValueNestedList | None = field(default=None, metadata={"json_name": 'nestedList'})
 
     def __post_init__(self) -> None:
-        if sum(value is not None for value in (self.scalar_value, self.variant2)) != 1:
-            raise ValueError("Exactly one union member must be set")
-
-@dataclass(kw_only=True)
-class ValueVariant2Member:
-    scalar_value: ScalarValue | None = field(default=None, metadata={"json_name": 'scalarValue'})
-    variant2: ValueVariant2MemberVariant2 | None = field(default=None, metadata={"json_name": 'variant2'})
-
-    def __post_init__(self) -> None:
-        if sum(value is not None for value in (self.scalar_value, self.variant2)) != 1:
+        if sum(value is not None for value in (self.scalar, self.flat_list, self.nested_list)) != 1:
             raise ValueError("Exactly one union member must be set")
 
 @dataclass(kw_only=True)
@@ -4617,9 +4575,9 @@ PageListItems: TypeAlias = list[Page]
 
 ParameterSettingAllowed: TypeAlias = list[str]
 
-RichValueVariant2: TypeAlias = list[RichValueVariant2Member]
+RichSingleValueList: TypeAlias = list[RichSingleValue]
 
-RichValueVariant2MemberVariant2: TypeAlias = list[RichSingleValue]
+RichSingleValueNestedList: TypeAlias = list[RichSingleValueList]
 
 RowDetailValues: TypeAlias = dict[str, CellValue]
 
@@ -4639,6 +4597,10 @@ RowsUpsertResultAddedRowIds: TypeAlias = list[str]
 
 RowsUpsertRows: TypeAlias = list[RowEdit]
 
+ScalarValueList: TypeAlias = list[ScalarValue]
+
+ScalarValueNestedList: TypeAlias = list[ScalarValueList]
+
 SearchPrincipalsResponseGroups: TypeAlias = list[GroupPrincipal]
 
 SearchPrincipalsResponseUsers: TypeAlias = list[UserSummary]
@@ -4656,10 +4618,6 @@ UpdatePackPayloadAgentImages: TypeAlias = list[ImageFileForUpdatePackRequest]
 UpdatePackPayloadExampleImages: TypeAlias = list[ImageFileForUpdatePackRequest]
 
 UpdatePackPayloadPackEntrypoints: TypeAlias = list[PackEntrypoint]
-
-ValueVariant2: TypeAlias = list[ValueVariant2Member]
-
-ValueVariant2MemberVariant2: TypeAlias = list[ScalarValue]
 
 WorkspaceMembersListItems: TypeAlias = list[WorkspaceUser]
 
@@ -5311,18 +5269,11 @@ __all__ = (
     "PageContentOutputFormat",
     "PageContentUpdate",
     "PageCreate",
+    "PageCreateCanvasContent",
     "PageCreateContent",
-    "PageCreateContentVariant1",
-    "PageCreateContentVariant1Type",
-    "PageCreateContentVariant2",
-    "PageCreateContentVariant2Type",
-    "PageCreateContentVariant3",
-    "PageCreateContentVariant3Variant1",
-    "PageCreateContentVariant3Variant1Mode",
-    "PageCreateContentVariant3Variant1Type",
-    "PageCreateContentVariant3Variant2",
-    "PageCreateContentVariant3Variant2Mode",
-    "PageCreateContentVariant3Variant2Type",
+    "PageCreateDocumentSyncContent",
+    "PageCreateEmbedContent",
+    "PageCreatePageSyncContent",
     "PageCreateResponse",
     "PageDeleteResponse",
     "PageEmbedRenderMethod",
@@ -5357,10 +5308,9 @@ __all__ = (
     "ReplyToPackInvitationInput",
     "ResolveBrowserLinkInput",
     "RichSingleValue",
+    "RichSingleValueList",
+    "RichSingleValueNestedList",
     "RichValue",
-    "RichValueVariant2",
-    "RichValueVariant2Member",
-    "RichValueVariant2MemberVariant2",
     "Row",
     "RowDeleteResponse",
     "RowDetail",
@@ -5388,6 +5338,8 @@ __all__ = (
     "RowsUpsertResultAddedRowIds",
     "RowsUpsertRows",
     "ScalarValue",
+    "ScalarValueList",
+    "ScalarValueNestedList",
     "ScaleColumnFormat",
     "SearchPrincipalsInput",
     "SearchPrincipalsResponse",
@@ -5472,9 +5424,6 @@ __all__ = (
     "ValidationError",
     "Value",
     "ValueFormat",
-    "ValueVariant2",
-    "ValueVariant2Member",
-    "ValueVariant2MemberVariant2",
     "WebhookTriggerPayload",
     "WebhookTriggerResponse",
     "WhoamiInput",

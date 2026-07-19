@@ -1076,10 +1076,10 @@ pub mod models {
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
     pub enum CurrencyAmount {
-        #[serde(rename = "variant1")]
-        Variant1(String),
-        #[serde(rename = "variant2")]
-        Variant2(f64),
+        #[serde(rename = "text")]
+        Text(String),
+        #[serde(rename = "number")]
+        Number(f64),
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -4109,10 +4109,10 @@ pub mod models {
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
     pub enum NumberOrNumberFormula {
-        #[serde(rename = "variant1")]
-        Variant1(f64),
-        #[serde(rename = "variant2")]
-        Variant2(String),
+        #[serde(rename = "number")]
+        Number(f64),
+        #[serde(rename = "formula")]
+        Formula(String),
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -7732,147 +7732,57 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-    pub enum PageCreateContent {
-        #[serde(rename = "variant1")]
-        Variant1(PageCreateContentVariant1),
-        #[serde(rename = "variant2")]
-        Variant2(PageCreateContentVariant2),
-        #[serde(rename = "variant3")]
-        Variant3(PageCreateContentVariant3),
-    }
-
-    #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-    pub struct PageCreateContentVariant1 {
+    pub struct PageCreateCanvasContent {
         #[serde(rename = "type")]
-        pub type_: PageCreateContentVariant1Type,
+        pub type_: PageType,
         #[serde(rename = "canvasContent")]
         pub canvas_content: PageContent,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-    pub enum PageCreateContentVariant1Type {
+    #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    pub enum PageCreateContent {
         #[serde(rename = "canvas")]
-        Canvas,
-    }
-
-    impl PageCreateContentVariant1Type {
-        pub const fn as_str(&self) -> &'static str {
-            match self {
-                Self::Canvas => "canvas",
-            }
-        }
+        Canvas(PageCreateCanvasContent),
+        #[serde(rename = "embed")]
+        Embed(PageCreateEmbedContent),
+        #[serde(rename = "pageSync")]
+        PageSync(PageCreatePageSyncContent),
+        #[serde(rename = "documentSync")]
+        DocumentSync(PageCreateDocumentSyncContent),
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-    pub struct PageCreateContentVariant2 {
+    pub struct PageCreateDocumentSyncContent {
         #[serde(rename = "type")]
-        pub type_: PageCreateContentVariant2Type,
+        pub type_: PageType,
+        #[serde(rename = "mode")]
+        pub mode: SyncPageType,
+        #[serde(rename = "sourceDocId")]
+        pub source_doc_id: String,
+    }
+
+    #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    pub struct PageCreateEmbedContent {
+        #[serde(rename = "type")]
+        pub type_: PageType,
         #[serde(rename = "url")]
         pub url: String,
         #[serde(rename = "renderMethod", skip_serializing_if = "Option::is_none")]
         pub render_method: Option<PageEmbedRenderMethod>,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-    pub enum PageCreateContentVariant2Type {
-        #[serde(rename = "embed")]
-        Embed,
-    }
-
-    impl PageCreateContentVariant2Type {
-        pub const fn as_str(&self) -> &'static str {
-            match self {
-                Self::Embed => "embed",
-            }
-        }
-    }
-
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-    pub enum PageCreateContentVariant3 {
-        #[serde(rename = "variant1")]
-        Variant1(PageCreateContentVariant3Variant1),
-        #[serde(rename = "variant2")]
-        Variant2(PageCreateContentVariant3Variant2),
-    }
-
-    #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-    pub struct PageCreateContentVariant3Variant1 {
+    pub struct PageCreatePageSyncContent {
         #[serde(rename = "type")]
-        pub type_: PageCreateContentVariant3Variant1Type,
+        pub type_: PageType,
         #[serde(rename = "mode")]
-        pub mode: PageCreateContentVariant3Variant1Mode,
+        pub mode: SyncPageType,
         #[serde(rename = "includeSubpages")]
         pub include_subpages: bool,
         #[serde(rename = "sourcePageId")]
         pub source_page_id: String,
         #[serde(rename = "sourceDocId")]
         pub source_doc_id: String,
-    }
-
-    #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-    pub enum PageCreateContentVariant3Variant1Mode {
-        #[serde(rename = "page")]
-        Page,
-    }
-
-    impl PageCreateContentVariant3Variant1Mode {
-        pub const fn as_str(&self) -> &'static str {
-            match self {
-                Self::Page => "page",
-            }
-        }
-    }
-
-    #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-    pub enum PageCreateContentVariant3Variant1Type {
-        #[serde(rename = "syncPage")]
-        SyncPage,
-    }
-
-    impl PageCreateContentVariant3Variant1Type {
-        pub const fn as_str(&self) -> &'static str {
-            match self {
-                Self::SyncPage => "syncPage",
-            }
-        }
-    }
-
-    #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-    pub struct PageCreateContentVariant3Variant2 {
-        #[serde(rename = "type")]
-        pub type_: PageCreateContentVariant3Variant2Type,
-        #[serde(rename = "mode")]
-        pub mode: PageCreateContentVariant3Variant2Mode,
-        #[serde(rename = "sourceDocId")]
-        pub source_doc_id: String,
-    }
-
-    #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-    pub enum PageCreateContentVariant3Variant2Mode {
-        #[serde(rename = "document")]
-        Document,
-    }
-
-    impl PageCreateContentVariant3Variant2Mode {
-        pub const fn as_str(&self) -> &'static str {
-            match self {
-                Self::Document => "document",
-            }
-        }
-    }
-
-    #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-    pub enum PageCreateContentVariant3Variant2Type {
-        #[serde(rename = "syncPage")]
-        SyncPage,
-    }
-
-    impl PageCreateContentVariant3Variant2Type {
-        pub const fn as_str(&self) -> &'static str {
-            match self {
-                Self::SyncPage => "syncPage",
-            }
-        }
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -8305,25 +8215,19 @@ pub mod models {
         RowValue(RowValue),
     }
 
+    pub type RichSingleValueList = Vec<RichSingleValue>;
+
+    pub type RichSingleValueNestedList = Vec<RichSingleValueList>;
+
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
     pub enum RichValue {
-        #[serde(rename = "richSingleValue")]
-        RichSingleValue(RichSingleValue),
-        #[serde(rename = "variant2")]
-        Variant2(RichValueVariant2),
+        #[serde(rename = "single")]
+        Single(RichSingleValue),
+        #[serde(rename = "flatList")]
+        FlatList(RichSingleValueList),
+        #[serde(rename = "nestedList")]
+        NestedList(RichSingleValueNestedList),
     }
-
-    pub type RichValueVariant2 = Vec<RichValueVariant2Member>;
-
-    #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-    pub enum RichValueVariant2Member {
-        #[serde(rename = "richSingleValue")]
-        RichSingleValue(RichSingleValue),
-        #[serde(rename = "variant2")]
-        Variant2(RichValueVariant2MemberVariant2),
-    }
-
-    pub type RichValueVariant2MemberVariant2 = Vec<RichSingleValue>;
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
     pub struct Row {
@@ -8559,13 +8463,17 @@ pub mod models {
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
     pub enum ScalarValue {
-        #[serde(rename = "variant1")]
-        Variant1(String),
-        #[serde(rename = "variant2")]
-        Variant2(f64),
-        #[serde(rename = "variant3")]
-        Variant3(bool),
+        #[serde(rename = "text")]
+        Text(String),
+        #[serde(rename = "number")]
+        Number(f64),
+        #[serde(rename = "boolean")]
+        Boolean(bool),
     }
+
+    pub type ScalarValueList = Vec<ScalarValue>;
+
+    pub type ScalarValueNestedList = Vec<ScalarValueList>;
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
     pub struct ScaleColumnFormat {
@@ -9535,10 +9443,12 @@ pub mod models {
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
     pub enum Value {
-        #[serde(rename = "scalarValue")]
-        ScalarValue(ScalarValue),
-        #[serde(rename = "variant2")]
-        Variant2(ValueVariant2),
+        #[serde(rename = "scalar")]
+        Scalar(ScalarValue),
+        #[serde(rename = "flatList")]
+        FlatList(ScalarValueList),
+        #[serde(rename = "nestedList")]
+        NestedList(ScalarValueNestedList),
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -9560,18 +9470,6 @@ pub mod models {
             }
         }
     }
-
-    pub type ValueVariant2 = Vec<ValueVariant2Member>;
-
-    #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-    pub enum ValueVariant2Member {
-        #[serde(rename = "scalarValue")]
-        ScalarValue(ScalarValue),
-        #[serde(rename = "variant2")]
-        Variant2(ValueVariant2MemberVariant2),
-    }
-
-    pub type ValueVariant2MemberVariant2 = Vec<ScalarValue>;
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
     pub struct WebhookTriggerPayload {}

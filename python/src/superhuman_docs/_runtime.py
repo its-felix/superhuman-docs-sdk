@@ -153,7 +153,7 @@ class BaseClient:
         body = None
         headers = {
             "Accept": "application/json",
-            "User-Agent": "superhuman-docs-python/0.3.0",
+            "User-Agent": "superhuman-docs-python/0.4.0",
             **self.headers,
         }
         if self.token:

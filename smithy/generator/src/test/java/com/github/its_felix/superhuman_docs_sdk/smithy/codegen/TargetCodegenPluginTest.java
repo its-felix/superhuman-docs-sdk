@@ -24,6 +24,7 @@ import software.amazon.smithy.model.shapes.OperationShape;
 import software.amazon.smithy.model.shapes.ResourceShape;
 import software.amazon.smithy.model.shapes.ServiceShape;
 import software.amazon.smithy.model.shapes.ShapeId;
+import software.amazon.smithy.model.shapes.UnionShape;
 
 import org.junit.jupiter.api.Test;
 
@@ -143,6 +144,27 @@ final class TargetCodegenPluginTest {
             assertTrue(operation.getInput().isPresent(), operation.getId() + " must have an input");
             assertTrue(operation.getOutput().isPresent(), operation.getId() + " must have an output");
         }
+    }
+
+    @Test
+    void modelUsesSemanticUnionMembers() throws IOException {
+        Model model = loadRepositoryModel();
+
+        for (UnionShape union : model.getUnionShapes()) {
+            union.members().forEach(member -> assertFalse(
+                    member.getMemberName().matches("variant\\d+"),
+                    union.getId() + " has an anonymous union member: " + member.getMemberName()));
+        }
+
+        UnionShape value = model.expectShape(
+                ShapeId.from("com.superhuman.docs.v1#Value"), UnionShape.class);
+        assertEquals(List.of("flatList", "nestedList", "scalar"),
+                value.getAllMembers().keySet().stream().sorted().toList());
+
+        UnionShape pageCreateContent = model.expectShape(
+                ShapeId.from("com.superhuman.docs.v1#PageCreateContent"), UnionShape.class);
+        assertEquals(List.of("canvas", "documentSync", "embed", "pageSync"),
+                pageCreateContent.getAllMembers().keySet().stream().sorted().toList());
     }
 
     private static SmithyBuildResult runBuild(Map<String, ObjectNode> plugins) throws IOException {
