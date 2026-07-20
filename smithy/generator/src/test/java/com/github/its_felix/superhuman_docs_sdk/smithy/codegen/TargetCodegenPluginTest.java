@@ -77,6 +77,8 @@ final class TargetCodegenPluginTest {
         assertTrue(rust.contains("pub fn tables(&self)"));
         assertTrue(rust.contains("pub fn list(&self, input: ListRowsInput)"));
         assertTrue(rust.contains("self.client.execute(request)"));
+        assertTrue(rust.contains("#[serde(untagged)]\n    pub enum Value"));
+        assertTrue(rust.contains("#[serde(untagged)]\n    pub enum PageCreateContent"));
         assertFalse(rust.contains("pub fn build_"));
         assertEquals(1, countOccurrences(rust, "    pub fn rows(&self)"));
 

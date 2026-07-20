@@ -13,6 +13,7 @@ mod tests {
     use std::sync::{Arc, Mutex};
 
     use super::{operations, Client, ClientOptions, Request, Response};
+    use serde_json::json;
 
     #[test]
     fn resource_client_routes_typed_operation_through_transport() {
@@ -41,5 +42,65 @@ mod tests {
             .expect("request");
         assert_eq!(request.operation, "DeleteDoc");
         assert_eq!(request.url, "https://coda.io/apis/v1/docs/doc%201");
+    }
+
+    #[test]
+    fn row_values_serialize_as_api_primitives() {
+        let payload = operations::RowsUpsert {
+            rows: vec![operations::RowEdit {
+                cells: vec![
+                    operations::CellEdit {
+                        column: "text".to_string(),
+                        value: operations::Value::Scalar(operations::ScalarValue::Text(
+                            "hello".to_string(),
+                        )),
+                    },
+                    operations::CellEdit {
+                        column: "list".to_string(),
+                        value: operations::Value::FlatList(vec![
+                            operations::ScalarValue::Number(1.5),
+                            operations::ScalarValue::Boolean(true),
+                        ]),
+                    },
+                ],
+            }],
+            key_columns: None,
+        };
+
+        assert_eq!(
+            serde_json::to_value(payload).expect("serialize rows"),
+            json!({
+                "rows": [{
+                    "cells": [
+                        {"column": "text", "value": "hello"},
+                        {"column": "list", "value": [1.5, true]}
+                    ]
+                }]
+            })
+        );
+    }
+
+    #[test]
+    fn page_content_serializes_with_its_discriminator() {
+        let content = operations::PageCreateContent::Canvas(
+            operations::PageCreateCanvasContent {
+                type_: operations::PageType::Canvas,
+                canvas_content: operations::PageContent {
+                    format: operations::PageContentFormat::Html,
+                    content: "<p>Hello</p>".to_string(),
+                },
+            },
+        );
+
+        assert_eq!(
+            serde_json::to_value(content).expect("serialize page content"),
+            json!({
+                "type": "canvas",
+                "canvasContent": {
+                    "format": "html",
+                    "content": "<p>Hello</p>"
+                }
+            })
+        );
     }
 }

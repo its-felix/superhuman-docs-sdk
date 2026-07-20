@@ -280,6 +280,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum AddedPrincipal {
         #[serde(rename = "addedEmailPrincipal")]
         AddedEmailPrincipal(AddedEmailPrincipal),
@@ -522,6 +523,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum CellValue {
         #[serde(rename = "value")]
         Value(Value),
@@ -639,6 +641,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum ColumnFormat {
         #[serde(rename = "buttonColumnFormat")]
         ButtonColumnFormat(ButtonColumnFormat),
@@ -1075,6 +1078,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum CurrencyAmount {
         #[serde(rename = "text")]
         Text(String),
@@ -2483,6 +2487,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum GroupedPackLog {
         #[serde(rename = "groupedPackInvocationLog")]
         GroupedPackInvocationLog(GroupedPackInvocationLog),
@@ -4108,6 +4113,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum NumberOrNumberFormula {
         #[serde(rename = "number")]
         Number(f64),
@@ -6425,6 +6431,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum PackLog {
         #[serde(rename = "packCustomLog")]
         PackCustomLog(PackCustomLog),
@@ -6542,6 +6549,7 @@ pub mod models {
     pub struct PackLogContextAdditionalMetadata {}
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum PackLogDetails {
         #[serde(rename = "packFetcherLogDetails")]
         PackFetcherLogDetails(PackFetcherLogDetails),
@@ -6893,6 +6901,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum PackPrincipal {
         #[serde(rename = "packUserPrincipal")]
         PackUserPrincipal(PackUserPrincipal),
@@ -7215,6 +7224,7 @@ pub mod models {
     pub type PackSummaryPackEntrypoints = Vec<PackEntrypoint>;
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum PackSystemConnectionCredentials {
         #[serde(rename = "packConnectionHeaderCredentials")]
         PackConnectionHeaderCredentials(PackConnectionHeaderCredentials),
@@ -7239,6 +7249,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum PackSystemConnectionMetadata {
         #[serde(rename = "packConnectionHeaderMetadata")]
         PackConnectionHeaderMetadata(PackConnectionHeaderMetadata),
@@ -7288,6 +7299,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum PackUserAccessOrganization {
         #[serde(rename = "packOrganizationAccessForDocs")]
         PackOrganizationAccessForDocs(PackOrganizationAccessForDocs),
@@ -7740,6 +7752,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum PageCreateContent {
         #[serde(rename = "canvas")]
         Canvas(PageCreateCanvasContent),
@@ -8007,6 +8020,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum PatchPackSystemConnectionPayload {
         #[serde(rename = "packConnectionHeaderPatch")]
         PackConnectionHeaderPatch(PackConnectionHeaderPatch),
@@ -8067,6 +8081,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum Principal {
         #[serde(rename = "emailPrincipal")]
         EmailPrincipal(EmailPrincipal),
@@ -8200,6 +8215,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum RichSingleValue {
         #[serde(rename = "scalarValue")]
         ScalarValue(ScalarValue),
@@ -8220,6 +8236,7 @@ pub mod models {
     pub type RichSingleValueNestedList = Vec<RichSingleValueList>;
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum RichValue {
         #[serde(rename = "single")]
         Single(RichSingleValue),
@@ -8462,6 +8479,7 @@ pub mod models {
     pub type RowsUpsertRows = Vec<RowEdit>;
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum ScalarValue {
         #[serde(rename = "text")]
         Text(String),
@@ -8674,6 +8692,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum StandardPackPlanPricing {
         #[serde(rename = "freePackPlanPricing")]
         FreePackPlanPricing(FreePackPlanPricing),
@@ -9442,6 +9461,7 @@ pub mod models {
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+    #[serde(untagged)]
     pub enum Value {
         #[serde(rename = "scalar")]
         Scalar(ScalarValue),

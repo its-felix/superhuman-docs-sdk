@@ -167,6 +167,7 @@ final class RustRenderer {
     private static List<String> renderUnion(Shape shape) {
         List<String> lines = new ArrayList<>(List.of(
                 "    #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]",
+                "    #[serde(untagged)]",
                 "    pub enum " + rustTypeName(shape.getId().getName()) + " {"));
         Set<String> used = new HashSet<>();
         for (MemberShape member : shape.members()) {
