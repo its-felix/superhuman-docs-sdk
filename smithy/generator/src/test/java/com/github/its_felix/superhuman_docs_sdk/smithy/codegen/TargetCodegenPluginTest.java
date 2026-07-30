@@ -36,6 +36,7 @@ final class TargetCodegenPluginTest {
                 PythonCodegenPlugin.PLUGIN_ID, settings(),
                 GoCodegenPlugin.PLUGIN_ID, settings(),
                 RustCodegenPlugin.PLUGIN_ID, settings(),
+                RustAsyncCodegenPlugin.PLUGIN_ID, settings(),
                 ZigCodegenPlugin.PLUGIN_ID, settings()));
 
         assertFalse(result.anyBroken(), "Smithy build should complete without broken projections");
@@ -48,6 +49,8 @@ final class TargetCodegenPluginTest {
                 .getPluginManifest(GoCodegenPlugin.PLUGIN_ID).orElseThrow();
         MockManifest rustManifest = (MockManifest) source
                 .getPluginManifest(RustCodegenPlugin.PLUGIN_ID).orElseThrow();
+        MockManifest rustAsyncManifest = (MockManifest) source
+                .getPluginManifest(RustAsyncCodegenPlugin.PLUGIN_ID).orElseThrow();
         MockManifest zigManifest = (MockManifest) source
                 .getPluginManifest(ZigCodegenPlugin.PLUGIN_ID).orElseThrow();
 
@@ -82,6 +85,15 @@ final class TargetCodegenPluginTest {
         assertFalse(rust.contains("pub fn build_"));
         assertEquals(1, countOccurrences(rust, "    pub fn rows(&self)"));
 
+        String rustAsync = rustAsyncManifest.expectFileString("sdk/rust-async/src/generated/operations.rs");
+        assertTrue(rustAsync.contains("pub enum ColumnFormatType"));
+        assertTrue(rustAsync.contains("pub fn tables(&self)"));
+        assertTrue(rustAsync.contains("pub async fn list(&self, input: ListRowsInput)"));
+        assertTrue(rustAsync.contains("self.client.execute(request).await"));
+        assertTrue(rustAsync.contains("#[serde(untagged)]\n    pub enum Value"));
+        assertFalse(rustAsync.contains("pub fn build_"));
+        assertEquals(1, countOccurrences(rustAsync, "    pub fn rows(&self)"));
+
         String zig = zigManifest.expectFileString("sdk/zig/src/generated/operations.zig");
         assertTrue(zig.contains("pub const ColumnFormatType = enum"));
         assertTrue(zig.contains("pub const TablesResourceClient = struct"));
@@ -106,6 +118,7 @@ final class TargetCodegenPluginTest {
         assertTrue(mockManifest.expectFileString("sdk/python/src/superhuman_docs/_generated.py").contains("ListDocs"));
         assertFalse(manifest.hasFile("sdk/go/types_gen.go"));
         assertFalse(manifest.hasFile("sdk/rust/src/generated/operations.rs"));
+        assertFalse(manifest.hasFile("sdk/rust-async/src/generated/operations.rs"));
         assertFalse(manifest.hasFile("sdk/zig/src/generated/operations.zig"));
     }
 
@@ -117,6 +130,7 @@ final class TargetCodegenPluginTest {
         assertNotNull(factory.apply(PythonCodegenPlugin.PLUGIN_ID).orElse(null));
         assertNotNull(factory.apply(GoCodegenPlugin.PLUGIN_ID).orElse(null));
         assertNotNull(factory.apply(RustCodegenPlugin.PLUGIN_ID).orElse(null));
+        assertNotNull(factory.apply(RustAsyncCodegenPlugin.PLUGIN_ID).orElse(null));
         assertNotNull(factory.apply(ZigCodegenPlugin.PLUGIN_ID).orElse(null));
     }
 

@@ -31,7 +31,7 @@ jobs:
           fi
           echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
-      - name: Check Python, Rust, and Zig package versions
+      - name: Check Python, async Rust, and Zig package versions
         run: |
           python - <<'PY'
           import os
@@ -45,10 +45,10 @@ jobs:
           if python_version != expected:
               raise SystemExit(f"python/pyproject.toml version {python_version!r} != tag {expected!r}")
 
-          cargo = tomllib.loads(Path("rust/Cargo.toml").read_text())
+          cargo = tomllib.loads(Path("rust-async/Cargo.toml").read_text())
           rust_version = cargo["package"]["version"]
           if rust_version != expected:
-              raise SystemExit(f"rust/Cargo.toml version {rust_version!r} != tag {expected!r}")
+              raise SystemExit(f"rust-async/Cargo.toml version {rust_version!r} != tag {expected!r}")
 
           zon = Path("build.zig.zon").read_text()
           match = re.search(r'\.version\s*=\s*"([^"]+)"', zon)
@@ -115,7 +115,7 @@ jobs:
         run: ./build.sh
 
       - name: Check generated artifacts are committed
-        run: git diff --exit-code -- docs go python rust zig build.zig build.zig.zon
+        run: git diff --exit-code -- docs go python rust rust-async zig build.zig build.zig.zon
 
   publish-go:
     name: Publish Go module
@@ -200,7 +200,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
 
   validate-rust:
-    name: Validate Rust crate tag
+    name: Validate Rust crates
     runs-on: ubuntu-latest
     needs: verify-generated
     steps:
@@ -212,8 +212,8 @@ jobs:
           rustup toolchain install stable --profile minimal
           rustup default stable
 
-      - name: Test Rust crate
-        run: cargo test -p superhuman-docs
+      - name: Test Rust crates
+        run: cargo test --workspace
 
   publish-zig:
     name: Validate Zig package tag

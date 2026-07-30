@@ -67,4 +67,4 @@ jobs:
         run: ./build.sh
 
       - name: Check generated artifacts are committed
-        run: git diff --exit-code -- docs go python rust zig build.zig build.zig.zon
+        run: git diff --exit-code -- docs go python rust rust-async zig build.zig build.zig.zon

@@ -6,6 +6,18 @@ import software.amazon.smithy.model.shapes.ResourceShape;
 import software.amazon.smithy.model.shapes.ServiceShape;
 
 final class RustSdkGenerator implements TargetSdkGenerator {
+    private final boolean asyncOperations;
+    private final String outputPath;
+
+    RustSdkGenerator() {
+        this(false, "sdk/rust/src/generated/operations.rs");
+    }
+
+    RustSdkGenerator(boolean asyncOperations, String outputPath) {
+        this.asyncOperations = asyncOperations;
+        this.outputPath = outputPath;
+    }
+
     @Override
     public void generate(PluginContext context, SuperhumanDocsSettings settings) {
         ServiceShape service = SdkCodegen.service(context.getModel(), settings);
@@ -13,8 +25,9 @@ final class RustSdkGenerator implements TargetSdkGenerator {
         List<ResourceShape> resources = SdkCodegen.resourcesInServiceOrder(context.getModel(), service);
         List<ResourceShape> topLevelResources = SdkCodegen.topLevelResourcesInServiceOrder(context.getModel(), service);
         context.getFileManifest().writeFile(
-                "sdk/rust/src/generated/operations.rs",
+                outputPath,
                 RustRenderer.render(
-                        context.getModel(), service.getId().getNamespace(), bindings, resources, topLevelResources));
+                        context.getModel(), service.getId().getNamespace(), bindings, resources, topLevelResources,
+                        asyncOperations));
     }
 }

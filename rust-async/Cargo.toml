@@ -1,0 +1,18 @@
+[package]
+name = "superhuman-docs-async"
+version = "0.5.0"
+edition = "2021"
+description = "Async typed Rust SDK for the Superhuman Docs API"
+license = "MIT"
+repository = "https://github.com/its-felix/superhuman-docs-sdk"
+
+[lib]
+name = "superhuman_docs_async"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt"] }

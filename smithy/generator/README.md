@@ -4,7 +4,7 @@ This Maven project provides Smithy-Build plugins for generating Superhuman Docs
 SDK artifacts.
 
 Maven coordinate:
-`com.github.its-felix.superhuman-docs-sdk:smithy-generator:0.4.1-SNAPSHOT`.
+`com.github.its-felix.superhuman-docs-sdk:smithy-generator:0.5.0-SNAPSHOT`.
 
 Java package:
 `com.github.its_felix.superhuman_docs_sdk.smithy.codegen`. Hyphens from the
@@ -17,6 +17,7 @@ package identifiers cannot contain hyphens.
 - `superhuman-docs-python-codegen`
 - `superhuman-docs-go-codegen`
 - `superhuman-docs-rust-codegen`
+- `superhuman-docs-rust-async-codegen`
 - `superhuman-docs-zig-codegen`
 
 Smithy-Build plugin entries are the native way to choose targets. To generate a
@@ -40,6 +41,7 @@ The repository helper supports the same target split:
 ./build.sh python
 ./build.sh go
 ./build.sh rust
+./build.sh rust-async
 ./build.sh zig
 ./build.sh markdown
 ```
@@ -49,6 +51,8 @@ The repository helper supports the same target split:
 - `TargetCodegenPlugin` adapts a target generator to Smithy's `SmithyBuildPlugin`.
 - `MarkdownSdkGenerator`, `PythonSdkGenerator`, `GoSdkGenerator`,
   `RustSdkGenerator`, and `ZigSdkGenerator` each write one target's artifacts.
+  The blocking and async Rust plugins configure `RustSdkGenerator` to render
+  their respective operation style and output directory.
 - `PythonRenderer`, `GoRenderer`, `RustRenderer`, and `ZigRenderer` contain
   target-specific rendering routines.
 - `SdkCodegen` contains shared Smithy model helpers.

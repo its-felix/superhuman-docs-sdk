@@ -14,7 +14,8 @@ Smithy namespace is `com.superhuman.docs.v1`.
 | --- | --- | --- |
 | Go | `github.com/its-felix/superhuman-docs-sdk/go` | The Go module is rooted at this repository so normal `vX.Y.Z` tags work. |
 | Python | `superhuman-docs` | Built by the release workflow. |
-| Rust | `superhuman-docs` | Typed client and model crate under `rust`. |
+| Rust | `superhuman-docs` | Blocking typed client and model crate under `rust`. |
+| Rust (async) | `superhuman-docs-async` | Async typed client and model crate under `rust-async`. |
 | Zig | `superhuman-docs` module | Consumed through Zig's package manager from this git repository. |
 
 ## Generated API shape
@@ -41,7 +42,7 @@ transport because its standard library does not include an HTTP client.
 Go:
 
 ```sh
-go get github.com/its-felix/superhuman-docs-sdk/go@v0.4.1
+go get github.com/its-felix/superhuman-docs-sdk/go@v0.5.0
 ```
 
 Python:
@@ -73,6 +74,12 @@ Rust:
 superhuman-docs = { git = "https://github.com/its-felix/superhuman-docs-sdk.git", package = "superhuman-docs" }
 ```
 
+Async Rust:
+
+```toml
+superhuman-docs-async = { git = "https://github.com/its-felix/superhuman-docs-sdk.git", package = "superhuman-docs-async" }
+```
+
 ## Layout
 
 - `smithy/model`: shared Smithy model
@@ -82,6 +89,7 @@ superhuman-docs = { git = "https://github.com/its-felix/superhuman-docs-sdk.git"
 - `go`: generated Go package
 - `python`: generated Python package
 - `rust`: generated Rust client and model crate
+- `rust-async`: generated async Rust client and model crate
 - `zig`: generated Zig source package
 - `.github/workflows/ci.yml`: validation and generated-source freshness checks
 - `.github/workflows/release.yml`: tag-driven release publishing
@@ -97,7 +105,8 @@ After changing `smithy/model`, regenerate the SDKs:
 The script builds and installs the Smithy generator, runs `smithy build`, copies
 generated artifacts from `smithy/build/smithy/source/.../sdk` into `docs/` and
 the package directories, and runs the SDK tests for tools available on `PATH`.
-To generate only one target, pass `markdown`, `python`, `go`, `rust`, or `zig`:
+To generate only one target, pass `markdown`, `python`, `go`, `rust`,
+`rust-async`, or `zig`:
 
 ```sh
 ./build.sh python
@@ -106,7 +115,7 @@ To generate only one target, pass `markdown`, `python`, `go`, `rust`, or `zig`:
 CI uses Java 17, Maven, and the Smithy CLI for generation.
 
 ```sh
-git diff --exit-code -- docs go python rust zig build.zig build.zig.zon
+git diff --exit-code -- docs go python rust rust-async zig build.zig build.zig.zon
 ```
 
 The CI workflow runs the generators and fails if generated files differ from the
@@ -122,7 +131,10 @@ Push a semver tag like `v1.2.3` to publish:
 - Python: the workflow builds the package artifact. The tag version must match
   `python/pyproject.toml`.
 - Rust: the workflow verifies the crate builds from the repository workspace.
-  The tag version must match `rust/Cargo.toml`.
+  The blocking crate is independently versioned in `rust/Cargo.toml` so an
+  async-crate release does not force a breaking blocking-crate release.
+- Async Rust: the workflow verifies the crate builds from the repository
+  workspace. The tag version must match `rust-async/Cargo.toml`.
 - Zig: there is no central Zig package registry to upload to. The workflow
   verifies the tag is buildable and fetchable as a Zig package from the git
   repository. The tag version must match `build.zig.zon`.

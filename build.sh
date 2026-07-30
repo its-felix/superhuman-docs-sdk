@@ -6,7 +6,7 @@ smithy_artifact_dir="$repo_root/smithy/build/smithy/source"
 
 usage() {
   cat >&2 <<'USAGE'
-usage: ./build.sh [all|markdown|python|go|rust|zig ...]
+usage: ./build.sh [all|markdown|python|go|rust|rust-async|zig ...]
 
 No target argument is equivalent to "all". Multiple targets can be provided.
 USAGE
@@ -21,9 +21,9 @@ expanded_targets=()
 for target in "${targets[@]}"; do
   case "$target" in
     all)
-      expanded_targets=(markdown python go rust zig)
+      expanded_targets=(markdown python go rust rust-async zig)
       ;;
-    markdown|python|go|rust|zig)
+    markdown|python|go|rust|rust-async|zig)
       expanded_targets+=("$target")
       ;;
     -h|--help)
@@ -54,6 +54,7 @@ plugin_for_target() {
     python) echo "superhuman-docs-python-codegen" ;;
     go) echo "superhuman-docs-go-codegen" ;;
     rust) echo "superhuman-docs-rust-codegen" ;;
+    rust-async) echo "superhuman-docs-rust-async-codegen" ;;
     zig) echo "superhuman-docs-zig-codegen" ;;
   esac
 }
@@ -69,7 +70,7 @@ rm -rf "$smithy_artifact_dir"
 
 mvn -f smithy/generator/pom.xml clean install
 
-if command -v smithy >/dev/null 2>&1 && [ "${#plugins[@]}" -eq 5 ]; then
+if command -v smithy >/dev/null 2>&1 && [ "${#plugins[@]}" -eq 6 ]; then
   (cd smithy && smithy build)
 else
   mvn -f smithy/generator/pom.xml \
@@ -104,7 +105,15 @@ if has_target rust; then
   cp "$smithy_artifact_dir/superhuman-docs-rust-codegen/sdk/rust/src/generated/operations.rs" \
     "$repo_root/rust/src/generated/operations.rs"
   if command -v rustfmt >/dev/null 2>&1; then
-    rustfmt "$repo_root/rust/src/generated/operations.rs"
+    rustfmt --edition 2021 "$repo_root/rust/src/generated/operations.rs"
+  fi
+fi
+
+if has_target rust-async; then
+  cp "$smithy_artifact_dir/superhuman-docs-rust-async-codegen/sdk/rust-async/src/generated/operations.rs" \
+    "$repo_root/rust-async/src/generated/operations.rs"
+  if command -v rustfmt >/dev/null 2>&1; then
+    rustfmt --edition 2021 "$repo_root/rust-async/src/generated/operations.rs"
   fi
 fi
 
@@ -134,6 +143,14 @@ if has_target rust; then
     cargo test --manifest-path rust/Cargo.toml
   else
     echo "Skipping Rust tests: cargo not found on PATH" >&2
+  fi
+fi
+
+if has_target rust-async; then
+  if command -v cargo >/dev/null 2>&1; then
+    cargo test --manifest-path rust-async/Cargo.toml
+  else
+    echo "Skipping async Rust tests: cargo not found on PATH" >&2
   fi
 fi
 

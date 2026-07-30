@@ -50,9 +50,9 @@ From the repository root:
 ```
 
 The `smithy-build.json` file invokes local target plugins for Markdown, Python,
-Go, Rust, and Zig. The root build script installs the Maven generator, runs
-Smithy build, and copies generated artifacts from Smithy's build output into
-`docs/` and the Go, Python, Rust, and Zig package directories. Pass a target
+Go, blocking Rust, async Rust, and Zig. The root build script installs the Maven
+generator, runs Smithy build, and copies generated artifacts from Smithy's
+build output into `docs/` and the language package directories. Pass a target
 name to run only one target plugin:
 
 ```sh
@@ -60,5 +60,6 @@ name to run only one target plugin:
 ./build.sh python
 ./build.sh go
 ./build.sh rust
+./build.sh rust-async
 ./build.sh zig
 ```
