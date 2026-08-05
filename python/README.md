@@ -23,9 +23,8 @@ docs = client.docs().list(ListDocsInput(limit=10))
 doc = client.docs().read(GetDocInput(doc_id="YOUR_DOC_ID"))
 ```
 
-The default API base URL is `https://coda.io/apis/v1`, matching the source
-OpenAPI document referenced by the Smithy model. Override it with `base_url=...`
-if your environment uses a different host.
+The default API base URL is `https://docs.superhuman.com/apis/v1`. Override it
+with `base_url=...` if your environment uses a different host.
 
 The generated API exposes service operations directly and resource operations
 through resource clients such as `client.docs()` and `client.tables()`. Child

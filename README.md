@@ -3,9 +3,8 @@
 SDKs generated from the Smithy model for the Superhuman Docs API v1.
 
 The source API description is the public OpenAPI document at
-`https://docs.superhuman.com/apis/v1/openapi.json`. The published document still
-identifies itself as Coda API v1 and lists `https://coda.io/apis/v1` as the
-default server, so the generated clients use that base URL by default while the
+`https://docs.superhuman.com/apis/v1/openapi.json`. The SDKs use
+`https://docs.superhuman.com/apis/v1` as their default API base URL, and the
 Smithy namespace is `com.superhuman.docs.v1`.
 
 ## SDKs
@@ -42,7 +41,7 @@ transport because its standard library does not include an HTTP client.
 Go:
 
 ```sh
-go get github.com/its-felix/superhuman-docs-sdk/go@v0.5.0
+go get github.com/its-felix/superhuman-docs-sdk/go@v0.5.1
 ```
 
 Python:

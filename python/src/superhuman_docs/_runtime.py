@@ -12,7 +12,9 @@ from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
 
-DEFAULT_BASE_URL = "https://coda.io/apis/v1"
+DEFAULT_BASE_URL = "https://docs.superhuman.com/apis/v1"
+
+
 class RequestTransport(Protocol):
     def send_request(self, request: "PreparedRequest", timeout: float) -> "Response": ...
 

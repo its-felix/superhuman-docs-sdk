@@ -15,6 +15,10 @@ test {
     _ = operations;
 }
 
+test "default Docs URL uses Superhuman host" {
+    try std.testing.expectEqualStrings("https://docs.superhuman.com/apis/v1", default_base_url);
+}
+
 test "generated SDK exposes native enums and resource clients" {
     const format: operations.ColumnFormatType = .text;
     try std.testing.expectEqualStrings("text", @tagName(format));

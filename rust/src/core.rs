@@ -3,7 +3,7 @@ use std::sync::Arc;
 
 use serde::de::DeserializeOwned;
 
-pub const DEFAULT_BASE_URL: &str = "https://coda.io/apis/v1";
+pub const DEFAULT_BASE_URL: &str = "https://docs.superhuman.com/apis/v1";
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Method {

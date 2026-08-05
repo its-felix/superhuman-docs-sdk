@@ -9,6 +9,7 @@ from superhuman_docs import SuperhumanDocsClient
 from superhuman_docs._models import (
     DeletePageContentInput,
     DocUpdate,
+    ListDocsInput,
     ListRowsInput,
     PageContentDeleteResponse,
     RowList,
@@ -24,6 +25,18 @@ class ClientTests(unittest.TestCase):
 
         self.assertFalse(hasattr(client, "request"))
         self.assertFalse(hasattr(client, "rows"))
+
+    def test_default_docs_url_uses_superhuman_host(self):
+        captured = []
+
+        def transport(request, timeout):
+            captured.append(request)
+            return Response(200, {}, b'{"items":[]}')
+
+        client = SuperhumanDocsClient(token="token", transport=transport)
+        client.docs().list(ListDocsInput())
+
+        self.assertEqual(captured[0].url, "https://docs.superhuman.com/apis/v1/docs")
 
     def test_transport_object_uses_send_request_boundary(self):
         class Transport:

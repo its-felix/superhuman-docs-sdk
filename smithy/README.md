@@ -8,7 +8,9 @@ document exposed by the Superhuman Docs API reference:
 - Documentation: https://docs.superhuman.com/developers/apis/v1
 - OpenAPI source: https://docs.superhuman.com/apis/v1/openapi.json
 
-The published OpenAPI document still identifies the API as `Coda API` version `1.5.0` and lists `https://coda.io/apis/v1` as the server URL. The Smithy namespace uses `com.superhuman.docs.v1` so generated SDKs can move forward under the Superhuman Docs naming.
+The published OpenAPI document still identifies the API as `Coda API` version
+`1.5.0`. The SDK runtimes use `https://docs.superhuman.com/apis/v1` as their
+default base URL, and the Smithy namespace is `com.superhuman.docs.v1`.
 
 ## Layout
 

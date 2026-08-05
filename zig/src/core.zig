@@ -2,7 +2,7 @@ const std = @import("std");
 
 const Allocator = std.mem.Allocator;
 
-pub const default_base_url = "https://coda.io/apis/v1";
+pub const default_base_url = "https://docs.superhuman.com/apis/v1";
 
 pub const Request = struct {
     operation: []const u8,

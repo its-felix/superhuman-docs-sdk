@@ -41,7 +41,10 @@ mod tests {
             .take()
             .expect("request");
         assert_eq!(request.operation, "DeleteDoc");
-        assert_eq!(request.url, "https://coda.io/apis/v1/docs/doc%201");
+        assert_eq!(
+            request.url,
+            "https://docs.superhuman.com/apis/v1/docs/doc%201"
+        );
     }
 
     #[test]

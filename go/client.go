@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-const DefaultBaseURL = "https://coda.io/apis/v1"
+const DefaultBaseURL = "https://docs.superhuman.com/apis/v1"
 
 type Client struct {
 	BaseURL   string

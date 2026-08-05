@@ -1,6 +1,6 @@
 [package]
 name = "superhuman-docs-async"
-version = "0.5.0"
+version = "0.5.1"
 edition = "2021"
 description = "Async typed Rust SDK for the Superhuman Docs API"
 license = "MIT"

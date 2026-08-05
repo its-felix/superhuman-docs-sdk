@@ -11,6 +11,28 @@ import (
 
 var _ RequestSender = (*http.Client)(nil)
 
+func TestDefaultDocsURLUsesSuperhumanHost(t *testing.T) {
+	var request *http.Request
+	sender := RequestSenderFunc(func(got *http.Request) (*http.Response, error) {
+		request = got
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Status:     "200 OK",
+			Header:     make(http.Header),
+			Body:       io.NopCloser(strings.NewReader(`{"items":[]}`)),
+			Request:    got,
+		}, nil
+	})
+
+	client := NewClient("test-token", WithRequestSender(sender))
+	if _, err := client.Docs().List(context.Background(), nil); err != nil {
+		t.Fatalf("List returned an error: %v", err)
+	}
+	if got, want := request.URL.String(), "https://docs.superhuman.com/apis/v1/docs"; got != want {
+		t.Fatalf("URL = %q, want %q", got, want)
+	}
+}
+
 func TestResourceOperationUsesConfiguredRequestSender(t *testing.T) {
 	var request *http.Request
 	sender := RequestSenderFunc(func(got *http.Request) (*http.Response, error) {
